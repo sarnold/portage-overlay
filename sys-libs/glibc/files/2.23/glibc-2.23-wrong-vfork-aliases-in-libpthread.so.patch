@@ -1,0 +1,132 @@
+From: Aurelien Jarno <aurelien@aurel32.net>
+Date: Tue, 21 Jun 2016 23:59:37 +0200
+Subject: [PATCH] MIPS, SPARC: more fixes to the vfork aliases in libpthread.so
+
+Commit 43c29487 tried to fix the vfork aliases in libpthread.so on MIPS
+and SPARC, but failed to do it correctly, introducing an ABI change.
+
+This patch does the remaining changes needed to align the MIPS and SPARC
+vfork implementations with the other architectures. That way the the
+alpha version of pt-vfork.S works correctly for MIPS and SPARC. The
+changes for alpha were done in 82aab97c.
+
+Changelog:
+	* sysdeps/unix/sysv/linux/mips/vfork.S (__vfork): Rename into
+	__libc_vfork.
+	(__vfork) [IS_IN (libc)]: Remove alias.
+	(__libc_vfork) [IS_IN (libc)]: Define as an alias.
+	* sysdeps/unix/sysv/linux/sparc/sparc32/vfork.S: Likewise.
+	* sysdeps/unix/sysv/linux/sparc/sparc64/vfork.S: Likewise.
+---
+ ChangeLog                                     |  9 +++++++++
+ sysdeps/unix/sysv/linux/mips/vfork.S          | 12 ++++++------
+ sysdeps/unix/sysv/linux/sparc/sparc32/vfork.S |  8 ++++----
+ sysdeps/unix/sysv/linux/sparc/sparc64/vfork.S |  8 ++++----
+ 4 files changed, 23 insertions(+), 14 deletions(-)
+
+--- ChangeLog.orig	2016-08-22 20:50:05.055361201 -0700
++++ ChangeLog	2016-08-22 21:53:38.678029798 -0700
+@@ -1,4 +1,16 @@
+-2016-02-18  Adhemerval Zanella  <adhemerval.zanella@linaro.org>
++2016-06-21  Aurelien Jarno  <aurelien@aurel32.net>
++
++	(backported patch)
++
++	* sysdeps/unix/sysv/linux/mips/vfork.S (__vfork): Rename into
++	__libc_vfork.
++	(__vfork) [IS_IN (libc)]: Remove alias.
++	(__libc_vfork) [IS_IN (libc)]: Define as an alias.
++	* sysdeps/unix/sysv/linux/sparc/sparc32/vfork.S: Likewise.
++	* sysdeps/unix/sysv/linux/sparc/sparc64/vfork.S: Likewise.
++
++2016-02-18  
++Adhemerval Zanella  <adhemerval.zanella@linaro.org>
+ 
+ 	* version.h (RELEASE): Set to "stable".
+ 	(VERSION): Set to 2.23.
+--- sysdeps/unix/sysv/linux/mips/vfork.S.orig	2016-08-22 20:50:16.162379274 -0700
++++ sysdeps/unix/sysv/linux/mips/vfork.S	2016-08-22 22:11:17.917572530 -0700
+@@ -31,13 +31,13 @@
+ LOCALSZ= 1
+ FRAMESZ= (((NARGSAVE+LOCALSZ)*SZREG)+ALSZ)&ALMASK
+ GPOFF= FRAMESZ-(1*SZREG)
+-NESTED(__vfork,FRAMESZ,sp)
++NESTED(__libc_vfork,FRAMESZ,sp)
+ #ifdef __PIC__
+ 	SETUP_GP
+ #endif
+ 	PTR_SUBU sp, FRAMESZ
+ 	cfi_adjust_cfa_offset (FRAMESZ)
+-	SETUP_GP64_REG (a5, __vfork)
++	SETUP_GP64_REG (a5, __libc_vfork)
+ #ifdef __PIC__
+ 	SAVE_GP (GPOFF)
+ #endif
+@@ -104,8 +104,11 @@
+ 	RESTORE_GP64_REG
+ 	j		__syscall_error
+ #endif
+-	END(__vfork)
++	END(__libc_vfork)
++
++#if IS_IN (libc)
++weak_alias (__libc_vfork, vfork)
++strong_alias (__libc_vfork, __vfork)
++libc_hidden_def (__vfork)
++#endif
+ 
+-libc_hidden_def(__vfork)
+-weak_alias (__vfork, vfork)
+-strong_alias (__vfork, __libc_vfork)
+--- sysdeps/unix/sysv/linux/sparc/sparc32/vfork.S.orig	2016-08-22 20:50:33.242919670 -0700
++++ sysdeps/unix/sysv/linux/sparc/sparc32/vfork.S	2016-08-22 22:14:06.662818544 -0700
+@@ -21,7 +21,7 @@
+ 
+ 	.text
+ 	.globl		__syscall_error
+-ENTRY(__vfork)
++ENTRY(__libc_vfork)
+ 	ld	[%g7 + PID], %o5
+ 	cmp	%o5, 0
+ 	bne	1f
+@@ -42,8 +42,11 @@
+ 	 st	%o5, [%g7 + PID]
+ 1:	retl
+ 	 nop
+-END(__vfork)
++END(__libc_vfork)
+ 
++#if IS_IN (libc)
++weak_alias (__libc_vfork, vfork)
++strong_alias (__libc_vfork, __vfork)
+ libc_hidden_def (__vfork)
+-weak_alias (__vfork, vfork)
+-strong_alias (__vfork, __libc_vfork)
++#endif
++
+--- sysdeps/unix/sysv/linux/sparc/sparc64/vfork.S.orig	2016-08-22 20:50:46.970020637 -0700
++++ sysdeps/unix/sysv/linux/sparc/sparc64/vfork.S	2016-08-22 22:18:32.514423737 -0700
+@@ -21,7 +21,7 @@
+ 
+ 	.text
+ 	.globl	__syscall_error
+-ENTRY(__vfork)
++ENTRY(__libc_vfork)
+ 	ld	[%g7 + PID], %o5
+ 	sethi	%hi(0x80000000), %o3
+ 	cmp	%o5, 0
+@@ -42,8 +42,11 @@
+ 	 st	%o5, [%g7 + PID]
+ 1:	retl
+ 	 nop
+-END(__vfork)
++END(__libc_vfork)
+ 
++#if IS_IN (libc)
++weak_alias (__libc_vfork, vfork)
++strong_alias (__libc_vfork, __vfork)
+ libc_hidden_def (__vfork)
+-weak_alias (__vfork, vfork)
+-strong_alias (__vfork, __libc_vfork)
++#endif
++

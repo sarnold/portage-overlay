@@ -16,7 +16,7 @@ LICENSE="openssl"
 # support and thus breaks nearly every openssl consumer (see bug #575548)
 SLOT="0"
 KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~arm-linux ~x86-linux"
-IUSE="+asm bindist cryptodev cryptodev-8192 gmp kerberos rfc3779 sctp cpu_flags_x86_sse2 static-libs test +tls-heartbeat vanilla zlib"
+IUSE="af_alg +asm bindist cryptodev cryptodev-8192 gmp kerberos rfc3779 sctp cpu_flags_x86_sse2 static-libs test +tls-heartbeat vanilla zlib"
 REQUIRED_USE="
         cryptodev-8192? ( cryptodev )
 "
@@ -60,8 +60,10 @@ src_prepare() {
 		epatch "${FILESDIR}"/${PN}-1.0.2a-x32-asm.patch #542618
 		epatch "${FILESDIR}"/${PN}-1.0.1p-default-source.patch #554338
 		if use cryptodev ; then
-#			epatch "${FILESDIR}"/${PN}-1.0.2g-fix-signature-generation.patch
 			epatch "${FILESDIR}"/${PN}-1.0.2g-fix-copying-evp-contexts.patch
+		fi
+		if use af_alg ; then
+			epatch "${FILESDIR}"/${PN}-1.0.2h-force-evp_test-config-for-engine.patch
 		fi
 
 		epatch_user #332661

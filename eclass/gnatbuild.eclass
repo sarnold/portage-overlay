@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+## Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 #
@@ -147,7 +147,7 @@ is_multilib() {
 	[[ ${GCCMAJOR} < 3 ]] && return 1
 	case ${CTARGET} in
 		mips64*|powerpc64*|s390x*|sparc64*|x86_64*)
-			has_multilib_profile || use multilib ;;
+			has_multilib_profile ;;
 		*)  false ;;
 	esac
 }

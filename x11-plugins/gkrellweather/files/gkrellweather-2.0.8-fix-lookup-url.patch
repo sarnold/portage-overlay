@@ -1,0 +1,26 @@
+From aa49f0b8d5fe00672c4691025c60026b9b8bbfc0 Mon Sep 17 00:00:00 2001
+From: Steve Arnold <stephen.arnold42@gmail.com>
+Date: Sat, 7 Jan 2017 15:41:24 -0800
+Subject: [PATCH] Replace broken station ID lookup with rap txt file
+
+Signed-off-by: Steve Arnold <stephen.arnold42@gmail.com>
+---
+ gkrellweather.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/gkrellweather.c b/gkrellweather.c
+index 06508c0..407fde2 100644
+--- a/gkrellweather.c
++++ b/gkrellweather.c
+@@ -777,7 +777,7 @@ create_air_tab (GtkWidget *tab)
+         " switch interval - number of seconds (0 = never)" \
+         " between switching display\n")
+     };
+-    static gchar url[] = "http://www.nws.noaa.gov/tg/siteloc.shtml";
++    static gchar url[] = "http://weather.rap.ucar.edu/surface/stations.txt";
+     laptop = gtk_notebook_new();
+     gtk_notebook_set_tab_pos(GTK_NOTEBOOK(laptop), GTK_POS_TOP);
+     gtk_box_pack_start(GTK_BOX(tab), laptop, TRUE, TRUE, 0);
+-- 
+2.11.0
+
