@@ -12,7 +12,7 @@ inherit gnome2-utils distutils
 
 DESCRIPTION="Integrated version control support for your desktop"
 HOMEPAGE="http://rabbitvcs.org"
-SRC_URI="nirror://gentoo/${PN}-trunk.tar.gz"
+SRC_URI="mirror://gentoo/${PN}-trunk.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -60,7 +60,8 @@ src_install() {
 		doins clients/gedit/${PN}-gedit3.plugin
 	fi
 	if use nautilus ; then
-		# extension location changed for Gnome 3
+		# python extension location changed for Gnome 3
+		# (note this is not pkg-config's libnautilus-extension dir)
 		insinto /usr/share/nautilus-python/extensions
 		doins clients/nautilus-3.0/RabbitVCS.py
 	fi
