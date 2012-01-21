@@ -1,0 +1,14 @@
+#include "pagestart.h"
+
+<p>The LG VX 6100 uses the same straight USB charging data cable as the LG VX7000.
+
+<h3>RPI Wireless straight USB with charging</h3>
+
+<p>Available from URL(misc-rpiwireless.htm,www.rpiwireless.com).  
+RPI were kind enough to loan a VX7000 to add support to BitPim.  You
+can thank them by placing your order with them.  Don't forget to mention
+that BitPim sent you!
+
+IMAGE(vx7000-cable.jpg,)
+
+#include "pageend.h"

@@ -1,0 +1,96 @@
+#include "pagestart.h"
+
+   <p>This software would not be possible without a number of other
+    components.  These components are included with the BitPim binary
+    distribution and are under licenses and warranties separate than
+    that of BitPim.  Redistribution of these components is compatible
+    with the BitPim license.
+
+ <p>
+
+      <ul>
+
+      <li><p>URL(http://www.python.org,Python) programming
+      environment (URL(http://www.python.org/2.2/license.html,License))</p></li>
+
+      <li><p>URL(http://www.wxpython.org,wxPython) graphical
+      toolkit for Python.  wxPython in turn uses URL(http://www.wxwidgets.org/,wxWidgets) (URL(http://wxwidgets.org/newlicen.htm,License))</p></li>
+
+      <li><p>URL(http://pyserial.sourceforge.net/,pySerial)
+      Python serial communications package. (URL(http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/pyserial/pyserial/LICENSE.txt?rev=HEAD&content-type=text/vnd.viewcvs-markup,License))
+
+      <li><p>URL(http://python-dsv.sourceforge.net/,Python-DSV) Python library for working
+      with delimiter separated files (such as CSV) (URL(http://www.python.org/2.2/license.html,License))
+
+      <li><p>URL(http://libusb.sourceforge.net/,libusb) Libusb is used for interacting with
+      USB on Linux and Mac.  On Windows the derived project URL(http://libusb-win32.sourceforge.net/,libusb-win32) 
+      is used.  The portion shipped with BitPim is under the URL(http://www.gnu.org/licenses/lgpl.html,LGPL)
+
+	<li><p>URL(http://www.lag.net/~robey/paramiko/,Paramiko) SSH implementation (URL(http://www.gnu.org/licenses/lgpl.html,LGPL) license) which uses 
+  URL(http://www.amk.ca/python/code/crypto.html,pycrypto) (URL(http://www.python.org/2.2/license.html,License)) for the
+actual cryptography.
+
+       <li><p>URL(http://www.rogerbinns.com/apsw.html,APSW) (URL(http://www.rogerbinns.com/apsw.html#copyrightlicense,License)) Python
+       wrapper for URL(http://www.sqlite.org/,SQLite) (URL(http://www.sqlite.org/copyright.html,Public Domain))
+
+      <li><p>URL(http://www.linux-usb.org/usb.ids,usb.ids) data file from the URL(http://www.linux-usb.org,Linux-USB) project
+      is used to map USB vendor and product names to strings.  (No license is listed).
+
+      <li><p>pngtopnm, ppmquant, and pnmtopng executables from the
+URL(http://netpbm.sourceforge.net/,netpbm) project are used.  The
+binaries, located in the helpers directory, are taken from netpbm
+builds for the URL(http://gallery.sourceforge.net/,Gallery) project
+and have no source code changes.  (Licensed under a combination of the
+Artistic, GNU General Public License, and MIT licenses)
+
+      <li><p>Various recipes from the URL(http://aspn.activestate.com/ASPN/Python/Cookbook/,ASPN Python Cookbook)
+      which are under the URL(http://www.opensource.org/licenses/bsd-license.php,BSD License)
+
+      <li><p>(On Windows) URL(http://starship.python.net/crew/mhammond/win32/,win32all)
+      Windows Python extensions (URL(http://cvs.sourceforge.net/cgi-bin/viewcvs.cgi/pywin32/pywin32/win32/License.txt?rev=HEAD&content-type=text/vnd.viewcvs-markup,License))
+
+	<li><p>(On Windows) URL(http://ffmpeg.sourceforge.net/,ffmpeg) Audio/Video tool.
+The ffmpeg executable is included in the helpers directory, and has no source
+changes.  URL(http://www.gnu.org/licenses/lgpl.html,LGPL license)
+
+      <li><p>(On Windows) URL(http://www.jrsoftware.org/isinfo.php,InnoSetup)
+      Windows installer (URL(http://www.jrsoftware.org/files/is/license.txt,License))
+
+      <li><p>(On Windows) URL(http://starship.python.net/crew/theller/py2exe/,py2exe)
+      program to convert scripts to standalone executables (URL(http://starship.python.net/crew/theller/py2exe/LICENSE.txt,License))
+
+      <li><p>(On Linux) URL(http://starship.python.net/crew/atuining/cx_Freeze/,cx_Freeze)
+      packaging tool (URL(http://starship.python.net/crew/atuining/cx_Freeze/LICENSE.txt,License))
+
+	<li><p>(On the web) URL(http://www.destroydrop.com/javascripts/tree/,Destroy Drops Javascript Tree) used
+	to show the help contents on the web copy of the online help.
+
+	<li><p>(On the web) Icons from
+	URL(http://awstats.sourceforge.net,awstats) are used for the
+	different operating systems.
+
+	<li><p>Icons from
+	URL(http://tango-project.org/Tango_Desktop_Project,Tango Desktop Project) are used for some
+    of the toolbar icons.
+
+	<li><p>Some icons used in BitPim were created using URL(http://www.gimp.org/,GIMP).
+
+    </ul>
+
+<p>Additionally a number of other tools are used, but not shipped with BitPim
+
+<p><ul>
+
+    <li><p>The online help in BitPim is authored using URL(http://www.helpblocks.com,HelpBlocks).  They generously
+    donated a copy of the software for this purpose.
+
+    <li><p>The project is managed on SourceForge at URL(http://sourceforge.net/projects/bitpim,http://sourceforge.net/projects/bitpim/)
+
+    <li><p>The URL(http://www.swig.org,SWIG) tool is used to generate Python wrappers for
+    native C/C++ code
+
+    <li><p>The URL(http://gcc.gnu.org/,GNU Compiler Collection) is used to compile native code on Windows (URL(http://www.mingw.org/,MinGW)), Linux and Mac
+
+</ul>
+
+#include "pageend.h"

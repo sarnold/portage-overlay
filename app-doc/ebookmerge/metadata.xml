@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer>
+  <email>bass@gentoo.org</email>
+</maintainer>
+<longdescription>Script to manage eBooks from http://code.google.com/p/htmlhelp/</longdescription>
+</pkgmetadata>

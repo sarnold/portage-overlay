@@ -1,0 +1,15 @@
+#include "pagestart.h"
+<p>In general, the <B>Add</B> option does the followings:
+<p>
+<OL>
+<li><p>Update (overwrite) the contents of existing media files from BitPim to the phone if they're different (or more accurately: if the file sizes are different).
+<li><p>Copy new media files from BitPim to the phone (those files that exist in BitPim but not the phone).
+</OL>
+<p>In general, the <B>Replace All</B> option does the followings:
+<p>
+<OL>
+<li><p>Update (overwrite) the contents of existing media files from BitPim to the phone if they're different (or more accurately: if the file sizes are different).
+<li><p>Copy new media files from BitPim to the phone (those files that exist in BitPim but not on the phone).
+<li><p>Delete all media files from the phone that are not in BitPim.
+</OL>
+#include "pageend.h"

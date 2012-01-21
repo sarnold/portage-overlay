@@ -1,0 +1,11 @@
+"Start","End","Description","Location","Priority","Alarm","All-Day","Notes","Categories","Ringtone","Wallpaper","Repeat Type","Repeat Interval","Day-of-Week","Excluded Dates"
+"2005-02-07 09:00","2005-02-07 10:00","Regular Event","Some location","10","10","False","Regular event, -10min alarm, no repeat, cat: personal,Business.
+Line 2.
+Line 3.
+","Personal;Business","","",,,,
+"2005-02-07 12:00","2005-04-30 13:00","Monthly event #2","","1","30","False","Every 2nd Tuesday, no location, CAT: Personal, alarm: 30min","Personal","","","monthly","2","Tue",""
+"2005-02-07 11:00","4000-01-01 11:00","Weekly event","","","-1","False","Weekly event (M, W, F), no end date, no CAT, no alarm.","","","","weekly","1","Mon;Wed;Fri",""
+"2005-02-07 10:00","2005-02-18 10:00","Daily Repeat","location","5","5","False","Daily Repeat, 5min alarm, CAT: Business.  Different continuation line.","Business","","","daily","1","","2005-02-08;2005-02-10"
+"2005-02-07 12:00","2005-04-07 13:00","Monthly event","","1","30","False","Monthly event, no location, CAT: Personal, alarm: 30min","Personal","","","monthly","0","",""
+"2005-02-07 12:00","2005-04-30 13:00","Monthly event #3","","1","30","False","Every last Friday, no location, CAT: Personal, alarm: 30min","Personal","","","monthly","5","Fri",""
+"2005-02-07 13:00","4000-01-01 14:00","Annual event","some place","","20","False","Annual event, no-end date","","","","yearly","","",""

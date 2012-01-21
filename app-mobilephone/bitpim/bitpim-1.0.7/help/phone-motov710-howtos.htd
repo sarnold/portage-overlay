@@ -1,0 +1,34 @@
+#include "pagestart.h"
+
+<H3>Create your own ringtones</H3>
+Since the stock V710 does not support transferring ringtone files directly to the phone, the work-around is to install a "placeholder" ringtone on the phone, and then replace or overwrite its content with your own ringtone.  To create your own ringtones, do the following steps:
+<OL>
+<li><p>Install one or more placeholder ringtones.   There are many ways to do this.  One quick way is to send an existing ringtone to a bogus number or email address.  The send will fail, but the message is then saved in the Outbox, which allows you to save that same ringtone to a different name.  As long as the saved message is available, you can re-save the same ringtone to many different names.
+<li><p>In BitPim, <B>Menu -> Data -> Get Phone Data ...</B>
+<li><p>From the <B>Get Data from Phone</B> dialog, check on <B>Ringtone</B> and click on <B>OK</B>.  BitPim then retrieves the ringtones from the phone.
+<li><p>Switch to the BitPim <B>Ringers</B> view, which should display a list of available ringtones recently retrieved from the phone.
+<li><p>Select a placeholder ringtone, invoke the context menu by right clicking on the selection.  From the context menu, select <B>Replace</B>.
+<li><p>From the File Selection dialog, select your custom ringtone file.
+<li><p>Depending on the format of your ringtone file, a <B>Convert Audio File</B> dialog may appear and allow you to convert, cut, and trim your ringtone into an mp3 clip. Click <B>OK</B> when you're satisfied with your clip.  (To bypass this step, select <B>Overwrite</B> from the context menu instead).
+<li><p>The content of the placeholder ringtone will then be replaced with your new clip.
+<li><p>Repeat step <B>6</B> through <B>8</B> for other placeholder ringtones.
+<li><p>When you're ready to send your custom ringtones to the phone, click on <B>Menu -> Data -> Send Phone Data ...</B>.
+<li><p>From the <B>Send Data to Phone</B> dialog, select <B>Ringtone</B> and click <B>OK</B>.  BitPim then sends the newly "replaced" ringtones to the phone.
+</OL>
+
+<H3>Create your own wallpapers</H3>
+The process of creating your own wallpapers is similar to that of creating custom ringtones. The process would involve installing placeholder pictures, retrieving them from the phone, replacing their contents with your pictures, and sending them back to the phone.  To create your own wallpaper, do the following steps:
+<OL>
+<li><p>Install one or more placeholder pictures.  Again, there are many ways to do this.  One quick way is to take random pictures using the phone camera and optionally rename them as appropriate.
+<li><p>In BitPim, <B>Menu -> Data -> Get Phone Data ...</B>
+<li><p>From the <B>Get Data from Phone</B> dialog, check on <B>Wallpaper</B> and click on <B>OK</B>.  BitPim then retrieves the pictures from the phone.
+<li><p>Select a placeholder picture, invoke the context menu and select <B>Replace</B>.
+<li><p>From the File Selection dialog, select your custom picture file.
+<li><p>Depending on the format of your picture file, an <B>Image Preview</B> dialog may appear and allow you to convert, cut, and trim your picture into an JPEG clip. Click <B>OK</B> when you're satisfied with your clip.  (To bypass this step, select <B>Overwrite</B> from the context menu instead).
+<li><p>The content of the placeholder picture will then be replaced with your new clip.
+<li><p>Repeat step <B>6</B> through <B>8</B> for other placeholder pictures.
+<li><p>When you're ready to send your custom pictures to the phone, click on <B>Menu -> Data -> Send Phone Data ...</B>.
+<li><p>From the <B>Send Data to Phone</B> dialog, select <B>Wallpaper</B> and click <B>OK</B>.  BitPim then sends the newly "replaced" pictures to the phone.
+</OL>
+
+#include "pageend.h"

@@ -1,0 +1,8 @@
+#include "pagestart.h"
+
+<p>The support for this phone is identical to that of the V710m.  Please see the V710m Help for more details.
+
+<H3>Phone Detection</H3>
+<p>Phone detection does not work for this model.  It must be selected manually.
+
+#include "pageend.h"

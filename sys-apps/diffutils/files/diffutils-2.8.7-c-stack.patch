@@ -1,0 +1,24 @@
+diff -rup diffutils-2.8.7.orig/configure diffutils-2.8.7/configure
+--- diffutils-2.8.7.orig/configure	2004-04-13 00:04:38.000000000 -0700
++++ diffutils-2.8.7/configure	2010-10-13 21:45:49.865239663 -0700
+@@ -8396,7 +8396,7 @@ cat >>conftest.$ac_ext <<_ACEOF
+ 	 {
+ 	   char array[500];
+ 	   array[0] = 1;
+-	   return *p + recurse (array);
++	   return *p + recurse (array) + recurse (array);
+ 	 }
+ 
+ 	 int
+diff -rup diffutils-2.8.7.orig/m4/c-stack.m4 diffutils-2.8.7/m4/c-stack.m4
+--- diffutils-2.8.7.orig/m4/c-stack.m4	2004-03-07 15:51:10.000000000 -0800
++++ diffutils-2.8.7/m4/c-stack.m4	2010-10-13 21:16:29.326926806 -0700
+@@ -102,7 +102,7 @@ AC_DEFUN([AC_SYS_XSI_STACK_OVERFLOW_HEUR
+ 	 {
+ 	   char array[500];
+ 	   array[0] = 1;
+-	   return *p + recurse (array);
++	   return *p + recurse (array) + recurse (array);
+ 	 }
+ 
+ 	 int

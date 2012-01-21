@@ -1,0 +1,26 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+
+<p>Phonebook, wallpaper, ringers, and filesystem.  We are currently not sure about
+the calendar as it seems to be different than previous models.
+
+
+<h2>FAQs and support</h2>
+
+<p>There is an excellent Yahoo support group at URL(http://groups.yahoo.com/group/LGVX4500/,groups.yahoo.com/group/LGVX4500).
+
+<h2>Contents</h2>
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Cables,phone-lgvx4500-cables.htm)
+    TOCITEM_0(Notes,phones-lgvx4500-notes.htm)
+    TOCITEM_0(Howtos,phones-lgvx4500-howtos.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+
+#include "pageend.h"

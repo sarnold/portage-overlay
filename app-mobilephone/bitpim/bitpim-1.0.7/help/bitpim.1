@@ -1,0 +1,35 @@
+.TH BITPIM 1 "2006-02-04"
+.SH NAME
+bitpim \- utility to communicate with many CDMA phones
+.SH SYNOPSIS
+.B bitpim
+[ \fB-c\fP\ \fIfile\fP | \fB-d\fP\ \fIdir\fP ]
+.SH DESCRIPTION
+This manual page documents briefly the
+.B bitpim
+command.
+.PP
+BitPim allows you to view and manipulate data on many phones from LG,
+Samsung, Sanyo, and other manufacturers that use Qualcomm CDMA chips.
+Depending on your phone model, you may be able to access the phone
+book, the calendar, wallpapers, ring tones, and the filesystem.
+.SH OPTIONS
+A summary of options is included below.
+.TP
+\fB-c\fP\ \fIfile\fP
+Read configuration from \fIfile\fP.
+.TP
+\fB-d\fP\ \fIdir\fP
+Read configuration from \fIdir\fP\fB/.bitpim\fP.
+.SH FILES
+.TP
+\fB$HOME/.bitpim-files/.bitpim\fP
+The default configuration file.
+.SH SEE ALSO
+.BR bitfling (1),
+http://www.bitpim.org/.
+.SH AUTHOR
+\fBbitpim\fP was primarily written by Roger Binns <rogerb@rogerbinns.com>.
+.PP
+This manual page was written by Aaron M. Ucko <ucko@debian.org>,
+for the Debian project (but may be used by others).

@@ -1,0 +1,72 @@
+--- src/util/createshlib.in.orig	2007-09-12 07:39:20.000000000 -0700
++++ src/util/createshlib.in	2007-10-13 10:06:51.000000000 -0700
+@@ -207,12 +207,12 @@
+ 
+     *)
+     # Typical Unix default
+-    soName=$srclibbase.$SHLIB_EXT.$dottedVersion
++    soName=$srclibbase.$SHLIB_EXT.$majorVersion
+     realName=$srclibbase.$SHLIB_EXT.$dottedVersion
+     altNames="$srclibbase.$SHLIB_EXT"
+-    if [ -n "$majorVersion" ] ; then
+-	altNames="$altNames $srclibbase.$SHLIB_EXT.$majorVersion"
+-    fi
++#    if [ -n "$majorVersion" ] ; then
++#	altNames="$altNames $srclibbase.$SHLIB_EXT.$majorVersion"
++#    fi
+     ;;
+ esac
+ 
+@@ -293,15 +293,16 @@
+         # Typically -Wl,-h,$soName
+ 	# FIXME: C_LINK_SHL knows the options for shared libraries,
+ 	# but not the args for setting the soname.
+-	$Show ${C_LINK_SHL} -o $realName -Wl,-h,$soName .tmp/*.o 
+-	# Do we need to add $dependentLibs ?
++	$Show ${C_LINK_SHL} -Wl,-soname,$soName -o $realName .tmp/*.o $dependentLibs
++	# Do we need to add $dependentLibs ? Yes!
+ 	;;
+     esac
+     if [ -n "$altNames" ] ; then
+         for alt in $altNames ; do
+ 	    # Remove any alternate names before executing the ln step
+ 	    rm -f $alt
+-            $Show ln -s $realName $alt
++	    $Show ln -s $realName $soName
++	    $Show ln -s $soName $alt
+         done
+     fi
+ 
+@@ -345,7 +346,7 @@
+     fi
+     if [ -n "$altNames" ] ; then
+         for alt in $altNames ; do
+-            ( cd $destdir && $Show rm -f $alt && $Show ln -s $realName $alt )
++            ( cd $destdir && $Show rm -f $alt && $Show ln -s $soName $alt )
+         done
+     fi
+ fi
+--- Makefile.in.orig	2007-10-11 22:06:10.000000000 -0700
++++ Makefile.in	2007-10-11 22:18:48.000000000 -0700
+@@ -125,17 +125,17 @@
+ C_COMPILE       = $(CC) $(DEFS) $(INCLUDES) $(CFLAGS) $(CPPFLAGS)
+ # Build the shared library from the shared object files
+ lib/lib${MPILIBNAME}.@SHLIB_EXT@: lib/lib${MPILIBNAME}.la
+-	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o lib${MPILIBNAME}.la  -rpath $(libdir) )
++	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o lib${MPILIBNAME}.la  -rpath $(libdir) -L${libdir} -laio )
+ 	if [ -n "@NO_WEAK_SYM@" -a \
+ 		"${MPILIBNAME}" != "${PMPILIBNAME}" ] ; then \
+-	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o lib${PMPILIBNAME}.la  -rpath $(libdir) );\
++	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o lib${PMPILIBNAME}.la  -rpath $(libdir) -L${libdir} -laio );\
+ 	fi
+ # Build the shared library from the shared object files
+ lib/libf${MPILIBNAME}.@SHLIB_EXT@: lib/libf${MPILIBNAME}.la
+-	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o libf${MPILIBNAME}.la  -rpath $(libdir) -L. -l$(MPILIBNAME))
++	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o libf${MPILIBNAME}.la  -rpath $(libdir) -L. -L${libdir} -l${MPILIBNAME} )
+ # Build the shared library from the shared object files
+ lib/lib${MPICXXLIBNAME}.@SHLIB_EXT@: lib/lib${MPICXXLIBNAME}.la
+-	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o lib${MPICXXLIBNAME}.la  -rpath $(libdir) )
++	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o lib${MPICXXLIBNAME}.la  -rpath $(libdir) -L. -L${libdir} -l${MPILIBNAME} -lstdc++ )
+ 
+ # --------------------------------------------------------------------------
+ .libstamp0: 

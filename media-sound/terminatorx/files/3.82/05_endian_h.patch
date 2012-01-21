@@ -1,0 +1,15 @@
+diff -urNad /home/furrm/debian/packages/terminatorX/new/terminatorx-3.81/src/tX_endian.h terminatorx-3.81/src/tX_endian.h
+--- /home/furrm/debian/packages/terminatorX/new/terminatorx-3.81/src/tX_endian.h	2003-03-18 19:00:09.000000000 -0500
++++ terminatorx-3.81/src/tX_endian.h	2004-08-11 10:49:04.000000000 -0400
+@@ -44,9 +44,9 @@
+ 
+ #	include "tX_types.h"
+ 
+-#define __USE_XOPEN // we need this for swab()
++//#define __USE_XOPEN // we need this for swab()
+ #	include <unistd.h>
+-#undef __USE_XOPEN
++//#undef __USE_XOPEN
+ 
+ #define swapbuffer(b, s) swab((void *) b, (void *) b, (ssize_t) s<<1)
+ 

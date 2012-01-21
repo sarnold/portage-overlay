@@ -1,0 +1,109 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-editingcalendarevent1.png,)
+
+<p>This dialog shows the entries for a particular day.  The entries
+are shown in the list on the left, and details for the selected
+entry in various tabs on the right.  <b>You need to press Save</b> to save changes to
+an event.  Until you do that you will not be able to edit a different event.  
+You can press Revert to undo your changes to the event, or you can delete it.
+
+#define DESC(title,desc) \
+   <p><b>title</b>: desc
+
+<h2>Buttons</h2>
+
+DESC(New,Creates a new event with default settings)
+
+DESC(Delete,Deletes the event you are currently viewing)
+
+DESC(Revert,Undoes any changes you have made to the event.)
+
+DESC(Save,Saves the changes you have made to the event.)
+
+DESC(OK,Saves and closes the window.)
+
+DESC(Help,Brings up this page.)
+
+DESC(Cancel,Discards the changes and closes the window.)
+
+<h2>General Fields</h2>
+
+<p align=center><img src="screen-editingcalendarevent1.png">
+
+<p>The labels of these fields are color coded to indicate their applicability
+to the current phone:
+<UL>
+<li><p><FONT COLOR="blue" SIZE="" FACE="Arial, Lucida Sans">Blue: Applicable to this phone.</FONT>
+<li><p><FONT COLOR="red" SIZE="" FACE="Arial, Lucida Sans">Red: Not applicable to this phone.</FONT>
+<li><p><FONT COLOR="black" SIZE="" FACE="Arial, Lucida Sans">Black: Unknown applicability.</FONT>
+</UL>
+
+DESC(Summary,Summary/short title of your event.)
+
+DESC(Location,Location of your event.)
+
+DESC(All-Day,Indicates an all-day event when checked.)
+
+DESC(From,The start date and time of your event.  Note that this is in the local time
+of the phone.)
+
+DESC(To,The end date and time.  This needs to be after the start time. It can be
+on another day.  Note that this is in the local time of the phone.  For repeating events\, \
+the date needs to be set for the last day of the repeat.)
+
+DESC(Priority,Priority of your event.)
+
+DESC(Alarm,How many minutes in advance to sound the alarm.  For example\, a value of 60 \
+would set the alarm off one hour before the start time listed above. Use -1 if you don't want an alarm.)
+
+<h2>Repeat Fields</h2>
+
+<p align=center><img src="screen-editingcalendarevent2.png">
+
+<p align=center><img src="screen-editingcalendarevent3.png">
+
+DESC(Repeat Types,Select the repeat type for this event.  Currently\, BITPIM supports Daily\, Weekly\,\
+Monthly\, and Yearly repeat events.  Additional options are available for Daily and Monthly repeat types.)
+
+DESC(Excluded Dates,The list of dates that have been excluded from the repeat event.)
+
+<h2>Buttons</h2>
+
+DESC(Include,Include the selected date into this repeat event.)
+
+<h2>Notes Fields</h2>
+
+<p align=center><img src="screen-editingcalendarevent4.png">
+
+DESC(Notes,Textual notes for this event.)
+
+<h2>Categories Fields</h2>
+
+<p align=center><img src="screen-editingcalendarevent5.png">
+
+DESC(Master Category,The list of available categories.)
+
+DESC(Selected Category,Current categories selected for this event.)
+
+<h2>Buttons</h2>
+
+DESC(Manage Categories,Allow users to edit the list of master categories.)
+
+DESC(Add,Select the hightlighted master category for this event.)
+
+DESC(Remove,Remove/delete the hightlighted category of this event.)
+
+<h2>Wallpapers Fields</h2>
+
+<p align=center><img src="screen-editingcalendarevent6.png">
+
+DESC(Wallpapers,Allow users to assign an image to this event.)
+
+<h2>Ringtone Fields</h2>
+
+<p align=center><img src="screen-editingcalendarevent7.png">
+
+DESC(Ringtone,Allow users to assign a ringtone to this event.)
+
+#include "pageend.h"

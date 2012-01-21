@@ -1,0 +1,15 @@
+--- /home/sarnold/src/gentoo-x86/app-doc/doxygen/doxygen-1.7.5.1.ebuild	2011-11-05 14:30:54.000000000 -0700
++++ doxygen-1.7.5.1.ebuild	2011-11-18 19:08:45.000000000 -0800
+@@ -55,6 +55,12 @@
+ 	# prefix search tools patch, plus OSX fixes
+ 	epatch "${FILESDIR}"/${PN}-1.5.6-prefix-misc-alt.patch
+ 
++	# fix for parsing certain tcl commands (remove on next release)
++	epatch "${FILESDIR}"/${P}-tclscanner.patch
++
++	# enhancement patch from John
++	epatch "${FILESDIR}"/${P}-overloaded_methods_and_styles.patch
++
+ 	# fix final DESTDIR issue
+ 	sed -i.orig -e "s:\$(INSTALL):\$(DESTDIR)/\$(INSTALL):g" \
+ 		addon/doxywizard/Makefile.in || die "sed 2 failed"

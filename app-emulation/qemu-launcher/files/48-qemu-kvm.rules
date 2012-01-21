@@ -1,0 +1,1 @@
+KERNEL=="kvm*", GROUP="qemu", MODE="0660"

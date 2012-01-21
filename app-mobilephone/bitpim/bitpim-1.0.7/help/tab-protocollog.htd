@@ -1,0 +1,17 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-protocollog.png,)
+
+<p>This page contains detailed information on all data sent to and
+received from your phone.  It is off by default and needs to be
+turned on in the View menu.
+
+<p>This will consume vast amounts of memory and slow your machine
+down, so only use it for low level debugging purposes.
+
+<p>Right clicking on the log text brings up an edit menu that allows
+you to copy information from the log page into other applications.
+
+<p>Use the menu option "View" -> "Clear Logs" to clear the log window.
+
+#include "pageend.h"

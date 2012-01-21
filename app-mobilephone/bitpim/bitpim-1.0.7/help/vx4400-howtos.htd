@@ -1,0 +1,16 @@
+#include "pagestart.h"
+
+<h2>Use your downloaded wallpaper</h2>
+
+<p>To change your main screen background, select Menu &nbsp;<img src="nextitem.png">&nbsp; 8-Settings &nbsp;<img src="nextitem.png">&nbsp; 2-Display &nbsp;<img src="nextitem.png">&nbsp; 3-Screens &nbsp;<img src="nextitem.png">&nbsp; 1-Wallpaper.
+Then press the right soft key (the one below the label More) and choose downloaded.
+
+SCREENSHOT(vx4400-using-downloaded.jpg,)
+
+<h2>Use your downloaded ringtones</h2>
+
+<p>The process is very similar to wallpaper.  When selecting a ringtone, press the right soft key
+when you see the label More, and choose downloaded.
+
+
+#include "pageend.h"

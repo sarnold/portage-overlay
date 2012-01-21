@@ -1,0 +1,10 @@
+#include "pagestart.h"
+
+<p>The phone is very similar to the VX4400.  Please read the <a href="lg4400-notes.htm">notes for the 4400</a>.  The following information is in addition to those notes.
+
+<p>The phone has 6.5MB of memory to store files etc.
+
+<p>The USB bug that affects the 4400 does not affect the 6000.
+
+
+#include "pageend.h"

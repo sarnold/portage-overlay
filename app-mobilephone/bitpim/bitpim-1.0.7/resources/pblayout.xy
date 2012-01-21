@@ -1,0 +1,134 @@
+<html>
+<head></head>
+<body bgcolor="#cdefab">
+
+<py-open>if len(entry):</py-open>
+
+<table class="table">
+
+<!-- Picture Ringtone Name Category row -->
+
+<tr>
+
+<td class='wallpaperpanel'>
+<py-open>for wallpaper in entry.get("wallpapers", []):</py-open>
+<py-open>if wallpaper.get('wallpaper', None) is not None:</py-open>
+<img src="bpuserimage:${htmlify(wallpaper['wallpaper'])};width=64;height=64"
+alt="${htmlify(wallpaper['use'])}: ${htmlify(wallpaper['wallpaper'])}"/><br/>
+<py-close/>
+<py-close/>
+</td>
+
+<td class='ringtonepanel'>
+<py-open>for ringtone in entry.get("ringtones", []):</py-open>
+<img src="bpimage:ringer.png;width=16;height=16"
+alt="${htmlify(ringtone['use'])}: ${htmlify(ringtone['ringtone'])}"/><br/>
+<py-close/>
+</td>
+
+<td class='namepanel'>
+<py-open>for name in entry.get("names",[]):</py-open>
+<span class="name">${htmlify(formatname(name))}</span><br/>
+<py-close/>
+</td>
+
+<td class='categoryflagspanel'>
+<py-open>for cat in entry.get("categories",[]):</py-open>
+<span class="category">${htmlify(cat['category'])}</span><br/>
+<py-close/>
+<br/>
+<py-open>if has_flag(entry,"secret"):</py-open>
+<span style="secret">Secret</span> <img src="bpimage:private.png;width=16;height=16" alt="secret" /><br/>
+<py-close/>
+</td>
+</tr>
+</table><br/>
+
+<!-- Numbers rows -->
+<py-open>if len(entry.get("numbers", [])):</py-open>
+<table class="table">
+<py-open>for rownum,number in zip(range(len(entry.get("numbers",[]))),entry.get("numbers",[])):</py-open>
+<tr class=${('numberroweven', 'numberrowodd')[rownum%2]}>
+<td class="numbertype">${htmlify(titlecase(number['type']))}</td>
+<td><code>${htmlify(formatnumber(number))}</code></td>
+</tr>
+<py-close/>
+</table><br/>
+<py-close/>
+
+<!-- Emails rows -->
+<py-open>if len(entry.get("emails", [])):</py-open>
+<table class='table'>
+<py-open>for rownum,email in zip(range(len(entry.get("emails",[]))),entry.get("emails",[])):</py-open>
+<tr class=${('emailroweven', 'emailrowodd')[rownum%2]}>
+<td><span class="email"><a href="mailto:${htmlify(email['email'])}">${htmlify(email['email'])}</a></span></td>
+</tr>
+<py-close/>
+</table><br/>
+<py-close/>
+
+
+
+<!-- URL rows -->
+<py-open>if len(entry.get("urls", [])):</py-open>
+<table style='table'>
+<tr>
+<td class='urlpanel'>
+<py-open>for url in entry.get("urls", []):</py-open>
+<span class='url'><a href="${url["url"]}">${htmlify(url["url"])}</a></span> ${urltype(url)}<br/>
+<py-close/>
+</td>
+</tr>
+</table><br/>
+<py-close/>
+
+
+<!-- Addresses rows -->
+<py-open>if len(entry.get("addresses", [])):</py-open>
+<table class='table'>
+<!-- Addresses as a list, addrwidth wide -->
+<py-line>addrwidth=2</py-line>
+<py-line>addrnum=-1</py-line>
+<py-open>for addrnum,address in zip(range(len(entry.get("addresses",[]))),entry.get("addresses",[])):</py-open>
+<py-open>if addrnum%addrwidth==0:</py-open>
+<tr>
+<py-close/>
+<td width="${int(100/addrwidth)}%" class=${("addresseven", 'addressodd')[addrnum%addrwidth]}>
+<span class="addresstext">${formataddress(address)}</span>
+</td>
+<py-open>if addrnum%addrwidth==addrwidth-1:</py-open>
+</tr>
+<py-close/>
+<py-close/>
+<!-- need any blank cells? -->
+<py-line>addtr=False</py-line>
+<py-open>while addrnum>=0 and addrnum%addrwidth!=addrwidth-1:</py-open>
+<py-line>addrnum+=1</py-line>
+<py-line>addtr=True</py-line>
+<td width="${int(100/addrwidth)}%" class=${("addresseven", 'addressodd')[addrnum%addrwidth]}>&nbsp;</td>
+<py-close/>
+<py-open>if addtr:</py-open>
+</tr>
+<py-close/>
+</table><br/>
+<py-close/>
+
+
+<!-- Memos -->
+<py-open>if len(entry.get("memos", [])):</py-open>
+<table class='table'>
+<td class="memopanel">
+<py-line>first=True</py-line>
+<py-open>for memo in entry.get("memos", []):</py-open>
+<py-open>if not first:</py-open><hr/><py-clause>else:</py-clause><py-line>first=False</py-line><py-close/>
+<p>${htmlify(memo["memo"])}
+</p>
+<py-close/>
+</td>
+</table><br/>
+<py-close/>
+
+<py-close/>
+
+</body>
+</html>

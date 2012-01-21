@@ -1,0 +1,5 @@
+#include "pagestart.h"
+
+<p>To bypass the <B>Convert Audio File</B> dialog, press and hold the <B>Shift</B> key and click on the <B>Add</B> button (Shift+Add).
+
+#include "pageend.h"

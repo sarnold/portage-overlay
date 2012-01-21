@@ -1,0 +1,922 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<meta name="GENERATOR" content="HelpBlocks">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+<param name="Font" value="MS Sans Serif,8,0">
+</OBJECT>
+<UL>
+  <LI><OBJECT type="text/sitemap">
+      <param name="Name" value="Table of Contents">
+      <param name="Local" value="rootcontents.htm">
+      </OBJECT>
+  <LI><OBJECT type="text/sitemap">
+      <param name="Name" value="Welcome">
+      <param name="Local" value="welcome.htm">
+      </OBJECT>
+  <LI><OBJECT type="text/sitemap">
+      <param name="Name" value="Tour">
+      <param name="Local" value="tour-master.htm">
+      </OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="What does BitPim do?">
+        <param name="Local" value="tour-overview.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="What do I need?">
+        <param name="Local" value="tour-prerequisites.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="What do I do first?">
+        <param name="Local" value="tour-gettingdata.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Editing your data">
+        <param name="Local" value="tour-edit.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Sending your changes to the phone">
+        <param name="Local" value="tour-saving.htm">
+        </OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap">
+      <param name="Name" value="Troubleshooting">
+      <param name="Local" value="troubleshooting.htm">
+      </OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Ports/Serial communications">
+        <param name="Local" value="trouble-serial.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Linux Issues">
+        <param name="Local" value="trouble-linux-issues.htm">
+        </OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap">
+      <param name="Name" value="Reference">
+      <param name="Local" value="reference-top.htm">
+      </OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Dialog boxes">
+        <param name="Local" value="dialogs.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Settings">
+          <param name="Local" value="ref-settings.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Comm Port Settings">
+          <param name="Local" value="ref-commsettingsdialog.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="File Contents View">
+          <param name="Local" value="ref-hexviewdialog.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Restore Files">
+          <param name="Local" value="dialog-restore.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Get Phone Data">
+          <param name="Local" value="dialog-getphonedata.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Send Phone Data">
+          <param name="Local" value="dialog-sendphonedata.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Editing Calendar Events">
+          <param name="Local" value="editingcalendarevents.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Merging phonebook entries">
+          <param name="Local" value="dialog-mergingphonebookentries.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Audio Conversion">
+          <param name="Local" value="dialog-audioconversion.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Calendar Import">
+          <param name="Local" value="dialog-calendarimport.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Image Preview">
+          <param name="Local" value="dialog-imagepreview.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Calendar Merge">
+          <param name="Local" value="dialog-calendarmerge.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Calendar Import Wizard">
+          <param name="Local" value="dialog-calimpwiz.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Calendar Import Preset">
+          <param name="Local" value="dialog-calimppreset.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Create New BitPim Data Storage">
+          <param name="Local" value="dialog-newdb.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Tree Items">
+        <param name="Local" value="tabs.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Phone">
+          <param name="Local" value="tab-today.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Phonebook">
+          <param name="Local" value="tab-phonebook.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Media">
+          <param name="Local" value="tab-media.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Calendar">
+          <param name="Local" value="tab-calendar.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Memo">
+          <param name="Local" value="tab-memo.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Todo">
+          <param name="Local" value="tab-todo.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="SMS">
+          <param name="Local" value="tab-sms.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Call History">
+          <param name="Local" value="tab-callhistory.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Play List">
+          <param name="Local" value="tab-playlist.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="T9 Editor">
+          <param name="Local" value="tab-t9editor.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Filesystem">
+          <param name="Local" value="tab-filesystem.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Log">
+          <param name="Local" value="tab-log.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Protocol Log">
+          <param name="Local" value="tab-protocollog.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Howtos">
+        <param name="Local" value="howtos.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Backups">
+          <param name="Local" value="howto-backups.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Multiple Users/Data Directories">
+          <param name="Local" value="howto-multipleusers.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Import Calendar Data">
+          <param name="Local" value="howtos-calendarimport.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Import Outlook Notes/Tasks">
+          <param name="Local" value="howtos-importoutlooknotes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Add Ringtones">
+          <param name="Local" value="howto-addringtones.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Add Images">
+          <param name="Local" value="howto-addimages.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Set category, ringtone, or wallpaper to multiple contacts">
+          <param name="Local" value="howtos-group-edit.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Do Data Recording">
+          <param name="Local" value="howtos-datarecording.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="USB">
+        <param name="Local" value="hoto-usbintro.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Linux USB Setup">
+          <param name="Local" value="howto-linuxusb.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Mac USB Setup">
+          <param name="Local" value="howto-macusb.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Windows USB Setup">
+          <param name="Local" value="howto-windowsusb.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Vendor and Product ids">
+          <param name="Local" value="ref-usbids.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="BitPim Internals">
+        <param name="Local" value="bitpim-internals.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="How BitPim stores data">
+          <param name="Local" value="internals-data-storage.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Phone Protocols">
+          <param name="Local" value="internals-protocols.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Working with the code">
+          <param name="Local" value="internals-code.htm">
+          </OBJECT>
+    </UL>
+  </UL>
+  <LI><OBJECT type="text/sitemap">
+      <param name="Name" value="Errors">
+      <param name="Local" value="errors.htm">
+      </OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Device Needs Attention">
+        <param name="Local" value="errors-deviceneedsattention.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Failed to open device">
+        <param name="Local" value="errors-failedtoopendevice.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="No associated programs">
+        <param name="Local" value="errors-nomimeopencommand.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Failed to execute external command">
+        <param name="Local" value="errors-mimeexecfailed.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Failed to automatically detect port">
+        <param name="Local" value="errors-failedtoautodetectport.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="An exception occurred">
+        <param name="Local" value="errors-exception.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Invalid Image File">
+        <param name="Local" value="error-invalidimagefile.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Zipfile corrupted">
+        <param name="Local" value="errors-zipfilecorrupted.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="A Zipfile is required">
+        <param name="Local" value="error-zipfilerequired.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Failed to find PureVoice converter">
+        <param name="Local" value="error-nopvconv.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Phonebook busy on phone">
+        <param name="Local" value="error-phonebookbusy.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Data Communications Error">
+        <param name="Local" value="errors-datacomms.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Access has been blocked">
+        <param name="Local" value="errors-access-blocked.htm">
+        </OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap">
+      <param name="Name" value="Phones">
+      <param name="Local" value="phones.htm">
+      </OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Phone features supported">
+        <param name="Local" value="phones-featuressupported.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="What phones do the developers have?">
+        <param name="Local" value="phones-developer.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="What phones do the developers want?">
+        <param name="Local" value="phones-requested.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Audiovox CDM8900">
+        <param name="Local" value="phone-audiovoxcdm8900.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG C2000">
+        <param name="Local" value="phone-lgc2000.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="lgc2000-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="lgc2000-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG G4015">
+        <param name="Local" value="phone-lgg4015.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="lgg4015-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="lgg4015-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="lgg4015-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG PM225">
+        <param name="Local" value="phone-lgpm225.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgpm225-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-3200">
+        <param name="Local" value="phone-lgvx3200.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx3200-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgvx3200-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="phone-lgvx3200-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-4400">
+        <param name="Local" value="phone-lgvx4400.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="lg4400-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="lg4400-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="vx4400-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-4500">
+        <param name="Local" value="phone-lgvx4500.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx4500-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phones-lgvx4500-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="phones-lgvx4500-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-4650">
+        <param name="Local" value="phone-lgvx4650.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="lgvx4650-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="lgvx4650-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-5200">
+        <param name="Local" value="phone-lgvx5200.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx5200-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgvx5200-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-5300">
+        <param name="Local" value="phone-lgvx5300.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgvx5300-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-6000">
+        <param name="Local" value="phone-lgvx6000.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="lg6000-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="lg6000-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="lg6000-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-6100">
+        <param name="Local" value="phone-lgvx6100.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="lgvx6100-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="lgvx6100-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="lgvx6100-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-7000">
+        <param name="Local" value="phone-lgvx7000.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx7000-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phones-lgvx7000-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-8000">
+        <param name="Local" value="phone-lgvx8000.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx8000-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgvx8000-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-8100">
+        <param name="Local" value="phone-lgvx8100.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx8100-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgvx8100-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="phone-lgvx8100-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-8300">
+        <param name="Local" value="phone-lgvx8300.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx8300-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgvx8300-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="phone-lgvx8300-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-8500">
+        <param name="Local" value="phone-lgvx8500.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx8500-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgvx8500-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="phone-lgvx8500-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-8600">
+        <param name="Local" value="phone-lgvx8600.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx8600-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgvx8600-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="phone-lgvx8600-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-9800">
+        <param name="Local" value="phone-lgvx9800.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx9800-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgvx9800-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="phone-lgvx9800-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="LG VX-9900">
+        <param name="Local" value="phone-lgvx9900.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-lgvx9900-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-lgvx9900-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="phone-lgvx9900-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Motorola E815">
+        <param name="Local" value="phone-motoe815.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-motoe815-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Motorola E815m">
+        <param name="Local" value="phone-motoe815m.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-motoe815m-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Motorola V3c">
+        <param name="Local" value="phone-motov3c.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-motov3c-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Motorola V3cm">
+        <param name="Local" value="phone-motov3cm.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-motov3cm-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Motorola V710">
+        <param name="Local" value="phone-motov710.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-motov710-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-motov710-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Howtos">
+          <param name="Local" value="phone-motov710-howtos.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Motorola V710m">
+        <param name="Local" value="phone-motov710m.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-motov710m-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Samsung SCH-A930">
+        <param name="Local" value="phone-samsungscha930.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-samsungscha930-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-samsungscha930-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Samsung SCH-A950">
+        <param name="Local" value="phone-samsungscha950.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-samsungscha950-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phone-samsungscha950-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Samsung Phones">
+        <param name="Local" value="phones-samsung.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phones-samsung-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phones-samsung-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Model Specific Notes">
+          <param name="Local" value="phones-samsung-model-specific-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Sanyo Phones">
+        <param name="Local" value="phones-sanyo.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phones-sanyo-cables.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Notes">
+          <param name="Local" value="phones-sanyo-notes.htm">
+          </OBJECT>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Model Specific Notes">
+          <param name="Local" value="phones-sanyo-model-notes.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Toshiba VM-4050">
+        <param name="Local" value="phone-toshiba_vm4050.htm">
+        </OBJECT>
+    <UL>
+      <LI><OBJECT type="text/sitemap">
+          <param name="Name" value="Cables">
+          <param name="Local" value="phone-toshiba_vm4050-cables.htm">
+          </OBJECT>
+    </UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Other Phones">
+        <param name="Local" value="phones-other.htm">
+        </OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap">
+      <param name="Name" value="BitFling">
+      <param name="Local" value="bitfling.htm">
+      </OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Configuring BitFling">
+        <param name="Local" value="bitfling-configure.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Configuring BitPim to use BitFling">
+        <param name="Local" value="bitpim-bitfling-configure.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Security Considerations">
+        <param name="Local" value="bitfling-security.htm">
+        </OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap">
+      <param name="Name" value="Frequently Asked Questions">
+      <param name="Local" value="faq.htm">
+      </OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="My phone is not in the list">
+        <param name="Local" value="faq-phonenotlisted.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Which features will BitPim support of my phone?">
+        <param name="Local" value="faq-phonefeaturessupport.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="When will you support my phone?">
+        <param name="Local" value="faq-phonesupport.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="I get a Brew File Locked exception">
+        <param name="Local" value="faq-brewfilelockedexception.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="What are the memory limits of my phone">
+        <param name="Local" value="faq-limits.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Why do you do this stupid thing with my phone?">
+        <param name="Local" value="faq-stupidformat.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="I get an IntegrityCheckFailed exception on my LG phone">
+        <param name="Local" value="phones-lg-integritycheckfailed.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="How do I bypass the Image Preview/Conversion Dialog?">
+        <param name="Local" value="faq-bypassimagepreview.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="How do I bypass the Convert Audio File Dialog?">
+        <param name="Local" value="faq-bypassaudioconversion.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="I do not have the Send Phone Data memu item?">
+        <param name="Local" value="faq-donthavesendphonedata.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="What do those colors of the color-coded field names mean?">
+        <param name="Local" value="faq-colorcodedfields.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="What are the differences between the Replace All and Add option when saving ringtones/wallpapers to the phone?">
+        <param name="Local" value="faq-mediaoptions.htm">
+        </OBJECT>
+  </UL>
+  <LI><OBJECT type="text/sitemap">
+      <param name="Name" value="About BitPim">
+      <param name="Local" value="about.htm">
+      </OBJECT>
+  <UL>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="License and Warranty">
+        <param name="Local" value="licenseandwarranty.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="3rd party components and licenses">
+        <param name="Local" value="3rdparty.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Upgrading">
+        <param name="Local" value="upgrading.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="BitPim versioning scheme">
+        <param name="Local" value="versionscheme.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Version History">
+        <param name="Local" value="versionhistory.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Contributing to BitPim">
+        <param name="Local" value="contributing.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Future Plans">
+        <param name="Local" value="futureplans.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Contacts">
+        <param name="Local" value="contacts.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Support">
+        <param name="Local" value="support.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="No support on bitpim-user">
+        <param name="Local" value="bitpim-user-no-support.htm">
+        </OBJECT>
+    <LI><OBJECT type="text/sitemap">
+        <param name="Name" value="Credits">
+        <param name="Local" value="credits.htm">
+        </OBJECT>
+  </UL>
+</UL>

@@ -1,0 +1,9 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-isnotavalidzip.png,)
+
+<p>BitPim only restores from zip files.  You need to select a file in zip
+format.
+
+
+#include "pageend.h"

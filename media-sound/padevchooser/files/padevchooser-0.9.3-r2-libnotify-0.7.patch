@@ -1,0 +1,11 @@
+--- src/padevchooser.c.orig	2007-09-24 14:56:16.000000000 -0700
++++ src/padevchooser.c	2011-09-10 15:28:45.000000000 -0700
+@@ -171,7 +171,7 @@
+ 
+     if (!notification) {
+         s = g_strdup_printf("<i>%s</i>\n%s", title, text);
+-        notification = notify_notification_new_with_status_icon(title, s, "audio-card", tray_icon);
++        notification = notify_notification_new(title, s, "audio-card");
+         notify_notification_set_category(notification, "device.added");
+         notify_notification_set_urgency(notification, NOTIFY_URGENCY_LOW);
+         g_signal_connect_swapped(G_OBJECT(notification), "closed", G_CALLBACK(notification_closed), NULL);

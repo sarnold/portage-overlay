@@ -1,0 +1,260 @@
+/* BitPim style sheet.
+
+   This has two parts.  The first part is courtesy of Yahoo and
+   normalises a whole bunch of layout across all browsers -
+   essentially removing differences in the default browser style
+   sheet. The second lump normalises fonts, which are notoriously
+   different by default across browsers.
+
+   The second part is authored by David Smith and provides the BitPim
+   specific styles.
+
+*/
+
+
+
+/* INITIAL SETUP
+Copyright (c) 2006, Yahoo! Inc. All rights reserved.
+Code licensed under the BSD License:
+http://developer.yahoo.net/yui/license.txt
+version: 0.12.0
+*/
+
+body,div,dl,dt,dd,ul,ol,li,h1,h2,h3,h4,h5,h6,pre,form,fieldset,input,textarea,p,blockquote,th,td{margin:0;padding:0;}
+table{border-collapse:collapse;border-spacing:0;}
+fieldset,img{border:0;}
+address,caption,cite,code,dfn,em,strong,th,var{font-style:normal;font-weight:normal;}
+ol,ul {list-style:none;}
+caption,th {text-align:left;}
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+q:before,q:after{content:'';}
+abbr,acronym {border:0;}
+
+body {font:13px arial,helvetica,clean,sans-serif;*font-size:small;*font:x-small;}
+table {font-size:inherit;font:100%;}
+select, input, textarea {font:99% arial,helvetica,clean,sans-serif;}
+pre, code {font:115% monospace;*font-size:100%;}
+body * {line-height:1.22em;}
+
+/* Simple two-col flexi layout derived from Yahoo! grids.css, 
+   with renames for clarity */
+
+body {
+  margin: auto 30px;
+}
+
+#col-right {
+  float: right;
+  width: 18.4608em;
+  *width: 18.016em;
+}
+
+#col-main {
+  width: 100%;
+  float: left;
+  margin-right: -25em;
+}
+
+#main-content {
+  margin-right: 19.4608em;
+  *margin-right: 19.016em;
+}
+
+#ft, #col-main {
+  clear: both;
+}
+
+
+/* BITPIM */
+
+body { 
+  font-family: georgia, verdana;
+  font-size: 10pt;
+}
+
+body * {
+  line-height: 1.33em;
+}
+
+#col-right { 
+  border-left: 3px solid #db8992;
+  padding-left: 1ex;
+}
+
+/* WEB SITE only */
+h1.banner { 
+  font-family: verdana;
+  font-weight: bold;
+  font-size: 500%;
+  letter-spacing: -0.1ex;
+  margin: 0 -20px 0 -20px;
+  padding: 0.5em 10px 0 10px;
+  background-color: #b6424e;
+  border-bottom: 10px solid #db8992;
+  color: #db8992;
+}
+
+p.strap { 
+  position: relative;
+  text-align: right;
+  font-family: georgia;
+  font-size: 122%;
+  font-style: italic;
+  color: #fdd;
+  padding: 0.25ex 2em;
+  margin-top: -2.5em;
+  margin-bottom: 2.5em;
+}
+/* WEB SITE only end */
+
+/* SPECIALS */
+
+p.callout {
+  float: right;
+  font-size: 92%;
+  margin-left: 1em;
+  padding: 0.5em;
+  border: 1px solid #b6424e;
+  width: 50%; 
+  background-color: #eacfd2;
+}
+
+div.help-banner {
+  margin: 0 -30px;
+  font-family: verdana;
+  text-align: center;
+  font-weight: bold;
+  font-size: 174%;
+  background-color: #b6424e;
+  border-bottom: 5px solid #db8992;
+  color: #db8992;
+}
+
+p.nav-line {
+  margin-top: 2em;
+  border-top: 2px solid #db8992;
+  padding: 0.25em 0;
+  text-align: center;
+}
+p.nav-line a { 
+  margin-right: 3em;
+}
+
+p.build-line {
+  font-size: 92%;
+  text-align: center;
+}
+p.build-line b { 
+  color: #b6424e;
+  margin-right: 5em;
+}
+
+p.screenshot {
+  text-align: center;
+  margin: 0.67em 0;
+}
+
+/* SPECIALS end */
+
+p, dt, dd { 
+  font-size: 114%;
+  margin-bottom: 0.67em;
+}
+
+pre { 
+  margin-bottom: 0.67em;
+}
+
+blockquote { 
+  margin: 0.67em 2em;
+}
+
+
+h1, h2, h3, h4, h5, h6 { 
+  font-family: verdana;
+  font-weight: bold;
+  color: #b6424e;
+  margin-top: 1.5em;
+}
+
+h1 { 
+  font-size: 174%;
+  margin-top: 0.5em;
+  margin: 0 -20px 0.5em -20px;
+  padding: 0.5em 10px 0 10px;
+}
+
+h2 { 
+  font-size: 129%;
+}
+
+#col-right h2 { 
+  margin-top: 0;
+}
+
+
+ol, ul, dl { 
+  margin: 0 0 1em 2em;
+}
+
+li { 
+  font-size: 114%;
+  margin-bottom: 0.33em;
+  display: list-item;
+}
+
+ul li {
+  list-style-type: square;
+}
+
+ul ul li { 
+  list-style-type: circle;
+}
+
+ol li { 
+  list-style-type: decimal;
+}
+
+ol ol li { 
+  list-style-type: lower-alpha;
+}
+
+li li, dd dt, dd dd,
+li p, li pre,
+dt p, dd p, dd pre, dd li { 
+  font-size: 100%;
+}
+
+dt, dt p {
+  color: #b6424e;
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+dd {
+  margin-left: 1em;
+}
+
+table { 
+  margin: 0.67em 0 0 0;
+}
+
+table.grid td, table.grid th { 
+  border: 1px solid #eacfd2;
+}
+
+table.center td { 
+  text-align: center;
+}
+
+th { 
+  font-family: verdana;
+  font-weight: bold;
+  color: #b6424e;
+  border-bottom: 1px solid #eacfd2;
+}
+
+th, td { 
+  vertical-align: top;
+  padding: 0.25ex 0.5em;
+}

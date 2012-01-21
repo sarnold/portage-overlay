@@ -1,0 +1,64 @@
+#include "pagestart.h"
+
+<p>This phone only has an internal serial interface, and you should get
+a USB to serial cable marked for this phone.
+
+<h3>Verizon Mobile Office Kit</h3>
+
+<p>Available from Verizon Wireless in store or 
+URL(http://www.verizonwireless.com,on the web).  It is also sold 
+by a number of other stores and on eBay.  A Prolific PL2303 chip
+is used to perform USB to serial.
+
+IMAGE(vx4500-vmo-cable.jpg,)
+
+
+<blockquote>
+<h4>Windows</h4>
+
+<p>This cable works well and is reliable.  The cable comes with drivers for
+Windows.
+
+<h4>Linux</h4>
+
+<p>Linux has drivers builtin, and should use the <code>pl2303</code> module.
+
+<h4>Mac</h4>
+
+<p>You will need to get drivers from the Prolific web site at
+URL(http://www.prolific.com.tw/eng/downloads.asp?ID=31,http://www.prolific.com.tw/eng/downloads.asp?ID=31)
+
+</blockquote>
+
+<h3>FutureDial USB to serial</h3>
+
+<p>Available at RadioShack as catalog# 17-792 and will work
+with the VX4500, VX4600 and the VX6000.
+
+<p align=center><img src="futuredial-19-usb2serial.jpg">
+
+<p>This cable has a blob half way along the cable that converts from USB to
+serial and then connects to the serial interface in the phone.  The chip inside
+the cable is a Prolific 2303 and this is how your operating system will report
+it. 
+
+<blockquote>
+<h4>Windows</h4>
+
+<p>This cable works well and is reliable.  You will need to obtain the drivers
+from FutureDial's website. 
+
+<h4>Linux</h4>
+
+<p>Linux has drivers builtin.  <b>Note</b>:  There is a bug in the Linux 2.4
+kernel that causes many machines to crash when any program stops using the
+cable.  This has been fixed in the kernel versions 2.4.23 and 2.6.
+
+<h4>Mac</h4>
+
+<p>You will need to get drivers from the Prolific web site at
+URL(http://www.prolific.com.tw/eng/downloads.asp?ID=31,http://www.prolific.com.tw/eng/downloads.asp?ID=31)
+
+</blockquote>
+
+#include "pageend.h"

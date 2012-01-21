@@ -1,0 +1,49 @@
+#include "pagestart.h"
+
+Unless otherwise specified, only Sanyo Phones issued by Sprint PCS are
+supported by BitPim
+
+<h2>What works</h2>
+
+<p>The phonebook and calendar are supported on the SCP-4900,
+RL-4920, 
+SCP-5300, SCP-5400 (RL2500), SCP-5500 (VM4500), SCP-7200 (RL2000),
+SCP-7300 (RL7300), MM-7400, SCP-8100 (Sprint and Bell Mobility versions), PM-8200
+and MM-8300.  The filesystem on all of these phones, except for the
+MM-8300 is supported.
+
+<p>Transfer of wallpapers and ringers from the phone to BitPim is
+supported for the RL-4920, SCP-5400, SCP-5500, SCP-7300, MM-7400, SCP-8100,
+PM-8200 and MM-8300.
+BitPim will also transfer camera pictures from the SCP-5500, MM-7400,
+SCP-8100, PM-8200 and MM-8300
+<p>Wallpaper/camera/ringer transfers from the phone to BitPim are not
+supported for the SCP-4900, SCP-5300 and SCP-7200 as these phones do
+not have this capability.
+<p>BitPim can transfer ringers and images to all
+supported Sanyo phones.  Only PNG and MIDI files may be sent to
+the phones.  QCP and other format ringers can not be transferred to
+the phone.  This is a limitation of the phone, not BitPim.
+See the Ringer/Wallpaper section
+of the <a href="phones-sanyo-notes.htm#media">Sanyo notes</a>
+for further information.
+
+<h2>FAQs and support</h2>
+
+Please see the <a href="phones-sanyo-model-notes.htm">Model
+Specific Notes</a> for manuals and other specific information about the
+various Sanyo phones.
+
+<h2>Contents</h2>
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Cables,phones-sanyo-cables.htm)
+    TOCITEM_0(Notes,phones-sanyo-notes.htm)
+    TOCITEM_0(Model Specific Notes,phones-sanyo-model-notes.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h"

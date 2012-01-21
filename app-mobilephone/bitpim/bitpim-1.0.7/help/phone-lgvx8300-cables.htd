@@ -1,0 +1,17 @@
+#include "pagestart.h"
+
+<p>This phone supports USB charging cables.
+
+<p>You can also buy from e-bay and Verizon stores (although they are a bit expensive)
+You can also try RS and other electronic stores. Testing done with USB cables and Bluetooth.
+
+This phone also has Bluetooth (BT). It is possible to use this to connect to BitPim.
+
+Bluetooth is a slow way to communicate with the phone, using the USB cable is faster. It
+also runs down the battery, turning it off after use will preserve battery power.
+
+You can also get help on a phone forum like URL(www.howardforums.com,www.howardforums.com).
+Autodetect does not work with BT unless you are running Windos XP SP2 and are using the native windows drivers.
+
+
+#include "pageend.h"

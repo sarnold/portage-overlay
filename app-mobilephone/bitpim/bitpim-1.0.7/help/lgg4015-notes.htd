@@ -1,0 +1,64 @@
+#include "pagestart.h"
+
+<H3>Phone Information</H3>
+<UL>
+<li><p>I can't seem to retrieve the ESN off the phone, so for a unique ID, I use the ID of the SIM card instead.  The implication is that if a different SIM card is used with the same phone, BitPim will identify it as a different phone.
+</UL>
+
+<H3>Contacts</H3>
+<UL>
+<li><p>The maximum number of contacts the phone can hold is 255.  The SIM card can hold 250 contacts.
+<li><p>On the phone, each contact can have up to 3 numbers (mobile, home, and office), email, and memo/note.  On the SIM card, each contact holds 1 number.
+<li><p>When reading contacts from the SIM card, the type of the number of each contact is set to mobile.  When sending contacts to the SIM card, the first number on the list is sent regardless of the type.
+<li><p>Ringtone and Wallpaper assignments to contacts are not applicable.
+<li><p>Speed Dials cannot be set from BitPim and must be set manually on the phone.  The same goes for Group Ringtone assignments.
+<li><p>Group (category) names cannot be set/updated from BitPim and must be done manually on the phone.
+<li><p>Every time BitPim updates the contacts to the phone, it rewrites the whole phonebook.  This process might be improved in the future (ie only update the ones that have been changed).
+</UL>
+
+<H3>Calendar</H3>
+<UL>
+<li><p>The maximum number of calendar events is 30.
+<li><p>Phone calendar events have no end date/time, and BitPim will set it to be the same as the start date/time.
+<li><p>Phone recurrent events are open-ended (forever).
+<li><p>When sending recurrent events to the phone, the "nth" values are discarded.  For example, a daily event set to occur every 3rd day in BitPim will be sent to the phone as a every-day daily event.
+<li><p>BitPim alarm values will be approximated to the next lower valid phone alarm values.  For example, a BitPim alarm value of 61(min) will be set to 1hr on the phone, while a value of 59(min) will be set to 30min on the phone.
+</UL>
+
+<H3>Ringtones</H3>
+<UL>
+<li><p>This phone can play SMAF (.mmf) and MIDI (.mid) files.
+<li><p>A maximum of 20 ringtones can be downloaded.
+<li><p>Ringtone upload from the phone to BitPim DOES NOT WORK!  Reading ringtone data from the phone only reads the list of downloaded ringtones available on the phone, and not the ringtone contents.
+<li><p>Deleting ringtones on the phone "from" BitPim does not work reliably.  This is a phone firmware issue.  The workaround is to delete them manually from the phone.
+</UL>
+
+<H3>Wallpapers</H3>
+<UL>
+<li><p>This phone accepts JPEG, BMP, and GIF images as wallpapers.  BitPim uses JPEG as the default format.
+<li><p>The maximum of 20 images can be downloaded.
+<li><p>The phone full screen resolution is 128x128.
+<li><p>Wallpaper upload from the phone to BitPim DOES NOT WORK!  Reading wallpaper data from the phone only reads the list of downloaded wallpapers available on the phone, and not the wallpaper contents.
+<li><p>Deleting wallpapers on the phone from BitPim does not work reliably.  This is a phone firmware issue.  The workaround is to delete them manually from the phone.
+</UL>
+
+<H3>SMS</H3>
+<UL>
+<li><p>SMS feature is completed.  However, BitPim may not always properly parse the SMS data from the phone.  This is due to the fact that I have no real SMS data with which to test.  Please report/post all discrepancies to the <a HREF="contacts.htm#bitpim-user">bitpim-user</a> mailing list.
+</UL>
+
+<H3>Call History</H3>
+<UL>
+<li><p>Call History feature is currently not complete.  It is available for data collection purposes.  If you wish to help with the data collection, perform the following steps:
+<OL>
+<li><p>Turn on the Protocol Logging View: Menu <B>View</B> -> <B>View protocol logging</B>
+<li><p>Retrieve Call History Data from the phone:
+<OL>
+<li><p>Menu <B>Data</B> -> <B>Get Phone Data</B>
+<li><p>From the <B>Get Data from Phone</B> dialog, check only on <B>SMS</B> & <B>Replace All</B>, then click <B>OK</B>
+</OL>
+<li><p>email the contents of the <B>Protocol Log</B> to <a href="mailto:djpham@bitpim.org">djpham@bitpim.org</a>
+</OL>
+</UL>
+
+#include "pageend.h"

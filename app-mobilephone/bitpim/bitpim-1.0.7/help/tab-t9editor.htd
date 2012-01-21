@@ -1,0 +1,22 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-t9editortab.png,T9 Editor)
+
+<p>This page allows users to retrieve, manage, and send their T9 User Database Words from/to the phone.
+
+#define DESC(title,desc) \
+   <p><b>title</b>: desc
+
+<H2>Fields</H2>
+<p><B>T9 Keys</B>: Equivalent phone keys pressed to generate the words (ie. "43556" for "hello"). Selecting a key sequence in this field displays a list of available T9 words in the <B>T9 Words</B> field.
+<p><B>T9 Words</B>: The list of words that can be "predicted" by pressing the phone key sequence in the <B>T9 Keys</B> field. This list of words is displayed in order of preference. The list order can be changed by selecting the word, and moving it up or down within the list by clicking on the up or down arrow.
+<p>To delete a word, select it from the list and click on the <B>X</B> taskbar icon (or alternately, main menu <B>Edit</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>Delete</B>)
+<p>To add a new word to the list, click on the <B>+</B> taskbar icon (or alternately, main menu <B>Edit</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>New...</B>).  The new word will be automatically added to the appropriate <B>T9 Keys</B> sequence.
+
+<h2>Buttons</h2>
+
+DESC(Save,Save the changes made to the T9 words.)
+DESC(Help,Bring up this help page.)
+DESC(Revert,Discard all changes.)
+
+#include "pageend.h"

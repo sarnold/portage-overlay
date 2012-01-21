@@ -1,0 +1,18 @@
+#!/sbin/runscript
+# Copyright 1999-2005 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/pcsc-lite/files/pcscd-init,v 1.4 2005/07/20 01:11:08 vapier Exp $
+
+start() {
+	# pcscd won't start if these exist
+	rm -f /var/run/pcscd.{comm,pub}
+	ebegin "Starting pcscd"
+	/usr/sbin/pcscd ${PCSCD_OPTS}
+	eend $?
+}
+
+stop() {
+	ebegin "Stopping pcscd"
+	start-stop-daemon --stop --quiet --exec /usr/sbin/pcscd
+	eend $?
+}

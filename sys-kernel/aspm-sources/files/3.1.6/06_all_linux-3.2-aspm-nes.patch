@@ -1,0 +1,26 @@
+diff --git a/drivers/infiniband/hw/nes/nes.c b/drivers/infiniband/hw/nes/nes.c
+index 5965b3d..ea320f5 100644
+--- a/drivers/infiniband/hw/nes/nes.c
++++ b/drivers/infiniband/hw/nes/nes.c
+@@ -45,6 +45,7 @@
+ #include <linux/if_arp.h>
+ #include <linux/highmem.h>
+ #include <linux/slab.h>
++#include <linux/pci-aspm.h>
+ #include <asm/io.h>
+ #include <asm/irq.h>
+ #include <asm/byteorder.h>
+@@ -463,6 +464,9 @@ static int __devinit nes_probe(struct pci_dev *pcidev, const struct pci_device_i
+ 	printk(KERN_INFO PFX "NetEffect RNIC driver v%s loading. (%s)\n",
+ 			DRV_VERSION, pci_name(pcidev));
+ 
++	pci_disable_link_state(pcidev, PCIE_LINK_STATE_L0S |
++			       PCIE_LINK_STATE_L1 | PCIE_LINK_STATE_CLKPM);
++
+ 	ret = pci_enable_device(pcidev);
+ 	if (ret) {
+ 		printk(KERN_ERR PFX "Unable to enable PCI device. (%s)\n", pci_name(pcidev));
+-- 
+1.7.7.1
+
+  

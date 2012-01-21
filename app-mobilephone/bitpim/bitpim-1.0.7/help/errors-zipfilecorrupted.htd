@@ -1,0 +1,12 @@
+#include "pagestart.h"
+
+<p>The zip file you selected has corrupted contents.  This may have
+been caused by transmission errors in email, between machines, or
+over the Internet.
+
+<p>You should get a clean copy of the archive that has no errors.
+Restoring from one that has been repaired could result in something
+different being restored than you think will be.
+
+
+#include "pageend.h"

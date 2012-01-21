@@ -1,0 +1,20 @@
+#include "pagestart.h"
+<p>This wizard automates the process of creating a new BitPim data storage area separated from other BitPim data.
+
+SCREENSHOT(screen-newdb0.png,)
+SCREENSHOT(screen-newdb1.png,)
+SCREENSHOT(screen-newdb2.png,)
+SCREENSHOT(screen-newdb3.png,)
+<H2>Fields</H2>
+<DL>
+<DT><P><B>Storage Name</B>:
+<DD><P>The name of this new storage area (ie, Joe, His, Hers, etc.)  Note that this wizard will use this name to form the default directory name, as well as the names of the shorcuts (Windows only).
+<DT><P><B>Storage Dir:</B>
+<DD><P>Directory name of the new storage area.  By default, BitPim uses either <B>My Documents\\Phones\\[Storage Name]</B> for Windows, or <B>$HOME\\Phones\\[Storage Name]</B>.
+<DT><P><B>Options:</B>
+<DD><P><B>Use Default Settings:</B> Create an empty BitPim configuration file, which uses all default settings.
+<DD><P><B>Use Current Settings:</B> Create the new BitPim configuration file based on the settings of the current BitPim configuration.
+<DD><P><B>Desktop Shortcut (Windows only):</B> Create a shortcut on the Windows <B>Desktop</B> which, when activated, would start BitPim using this new data storage and configuration.  The name of the shortcut will be <B>[Storage Name]</B>, and the shortcut will be stored in a folder named <B>Phones</B> located on the <B>Desktop</B>.
+<DD><P><B>Start Menu Shortcut (Windows only):</B> Create a shortcut in the Windows <B>Start Menu</B> which, when activated, would start BitPim using this new data storage and configuration.  The named of the shortcut will be <B>[Storage Name]</B>, and the shortcut will be listed under the menu item <B>Phones</B> located in the <B>Start Menu</B>.
+</DL>
+#include "pageend.h"

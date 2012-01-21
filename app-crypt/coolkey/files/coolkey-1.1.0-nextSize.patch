@@ -1,0 +1,11 @@
+--- src/coolkey/slot.cpp.orig	2011-11-02 21:14:33.000000000 -0700
++++ src/coolkey/slot.cpp	2011-11-02 21:16:53.000000000 -0700
+@@ -2210,6 +2210,8 @@
+     CKYBuffer_InitEmpty(&vBuf);
+     CKYBuffer_Resize(cert, 0);
+ 
++    *nextSize = 0;
++
+     /* handle the new CAC card read */
+     /* read the TLV */
+     status = CACApplet_ReadFile(conn, CAC_TAG_FILE, &tBuf, NULL);

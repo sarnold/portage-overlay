@@ -1,0 +1,22 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+
+<p>Phonebook, wallpaper (including camera), ringers, calendar, memo, SMS, call history, filesystem.  (<b>Note:</b> Videos are currently ignored.)
+
+<h2>FAQs and support</h2>
+
+<p>If you know of a good support group, please let us know so we can add details here.
+
+<h2>Contents</h2>
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Cables,phone-lgvx8000-cables.htm)
+    TOCITEM_0(Notes,phone-lgvx8000-notes.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h"

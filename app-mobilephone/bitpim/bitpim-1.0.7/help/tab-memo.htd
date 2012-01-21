@@ -1,0 +1,36 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-memotab.png,)
+
+<p>This page allows users to maintain textual memos/notes that can be
+retrieved/sent from/to the phone.  The list of the available memos is
+displayed in the left listbox, with the detailed information of the
+selected one being displayed in the right fields.
+
+#define DESC(title,desc) \
+   <p><b>title</b>: desc
+
+<h2>Fields</h2>
+<p>The labels of these fields are color coded to indicate their applicability
+to the current phone:
+<UL>
+<li><p><FONT COLOR="blue" SIZE="" FACE="Arial, Lucida Sans">Blue: Applicable to this phone.</FONT>
+<li><p><FONT COLOR="red" SIZE="" FACE="Arial, Lucida Sans">Red: Not applicable to this phone.</FONT>
+<li><p><FONT COLOR="black" SIZE="" FACE="Arial, Lucida Sans">Black: Unknown applicability.</FONT>
+</UL>
+
+DESC(Subject,The subject of the current memo.)
+DESC(Date,The date on which the memo was last modified or retrieved from the phone.)
+DESC(Private,Turn on the private/secret flag of this memo when checked.)
+DESC(Category,The categories assigned/associated with this memo.)
+DESC(Memo,The textual content of this memo.)
+
+<h2>Buttons</h2>
+
+DESC(Add,Add a new memo to the list.)
+DESC(Delete,Delete the selected memo from the list.)
+DESC(Save,Save the changes made to this memo.)
+DESC(Help,Bring up this help page.)
+DESC(Revert,Dicard all changes made to this memo.)
+
+#include "pageend.h"

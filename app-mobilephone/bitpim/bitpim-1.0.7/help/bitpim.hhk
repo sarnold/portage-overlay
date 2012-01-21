@@ -1,0 +1,649 @@
+<!DOCTYPE HTML PUBLIC "-//IETF//DTD HTML//EN">
+<HTML>
+<HEAD>
+<meta name="GENERATOR" content="Anthemion HelpBlocks">
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+<!-- Sitemap 1.0 -->
+</HEAD><BODY>
+<OBJECT type="text/site properties">
+    <param name="ImageType" value="Folder">
+</OBJECT>
+<UL>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Table of Contents">
+             <PARAM NAME="Local" VALUE="rootcontents.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Welcome">
+             <PARAM NAME="Local" VALUE="welcome.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Tour">
+             <PARAM NAME="Local" VALUE="tour-master.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="What does BitPim do?">
+             <PARAM NAME="Local" VALUE="tour-overview.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="What do I need?">
+             <PARAM NAME="Local" VALUE="tour-prerequisites.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="What do I do first?">
+             <PARAM NAME="Local" VALUE="tour-gettingdata.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Editing your data">
+             <PARAM NAME="Local" VALUE="tour-edit.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Sending your changes to the phone">
+             <PARAM NAME="Local" VALUE="tour-saving.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Troubleshooting">
+             <PARAM NAME="Local" VALUE="troubleshooting.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Ports/Serial communications">
+             <PARAM NAME="Local" VALUE="trouble-serial.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Linux Issues">
+             <PARAM NAME="Local" VALUE="trouble-linux-issues.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Reference">
+             <PARAM NAME="Local" VALUE="reference-top.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Dialog boxes">
+             <PARAM NAME="Local" VALUE="dialogs.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Settings">
+             <PARAM NAME="Local" VALUE="ref-settings.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Comm Port Settings">
+             <PARAM NAME="Local" VALUE="ref-commsettingsdialog.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="File Contents View">
+             <PARAM NAME="Local" VALUE="ref-hexviewdialog.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Restore Files">
+             <PARAM NAME="Local" VALUE="dialog-restore.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Get Phone Data">
+             <PARAM NAME="Local" VALUE="dialog-getphonedata.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Send Phone Data">
+             <PARAM NAME="Local" VALUE="dialog-sendphonedata.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Editing Calendar Events">
+             <PARAM NAME="Local" VALUE="editingcalendarevents.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Merging phonebook entries">
+             <PARAM NAME="Local" VALUE="dialog-mergingphonebookentries.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Audio Conversion">
+             <PARAM NAME="Local" VALUE="dialog-audioconversion.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Calendar Import">
+             <PARAM NAME="Local" VALUE="dialog-calendarimport.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Image Preview">
+             <PARAM NAME="Local" VALUE="dialog-imagepreview.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Tabs">
+             <PARAM NAME="Local" VALUE="tabs.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Today">
+             <PARAM NAME="Local" VALUE="tab-today.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Phonebook">
+             <PARAM NAME="Local" VALUE="tab-phonebook.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Wallpaper">
+             <PARAM NAME="Local" VALUE="tab-wallpaper.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Ringers">
+             <PARAM NAME="Local" VALUE="tab-ringers.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Calendar">
+             <PARAM NAME="Local" VALUE="tab-calendar.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Memo">
+             <PARAM NAME="Local" VALUE="tab-memo.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Todo">
+             <PARAM NAME="Local" VALUE="tab-todo.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="SMS">
+             <PARAM NAME="Local" VALUE="tab-sms.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Call History">
+             <PARAM NAME="Local" VALUE="tab-callhistory.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Play List">
+             <PARAM NAME="Local" VALUE="tab-playlist.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Filesystem">
+             <PARAM NAME="Local" VALUE="tab-filesystem.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Log">
+             <PARAM NAME="Local" VALUE="tab-log.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Protocol Log">
+             <PARAM NAME="Local" VALUE="tab-protocollog.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Howtos">
+             <PARAM NAME="Local" VALUE="howtos.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Backups">
+             <PARAM NAME="Local" VALUE="howto-backups.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Multiple Users/Data Directories">
+             <PARAM NAME="Local" VALUE="howto-multipleusers.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Import Calendar Data">
+             <PARAM NAME="Local" VALUE="howtos-calendarimport.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Import Outlook Notes/Tasks">
+             <PARAM NAME="Local" VALUE="howtos-importoutlooknotes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Add Ringtones">
+             <PARAM NAME="Local" VALUE="howto-addringtones.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Add Images">
+             <PARAM NAME="Local" VALUE="howto-addimages.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Set category, ringtone, or wallpaper to multiple contacts">
+             <PARAM NAME="Local" VALUE="howtos-group-edit.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="USB">
+             <PARAM NAME="Local" VALUE="hoto-usbintro.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Linux USB Setup">
+             <PARAM NAME="Local" VALUE="howto-linuxusb.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Mac USB Setup">
+             <PARAM NAME="Local" VALUE="howto-macusb.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Windows USB Setup">
+             <PARAM NAME="Local" VALUE="howto-windowsusb.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Vendor and Product ids">
+             <PARAM NAME="Local" VALUE="ref-usbids.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="BitPim Internals">
+             <PARAM NAME="Local" VALUE="bitpim-internals.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="How BitPim stores data">
+             <PARAM NAME="Local" VALUE="internals-data-storage.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Phone Protocols">
+             <PARAM NAME="Local" VALUE="internals-protocols.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Working with the code">
+             <PARAM NAME="Local" VALUE="internals-code.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Errors">
+             <PARAM NAME="Local" VALUE="errors.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Device Needs Attention">
+             <PARAM NAME="Local" VALUE="errors-deviceneedsattention.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Failed to open device">
+             <PARAM NAME="Local" VALUE="errors-failedtoopendevice.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="No associated programs">
+             <PARAM NAME="Local" VALUE="errors-nomimeopencommand.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Failed to execute external command">
+             <PARAM NAME="Local" VALUE="errors-mimeexecfailed.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Failed to automatically detect port">
+             <PARAM NAME="Local" VALUE="errors-failedtoautodetectport.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="An exception occurred">
+             <PARAM NAME="Local" VALUE="errors-exception.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Invalid Image File">
+             <PARAM NAME="Local" VALUE="error-invalidimagefile.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Zipfile corrupted">
+             <PARAM NAME="Local" VALUE="errors-zipfilecorrupted.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="A Zipfile is required">
+             <PARAM NAME="Local" VALUE="error-zipfilerequired.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Failed to find PureVoice converter">
+             <PARAM NAME="Local" VALUE="error-nopvconv.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Phonebook busy on phone">
+             <PARAM NAME="Local" VALUE="error-phonebookbusy.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Data Communications Error">
+             <PARAM NAME="Local" VALUE="errors-datacomms.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Phones">
+             <PARAM NAME="Local" VALUE="phones.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Phone features supported">
+             <PARAM NAME="Local" VALUE="phones-featuressupported.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="What phones do the developers have?">
+             <PARAM NAME="Local" VALUE="phones-developer.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Audiovox CDM8900">
+             <PARAM NAME="Local" VALUE="phone-audiovoxcdm8900.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG C2000">
+             <PARAM NAME="Local" VALUE="phone-lgc2000.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="lgc2000-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="lgc2000-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG G4015">
+             <PARAM NAME="Local" VALUE="phone-lgg4015.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="lgg4015-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="lgg4015-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Howtos">
+             <PARAM NAME="Local" VALUE="lgg4015-howtos.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG PM225">
+             <PARAM NAME="Local" VALUE="phone-lgpm225.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="phone-lgpm225-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-3200">
+             <PARAM NAME="Local" VALUE="phone-lgvx3200.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="phone-lgvx3200-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="phone-lgvx3200-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Howtos">
+             <PARAM NAME="Local" VALUE="phone-lgvx3200-howtos.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-4400">
+             <PARAM NAME="Local" VALUE="phone-lgvx4400.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="lg4400-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="lg4400-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Howtos">
+             <PARAM NAME="Local" VALUE="vx4400-howtos.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-4500">
+             <PARAM NAME="Local" VALUE="phone-lgvx4500.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="phone-lgvx4500-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="phones-lgvx4500-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Howtos">
+             <PARAM NAME="Local" VALUE="phones-lgvx4500-howtos.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-4650">
+             <PARAM NAME="Local" VALUE="phone-lgvx4650.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="lgvx4650-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="lgvx4650-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-5200">
+             <PARAM NAME="Local" VALUE="phone-lgvx5200.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="phone-lgvx5200-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="phone-lgvx5200-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-6000">
+             <PARAM NAME="Local" VALUE="phone-lgvx6000.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="lg6000-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="lg6000-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Howtos">
+             <PARAM NAME="Local" VALUE="lg6000-howtos.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-6100">
+             <PARAM NAME="Local" VALUE="phone-lgvx6100.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="lgvx6100-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="lgvx6100-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Howtos">
+             <PARAM NAME="Local" VALUE="lgvx6100-howtos.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-7000">
+             <PARAM NAME="Local" VALUE="phone-lgvx7000.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="phone-lgvx7000-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="phones-lgvx7000-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-8000">
+             <PARAM NAME="Local" VALUE="phone-lgvx8000.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="phone-lgvx8000-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="phone-lgvx8000-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-8100">
+             <PARAM NAME="Local" VALUE="phone-lgvx8100.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="phone-lgvx8100-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="phone-lgvx8100-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Howtos">
+             <PARAM NAME="Local" VALUE="phone-lgvx8100-howtos.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="LG VX-9800">
+             <PARAM NAME="Local" VALUE="phone-lgvx9800.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="phone-lgvx9800-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="phone-lgvx9800-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Howtos">
+             <PARAM NAME="Local" VALUE="phone-lgvx9800-howtos.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Samsung Phones">
+             <PARAM NAME="Local" VALUE="phones-samsung.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="phones-samsung-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="phones-samsung-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Model Specific Notes">
+             <PARAM NAME="Local" VALUE="phones-samsung-model-specific-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Sanyo Phones">
+             <PARAM NAME="Local" VALUE="phones-sanyo.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="phones-sanyo-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Notes">
+             <PARAM NAME="Local" VALUE="phones-sanyo-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Model Specific Notes">
+             <PARAM NAME="Local" VALUE="phones-sanyo-model-notes.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Toshiba VM-4050">
+             <PARAM NAME="Local" VALUE="phone-toshiba_vm4050.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Cables">
+             <PARAM NAME="Local" VALUE="phone-toshiba_vm4050-cables.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Other Phones">
+             <PARAM NAME="Local" VALUE="phones-other.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="BitFling">
+             <PARAM NAME="Local" VALUE="bitfling.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Configuring BitFling">
+             <PARAM NAME="Local" VALUE="bitfling-configure.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Configuring BitPim to use BitFling">
+             <PARAM NAME="Local" VALUE="bitpim-bitfling-configure.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Security Considerations">
+             <PARAM NAME="Local" VALUE="bitfling-security.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Frequently Asked Questions">
+             <PARAM NAME="Local" VALUE="faq.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="My phone is not in the list">
+             <PARAM NAME="Local" VALUE="faq-phonenotlisted.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Which features will BitPim support of my phone?">
+             <PARAM NAME="Local" VALUE="faq-phonefeaturessupport.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="When will you support my phone?">
+             <PARAM NAME="Local" VALUE="faq-phonesupport.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="I get a Brew File Locked exception">
+             <PARAM NAME="Local" VALUE="faq-brewfilelockedexception.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="What are the memory limits of my phone">
+             <PARAM NAME="Local" VALUE="faq-limits.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Why do you do this stupid thing with my phone?">
+             <PARAM NAME="Local" VALUE="faq-stupidformat.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="I get an IntegrityCheckFailed exception on my LG phone">
+             <PARAM NAME="Local" VALUE="phones-lg-integritycheckfailed.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="How do I bypass the Image Preview/Conversion Dialog?">
+             <PARAM NAME="Local" VALUE="faq-bypassimagepreview.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="I do not have the Send Phone Data memu item?">
+             <PARAM NAME="Local" VALUE="faq-donthavesendphonedata.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="About BitPim">
+             <PARAM NAME="Local" VALUE="about.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="RPI Wireless">
+             <PARAM NAME="Local" VALUE="misc-rpiwireless.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="License and Warranty">
+             <PARAM NAME="Local" VALUE="licenseandwarranty.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="3rd party components and licenses">
+             <PARAM NAME="Local" VALUE="3rdparty.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Upgrading">
+             <PARAM NAME="Local" VALUE="upgrading.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="BitPim versioning scheme">
+             <PARAM NAME="Local" VALUE="versionscheme.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Version History">
+             <PARAM NAME="Local" VALUE="versionhistory.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Contributing to BitPim">
+             <PARAM NAME="Local" VALUE="contributing.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Future Plans">
+             <PARAM NAME="Local" VALUE="futureplans.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Contacts">
+             <PARAM NAME="Local" VALUE="contacts.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Support">
+             <PARAM NAME="Local" VALUE="support.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="No support on bitpim-user">
+             <PARAM NAME="Local" VALUE="bitpim-user-no-support.htm">
+         </OBJECT>
+    <LI> <OBJECT TYPE="text/sitemap">
+             <PARAM NAME="Name" VALUE="Credits">
+             <PARAM NAME="Local" VALUE="credits.htm">
+         </OBJECT>
+</UL>
+</BODY></HTML>

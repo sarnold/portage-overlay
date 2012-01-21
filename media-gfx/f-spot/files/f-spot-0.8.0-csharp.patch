@@ -1,0 +1,26 @@
+--- lib/TagLib/TagLib/src/TagLib/IFD/Entries/SRational.cs.orig	2010-08-11 11:37:29.000000000 -0700
++++ lib/TagLib/TagLib/src/TagLib/IFD/Entries/SRational.cs	2010-10-13 21:58:23.904252012 -0700
+@@ -62,8 +62,8 @@
+ 		/// </param>
+ 		public SRational (int numerator, int denominator)
+ 		{
+-			Numerator = numerator;
+-			Denominator = denominator;
++			this.Numerator = numerator;
++			this.Denominator = denominator;
+ 		}
+ 
+ #endregion
+--- lib/TagLib/TagLib/src/TagLib/IFD/Entries/Rational.cs.orig	2010-10-13 22:06:28.000000000 -0700
++++ lib/TagLib/TagLib/src/TagLib/IFD/Entries/Rational.cs	2010-10-13 23:03:26.357250700 -0700
+@@ -62,8 +62,8 @@
+ 		/// </param>
+ 		public Rational (uint numerator, uint denominator)
+ 		{
+-			Numerator = numerator;
+-			Denominator = denominator;
++			this.Numerator = numerator;
++			this.Denominator = denominator;
+ 		}
+ 
+ #endregion

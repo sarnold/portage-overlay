@@ -1,0 +1,21 @@
+#include "pagestart.h"
+
+<p>BitPim uses a versioning scheme common with many other open source projects such
+as the Linux kernel.
+
+<blockquote><pre><font color="green">MAJOR</font>.<font color="red">MINOR</font>.<font color="blue">RELEASE</font></pre>
+
+<p><font color="green">The major number is incremented when there are significant changes in functionality
+and form.</font>
+
+<p><font color="red">The minor number is incremented when there are new features.</font>
+
+<p><font color="blue">The release is incremented when there are minor changes and bug fixes.</font>
+
+</blockquote>
+
+<h2>Releases</h2>
+
+<p>There is a new BitPim release approximately once a month.  It incorporates new phone model support, new functionality and bug fixes.  In between official BitPim releases, there are incremental test releases that are available approximately once a week.  These test releases offer an opportunity for users and developers to try and test the upcoming bug fixes, new features, and new phone support, and provide feedbacks to the developers.  The goal is to reduce the risk of having new bugs and surprises with the official releases.
+
+#include "pageend.h"

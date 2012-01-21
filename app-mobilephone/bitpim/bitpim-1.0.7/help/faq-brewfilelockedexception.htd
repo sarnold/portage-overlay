@@ -1,0 +1,32 @@
+#include "pagestart.h"
+
+<p>Locked files are that way for two reasons.  (Note it is the phone
+that has locked them, not BitPim).  One is because their presence
+is fundamental to the operation of the phone, and if they were deleted
+would cause the fail to be unable to boot or operate.  That covers
+files containing the ESN and stuff like that.
+
+<p>The other reason seems to be that the file is in use by a program
+running on the phone.  There are usually all sorts of programs running
+such as SMS listeners, schedulers, contacts etc.
+
+<p>I believe there is a filesystem command to unlock files, but I haven't
+had the time to look into it.
+
+<p>So consider the whole thing a warning from your phone that they don't
+want you to change those files by directly overwriting them.
+
+<p><b>Can't I just offline my phone?</b>
+
+<p>Taking the phone offline just means no unexpected external events
+will happen.  For example if the phone wasn't offline and a
+phone call came in, the phone would have to look in your contacts
+to display the caller.  If BitPim were busy updating the contacts
+then the display code may look at incomplete information and
+worst case crash.  So the phone manufacturer just solves that
+problem by requiring the phone to be offlined while changes are
+made, and usually require a reboot afterwards since they don't
+want to deal with the internal programs re-reading the updated
+data.
+
+#include "pageend.h"

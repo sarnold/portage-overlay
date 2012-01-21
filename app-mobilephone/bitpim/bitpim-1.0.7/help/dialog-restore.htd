@@ -1,0 +1,14 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-restorefiles.png,)
+
+<p>This is expert functionality only.  Do not use this if you do
+not understand what you are doing.
+
+<p>The dialog lists the files that will be restored.  You can uncheck
+files that you don't want restored.  
+
+<p><b>Note:</b> The filenames as listed are exactly the names of the
+files as they will restored.
+
+#include "pageend.h"

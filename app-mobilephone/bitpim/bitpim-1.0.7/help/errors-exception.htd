@@ -1,0 +1,28 @@
+#include "pagestart.h"
+
+SCREENSHOT(exceptiondialog.png,)
+
+<p>An internal error has occurred and this dialog is reporting it.  Please scroll to the
+end of it to see the most pertinent details.  
+
+<H2>Buttons</H2>
+<DL>
+
+<DT><P><B>Abort BitPim</B>:
+<DD><P>Abort the current operation and exit BitPim immediately.
+
+<DT><P><B>Help</B>:
+<DD><P>Bring up this Help page.
+
+<DT><P><B>Continue</B>:
+<DD><P>Ignore this error/exception and continue running BitPim.
+
+<DT><P><B>Create Trouble Report</B>:
+<DD><P><A HREF="dialog-troublereport.htm">Create a trouble report</A> for this error/exception.
+
+</DL>
+
+<p>Unless you believe the problem to be a one off, you should report it.  See 
+<a href="support.htm">support</a> for more details.
+
+#include "pageend.h"

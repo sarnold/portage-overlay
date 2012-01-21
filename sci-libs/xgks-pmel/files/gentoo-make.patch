@@ -1,0 +1,35 @@
+--- ./Makefile.in.orig	1998-12-09 13:04:34.000000000 -0800
++++ ./Makefile.in	2009-04-25 12:51:42.000000000 -0700
+@@ -2,7 +2,7 @@
+ #
+ # $Id: Makefile.in,v 1.2 1998/12/09 21:04:34 kobrien Exp $
+ 
+-PACKAGE		= xgks
++PACKAGE		= xgks-pmel
+ 
+ MAJOR_NO	= @MAJOR_NO@
+ MINOR_NO	= @MINOR_NO@
+--- ./fontdb/Makefile.in.orig	1998-09-01 10:32:38.000000000 -0700
++++ ./fontdb/Makefile.in	2009-04-25 12:54:17.000000000 -0700
+@@ -7,8 +7,8 @@
+ CPPFLAGS	= $(INCLUDES) $(DEFINES) @CPPFLAGS@
+ CFLAGS		= @CFLAGS@
+ prefix		= ../../..
+-LIBDIR		= $(prefix)/lib
+-FONTDBDIR	= $(LIBDIR)/xgksfonts
++LIBDIR		= $(prefix)/lib64
++FONTDBDIR	= $(prefix)/share/xgksfonts
+ 
+ FONT_SRCS	= B.src G.src I.src R.src SC.src b.src i.src r.src sc.src
+ 
+--- ./src/lib/Makefile.in.orig	1999-03-09 17:34:48.000000000 -0800
++++ ./src/lib/Makefile.in	2009-04-25 13:01:37.000000000 -0700
+@@ -4,7 +4,7 @@
+ 
+ LIBRARY		= xgks
+ 
+-FONTDBDIR	= "$(LIBDIR)/xgksfonts"
++FONTDBDIR	= "$(prefix)/share/xgksfonts"
+ CPPFLAGS	= -I../../port -DFONTDBDIR='$(FONTDBDIR)' @CPP_X11@ @CPPFLAGS@
+ CFLAGS		= @CFLAGS@
+ 

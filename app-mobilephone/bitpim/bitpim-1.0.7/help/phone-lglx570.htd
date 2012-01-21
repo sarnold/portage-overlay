@@ -1,0 +1,20 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+
+<p>Phonebook, wallpaper, ringers, memo, SMS, and file system.  BitPim can autodetect this phone if it is connected to the PC via a straight USB cable.
+
+<H2>Cable</H2>
+<P>This phone was successfully tested with a straight USB data cable.
+
+<h2>Contents</h2>
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Notes,phone-lglx570-notes.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h"

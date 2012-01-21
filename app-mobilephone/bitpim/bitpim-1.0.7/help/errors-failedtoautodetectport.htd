@@ -1,0 +1,11 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-failedtoautodetectport.png,Failed to autodetect port)
+
+<p>BitPim has tried to autodetect which port you are using, but couldn't
+find a phone on any of them.  The ports tried are listed.  You will need
+to explicitly set the port from <a href="ref-settings.htm">Edit&nbsp;<img border=0 src="nextitem.png">&nbsp;Settings</a>
+and then <a href="ref-commsettingsdialog.htm">selecting a com port</a>.
+
+
+#include "pageend.h"

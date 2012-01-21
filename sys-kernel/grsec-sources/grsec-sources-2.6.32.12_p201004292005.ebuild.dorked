@@ -1,0 +1,53 @@
+# Copyright 1999-2010 Gentoo Foundation
+# Distributed under the terms of the GNU General Public License v2
+# $Header: $
+
+RESTRICT="nomirror"
+
+K_USEPV="yes"
+UNIPATCH_STRICTORDER="yes"
+K_SECURITY_UNSUPPORTED="1"
+
+ETYPE="sources"
+inherit kernel-2
+detect_version
+K_NOSETEXTRAVERSION="don't_set_it"
+
+MY_PV=${PV/_p*/}
+MY_PL=${PV/*_p/}
+GRSEC_MAJOR="2.1.14"
+GRSECPATCH_NAME="grsecurity-${GRSEC_MAJOR}-${MY_PV}-${MY_PL}.patch"
+GRSECPATCH_URI="http://grsecurity.net/stable/${GRSECPATCH_NAME}"
+ARCH_PATCH="patch-${MY_PV}.bz2"
+
+debug-print "MY_PV: ${MY_PV}"
+debug-print "MY_PL: ${MY_PL}"
+
+UNIPATCH_LIST="${DISTDIR}/${GRSECPATCH_NAME}"
+SRC_URI="${KERNEL_URI} ${GRSECPATCH_URI} ${ARCH_URI}"
+
+DESCRIPTION="A patchset by Brad Spengler for the Linux kernel, with an emphasis on enhancing security"
+HOMEPAGE="http://grsecurity.net/"
+
+IUSE=""
+KEYWORDS="~alpha amd64 ~hppa ~ia64 ~ppc ~ppc64 ~sparc x86"
+
+src_unpack() {
+	kernel-2_src_unpack
+	rm -f "${S}"/localversion-grsec
+}
+
+pkg_postinst() {
+	kernel-2_pkg_postinst
+
+	einfo "For further information on this patchset, please refer to:"
+	einfo
+	einfo "* http://www.grsecurity.net"
+	einfo "* http://wikipedia.org/wiki/Grsecurity"
+	einfo "* http://wikipedia.org/wiki/PaX"
+	einfo
+	einfo "These sources are best used in conjunction with a Hardened Gentoo base"
+	einfo "system. For further details, please refer to the project homepage at:"
+	einfo
+	einfo "http://www.gentoo.org/proj/en/hardened/"
+}

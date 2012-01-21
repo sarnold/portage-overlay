@@ -1,0 +1,16 @@
+#include "pagestart.h"
+
+SCREENSHOT(deviceneedsattention.png,)
+
+
+<p>Something has gone wrong while talking to the phone.  The dialog
+gives the details.  If BitPim can't talk to your phone then you need
+to follow the instructions in <a href="trouble-serial.htm">port/serial
+trouble shooting</a>.
+
+<p>The most frequent issue for LG VX4400 users are the
+<a href="lg4400-cables.htm#driverbug">drivers</a> with the
+<A HREF="lg4400-cables.htm#straightusb">straight USB cable</A>
+
+
+#include "pageend.h"

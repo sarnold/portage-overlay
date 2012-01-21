@@ -1,0 +1,16 @@
+#include "pagestart.h"
+
+<p>This phone supports USB charging cables.
+
+<h3>RPI Wireless straight USB with charging</h3>
+
+<p>Available from URL(misc-rpiwireless.htm,www.rpiwireless.com).  
+RPI were kind enough to loan a VX8000 to add support to BitPim.  You
+can thank them by placing your order with them.  Don't forget to mention
+that BitPim sent you!  Note that the VX7000 and VX8000 use exactly the
+same cable.
+
+IMAGE(vx7000-cable.jpg,)
+
+
+#include "pageend.h"

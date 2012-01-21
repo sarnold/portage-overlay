@@ -1,0 +1,39 @@
+<html>
+<!--
+<py-line code="Id=''"/>
+$Id: sms.xy 4206 2007-04-27 20:19:34Z djpham $
+
+Need to pass in the following data:
+dns['items']=a dict of sms.SMSEntry
+dns['keys']=a list of (sorted) keys of dns['smsitems']
+-->
+
+<head></head>
+<body>
+
+<py-open code="for k in keys:"/>
+<py-line code="_sms=items[k]"/>
+<p>
+<b>Folder:</b> ${_sms.folder}<br/>
+<b>Priority:</b> ${_sms.priority_str}<br/>
+<py-open code="if _sms.datetime:"/>
+<b>Date:</b> ${_sms.get_date_time_str()}<br/>
+<py-close/>
+<py-open code="if _sms._from:"/>
+<b>From:</b> ${_sms._from}<br/>
+<py-close/>
+<py-open code="if _sms._to:"/>
+<b>To:</b> ${_sms._to}<br/>
+<py-close/>
+<py-open code="if _sms.callback:"/>
+<b>Callback Number:</b> ${_sms.callback}<br/>
+<py-close/>
+<py-open code="if _sms.subject!='&lt;None&gt;':"/>
+<b>Subject:</b> ${_sms.subject}<br/>
+<py-close/>
+<b>Text:</b> ${_sms.text}<br/>
+</p><br/>
+<py-close/>
+
+</body>
+</html>

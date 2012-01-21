@@ -1,0 +1,40 @@
+#include "pagestart.h"
+<H3>Firmware Version</H3>
+<UL>
+<li><p>The firmware version of the phone used for development & test is <B>VX910V03</B>.
+</UL>
+
+<H3>Phonebook</H3>
+<UL>
+<LI><P>BitPim supports all phonebook features of this phone.
+<LI><P>The phonebook can include up to 1000 entries, each entry can have up to 5 numbers for a total of 5000 numbers.
+<LI><P>The phone supports up to 999 speed dials (1 through 999).  If not used, BitPim sets speed dial slot 1 to <B>Voice Mail</B>.
+</UL>
+
+<H3>Calendar</H3>
+<UL>
+<LI><P>BitPim now fully supports all calendar features of this phone.
+<LI><P>For recurrent events, phone events have <B>End Date</B> and <B>Repeat Until</B> fields; when BitPim retrieves calendar data from the phone, it combines these 2 fields into the <B>End Date</B> field.
+<LI><P>This phone can support up to 300 calendar events.
+</UL>
+
+<H3>Ringtones</H3>
+<UL>
+<LI><P>BitPim can retrieve and add <B>Ringtones</B> and <B>Sounds</B> files from/to the phone.
+<LI><P>BitPim will not delete <B>Ringtones</B> and <B>Sounds</B> files on the phone.  They must be deleted manually from the phone.
+<LI><P>BitPim can make use of ringtone files stored on the microSD card, see section <a href="phone-lgvx9100-howtos.htm">Howtos</a> for more details.
+</UL>
+
+<H3>Pictues and Videos</H3>
+<UL>
+<LI><P>BitPim can retrieve and save <B>Pictures</B> and <B>Videos</B> from/to the phone.
+<LI><P>BitPim will not delete <B>Pictures</B> and <B>Vidoes</B> files on the phone.  They must be deleted manually from the phone.
+<li><p>The default <B>Pictures</B> format is JPEG.
+<li><p>The default <B>Pictures</B> resolutions are:
+<UL>
+<li><p><B>wallpaper:</B>320x215
+<li><p><B>outsidelcd:</B>160x64
+</UL>
+</UL>
+
+#include "pageend.h"

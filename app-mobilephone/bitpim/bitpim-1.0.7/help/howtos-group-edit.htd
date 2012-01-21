@@ -1,0 +1,10 @@
+#include "pagestart.h"
+<p>Users can now set a category, ringtone, or wallpaper to multiple contacts.  
+To edit and set a category, ringtone, or wallpaper to multiple contacts, do the following steps:
+<OL>
+<li><p>In the <B>Phonebook</B> tab, make sure that the appropriate columns (category, ringtone, or wallpaper) are displayed.
+<li><p>Select multiple contacts.
+<li><p>While making the last selection, double-click on the column of which to edit.  An <B>Edit Phonebook Entry</B> Panel will appear.
+<li><p>Using the <B>Edit Phonebook Entry</B> Panel, set (or delete) the appropriate values.  These values will be set to all selected contacts.
+</OL>
+#include "pageend.h"

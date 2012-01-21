@@ -1,0 +1,20 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+
+<p>Phonebook, wallpaper, ringers, filesystem, calendar, call history, SMS & Memo.
+The SMS feature supports text messages only and will silently ignore other parts of the message.
+BitPim can autodetect this phone if it is connected to the PC via a USB-to-Serial cable; it may also work with a straight USB cable, but that has not been tested.
+
+<h2>Contents</h2>
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Cables,lgvx4650-cables.htm)
+    TOCITEM_0(Notes,lgvx4650-notes.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h"

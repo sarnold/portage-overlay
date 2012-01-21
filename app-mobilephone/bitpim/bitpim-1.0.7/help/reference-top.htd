@@ -1,0 +1,72 @@
+#include "pagestart.h"
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Dialog boxes,dialogs.htm)
+        TOC_1
+        TOCITEM_1(Settings,ref-settings.htm)
+        TOCITEM_1(Comm Port Settings,ref-commsettingsdialog.htm)
+        TOCITEM_1(File Contents View,ref-hexviewdialog.htm)
+        TOCITEM_1(Restore Files,dialog-restore.htm)
+        TOCITEM_1(Get Phone Data,dialog-getphonedata.htm)
+        TOCITEM_1(Send Phone Data,dialog-sendphonedata.htm)
+        TOCITEM_1(Editing Calendar Events,editingcalendarevents.htm)
+        TOCITEM_1(Merging phonebook entries,dialog-mergingphonebookentries.htm)
+        TOCITEM_1(Audio Conversion,dialog-audioconversion.htm)
+        TOCITEM_1(Calendar Import,dialog-calendarimport.htm)
+        TOCITEM_1(Image Preview,dialog-imagepreview.htm)
+        TOCITEM_1(Calendar Merge,dialog-calendarmerge.htm)
+        TOCITEM_1(Calendar Import Wizard,dialog-calimpwiz.htm)
+        TOCITEM_1(Calendar Import Preset,dialog-calimppreset.htm)
+        TOCITEM_1(Create New BitPim Data Storage,dialog-newdb.htm)
+	TOCITEM_1(Create Trouble Report,dialog-troublereport.htm)
+        ENDTOC_1
+    TOCITEM_0(Tree Items,tabs.htm)
+        TOC_1
+        TOCITEM_1(Phone,tab-today.htm)
+        TOCITEM_1(Phonebook,tab-phonebook.htm)
+        TOCITEM_1(Media,tab-media.htm)
+        TOCITEM_1(Calendar,tab-calendar.htm)
+        TOCITEM_1(Memo,tab-memo.htm)
+        TOCITEM_1(Todo,tab-todo.htm)
+        TOCITEM_1(SMS,tab-sms.htm)
+        TOCITEM_1(Call History,tab-callhistory.htm)
+        TOCITEM_1(Play List,tab-playlist.htm)
+        TOCITEM_1(T9 Editor,tab-t9editor.htm)
+        TOCITEM_1(Filesystem,tab-filesystem.htm)
+        TOCITEM_1(Log,tab-log.htm)
+        TOCITEM_1(Protocol Log,tab-protocollog.htm)
+        ENDTOC_1
+    TOCITEM_0(Howtos,howtos.htm)
+        TOC_1
+        TOCITEM_1(Backups,howto-backups.htm)
+        TOCITEM_1(Multiple Users/Data Directories,howto-multipleusers.htm)
+        TOCITEM_1(Import Calendar Data,howtos-calendarimport.htm)
+        TOCITEM_1(Import Outlook Notes/Tasks,howtos-importoutlooknotes.htm)
+        TOCITEM_1(Add Ringtones,howto-addringtones.htm)
+        TOCITEM_1(Add Images,howto-addimages.htm)
+        TOCITEM_1(Set category, ringtone, or wallpaper to multiple contacts,howtos-group-edit.htm)
+        TOCITEM_1(Do Data Recording,howtos-datarecording.htm)
+        ENDTOC_1
+    TOCITEM_0(USB,hoto-usbintro.htm)
+        TOC_1
+        TOCITEM_1(Linux USB Setup,howto-linuxusb.htm)
+        TOCITEM_1(Mac USB Setup,howto-macusb.htm)
+        TOCITEM_1(Windows USB Setup,howto-windowsusb.htm)
+        TOCITEM_1(Vendor and Product ids,ref-usbids.htm)
+        ENDTOC_1
+    TOCITEM_0(BitPim Internals,bitpim-internals.htm)
+        TOC_1
+        TOCITEM_1(How BitPim stores data,internals-data-storage.htm)
+        TOCITEM_1(Phone Protocols,internals-protocols.htm)
+        TOCITEM_1(Working with the code,internals-code.htm)
+        ENDTOC_1
+    TOCITEM_0(Command Line Interface (CLI),cli.htm)
+    ENDTOC_0
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+
+#include "pageend.h"

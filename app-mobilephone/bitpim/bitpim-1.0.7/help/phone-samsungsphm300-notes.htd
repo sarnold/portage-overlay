@@ -1,0 +1,58 @@
+#include "pagestart.h"
+
+<H3>Firmware Version</H3>
+<UL>
+<LI>The firmware version is <B>M300 AE07</B>.
+<LI>The hardware version is <B>M300.06a</B>.
+</UL>
+
+<H3>Phonebook</H3>
+<UL>
+<LI>BitPim supports up to 300 phonebook contacts.
+<LI>The field <B>Nick Name</B> and <B>Memo</B> are not supported by BitPim and will be lost upon reading/sending phonebook data from/to the phone.
+<LI>BitPim can neither read nor set <B>Speed Dials</B>.  All <B>Speed Dial</B> settings will be lost when reading phonebook data from the phone or sending to the phone.
+<LI>BitPim can only read and set <B>built-in ringtones</B> for <B>Ringer ID</B> and <B>built-in wallpapers</B> for <B>Picture ID</B>.
+</UL>
+
+<H3>Calendar</H3>
+<UL>
+<LI>BitPim supports up to 70 calendar events.
+<LI>This phone model does not support recurring (repeat) events.
+<LI>Due to timing issues, when getting or sending calendar data from/to the phone, <B>ONLY</B> the calendar item should be selected (and nothing else) in the <B>Get Data from Phone</B> and <B>Send Data to Phone</B> dialog.
+</UL>
+
+<H3>Task List</H3>
+<UL>
+<LI>BitPim supports up to 9 task lists.
+<LI>BitPim does not support the <B>Due Time</B> field.  It ignores this field when reading data from the phone, and sets it to 12:00am when writing data to the phone.
+</UL>
+
+<H3>Memo Pad</H3>
+<UL>
+<LI>BitPim supports up to 9 memo pad items.
+</UL>
+
+<H3>Camera Images</H3>
+<UL>
+<LI>BitPim can retrieve <B>In Camera</B> pictures from the phone and place them under <B>Media/camera-fullsize</B> view.
+<LI>BitPim can retrieve <B>Saved to Phone</B> pictures and place them under <B>Media/camera</B> view.
+<LI>To avoid accidental deletion, BitPim will not write or delete pictures/images in the <B>In Camera</B> and <B>Saved to Phone</B> section.  Users will have to manually delete them from the phone.
+</UL>
+
+<H3>Screen Savers (Wallpapers)</H3>
+<UL>
+<LI><B>Screen Savers (Wallpapers)</B> can be retrieved, added, deleted and sent to the phone via the <B>Media/images</B> view.
+<LI>The default format of <B>Screen Saver</B> images is <B>JPEG</B>.  The default resolution is 128x160.
+</UL>
+
+<H3>Ringers (Ringtones)</H3>
+<UL>
+<LI>Ringers can be retrieved, added, deleted, and sent to the phone via the <B>Media/ringers</B> view.
+<LI>This phone model can accept <B>MIDI</B>, <B>QCP</B>, and <B>PMD</B> format.
+</UL>
+
+<H3>SMS</H3>
+<UL>
+<LI>BitPim <B>MAY</B> be able to retrieve SMS Inbox text messages from the phone.  However, since the loaner unit is not activated, no test data (messages) were available to develop and test this feature.  Currently, the SMS reading feature is available only for data recording purposes.  If you'd like to help with this effort, please do data recording and email the DR file to djpham@bitpim.org.
+</UL>
+#include "pageend.h"

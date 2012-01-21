@@ -1,0 +1,229 @@
+--- fer/ccr/EF_InternalUtil.c.orig	2009-05-09 18:52:29.035137860 -0700
++++ fer/ccr/EF_InternalUtil.c	2009-05-09 18:53:38.553386396 -0700
+@@ -2608,7 +2608,7 @@
+   FILE *File_ptr=(FILE *)data;
+   ExternalFunction *ef_ptr=(ExternalFunction *)curr; 
+      
+-  fprintf(stderr, "path = \"%s\", name = \"%s\", id = %d, internals_ptr = %d\n",
++  fprintf(stderr, "path = \"%s\", name = \"%s\", id = %d, internals_ptr = %p\n",
+ 	  ef_ptr->path, ef_ptr->name, ef_ptr->id, ef_ptr->internals_ptr);
+ 
+   return TRUE;
+--- fer/ccr/backing_store_enabled.c.orig	2009-05-09 19:00:06.619136802 -0700
++++ fer/ccr/backing_store_enabled.c	2009-05-09 19:01:03.709137108 -0700
+@@ -41,14 +41,14 @@
+ 
+ 
+ /* *kob* 10/03 v553 - gcc v3.x needs wchar.h included */
+-#include <wchar.h>
++#include <stdio.h>
++#include <stdlib.h>
+ #include <wchar.h>
+ #include "gks_implem.h"
+ #include "wslist.h"
+ 
+ #include <X11/Xlib.h>
+ #include <X11/Xutil.h>
+-#include <stdio.h>
+ 
+ #ifdef NO_ENTRY_NAME_UNDERSCORES
+ backing_store_enabled(ws_id, bs)
+--- fer/ccr/c_dncase.c.orig	2009-05-09 18:57:08.382503120 -0700
++++ fer/ccr/c_dncase.c	2009-05-09 18:57:47.266389229 -0700
+@@ -42,10 +42,11 @@
+ 
+ /* *kob* 10/03 v553 - gcc v3.x needs wchar.h included */
+ /* *acm   9/06 v600 - add stdlib.h wherever there is stdio.h for altix build*/ 
+-#include <wchar.h>
+-#include <assert.h>
+ #include <stdlib.h>
+ #include <stdio.h>
++#include <string.h>
++#include <wchar.h>
++#include <assert.h>
+ 
+ void c_dncase_(in_ptr, out_ptr)
+      char** in_ptr;
+--- fer/ccr/c_strlen.c.orig	2009-05-09 18:58:08.987136359 -0700
++++ fer/ccr/c_strlen.c	2009-05-09 18:59:39.332388281 -0700
+@@ -41,8 +41,9 @@
+ */
+ 
+ /* *kob* 10/03 v553 - gcc v3.x needs wchar.h included */
+-#include <wchar.h>
+ #include <stdlib.h>
++#include <string.h>
++#include <wchar.h>
+ 
+ void c_strlen_(in_ptr, out_ptr)
+      char** in_ptr;
+--- fer/ccr/c_substr.c.orig	2009-05-09 18:55:28.319138268 -0700
++++ fer/ccr/c_substr.c	2009-05-09 18:56:36.448177660 -0700
+@@ -47,10 +47,11 @@
+ 
+ /* *kob* 10/03 v553 - gcc v3.x needs wchar.h included */
+ /* *acm   9/06 v600 - add stdlib.h wherever there is stdio.h for altix build*/ 
+-#include <wchar.h>
+-#include <assert.h>
+ #include <stdlib.h>
+ #include <stdio.h>
++#include <string.h>
++#include <wchar.h>
++#include <assert.h>
+ 
+ void c_substr_(in_ptr, offset, length, out_ptr)
+      char** in_ptr;
+--- fer/ccr/copy_buffered_window.c.orig	2009-05-09 18:54:08.029138284 -0700
++++ fer/ccr/copy_buffered_window.c	2009-05-09 18:55:03.156136979 -0700
+@@ -41,13 +41,14 @@
+ 
+ 
+ /* *kob* 10/03 v553 - gcc v3.x needs wchar.h included */
++#include <stdio.h>
++#include <stdlib.h>
+ #include <wchar.h>
+ #include "gks_implem.h"
+ #include "wslist.h"
+ 
+ #include <X11/Xlib.h>
+ #include <X11/Xutil.h>
+-#include <stdio.h>
+ 
+ #ifdef NO_ENTRY_NAME_UNDERSCORES
+ copy_buffered_window(ws_id, anim_id)
+--- fer/ccr/fermain_c.c.orig	2009-05-09 18:28:24.641385739 -0700
++++ fer/ccr/fermain_c.c	2009-05-09 18:44:59.913386336 -0700
+@@ -135,6 +135,7 @@
+ #include <unistd.h>
+ #include <stdlib.h>
+ #include <stdio.h>
++#include <string.h>
+ #include "ferret.h"
+ #include "ferret_shared_buffer.h"
+ 
+@@ -334,7 +335,7 @@
+     exit(0);
+   }
+   if (mem_blk_size < 0)
+-  { printf("internal overflow expressing %g Mwords as words %g \n",rmem_size,mem_size);
++  { printf("internal overflow expressing %g Mwords as words %d \n",rmem_size,mem_size);
+     printf("Unable to allocate the requested %g Mwords of memory.\n",rmem_size);
+     exit(0);
+   }
+@@ -345,7 +346,7 @@
+   ppl_memory = (float *) malloc(sizeof(float) * pplmem_size );
+ 
+   if ( ppl_memory == (float *)0 ) {
+-    printf("Unable to allocate the initial %f words of PLOT memory.\n",pplmem_size);
++    printf("Unable to allocate the initial %d words of PLOT memory.\n",pplmem_size);
+     exit(0);
+  }
+   /* initialize stuff: keyboard, todays date, grids, GFDL terms, PPL brain */
+@@ -424,7 +425,7 @@
+ 	  strcat( init_command, "; GO \"" ); 
+ 	  strcat( init_command, script_file );
+ 	  strcat( init_command, "\"" );
+-	  strcat( init_command, "\ ");
++	  strcat( init_command, "\\ ");
+ 	  } else {
+ 	  strcat( init_command, "; GO " ); 
+ 	  strcat( init_command, script_file );
+--- fer/ccr/get_sys_cmnd.c.orig	2009-05-09 18:21:55.942326884 -0700
++++ fer/ccr/get_sys_cmnd.c	2009-05-09 18:22:46.866136584 -0700
+@@ -44,6 +44,7 @@
+ #include <wchar.h>
+ #include <stdlib.h>
+ #include <stdio.h>
++#include <string.h>
+ 
+ void get_sys_cmnd_(fer_ptr, nlines, cmd, stat)
+      char*** fer_ptr; /* output: char** pointer to strings */
+--- fer/ccr/gui_init.c.orig	2009-05-09 18:20:31.792137777 -0700
++++ fer/ccr/gui_init.c	2009-05-09 18:21:19.612386158 -0700
+@@ -40,6 +40,8 @@
+  */
+ 
+ /* *kob* 10/03 v553 - gcc v3.x needs wchar.h included */
++#include <stdlib.h>
++#include <stdio.h>
+ #include <wchar.h>
+ #include <X11/Intrinsic.h>
+ #include <X11/StringDefs.h>
+--- fer/ccr/list.c.orig	2009-05-09 18:19:17.263387571 -0700
++++ fer/ccr/list.c	2009-05-09 18:19:46.826387796 -0700
+@@ -61,6 +61,7 @@
+ #include <wchar.h>
+ #include <stdlib.h>
+ #include <stdio.h>
++#include <string.h>
+ #include "list.h"
+ 
+ /*char *malloc();*/
+--- fer/ccr/perl_read.c.orig	2009-05-09 18:38:14.461664959 -0700
++++ fer/ccr/perl_read.c	2009-05-09 19:23:19.991388658 -0700
+@@ -1,12 +1,14 @@
+ #ifdef USE_PERL
+ /* *kob* 10/03 v553 - gcc v3.x needs wchar.h included */
+-#include <wchar.h>
+ #include <EXTERN.h>
+ #include <perl.h>
+ #endif
++#include <stdio.h>
++#include <stdlib.h>
++#include <stdarg.h>
++#include <wchar.h>
+ #include <assert.h>
+ #include "binaryRead.h"
+-#include <stdio.h>
+ 
+ #ifdef USE_PERL
+ static char Errbuf[8192];
+--- fer/ccr/put_frame.c.orig	2009-05-09 15:34:53.997387293 -0700
++++ fer/ccr/put_frame.c	2009-05-09 18:18:23.895387722 -0700
+@@ -60,6 +60,9 @@
+ 
+ 
+ /* *kob* 10/03 v553 - gcc v3.x needs wchar.h included */
++#include <stdio.h>
++#include <stdlib.h>
++#include <string.h>
+ #include <wchar.h>
+ #include "gks_implem.h" /* ditto */
+ #include "wslist.h"
+@@ -67,7 +70,6 @@
+ #include "cgm/cgm_implem.h"		/* for implementation details */
+ #include <X11/Xlib.h>
+ #include <X11/Xutil.h>
+-#include <stdio.h>
+ #include "ferret.h"
+ 
+ #ifdef NO_ENTRY_NAME_UNDERSCORES
+@@ -170,11 +172,14 @@
+   float green;
+   float blue;
+   int trans;
+-  char *tname = tempnam("/tmp", "fer");
++//  char *tname = tempnam("/tmp", "fer");
++  int fd;
++  char tname[] = "/tmp/ferXXXXXX.gif";
++  strcpy(filename, tname);
++  //strcat(filename, ".gif");
++  if ((fd = mkstemp(filename)) == -1) return NULL;
+   WS_STATE_ENTRY *ws = OPEN_WSID(*ws_id);
+   status = 0;
+-  strcpy(filename, tname);
+-  strcat(filename, ".gif");
+   red = 0;
+   green = 0;
+   blue = 0;
+--- fer/ccr/Makefile.orig	2009-05-09 19:28:30.036388702 -0700
++++ fer/ccr/Makefile	2009-05-09 19:30:11.204449657 -0700
+@@ -16,7 +16,7 @@
+ include ./SOURCE_FILES
+ include ./LIB_NAME
+ 
+-#CFLAGS += -I../gui
++CFLAGS += $(GKS_INCLUDES)
+ #
+ # Macros
+ #

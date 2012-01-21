@@ -1,0 +1,58 @@
+=== modified file 'src/interface.cpp'
+--- src/interface.cpp	2010-10-28 19:58:13 +0000
++++ src/interface.cpp	2010-12-06 07:33:57 +0000
+@@ -134,6 +134,8 @@
+                                      void *data);
+ static void sp_recent_open(GtkRecentChooser *, gpointer);
+ 
++static void injectRenamedIcons();
++
+ SPActionEventVector menu_item_event_vector = {
+     {NULL},
+     NULL,
+@@ -408,6 +410,11 @@
+ void
+ sp_ui_menuitem_add_icon( GtkWidget *item, gchar *icon_name )
+ {
++    static bool iconsInjected = false;
++    if ( !iconsInjected ) {
++        iconsInjected = true;
++        injectRenamedIcons();
++    }
+     GtkWidget *icon;
+ 
+     icon = sp_icon_new( Inkscape::ICON_SIZE_MENU, icon_name );
+@@ -1595,6 +1602,32 @@
+     //a menu item in yet another way...
+ }
+ 
++void injectRenamedIcons()
++{
++    Glib::RefPtr<Gtk::IconTheme> iconTheme = Gtk::IconTheme::get_default();
++
++    std::vector< std::pair<Glib::ustring, Glib::ustring> > renamed;
++    renamed.push_back(std::make_pair("gtk-file", "document-x-generic"));
++    renamed.push_back(std::make_pair("gtk-directory", "folder"));
++
++    for ( std::vector< std::pair<Glib::ustring, Glib::ustring> >::iterator it = renamed.begin(); it < renamed.end(); ++it ) {
++        bool hasIcon = iconTheme->has_icon(it->first);
++        bool hasSecondIcon = iconTheme->has_icon(it->second);
++
++        if ( !hasIcon && hasSecondIcon ) {
++            Glib::ArrayHandle<int> sizes = iconTheme->get_icon_sizes(it->second);
++            for ( Glib::ArrayHandle<int>::iterator it2 = sizes.begin(); it2 < sizes.end(); ++it2 ) {
++                Glib::RefPtr<Gdk::Pixbuf> pb = iconTheme->load_icon( it->second, *it2 );
++                if ( pb ) {
++                    // install a private copy of the pixbuf to avoid pinning a theme
++                    Glib::RefPtr<Gdk::Pixbuf> pbCopy = pb->copy();
++                    Gtk::IconTheme::add_builtin_icon( it->first, *it2, pbCopy );
++                }
++            }
++        }
++    }
++}
++
+ 
+ /*
+   Local Variables:
+

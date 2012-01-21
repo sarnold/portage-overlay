@@ -1,0 +1,11 @@
+--- src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseFilterListModel.cs.orig	2010-03-21 16:51:19.436474000 +0100
++++ src/Core/Banshee.Services/Banshee.Collection.Database/DatabaseFilterListModel.cs	2010-03-21 16:52:29.595471508 +0100
+@@ -130,7 +130,7 @@
+             } else {
+                 ModelHelper.BuildIdFilter<object> (GetSelectedObjects (), FilterColumn, null,
+                     delegate (object item) {
+-                        if (item != select_all_item) {
++                        if (!select_all_item.Equals(item)) {
+                             return ItemToFilterValue (item);
+                         }
+                         return null;

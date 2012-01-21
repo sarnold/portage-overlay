@@ -1,0 +1,6 @@
+#include "pagestart.h"
+
+<p>You have a command defined to view images or ringtones, but it failed
+to work when BitPim tried it.
+
+#include "pageend.h"

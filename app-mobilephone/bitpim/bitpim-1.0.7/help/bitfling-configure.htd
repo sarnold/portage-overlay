@@ -1,0 +1,72 @@
+#include "pagestart.h"
+
+<p>When you first start BitFling, it will generate a certificate for
+your machine.  It then displays an icon in the system tray (for
+Windows) or a draggable icon for Linux and Mac.  If you click on
+the icon, a window appears that allows you to configure BitFling
+as well as view the log etc.
+
+<p>You should then add authorized users.  It is recommended
+that you use their email address as the username and allocate
+a password.  Then you need to set what addresses they can
+connect from.  They may be able to tell you what addresses,
+or you need to find out.
+
+<p>To find out, tell them to try to connect and then examine your
+log.  You should see a line something like:
+
+<pre>
+  17:10:38.546: No defined users for address ('192.168.1.25', 39480)
+</pre>
+
+<p>The numbers in quotes <code>192.168.1.25</code> are the address
+the connection tried to come from.  For the more advanced users,
+you can also put in wildcards (eg <code>192.168.1.*</code>) as well as
+DNS names (with no wildcards, such as <code>machineA.example.com</code>)
+
+<p>The expires field is not used and will be removed.
+
+<p>In the future you will be able to limit what devices can
+be accessed in the lower pane.
+
+<h2>Advanced Configuration</h2>
+
+<p>To alter the settings, edit the configuration.  On Windows, this
+is the registry <code>HKEY_CURRENT_USER\\Software\\BitFling</code>
+and on Linux and Mac is <code>.bitfling</code> in your home
+directory.
+
+<p>The following configuration directives are available:
+
+TABLE
+
+<tr>
+<th>Key<th>Default<th>Description
+</tr>
+
+
+<tr>
+<td>certificatefile
+<td><code>.bitfling.key</code>
+in your home directory (Linux, Mac) or My Documents (Windows)
+<td>Where the certificate for your machine is stored.
+If one is not present when BitFling starts, it will generate
+a new certificate.
+</tr>
+
+<tr>
+<td>bindaddress
+<td><code>""</code> (Empty string, all interfaces)
+<td>This is the interface to bind to.  If you have
+multiple network interfaces in your machine, you
+can make BitFling only use one of them.
+
+<tr>
+<td>port
+<td>12652
+<td>An integer for what port number to use
+</tr>
+
+</table>
+
+#include "pageend.h"

@@ -1,0 +1,12 @@
+#include "pagestart.h"
+
+<p>This phone supports both a straight USB and USB-to-Serial cable.
+
+<h3>Susteen Universal Cable (with an adapter for LG-VX4400 and one for LG-VX4650)</h3>
+
+IMAGE(vx4650-cable-susteen.jpg,)
+
+<h3>Generic (eBay) USB-to-Serial cable</h3>
+IMAGE(vx4650-cable-generic.jpg,)
+
+#include "pageend.h"

@@ -1,0 +1,10 @@
+#include "pagestart.h"
+
+<p>It is our intention to support every feature of every phone.
+The features and phones supported depend on access to the phones,
+developer priorities, information and time available.  There is no formal
+plan, so the answer is "whenever a developer gets round to it".
+If you would like it sooner than that then 
+<a href="contributing.htm">help</a>.
+
+#include "pageend.h"

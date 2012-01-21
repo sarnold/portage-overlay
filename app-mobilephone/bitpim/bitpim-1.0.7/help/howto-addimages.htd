@@ -1,0 +1,15 @@
+#include "pagestart.h"
+
+<OL>
+<li><p>Switch to the <B>Wallpaper</B> tab.
+<li><p>Click on <B>+</B> taskbar icon, or main menu <B>Edit</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>New...</B>
+<li><p>Select an image file to add.
+<li><p>An <B>Image Preview Dialog</B> will appear.
+SCREENSHOT(howto-addimages.jpg,)
+<p>
+<li><p>Select the <B>Target</B> of the wallpaper (how this wallpaper is being used).  This selection determines the format and resolution of the wallpaper.
+<li><p>Using the bounding box, select a clip of the source image which would later be converted into the wallpaper.
+<li><p>Once you're satisfied with the clip, click on <B>OK</B> to create the wallpaper and add it to the <B>Wallpaper</B> tab.  Click on <B>Cancel</B> to abort this process.
+</OL>
+
+#include "pageend.h"

@@ -1,0 +1,15 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+<UL>
+<LI><p>Phonebook, wallpaper (including camera images), ringtones, calendar, memo, SMS, call history, and file system. 
+<LI><P>This phone is also very similar to the <a href="phone-lgvx6100.htm">LG VX-6100</a>.
+</UL>
+
+<H2>Cables</H2>
+<UL>
+<LI><P>Developed and tested with USB Data Cable item number <B>DCAB-LG4270USB</B>.
+</UL>
+
+
+#include "pageend.h"

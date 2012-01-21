@@ -1,0 +1,16 @@
+--- acinclude.m4.orig	2009-04-17 01:25:23.000000000 -0700
++++ acinclude.m4	2009-05-30 21:59:33.566853166 -0700
+@@ -239,7 +239,12 @@
+     PYTHON_LIBS="-L${py_config_dir} -lpython${PYTHON_VERSION} $py_localmodlibs $py_basemodlibs $py_other_libs"
+     AC_MSG_RESULT(found)
+   else
+-    AC_MSG_RESULT(not found)
++    if test -e "${py_prefix}/lib/libpython${PYTHON_VERSION}.a"; then
++      PYTHON_LIBS="-L${py_prefix}/lib -lpython${PYTHON_VERSION} $py_localmodlibs $py_basemodlibs $py_other_libs"
++      AC_MSG_RESULT(found)
++    else
++      AC_MSG_RESULT(not found)
++    fi
+   fi
+ else
+   AC_MSG_RESULT(not found)

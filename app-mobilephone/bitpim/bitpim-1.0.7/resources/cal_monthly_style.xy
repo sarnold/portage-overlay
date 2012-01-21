@@ -1,0 +1,18 @@
+# This is pure Python code which sets up the styles and provides
+# some helper functions
+
+styles={}
+
+styles['table']={ '': ('width', "100%", 'cellpadding', "5", 'cellspacing', "0",
+                       'border', "1"),
+                  'td': ('valign', 'top')
+                  }
+styles['day_name']={ 'th': ('width', "14%", 'align', "center"),
+                     '+font': ('size', "4"),
+                     '+b': () }
+styles['month_name']={ 'td': ('width', "100%", 'colspan', "7"),
+                       '+font': ('size', "5"),
+                                 '+b': () }
+styles['date_cell']={ '': ('width', "14%", 'valign', "top") }
+styles['date_number']={ '+b': () }
+styles['event_item']={ '+font': ('size', "2") }

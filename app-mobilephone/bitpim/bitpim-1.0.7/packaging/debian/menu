@@ -1,0 +1,2 @@
+?package(bitpim):needs="X11" section="Apps/Tools"\
+  title="BitPim" command="/usr/bin/bitpim"

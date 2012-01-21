@@ -1,0 +1,15 @@
+--- Makefile.in.orig	2010-04-03 12:04:00.046373128 -0700
++++ Makefile.in	2010-04-03 12:43:20.196375019 -0700
+@@ -143,10 +143,10 @@
+ 	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o libf${MPILIBNAME}.la  -rpath $(libdir) -L. -l$(MPILIBNAME) -ldflags "$(LDFLAGS)" $(LIBS))
+ # Build the shared library from the shared object files
+ lib/lib${MPILIBNAME}f90.@SHLIB_EXT@: lib/lib${MPILIBNAME}f90.la
+-	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o lib${MPILIBNAME}f90.la  -rpath $(libdir)  -ldflags "$(LDFLAGS)" $(LIBS))
++	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o lib${MPILIBNAME}f90.la  -rpath $(libdir) -L. -l$(MPILIBNAME) -ldflags "$(LDFLAGS)" $(LIBS))
+ # Build the shared library from the shared object files
+ lib/lib${MPICXXLIBNAME}.@SHLIB_EXT@: lib/lib${MPICXXLIBNAME}.la
+-	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o lib${MPICXXLIBNAME}.la  -rpath $(libdir)  -ldflags "$(LDFLAGS)" $(LIBS))
++	(cd lib && $(CREATESHLIB) --mode=link -version-info "@ABIVERSION@" -o lib${MPICXXLIBNAME}.la  -rpath $(libdir) -L. -l$(MPILIBNAME) -ldflags "$(LDFLAGS)" -lstdc++ $(LIBS))
+ 
+ # --------------------------------------------------------------------------
+ .libstamp0: 

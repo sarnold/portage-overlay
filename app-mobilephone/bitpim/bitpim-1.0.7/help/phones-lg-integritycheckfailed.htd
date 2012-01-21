@@ -1,0 +1,76 @@
+#include "pagestart.h"
+
+<p>LG phones store their phonebook data in a way that makes it easy
+to synchronise and in particular tell if an entry is new or just changed.
+It does this by attaching a unique serial number to an entry.  If
+you edit the entry, this number remains the same.  If you create a
+new entry then it assigns a new number. 
+
+<p>For example if you change an entry name from "Lauren Smith" to
+"Lauren Jones" and a work phone number (such as if they got married
+and a new job) then sync software can tell it is the same person
+and not a new entry.  Sync software can also tell when entries
+have been removed.  This also helps distinguish people.  For example
+you may know two people named Tom Jones and sync software can
+the difference between there being two people or one person whose
+details get changed.
+
+<p>The numbers are allocated by the phone, starting from one.  Erasing
+all your entries does not reset it back to one.
+
+<p>There is some sync software (notably that used in Verizon stores)
+that does not talk to the phone correctly.  It transfers entries
+to the phone, but doesn't do so correctly and leaves the phone
+with entries with a higher serial number than the next one the
+phone will hand out to software that does synchronize properly.
+
+<p>Later on, as other software such as BitPim does correctly sync
+with the phone, the phone allocates new serial numbers that
+overlap those of entries already on the phone.  You then end
+up with multiple entries with the same serial number.
+
+<p>When reading from the phone, BitPim will detect when entries
+have the same serial number, list which ones they are and
+refuse to read the phonebook into BitPim since the data on
+your phone is corrupt.
+
+<p>In order to recover you must erase the phonebook on
+the phone using the phone menus to do so.  You can do this
+by doing Settings &amp; Tools, System, Security,  (your lock
+code is the last 4 digits of your phone number by default),
+Erase Contacts.
+
+<p>You will want to make sure you have written down or have
+all your contacts information in BitPim or some other program.
+You can also get some data from your phone.  When BitPim
+lists entries with duplicate serial numbers, delete all but
+one of the entries.  Repeat this until the phoneback can be
+successfully read and then reenter the entries you erased
+into BitPim.  Erase the phonebook <b>on the phone</b> and
+then sync from BitPim.
+
+<dl>
+<dt><p><b>Why not make BitPim fix the corrupted data?</b>
+
+<dd><p>You are welcome to contribute code that does so.  It
+was other programs that corrupted the data in the first
+place so they really should be the ones fixing this.
+
+<dt><p><b>I can see various files on my phone and can hack
+things that way</b>
+
+<dd><p>That is exactly likely what the programs that corrupted
+things did in the first place.  This is why BitPim always
+tries to use the correct protocol as intended by the handset
+manufacturer since that will do all the necessary updates and
+tracking of relevant files and information for that phone.
+We only directly manipulate the phone internals when there
+is no other way provided by the manufacturer, and are very
+careful when we do so.  The integrity of the data on the
+phone is more important to us than only getting a tickbox
+for a particular model in order to sell the program.
+
+</dl>
+
+
+#include "pageend.h"

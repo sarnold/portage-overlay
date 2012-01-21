@@ -1,0 +1,50 @@
+#include "pagestart.h"
+
+<p>BitPim needs to store several types of information including items such as
+phonebook entries, wallpaper images, and changes to items to implement undo
+or perform synchronization.  There are two types of storage used.  All of
+this storage is in a directory specified by Edit - Settings - Data directory.
+It defaults to <code>My Documents\\BitPim</code> on Windows and <code>$HOME/.bitpim-files</code>
+on Linux and Mac.
+
+<p>Note that BitPim does not require the user to manage moving data between 
+persistent storage (disk) and transient storage (RAM) since that is user
+hostile and the program is perfectly capable of doing so itself without
+handholding.
+
+<h2>index.idx</h2>
+
+<p>This is the old storage format and is the simplest.  There are separate 
+directories for each content type, and within that directory there is a
+file named <code>index.idx</code>.  The contents of the file are a pretty
+printed URL(http://www.python.org,Python) dictionary.  On any change the 
+file is overwritten with new content.
+
+<p>This format does not allow for undo, nor does it allow for multiple copies
+of BitPim to be running at the same time.
+
+<h2>Database</h2>
+
+<p>With BitPim 0.7.24 a database was introduced.  Information is stored as
+a journal of changes.  This allows for undo as well as multiple running
+copies.  If you would like to see what is actually stored then see the 
+information in <a href="internals-code.htm">working with the code</a>.
+
+<p>The rest of BitPim internally works with the Python dictionary objects,
+and the database module stores and restores it from the SQL tables behind
+the scenes.  If you want to inject custom data into BitPim then use
+the database module.
+
+<p>When BitPim starts up, each data source looks for the index.idx file first.
+If it doesn't exist then the database is used.  If it does exist, then the
+information is saved to the database and the index.idx file is renamed.
+
+<h3>Database implementation</h3>
+
+<p>The actual database used is URL(http://www.sqlite.org,SQLite).  This has
+the benefits of being simple, multi-process safe and high performance.  There
+is a lot more detail on the SQLite web site.  URL(http://www.rogerbinns.com/apsw.html,APSW)
+(Another Python SQLite Wrapper) is used to interface to Python.
+
+
+#include "pageend.h"

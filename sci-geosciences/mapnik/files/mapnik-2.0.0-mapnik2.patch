@@ -1,0 +1,18 @@
+--- bindings/python/build.py.orig	2011-11-06 01:56:20.000000000 -0700
++++ bindings/python/build.py	2011-11-06 01:57:16.000000000 -0700
+@@ -145,7 +145,7 @@
+ file('mapnik/paths.py','w').write(paths % (env['MAPNIK_LIB_DIR']))
+ 
+ try:
+-    os.chmod('mapnik/paths.py',0666)
++    os.chmod('mapnik2/paths.py',0666)
+ except: pass
+ 
+ # install the core mapnik python files, including '__init__.py' and 'paths.py'
+@@ -203,4 +203,4 @@
+ 
+ 
+ env['create_uninstall_target'](env, target_path)
+-    
+\ No newline at end of file
++    

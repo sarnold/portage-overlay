@@ -1,0 +1,23 @@
+#include "pagestart.h"
+
+<p>The SCP-6600 (Katana) is a thin flip phone with VGA camera.
+current supports read/write of the calendar, and reading of wallpaper
+(and camera images), ringers, call history and messages.
+
+<ul>
+<li>URL(http://www.sanyo.com/wireless/handsets/index.cfm?productID=1319,
+Katana product information)
+<li>URL(http://www.sanyo.com/wireless/handsets/downloads/Sprint_Katana_Users_Guide.pdf,
+Katana Users Guide)
+</ul>
+
+<p>In addition to directly supporting phonebook reading and writing
+over the cable, BitPim can write Sanyo compatible vCard files that can be
+sent to the Katana over Bluetooth.  
+To send contacts from BitPim to the phone, select
+"vCards..." from the "File/Export" menu.  In the vCard dialog, select
+the "Sanyo SCP-6600 (Katana)" dialect.  The resulting "vcf" file can
+then be sent to the phone with Bluetooth software.  Bluetooth software
+is often included with Bluetooth adapters or included with operating systems.
+
+#include "pageend.h"

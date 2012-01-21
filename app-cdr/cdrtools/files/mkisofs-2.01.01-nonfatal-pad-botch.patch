@@ -1,0 +1,61 @@
+--- cdrtools-2.01.01/mkisofs/dvd_file.c.orig	2004-03-05 11:28:53.000000000 +1300
++++ cdrtools-2.01.01/mkisofs/dvd_file.c	2006-08-11 14:30:02.000000000 +1200
+@@ -734,12 +734,27 @@
+ 	if (name[0] != 'V') {
+ 		return (0);
+ 	}
++	if (verbose > 0) {
++		fprintf(stderr, "::%s::\n", name);
++	}
+ 	if (memcmp(name, "VIDEO_TS", 8) == 0) {
+ 		if (strstr(name, ".IFO") != 0) {
++			if (verbose > 0) {
++				fprintf(stderr, "::.IFO:%i::\n",
++				title_set_info->title_set[0].pad_ifo);
++			}
+ 			return (title_set_info->title_set[0].pad_ifo);
+ 		} else if (strstr(name, ".VOB") != 0) {
++			if (verbose > 0) {
++				fprintf(stderr, "::.VOB:%i::\n",
++				title_set_info->title_set[0].pad_menu);
++			}
+ 			return (title_set_info->title_set[0].pad_menu);
+ 		} else if (strstr(name, ".BUP") != 0) {
++			if (verbose > 0) {
++				fprintf(stderr, "::.BUP:%i::\n",
++				title_set_info->title_set[0].pad_bup);
++			}
+ 			return (title_set_info->title_set[0].pad_bup);
+ 		} else {
+ 			return (0);
+@@ -756,12 +771,30 @@
+ 			return (0);
+ 		} else {
+ 			if (strstr(name, ".IFO") != 0) {
++				if (verbose > 0) {
++					fprintf(stderr, "::.IFO:%i:setting to 0::\n",
++					title_set_info->title_set[title].pad_ifo);
++				}
++				return (0);
+ 				return (title_set_info->title_set[title].pad_ifo);
+ 			} else if (strstr(name, ".BUP") != 0) {
++				if (verbose > 0) {
++					fprintf(stderr, "::.BUP:%i::\n",
++					title_set_info->title_set[title].pad_bup);
++				}
+ 				return (title_set_info->title_set[title].pad_bup);
+ 			} else if (vob == 0) {
++				if (verbose > 0) {
++					fprintf(stderr, "::vob==0:%i::\n",
++					title_set_info->title_set[title].pad_menu);
++				}
+ 				return (title_set_info->title_set[title].pad_menu);
+ 			} else if (vob == title_set_info->title_set[title].number_of_vob_files) {
++				if (verbose > 0) {
++					fprintf(stderr, "::vob=%i:%i::\n",
++					vob,
++					title_set_info->title_set[title].pad_title);
++				}
+ 				return (title_set_info->title_set[title].pad_title);
+ 			} else {
+ 				return (0);

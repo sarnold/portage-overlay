@@ -1,0 +1,73 @@
+#include "pagestart.h"
+
+SCREENSHOT(screenshot-settingsdialog.png,)
+
+<h2>Read Only</h2>
+
+<p>If you tick this box then all actions that could write to the phone are disabled,
+both in the user interface as well as within the phone modules.  Note that if you
+switch off read only mode (ie allow writing to the phone), then you must restart
+BitPim for the change to take effect.  (This is by design).
+
+<p>Note that changing phone modes remains enabled.  This is because reading
+information from most phone models requires mode changes.  Rebooting your
+phone will reset the phone back to its normal mode.
+
+<h2>Disk Storage</h2>
+
+<p>This is where BitPim stores the data it is working on.  By default it is a subdirectory named
+<code>bitpim</code> of your My Documents folder.  It contains necessary folders such as phonebook,
+calendar and wallpaper.  You should not put other files in these folders.  Every time
+you download data from the phone it deletes <b>ALL</b> the contents of these folders and
+puts new content in them.
+
+<H2>Config File</H2>
+<p>This is the name and path of the configuration file that BitPim is using.
+
+<h2>Phone Type</h2>
+
+<p>Select the model name of your phone.  Only select the model that
+exactly matches your phone.  Selecting a "similar" model number could
+damage your phone. Use the "Phone Wizard" button to have BitPim help you
+choose your phone and select how it is connected to your computer
+
+<h2>Com port</h2>
+
+<p>This is the serial port that will be used to talk to your phone.  Click the browse button to
+see the list of valid ports on your machine. The "Phone Wizard" will let you choose and test 
+the Com port.
+
+<H2>Com Timeout</H2>
+<P>This sets the timeout value for transferring data from/to the phone.  The default value is 3.0 seconds.  For some phone models, increasing this value may help to reduce/eliminate "Timeout" conditions.
+
+<h2>Check for Update</h2>
+
+<p>This sets the frequency with which BitPim automatically checks for any program updates.
+
+<h2>Startup</h2>
+
+<p>Enabling this option forces BitPim to display the "Today" tab upon startup.  When disabled, BitPim
+displays the last tab that was previously viewed.
+
+<H2>TaskBar Icon (Windows only)</H2>
+
+<p>Enabling this option places the BitPim icon in the System Tray when BitPim is minimized.
+
+<H2>Autodetect at Startup</H2>
+
+<p>Enabling this option causes BitPim to automatically detect the phone at startup. If disabled BitPim will use the 
+phone settings from the previous time it was run. Disable this option if you run BitPim without your phone connected
+to prevent error messages.
+
+<H2>Splash Screen Time</H2>
+<p>This sets the period of time (in seconds) that the BitPim splash screen will be displayed.  Enter 0 to disable the display of the splash screen.
+
+<h2>BitFling</h2>
+
+<p>BitFling is a way for BitPim to run on one machine and communicate
+with a phone on a different machine.  The checkbox and the settings
+button should not be used if you are connecting your phone to the
+computer you are running BitPim on.  (The usual case.)  For more
+information see the <a href="bitfling.htm">BitFling help</a>.
+
+#include "pageend.h"

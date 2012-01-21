@@ -1,0 +1,18 @@
+#define APPLETITLE "BitPim Help"
+#include "pagestart.h"
+
+<p>Welcome to BitPim.  
+
+<p>If you are new to BitPim, please take the <a href="tour-master.htm">tour</a>.
+<p>BitPim's homepage is URL(http://www.bitpim.org,www.bitpim.org).
+    The project page is URL(http://www.sourceforge.net/projects/bitpim,www.sourceforge.net/projects/bitpim)</a>.
+
+<p>You may be interested in <a href="upgrading.htm">upgrade information</a> or the 
+<a href="versionhistory.htm">version history</a>.
+
+<p>If you have any problems or questions please read the <a href="support.htm">information about support</a>.
+
+<p>Praise and <a href="contributing.htm">contributions</a> are always welcome!
+
+
+#include "pageend.h"

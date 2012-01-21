@@ -1,0 +1,16 @@
+--- orig/build.sh	2009-10-07 10:55:38.000000000 +0200
++++ new/build.sh	2009-10-07 10:55:19.000000000 +0200
+@@ -4,10 +4,10 @@
+ # using the GNU C/C++ compiler tools. If you already have a working
+ # Open Watcom compiler, you do not need to use the bootstrap process
+ 
+-if [ -f setvars ]; then
+-    . setvars
++if [ -f ./setvars ]; then
++    . ./setvars
+ else
+-    . setvars.sh
++    . ./setvars.sh
+ fi
+ if [ ! -f $DEVDIR/build/binl/wtouch ]; then
+     cp -p `which touch` $DEVDIR/build/binl/wtouch

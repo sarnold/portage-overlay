@@ -1,0 +1,17 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-playlisttab.jpg,)
+
+<p>This page allows users to retrieve, edit, and send their mp3 playlists from/to the phone.
+
+#define DESC(title,desc) \
+   <p><b>title</b>: desc
+
+<h2>Buttons</h2>
+
+DESC(Add,Add the selected song to the current playlist.)
+DESC(Save,Save the changes made to the current playlist.)
+DESC(Help,Bring up this help page.)
+DESC(Revert,Discard all changes.)
+
+#include "pageend.h"

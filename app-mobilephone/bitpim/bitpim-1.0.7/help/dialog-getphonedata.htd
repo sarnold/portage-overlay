@@ -1,0 +1,30 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-getdata.png,Get Data)
+
+<p>BitPim will transfer all data selected from the phone.  If you look 
+in the status bar you will see that BitPim is busy, and the progress it is making.
+
+<p>In the left column you can choose what to get.  
+
+<p>In the right hand columns, you have a choice of adding or replacing (both choices
+aren't available on all data types)
+
+<dl>
+
+<dt><p>Add<br>
+
+<dd><p>The items you have on your phone will be added to those already in BitPim.  For example,
+if you only have <i>mycat.bmp</i> in the wallpaper folder, then that will be added to the
+existing wallpapers in BitPim.  <b>Note</b> that if there is already an item with the same
+name, then it will be overwritten with the new item of the same name.<br>&nbsp;
+
+<dt><p>Replace
+
+<dd><p>All items on your phone will replace those in the same category in BitPim.  For example,
+if you have 3 wallpaper items on your phone, you will end up with <b>only</b> the same 3 items
+in BitPim. <b>All others will be removed</b>.
+
+</dl>
+
+#include "pageend.h"

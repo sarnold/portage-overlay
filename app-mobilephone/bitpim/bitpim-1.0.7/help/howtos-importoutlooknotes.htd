@@ -1,0 +1,16 @@
+#include "pagestart.h"
+
+<p>The process of importing Outlook Notes and Outlook Tasks data into BitPim is similar to that of importing Outlook Calendar data:
+
+<OL>
+<li><p>Select either <B>File</B>&nbsp;<img src="nextitem.png">&nbsp;<B>Import</B>&nbsp;<img src="nextitem.png">&nbsp;<B>Outlook Notes</B> or <B>Outlook Tasks</B>.
+<li><p>From the <B>Import Outlook</B> dialog, specify the Outlook folder from which to import data.
+<li><p>Read all the data items from the source folder.  The <B>Import Outlook</B> dialog will list all the items that have been successfully read.
+<li><p>Optionally set one or more filtering parameters to eliminate unwanted items.
+<li><p>Import the data into BitPim by using one of the following methods:
+<OL type="a">
+<li><p><B>Replace All:</B> First  delete all existing calendar data in BitPim, and then import the new data.
+<li><p><B>Add:</B> Import the new data with existing data intact.  This could result in duplicate data items.
+</OL> 
+</OL>
+#include "pageend.h"

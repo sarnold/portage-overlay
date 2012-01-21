@@ -1,0 +1,34 @@
+#include "pagestart.h"
+
+<H3>Firmware Version</H3>
+<UL>
+<li><p>The firmware version of the phone used for development & test is <B>VX11KV03</B>.
+</UL>
+
+<H3>Phonebook</H3>
+<UL>
+<li><p>BitPim supports all phonebook features of this phone.
+</UL>
+
+<H3>Calendar</H3>
+<UL>
+<li><p>BitPim fully supports all calendar features of this phone.
+<li><p>For recurrent events, phone events have <B>End Date</B> and <B>Repeat Until</B> fields; when BitPim retrieves calendar data from the phone, it combines these 2 fields into the <B>End Date</B> field.
+</UL>
+
+<H3>Ringtones</H3>
+<UL>
+<li><p>BitPim can not make use of ringtone files stored on the microSD card at this time.
+</UL>
+
+<H3>Sounds, Wallpaper, and Video</H3>
+<UL>
+<li><p>BitPim can retrieve and save <B>Sounds</B>, <B>Wallpaper</B>, and <B>Video</B> media files from/to the phone memory and microSD card.
+</UL>
+
+<H3>Music</H3>
+<UL>
+<li><p>BitPim can save music files to the phone memory or microSD card, though it would be very slow to transfer large files.
+</UL>
+
+#include "pageend.h"

@@ -1,0 +1,24 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-callhistorytab.png,)
+
+<p>This page allows users to retrieve, store, and view call history data from the
+phone.  Display information for each call includes the date and time when the
+call is made/received, and the phone number or contact name of the call.
+
+<p>Selecting the Call History item in the tree shows the total calls and duration of 
+call history from your phone. Click on the "All", "Incoming", "Outgoing", "Missed" 
+and "Data" items in the tree to view the individual calls in the call history. You 
+can click on the column headings to sort the items by type, name, date, number and duration.
+
+<p align=center><img src="screen-callhistorytab2.png">
+
+
+#define DESC(title,desc) \
+   <p><b>title</b>: desc
+
+<h2>Button</h2>
+
+DESC(Delete,Delete the selected calls.)
+
+#include "pageend.h"

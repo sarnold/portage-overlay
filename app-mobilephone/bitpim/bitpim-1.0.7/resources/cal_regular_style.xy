@@ -1,0 +1,22 @@
+# This is pure Python code which sets up the styles and provides
+# some helper functions
+
+styles={}
+
+styles['table']={ '': ('width', "100%", 'cellpadding', "5", 'cellspacing', "0",
+                       'border', "1"),
+                  'td': ('valign', 'top')
+                  }
+styles['header_center_bold']={ 'th': ('align', "center"),
+                              '+b': () }
+styles['header_left_bold']={ 'th': ('align', "left"),
+                              '+b': () }
+styles['month_header']={ 'td': ('align', "left", 'colspan', "5"),
+                         '+b': () }
+styles['date_day']={ '': ('align', "center", 'width', "15%") }
+styles['start_end']={ '': ('align', "center", 'width', "20%") }
+styles['description']={ '': ('align', "left", 'width', "45%") }
+styles['repeat']={ '': ('align', "center", 'width', "10%") }
+styles['alarm']={ '': ('align', "center", 'width', "10%") }
+styles['footnote']={ '': ('colspan', "5"),
+                     '+font': ('size', "2") }

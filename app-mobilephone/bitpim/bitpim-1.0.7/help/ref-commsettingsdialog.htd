@@ -1,0 +1,17 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-comportsettings.png,)
+
+<p>This dialog lets you see all the ports on your machine and you
+can select the one you wish to use.  The bottom half shows more details
+about the selected port.
+
+<p>Note that only ports listed as available will actually be usable by
+BitPim.  Other ports may be in use by other programs (such as Palm 
+HotSync or ActiveSync).  They may also be switched off for the moment.
+For example, if you have a USB to serial cable and it is not plugged
+in, then the port details will show up, but it will be listed as
+not active.  Plugging the cable in will make it active.
+
+
+#include "pageend.h"

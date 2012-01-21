@@ -1,0 +1,25 @@
+#include "pagestart.h"
+
+<H3>OBEX File Transfer Capability</H3>
+<UL>
+<LI><p>The V325M is basically the V325 with OBEX feature enabled (Seem 041A, record 0001, bytes 0000, offset 006A, bit 0=1).  This allows BitPim to transfer files from/to the phone using OBEX protocol via the USB data cable.
+</UL>
+
+<H3>Phone Detection</H3>
+<UL>
+<LI><p>To enable automatic detection, the internal phone ID must be updated (Seem 04FF, record 0001, bytes 0022, offset 0008="M"=0x4D).  Otherwise, this model must be selected manually.
+</UL>
+
+<H3>Ringtone</H3>
+<UL>
+<li><p>BitPim can read, add, delete, and replace ringtones on the phone.
+<LI><P>Though this model can play mp3 ringtones, it will not accept files with ".mp3" extension.  As a result, upon transferring ringtone files to the phone, BitPim will replace all ".mp3" extensions with ".mid" extensions.
+</UL>
+
+<H3>Wallpaper</H3>
+<UL>
+<li><p>BitPim can read wallpapers and pictures from the phone.
+<li><p>BitPim can only replace the contents of existing wallpapers on the phone.  BitPim can neither add new wallpapers to the phone, nor delete existing ones from the phone.  See the <a href="phone-motov325-howtos.htm">Howtos</a> section for more details.
+</UL>
+
+#include "pageend.h"

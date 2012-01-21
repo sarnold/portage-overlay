@@ -1,0 +1,18 @@
+#include "pagestart.h"
+
+<H3>Create your own wallpapers</H3>
+Since the stock V325 does not support transferring wallpaper files directly to the phone, the work-around is to  install placeholder pictures, retrieve them from the phone, replace their contents with your pictures, and sending them back to the phone.  To create your own wallpaper, do the following steps:
+<OL>
+<li><p>Install one or more placeholder pictures.  Again, there are many ways to do this.  One quick way is to take random pictures using the phone camera and optionally rename them as appropriate.
+<li><p>In BitPim, <B>Menu -> Data -> Get Phone Data ...</B>
+<li><p>From the <B>Get Data from Phone</B> dialog, check on <B>Wallpaper</B> and click on <B>OK</B>.  BitPim then retrieves the pictures from the phone.
+<li><p>Select a placeholder picture, invoke the context menu and select <B>Replace</B>.
+<li><p>From the File Selection dialog, select your custom picture file.
+<li><p>Depending on the format of your picture file, an <B>Image Preview</B> dialog may appear and allow you to convert, cut, and trim your picture into an JPEG clip. Click <B>OK</B> when you're satisfied with your clip.  (To bypass this step, select <B>Overwrite</B> from the context menu instead).
+<li><p>The content of the placeholder picture will then be replaced with your new clip.
+<li><p>Repeat step <B>6</B> through <B>8</B> for other placeholder pictures.
+<li><p>When you're ready to send your custom pictures to the phone, click on <B>Menu -> Data -> Send Phone Data ...</B>.
+<li><p>From the <B>Send Data to Phone</B> dialog, select <B>Wallpaper</B> and click <B>OK</B>.  BitPim then sends the newly "replaced" pictures to the phone.
+</OL>
+
+#include "pageend.h"

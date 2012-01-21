@@ -1,0 +1,21 @@
+#include "pagestart.h"
+
+<h3>Straight USB Charging cable</h3>
+IMAGE(scha670-cable.jpg,)
+
+<h2>Drivers</h2>
+<h3>Windows</h3>
+<p>USB Cables for Samsung phones require a driver.  Windows drivers
+are available from
+URL(http://www.futuredial.com/support/download/USB_Drivers.htm,FutureDial).
+<h3>Linux</h3>
+<p>Samsung phones use the Linux "acm" driver.  This
+driver will automatically install with most modern Linux distributions
+will show up as the device <tt>/dev/usb/ttyACM0</tt> or similar.  If the acm
+driver does not automatically get loaded, load it with <code>/sbin/insmod acm</code>
+while logged on as root.
+
+<h3>Mac</h3>
+<p>Mac OS X has drivers builtin.
+
+#include "pageend.h"

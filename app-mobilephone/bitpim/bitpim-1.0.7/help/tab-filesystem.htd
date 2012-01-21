@@ -1,0 +1,67 @@
+#include "pagestart.h"
+
+<p>Note that the filesystem view is off by default.  You need to turn it on in the
+view menu.  This functionality is suitable for expert users only.
+
+SCREENSHOT(screen-filesystem.png,)
+
+<p><b>Note:</b> You can cause damage to your phone in the filesystem view if
+      you make any changes.  <b>Be very careful</b>.  (BitPim itself doesn't
+      damage anything - it is just that the phone really cares about
+      the contents and existence of some of those files, and deleting or
+      changing them could upset it).
+
+<p>Some files don't have a date which is why none is displayed.
+
+<h2>Menus</h2>
+
+TABLE
+<tr>
+<td width=180 valign=top>SCREENSHOT(screen-filesysdirmenu.png,Directory menu)</td>
+
+<td valign=top>Right clicking on a directory brings up this menu.
+Choosing <i>New File</i> will place the file of your choice in 
+this directory.  It will have the same name as your source file.
+
+<p><blockquote><b>Filesystem backup and restore functionality is only
+suitable for expert users who understand what they are doing.
+You can easily make your phone inoperative by restoring 
+inappropriate files.</b></blockquote>
+
+<p>Backing up the directory will result in a zip file of only the
+contents of this directory (ie subdirectories will be ignored).
+You can include all subdirectories by backing up the entire tree.
+
+<p>Restore will let you select a zip file whose contents will
+be placed below this directory.  You will get a 
+<a href="dialog-restore.htm">dialog box</a> showing you what files
+will be restored and what their names will be.  You will be able
+to choose to only restore some files.
+
+<p>Refresh will get the contents of the directory from the phone 
+again.  You can also close the directory and reopen to refresh the 
+contents.
+
+<p>Delete will delete this directory, all the files within it, and
+all subdirectories.  Use it with caution, and it would be prudent
+to make a backup first.
+
+
+</tr>
+
+<tr>
+<td width=180 valign=top >SCREENSHOT(screen-filesysfilemenu.png,File menu)</td>
+
+<td valign=top>Right clicking on a file brings up this menu.   <i>Save</i>
+will let you save the file onto your computer.  <i>Hexdump</i> will show you
+the contents of the file <a href="ref-hexviewdialog.htm">like this.</a>  <i>Overwrite</i>
+will let you select a file on your computer and then replace the contents
+of the file on the phone with the contents of the file you selected.
+
+</tr>
+
+
+</table>
+
+
+#include "pageend.h"

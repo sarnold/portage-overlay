@@ -1,0 +1,162 @@
+Index: jchuff.h
+===================================================================
+RCS file: /cvsroot/libjpeg/libjpeg/jchuff.h,v
+retrieving revision 1.1
+diff -r1.1 jchuff.h
+39a40,44
+> #ifdef NEED_12_BIT_NAMES
+> #define jpeg_make_c_derived_tbl	jpeg_make_c_derived_tbl_12
+> #define jpeg_gen_optimal_table	jpeg_gen_optimal_table_12
+> #endif
+> 
+Index: jdct.h
+===================================================================
+RCS file: /cvsroot/libjpeg/libjpeg/jdct.h,v
+retrieving revision 1.1
+diff -r1.1 jdct.h
+94a95,106
+> #ifdef NEED_12_BIT_NAMES
+> #define jpeg_fdct_islow		jpeg_fdct_islow_12
+> #define jpeg_fdct_ifast	        jpeg_fdct_ifast_12
+> #define jpeg_fdct_float		jpeg_fdct_float_12
+> #define jpeg_idct_islow		jpeg_idct_islow_12
+> #define jpeg_idct_ifast		jpeg_idct_ifast_12
+> #define jpeg_idct_float	        jpeg_idct_float_12
+> #define jpeg_idct_4x4		jpeg_idct_4x4_12
+> #define jpeg_idct_2x2		jpeg_idct_2x2_12
+> #define jpeg_idct_1x1		jpeg_idct_1x1_12
+> #endif /* NEED_SHORT_EXTERNAL_NAMES */
+> 
+Index: jdhuff.h
+===================================================================
+RCS file: /cvsroot/libjpeg/libjpeg/jdhuff.h,v
+retrieving revision 1.1
+diff -r1.1 jdhuff.h
+20a21,26
+> #ifdef NEED_12_BIT_NAMES
+> #define jpeg_make_d_derived_tbl	jpeg_make_d_derived_tbl_12	
+> #define jpeg_fill_bit_buffer	jpeg_fill_bit_buffer_12	
+> #define jpeg_huff_decode	jpeg_huff_decode_12	
+> #endif /* NEED_SHORT_EXTERNAL_NAMES */
+> 
+Index: jmemsys.h
+===================================================================
+RCS file: /cvsroot/libjpeg/libjpeg/jmemsys.h,v
+retrieving revision 1.1
+diff -r1.1 jmemsys.h
+34a35,45
+> #ifdef NEED_12_BIT_NAMES
+> #define jpeg_get_small		jpeg_get_small_12
+> #define jpeg_free_small		jpeg_free_small_12
+> #define jpeg_get_large		jpeg_get_large_12
+> #define jpeg_free_large		jpeg_free_large_12
+> #define jpeg_mem_available	jpeg_mem_available_12
+> #define jpeg_open_backing_store	jpeg_open_backing_store_12
+> #define jpeg_mem_init		jpeg_mem_init_12
+> #define jpeg_mem_term		jpeg_mem_term_12
+> #endif /* NEED_SHORT_EXTERNAL_NAMES */
+> 
+Index: jpegint.h
+===================================================================
+RCS file: /cvsroot/libjpeg/libjpeg/jpegint.h,v
+retrieving revision 1.1
+diff -r1.1 jpegint.h
+331a332,367
+> #ifdef NEED_12_BIT_NAMES
+> #define jinit_compress_master	jinit_compress_master_12	
+> #define jinit_c_master_control	jinit_c_master_control_12	
+> #define jinit_c_main_controller	jinit_c_main_controller_12	
+> #define jinit_c_prep_controller	jinit_c_prep_controller_12	
+> #define jinit_c_coef_controller	jinit_c_coef_controller_12	
+> #define jinit_color_converter	jinit_color_converter_12	
+> #define jinit_downsampler	jinit_downsampler_12	
+> #define jinit_forward_dct	jinit_forward_dct_12	
+> #define jinit_huff_encoder	jinit_huff_encoder_12	
+> #define jinit_phuff_encoder	jinit_phuff_encoder_12	
+> #define jinit_marker_writer	jinit_marker_writer_12	
+> #define jinit_master_decompress	jinit_master_decompress_12	
+> #define jinit_d_main_controller	jinit_d_main_controller_12	
+> #define jinit_d_coef_controller	jinit_d_coef_controller_12	
+> #define jinit_d_post_controller	jinit_d_post_controller_12	
+> #define jinit_input_controller	jinit_input_controller_12	
+> #define jinit_marker_reader	jinit_marker_reader_12	
+> #define jinit_huff_decoder	jinit_huff_decoder_12	
+> #define jinit_phuff_decoder	jinit_phuff_decoder_12	
+> #define jinit_inverse_dct	jinit_inverse_dct_12	
+> #define jinit_upsampler		jinit_upsampler_12		
+> #define jinit_color_deconverter	jinit_color_deconverter_12	
+> #define jinit_1pass_quantizer	jinit_1pass_quantizer_12	
+> #define jinit_2pass_quantizer	jinit_2pass_quantizer_12	
+> #define jinit_merged_upsampler	jinit_merged_upsampler_12	
+> #define jinit_memory_mgr	jinit_memory_mgr_12	
+> #define jdiv_round_up		jdiv_round_up_12		
+> #define jround_up		jround_up_12		
+> #define jcopy_sample_rows	jcopy_sample_rows_12	
+> #define jcopy_block_row		jcopy_block_row_12		
+> #define jzero_far		jzero_far_12		
+> #define jpeg_zigzag_order	jpeg_zigzag_order_12	
+> #define jpeg_natural_order	jpeg_natural_order_12	
+> #endif
+> 
+Index: jpeglib.h
+===================================================================
+RCS file: /cvsroot/libjpeg/libjpeg/jpeglib.h,v
+retrieving revision 1.1
+diff -r1.1 jpeglib.h
+881a882,935
+> /* Sometimes it is desirable to build with special external names for 12bit, so that 8bit and 12bit
+>    jpeg DLLs can be used in the same applications. */
+> 
+> #ifdef NEED_12_BIT_NAMES
+> #define jpeg_std_error		jpeg_std_error_12
+> #define jpeg_CreateCompress	jpeg_CreateCompress_12
+> #define jpeg_CreateDecompress	jpeg_CreateDecompress_12
+> #define jpeg_destroy_compress	jpeg_destroy_compress_12
+> #define jpeg_destroy_decompress	jpeg_destroy_decompress_12
+> #define jpeg_stdio_dest		jpeg_stdio_dest_12
+> #define jpeg_stdio_src		jpeg_stdio_src_12
+> #define jpeg_set_defaults	jpeg_set_defaults_12
+> #define jpeg_set_colorspace	jpeg_set_colorspace_12
+> #define jpeg_default_colorspace	jpeg_default_colorspace_12
+> #define jpeg_set_quality	jpeg_set_quality_12
+> #define jpeg_set_linear_quality	jpeg_set_linear_quality_12
+> #define jpeg_add_quant_table	jpeg_add_quant_table_12
+> #define jpeg_quality_scaling	jpeg_quality_scaling_12
+> #define jpeg_simple_progression	jpeg_simple_progression_12
+> #define jpeg_suppress_tables	jpeg_supress_tables_12
+> #define jpeg_alloc_quant_table	jpeg_alloc_quant_table_12
+> #define jpeg_alloc_huff_table	jpeg_alloc_huff_table_12
+> #define jpeg_start_compress	jpeg_start_compress_12
+> #define jpeg_write_scanlines	jpeg_write_scanlines_12
+> #define jpeg_finish_compress	jpeg_finish_compress_12
+> #define jpeg_write_raw_data	jpeg_write_raw_data_12
+> #define jpeg_write_marker	jpeg_write_marker_12
+> #define jpeg_write_m_header	jpeg_write_m_header_12
+> #define jpeg_write_m_byte	jpeg_write_m_byte_12
+> #define jpeg_write_tables	jpeg_write_tables_12
+> #define jpeg_read_header	jpeg_read_header_12
+> #define jpeg_start_decompress	jpeg_start_decompress_12
+> #define jpeg_read_scanlines	jpeg_read_scanlines_12
+> #define jpeg_finish_decompress	jpeg_finish_decompress_12
+> #define jpeg_read_raw_data	jpeg_read_raw_data_12
+> #define jpeg_has_multiple_scans	jpeg_has_multiple_scans_12
+> #define jpeg_start_output	jpeg_start_output_12
+> #define jpeg_finish_output	jpeg_finish_output_12
+> #define jpeg_input_complete	jpeg_input_complete_12
+> #define jpeg_new_colormap	jpeg_new_colormap_12
+> #define jpeg_consume_input	jpeg_consume_input_12
+> #define jpeg_calc_output_dimensions	jpeg_calc_output_dimensions_12
+> #define jpeg_save_markers	jpeg_save_markers_12
+> #define jpeg_set_marker_processor	jpeg_set_marker_processor_12
+> #define jpeg_read_coefficients	jpeg_read_coefficients_12
+> #define jpeg_write_coefficients	jpeg_write_coefficients_12
+> #define jpeg_copy_critical_parameters	jpeg_copy_critical_parameters_12
+> #define jpeg_abort_compress	jpeg_abort_compress_12
+> #define jpeg_abort_decompress	jpeg_abort_decompress_12
+> #define jpeg_abort		jpeg_abort_12
+> #define jpeg_destroy		jpeg_destroy_12
+> #define jpeg_resync_to_restart	jpeg_resync_to_restart_12
+> #endif /* NEED_SHORT_EXTERNAL_NAMES */
+> 
+
+ 	  	 

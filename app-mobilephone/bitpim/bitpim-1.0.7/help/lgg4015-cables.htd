@@ -1,0 +1,6 @@
+#include "pagestart.h"
+
+<p>This phone only supports a USB-to-serial cable.  A straight USB cable WILL NOT work even though the connector may appear to fit.
+<h3>Generic (eBay) USB-to-Serial cable</h3>
+
+#include "pageend.h"

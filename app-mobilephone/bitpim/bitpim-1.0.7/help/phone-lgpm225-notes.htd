@@ -1,0 +1,33 @@
+#include "pagestart.h"
+
+
+<p>To reliably read or write the phonebook with BitPim, you must ensure there is at least one entry on the phone already.
+
+<p>For each contact in the phone book, the LG-PM225 supports 5 phone numbers, 3 e-mails, 1 URL and a 32 character memo.
+
+<p>You can assign one ringtone and one image per contact. You can choose a speed dial for each number in the phonebook.
+
+<p>The phone supports JPG and BMP image formats.
+
+<p>The phone supports MP3, MIDI and QCP formats. Stereo MP3s or MP3s with a bitrate above 128 or a sample rate above 44100Hz will cause the conversion
+dialog to appear. This can be bypassed by holding down crtl+shift when pressing the add button.
+
+<p>Media filenames will be truncated to 30 characters.
+
+<p>Due to the way the phone stores data and a limitation in the way the ringers have been implemented in BitPim the filename extension of a qcp file
+will be changed to .mp3 when they are retrieved from the phone. BitPim will show the type as QCP in the ringer tab even though the filename ends
+in .qcp. 
+
+<p>Another limitation for the LG-PM225 BitPim implementation is that all midia filenames must end in .mp3, .jpg, .jpeg, .bmp, .qcp or .mid to work correctly.
+
+<p>To create qcp files, download the QCP utility from URL(http://www.cdmatech.com/products/purevoice_download.jsp, QCP utility).
+
+<p>Java applications can be uploaded to the phone through BitPim. Add the java application file (must end in .jar) to the ringers tab in 
+the same way that you would add a ringtone. Send phone data (with ringers selected). The java application should now appear on the phone.
+Java applications cannot be retrieved from the phone by BitPim. The next time you get the ringers from the phone the .jar file will
+disappear from the ringers tab in BitPim (although it will remain on the phone). Use the phone itself to delete the application.
+
+<p>Only java applications designed for the phone should be sent to the phone. Uploading and/or running other java applications may cause the phone to malfunction.
+
+
+#include "pageend.h"

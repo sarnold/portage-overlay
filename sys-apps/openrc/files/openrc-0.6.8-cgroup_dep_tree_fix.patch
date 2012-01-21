@@ -1,0 +1,11 @@
+--- src/librc/librc.c.orig	2011-01-08 16:02:22.000000000 -0800
++++ src/librc/librc.c	2011-01-08 16:06:24.000000000 -0800
+@@ -233,7 +233,7 @@
+ 		return RC_SYS_VSERVER;
+ 	else if (exists("/proc/vz/veinfo") && !exists("/proc/vz/version"))
+ 		return RC_SYS_OPENVZ;
+-	else if (file_regex("/proc/self/cgroup", ":/.+$"))
++	else if (0 && file_regex("/proc/self/cgroup", ":/.+$"))
+ 		return RC_SYS_LXC;
+ 	else if (file_regex("/proc/self/status",
+ 		"envID:[[:space:]]*[1-9]"))

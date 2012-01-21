@@ -1,0 +1,45 @@
+#include "pagestart.h"
+
+<p>The first step is to tell BitPim what phone model you're using.
+Bitpim will try to detect your phone when you run it for the first time. 
+If this fails, or you change the phone you are using you can tell BitPim 
+to detect your phone again by clicking on the detect phone button on the 
+toolbar or selecting "Edit" -> "Detect Phone" from the menu. 
+
+SCREENSHOT(toolbar-detect.png,)
+
+<p> Note: Not all phone support AutoDetection. See <a href="phones-featuressupported.htm"> 
+here</a> for a list of phones BitPim can AutoDetect.
+BitPim may not be able to AutoDetect phones connected via Bluetooth.
+
+<p> If AutoDetect fails, BitPim will give you the option to open the Settings dialog so that you 
+can configure your phone manually. Press the Phone Wizard button in the Settings dialog to have 
+BitPim help you choose your phone and it's connection to your computer.
+
+SCREENSHOT(screenshot-settingsdialog.png,)
+
+<p>The next step is to get your data from your phone into BitPim.
+<br>Press the Get Data button on the toolbar or select "Data" -> "Get Phone Data" from the menu.
+
+SCREENSHOT(toolbar-getdata.png,)
+
+<p>You will then be given a choice of what to get.  Initially it is worth
+getting everything so you can see what is on your phone. If an option is disabled and you cannot
+select it, this means that BitPim does not support this feature on your phone.
+
+SCREENSHOT(screen-getdata.png,)
+
+<p>BitPim will automatically detect your phone and transfer all data selected from the phone.  If you look 
+in the status bar you will see that BitPim is busy, and the progress it is making.
+
+SCREENSHOT(screen-statusbar.png,)
+
+<blockquote>
+<p><b>Note</b>: In some cases, BitPim may fail to detect your phone.  You should
+<a href="trouble-serial.htm">troubleshoot</a> this.
+</blockquote>
+
+<p>You can now move on to where you can view and <a href="tour-edit.htm">edit</a> your data.
+
+
+#include "pageend.h"

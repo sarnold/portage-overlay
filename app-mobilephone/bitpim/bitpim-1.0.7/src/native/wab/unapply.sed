@@ -1,0 +1,1 @@
+s/apply.\([^,]*\),args/\1(*args/g

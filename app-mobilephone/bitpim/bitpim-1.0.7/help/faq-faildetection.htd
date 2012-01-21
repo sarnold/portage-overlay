@@ -1,0 +1,8 @@
+#include "pagestart.h"
+<P>BitPim phone detection works by identifying/matching known USB data cable signature and phone signature.  USB data cable signature consists of the cable's Product Identification (PID) and Vendor ID (VID).  Phone signature varies from model to model, but it generally includes some sort of phone identification data.  Phone detection will fail if (1) BitPim fails to match the cable signature, or (2) fails to match the phone signature.
+
+<P>In most cases, phone detection fails due to mismatching/unknown data cable.  This includes cases in which Bluetooth Serial Port Profile (SPP) interface was used (BT SPP ports have no PID and VID).  If the failure is due to new/unknown PID/VID, please provide the PID/VID (along with your phone model) to BitPim developers who will then add the new cable signature to the program.
+
+<P>If your PID/VID is not currently supported (or if you're using Bluetooth), you can still tell BitPim to detect your phone on a specific interface port.  This can be done via the <B>Phone Wizard</B> from the <B>BitPim Settings</B> dialog.  If that still fails, it means that either your phone is not the same as the model BitPim supports or BitPim code is wrong.  In either case, please report/post your result to the <B>bitpim-devel</B> list.
+
+#include "pageend.h"

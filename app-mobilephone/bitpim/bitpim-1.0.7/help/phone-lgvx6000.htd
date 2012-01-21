@@ -1,0 +1,24 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+
+<p>Phonebook, wallpaper (including camera), ringers, calendar,
+filesystem.  (<b>Note:</b> Camera images are only downloaded from the phone, not put back.)
+
+<h2>FAQs and support</h2>
+
+<p>There is a support group at URL(http://groups.yahoo.com/group/LGVX6000/,Yahoo Groups)
+
+<h2>Contents</h2>
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Cables,lg6000-cables.htm)
+    TOCITEM_0(Notes,lg6000-notes.htm)
+    TOCITEM_0(Howtos,lg6000-howtos.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h"

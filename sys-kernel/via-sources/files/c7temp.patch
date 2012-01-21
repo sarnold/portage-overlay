@@ -1,0 +1,315 @@
+New driver to support temperature and voltage sensors embedded inside the
+VIA C7 CPU.
+
+Signed-off-by: Juerg Haefliger <juergh at gmail.com>
+
+---
+ Documentation/hwmon/c7temp |   20 +++
+ drivers/hwmon/Kconfig      |   10 +
+ drivers/hwmon/Makefile     |    1 
+ drivers/hwmon/c7temp.c     |  240 +++++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 271 insertions(+)
+
+Index: linux/drivers/hwmon/c7temp.c
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ linux/drivers/hwmon/c7temp.c	2008-06-19 16:13:34.000000000 -0700
+@@ -0,0 +1,240 @@
++/*
++ * c7temp.c - Driver for the VIA C7 integrated temperature and voltage sensors.
++ *
++ * Copyright (C) 2008 Juerg Haefliger <juergh@gmail.com>
++ *
++ * This program is free software; you can redistribute it and/or modify
++ * it under the terms of the GNU General Public License as published by
++ * the Free Software Foundation; either version 2 of the License, or
++ * (at your option) any later version.
++ *
++ * This program is distributed in the hope that it will be useful,
++ * but WITHOUT ANY WARRANTY; without even the implied warranty of
++ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
++ * GNU General Public License for more details.
++ *
++ * You should have received a copy of the GNU General Public License
++ * along with this program; if not, write to the Free Software
++ * Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
++ */
++
++#include <linux/module.h>
++#include <linux/hwmon.h>
++#include <linux/sysfs.h>
++#include <linux/platform_device.h>
++#include <linux/err.h>
++#include <linux/jiffies.h>
++
++#define DRVNAME	"c7temp"
++
++static struct platform_device *pdev;
++
++struct c7temp_data {
++	const char *name;
++	struct device *hwmon_dev;
++	struct mutex update_lock;
++	char valid;			/* !=0 if following fields are valid */
++	unsigned long last_update;	/* In jiffies */
++
++	u32 temp;
++	u8 in;
++};
++
++static struct c7temp_data *c7temp_update_device(struct device *dev)
++{
++	struct c7temp_data *data = dev_get_drvdata(dev);
++	unsigned int eax, ebx, unused;
++
++	mutex_lock(&data->update_lock);
++
++	/* Sample register contents every 1 sec */
++	if (time_after(jiffies, data->last_update + HZ) || !data->valid) {
++		cpuid(0xc0000002, &eax, &ebx, &unused, &unused);
++		data->temp = eax;
++		data->in = ebx & 0xff;
++
++		data->last_update = jiffies;
++		data->valid = 1;
++	}
++
++	mutex_unlock(&data->update_lock);
++
++	return data;
++}
++
++static ssize_t show_name(struct device *dev, struct device_attribute *attr,
++			 char *buf)
++{
++	struct c7temp_data *data = dev_get_drvdata(dev);
++
++	return sprintf(buf, "%s\n", data->name);
++}
++
++static ssize_t show_temp(struct device *dev, struct device_attribute *attr,
++			 char *buf)
++{
++	struct c7temp_data *data = c7temp_update_device(dev);
++
++	return sprintf(buf, "%d\n", (data->temp >> 8) * 1000);
++}
++
++static ssize_t show_in(struct device *dev, struct device_attribute *attr,
++			 char *buf)
++{
++	struct c7temp_data *data = c7temp_update_device(dev);
++
++	return sprintf(buf, "%d\n", (data->in << 4) + 700);
++}
++
++static DEVICE_ATTR(name, S_IRUGO, show_name, NULL);
++static DEVICE_ATTR(temp1_input, S_IRUGO, show_temp, NULL);
++static DEVICE_ATTR(in0_input, S_IRUGO, show_in, NULL);
++
++static struct attribute *c7temp_attr[] = {
++	&dev_attr_name.attr,
++	&dev_attr_temp1_input.attr,
++	&dev_attr_in0_input.attr,
++	NULL
++};
++
++static const struct attribute_group c7temp_group = {
++	.attrs = c7temp_attr,
++};
++
++static int __devinit c7temp_probe(struct platform_device *pdev)
++{
++	struct device *dev = &pdev->dev;
++	struct c7temp_data *data;
++	int err;
++
++	data = kzalloc(sizeof(struct c7temp_data), GFP_KERNEL);
++	if (!data) {
++		err = -ENOMEM;
++		dev_err(dev, "Out of memory\n");
++		goto exit;
++	}
++
++	data->name = DRVNAME;
++	mutex_init(&data->update_lock);
++
++	platform_set_drvdata(pdev, data);
++
++	err = sysfs_create_group(&pdev->dev.kobj, &c7temp_group);
++	if (err)
++		goto exit_free;
++
++	data->hwmon_dev = hwmon_device_register(dev);
++	if (IS_ERR(data->hwmon_dev)) {
++		err = PTR_ERR(data->hwmon_dev);
++		dev_err(dev, "Device registration failed (%d)\n", err);
++		goto exit_remove;
++	}
++
++	return 0;
++
++exit_remove:
++	sysfs_remove_group(&pdev->dev.kobj, &c7temp_group);
++exit_free:
++	platform_set_drvdata(pdev, NULL);
++	kfree(data);
++exit:
++	return err;
++}
++
++static int __devexit c7temp_remove(struct platform_device *pdev)
++{
++	struct c7temp_data *data = platform_get_drvdata(pdev);
++
++	hwmon_device_unregister(data->hwmon_dev);
++	sysfs_remove_group(&pdev->dev.kobj, &c7temp_group);
++	platform_set_drvdata(pdev, NULL);
++	kfree(data);
++
++	return 0;
++}
++
++static struct platform_driver c7temp_driver = {
++	.driver = {
++		.owner = THIS_MODULE,
++		.name  = DRVNAME,
++	},
++	.probe  = c7temp_probe,
++	.remove = __devexit_p(c7temp_remove),
++};
++
++static int __init c7temp_device_add(void)
++{
++	int err;
++
++	pdev = platform_device_alloc(DRVNAME, 0);
++	if (!pdev) {
++		err = -ENOMEM;
++		printk(KERN_ERR DRVNAME ": Device allocation failed (%d)\n",
++		       err);
++		goto exit;
++	}
++
++	err = platform_device_add(pdev);
++	if (err) {
++		printk(KERN_ERR DRVNAME ": Device addition failed (%d)\n",
++		       err);
++		goto exit_device_put;
++	}
++
++	return 0;
++
++exit_device_put:
++	platform_device_put(pdev);
++exit:
++	return err;
++}
++
++static int __init c7temp_init(void)
++{
++	int err = -ENODEV;
++	struct cpuinfo_x86 *c = &cpu_data(0);
++	unsigned int eax;
++
++	/* Check for VIA C7 CPU */
++	if (!(c->x86_vendor == X86_VENDOR_CENTAUR && c->x86 == 6 &&
++	      (c->x86_model == 0xa || c->x86_model == 0xd))) {
++		printk(KERN_ERR DRVNAME ": Unsupported CPU\n");
++		goto exit;
++	}
++
++	/* Check existence of performance data register */
++	eax = cpuid_eax(0xc0000000);
++	if (eax < 0xc0000002) {
++		printk(KERN_ERR DRVNAME ": Performance data register does not "
++		       "exist (0x%08x)\n", eax);
++		goto exit;
++	}
++
++	err = platform_driver_register(&c7temp_driver);
++	if (err)
++		goto exit;
++
++	err = c7temp_device_add();
++	if (err)
++		goto exit_driver_unregister;
++
++	return 0;
++
++exit_driver_unregister:
++	platform_driver_unregister(&c7temp_driver);
++exit:
++	return err;
++}
++
++static void __exit c7temp_exit(void)
++{
++	platform_device_unregister(pdev);
++	platform_driver_unregister(&c7temp_driver);
++}
++
++MODULE_AUTHOR("Juerg Haefliger <juergh@gmail.com>");
++MODULE_DESCRIPTION("VIA C7 core temperature and voltage monitor");
++MODULE_LICENSE("GPL");
++
++module_init(c7temp_init)
++module_exit(c7temp_exit)
+Index: linux/Documentation/hwmon/c7temp
+===================================================================
+--- /dev/null	1970-01-01 00:00:00.000000000 +0000
++++ linux/Documentation/hwmon/c7temp	2008-06-19 15:52:02.000000000 -0700
+@@ -0,0 +1,20 @@
++Kernel driver c7temp
++======================
++
++Supported chips:
++  * VIA C7
++    Prefix: 'c7temp'
++    CPUID: family 0x6, models 0xa, 0xd
++    Datasheet: Provided by VIA upon request and under NDA
++
++Authors:
++    Juerg Haefliger <juergh@gmail.com>
++
++
++Description
++-----------
++
++This driver permits reading the core temperature and voltage sensors embedded
++inside the VIA C7 CPU. Temperature is returned in millidegrees Celsius with a
++resolution of 1 degree C. Voltage is returned in millivolts with a resolution
++of 16 mV.
+Index: linux/drivers/hwmon/Kconfig
+===================================================================
+--- linux.orig/drivers/hwmon/Kconfig	2008-06-17 17:54:58.000000000 -0700
++++ linux/drivers/hwmon/Kconfig	2008-06-19 16:06:34.000000000 -0700
+@@ -730,6 +730,16 @@
+ 	  This driver can also be built as a module.  If so, the module
+ 	  will be called via686a.
+ 
++config SENSORS_C7TEMP
++	tristate "VIA C7 temperature sensor"
++	depends on X86 && EXPERIMENTAL
++	help
++	  If you say yes here you get support for the temperature and voltage
++	  sensors inside the VIA C7 CPU.
++
++	  This driver can also be built as a module. If so, the module will be
++	  called c7temp.
++
+ config SENSORS_VT1211
+ 	tristate "VIA VT1211"
+ 	depends on EXPERIMENTAL
+Index: linux/drivers/hwmon/Makefile
+===================================================================
+--- linux.orig/drivers/hwmon/Makefile	2008-06-17 17:57:18.000000000 -0700
++++ linux/drivers/hwmon/Makefile	2008-06-17 17:57:55.000000000 -0700
+@@ -33,6 +33,7 @@
+ obj-$(CONFIG_SENSORS_APPLESMC)	+= applesmc.o
+ obj-$(CONFIG_SENSORS_AMS)	+= ams/
+ obj-$(CONFIG_SENSORS_ATXP1)	+= atxp1.o
++obj-$(CONFIG_SENSORS_C7TEMP)	+= c7temp.o
+ obj-$(CONFIG_SENSORS_CORETEMP)	+= coretemp.o
+ obj-$(CONFIG_SENSORS_DME1737)	+= dme1737.o
+ obj-$(CONFIG_SENSORS_DS1621)	+= ds1621.o

@@ -1,0 +1,19 @@
+BEGIN:VCARD
+VERSION:2.1
+N:Desktop;Exported
+FN:Exported Desktop
+TITLE:Title
+ORG:Company
+ADR;ENCODING=QUOTED-PRINTABLE:;;street 1=0D=0Astreet 2=0D=0Astreet 3=0D=0Astreet 4=0D=0Astreet 5;city;state;zip;country
+NOTE;ENCODING=QUOTED-PRINTABLE:This is the note=0D=0A=0D=0Aand it can be across =0D=0Amultiple lines=0D=0A=0D=0AThis record was exported from palm desktop 4.1=0D=0A=0D=0Athe category is busniess
+TEL;WORK:main 3248098098
+TEL;HOME:home 90809890809
+TEL;FAX:fax 09890890809
+TEL:other 90890809809
+EMAIL:email@example.com
+X-Palm-Custom1:custom field 1 value
+X-Palm-Custom2:custom field 2 value
+X-Palm-Custom3:custom field 3 value
+X-Palm-Custom4:custom field 4 value
+END:VCARD
+

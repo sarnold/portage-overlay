@@ -1,0 +1,158 @@
+#include "pagestart.h"
+
+<blockquote><p>We do not offer <b>ANY</b> support for versions of BitPim that were
+not downloaded by following the link on the BitPim home page at 
+URL(http://www.bitpim.org,www.bitpim.org).  You <b>MUST</b> go back
+to whomever you downloaded BitPim from.
+</blockquote>
+
+
+<p>Before posting anywhere, please take the time to read this article
+on URL(http://www.catb.org/~esr/faqs/smart-questions.html,How to ask
+questions the smart way) (Note they do NOT provide support, just
+guidelines on how to ask questions/get support and get the best
+responses).  Then follow the steps described below:
+
+<p>Before making a support request, please gather up the following information
+where possible.  The goal is to ensure you have the relevant information
+so that the issue can be addressed as quickly and thoroughly as possible.
+
+<p><font size="+2">If you cannot get BitPim to talk to your phone at all, you need to
+follow the steps in <a href="trouble-serial.htm">serial troubleshooting</a> 
+first.</font>
+
+<p>If you still cannot get BitPim to talk to your phone then you are out
+of luck.  <a href="bitpim-user-no-support.htm">This page</a> details why.
+
+<dl>
+
+<dt><p>Summary
+
+<dd><p>Start with the following items.  If you leave them out, we will have to ask
+and it will delay getting to a solution for you.  BitPim supports multiple
+phones, operating systems and cables, and they all affect issues you may have.
+
+<p><ul>
+<li><p>Which version of BitPim you are using
+<li><p>What operating system you are using
+<li><p>Which cell phone you are talking to (make and model)
+<li><p>What cable you are using to talk to the phone
+
+</ul>
+
+
+<dt><p>Make notes
+
+<dd><p>You will need to gather information as described in the following points.
+The most important notes to start with are a description of what happened and a
+description of what you expected to happen.
+
+<dt><p>If you got an <a href="errors-exception.htm">exception dialog</a>, please
+copy the contents.
+<dd><p>This will show what happened at the point of the problem.  The contents
+of the dialog are in the Log pane. <b>Note</b> that you must include the other
+contents of the log pane in addition to the exception.  This is so we can
+tell what BitPim was doing leading up to the exception.
+
+<dt><p>Get a copy of the contents of the <a href="tab-log.htm">Log</a> pane.
+<dd><p>This will show the history of actions BitPim was doing
+
+<dt><p>What set of steps did you take
+<dd><p>Work out the set of steps you did.  This is to enable others to do the same
+set of steps in order to reproduce your problem.
+
+<dt><p>Is it repeatable?
+<dd><p>Does the problem happen every time.  If it does, it is far easier to track down
+the cause and fix.  Even if it isn't repeatable, there may be enough information
+from the previous steps to diagnose and fix it.
+
+<dt><p>What have you tried?
+
+<dd><p>In your attempts to fix the issue, what have you already tried, and what
+happened.?
+
+<dt><p>Look on the web and in archives
+
+<dd><p>Do a Google search incorporating lines of the error message, symptoms or
+what you have tried.  You can also search the mailing list archives at
+URL(http://sourceforge.net/mailarchive/forum.php?forum_id=31264,SourceForge) or at URL(http://news.gmane.org/gmane.comp.mobile.bitpim.user,Gmane).
+Phone specific groups should also have their archives and search facilities.
+
+</dl>
+
+<h2>Where to make your request</h2>
+
+<p><b>You should check the archives at URL(http://sourceforge.net/mailarchive/forum.php?forum_id=31264,SourceForge)
+or URL(http://news.gmane.org/gmane.comp.mobile.bitpim.user,Gmane)
+to see if your problem has already
+been reported and solved.</b>
+
+<h3><a name="bitpim-user">BitPim Mailing list</a></h3>
+
+<p>You can post about your problem to the <a href="contacts.htm">bitpim-user</a> 
+mailing list.  This is read and responded to by a wide variety of BitPim users and
+developers, and you will get rapid responses if you have followed these guidelines
+fully.  Please use this list for issues with BitPim itself.
+
+<p>Your posts should have a subject that indicates which phone you have, which
+operating system you are using, the type of cable you are using and an indication 
+of the problem.
+
+<p><blockquote><b>Note:  The mailing list does not provide support for the various
+operating systems or for configuring device drivers.  If you cannot get BitPim to talk to your phone then <a href="bitpim-user-no-support.htm">tough luck</a>.</b>.  It only provides support for the BitPim software.
+</blockquote>
+
+<h3>Phone specific resources</h3>
+
+<p>Some problems are more to do with the phones and how to use them.  The help pages
+for <A HREF="phones.htm">the phones</A> list various web pages, forums and mailings
+specific to those phones.
+
+<h2><a name="donotdo">Do not do</a></h2>
+
+<p>Do not do any of the following.  It takes up lots of other people's valuable time,
+and often annoys them.  If you do any of them, you will likely just be ignored.
+
+<dl>
+
+<dt><p>Mail individual developers
+
+<dd><p>If the developer responds, the answer won't appear in any archives and so
+won't help other users.  Other users won't be able to comment on the issue
+such as workarounds they have discovered or indications if the issue is unique
+to your configuration or affects everyone.  Additionally the developers schedule
+their time carefully so your answer is unlikely to be timely anyway.
+
+<dt><p>Mail/post in multiple locations
+
+<dd><p>Some people think they will get quicker answers by posting to mailing lists,
+filling out SourceForge tracker items, and emailing individual developers.  I
+can assure you that no one wants to answer/address the same issue two or more times.
+And if you are seen posting the same thing in more than one location, the people who
+can answer will wait a long time to ensure you aren't also posting in others (remember
+they usually participate in multiple locations as well).
+
+<dt><p>Be impatient<br>
+
+<dd><p>Some people seem to get upset if their issues are not answered immediately.
+Remember that other people have their own lives and responsibilities and contribute
+as their own schedules and priorities allow.  If you have given a detailed report,
+they may be doing research.  After all, a good question deserves a good answer.
+
+<dt><p>Post no information
+
+<dd><p>One report consisted of "When BitPim talks to my phone, it gets some sort of exception".
+BitPim does fundamentally work with the phones we support.  There may be some issues
+but we don't release software that just doesn't work.  Furthermore not giving any information
+at all about what happened, the contents of the exception etc means no one can help.  Follow the
+steps at the top of this page.
+
+<dt><p>Ignoring archives
+
+<dd><p>Many questions have already been asked and answered (multiple times).  Check the archives!
+
+</dl>
+
+
+
+#include "pageend.h"

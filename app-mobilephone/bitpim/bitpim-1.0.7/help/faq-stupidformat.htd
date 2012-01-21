@@ -1,0 +1,38 @@
+#include "pagestart.h"
+
+<p>Users frequently ask why BitPim picks particular formats
+or does particular actions on phones, especially since some
+users think they are less efficient or even stupid.  One
+example would be using BMP as the image format for LG VX6000
+phones instead of JPG which the phone appears to support.
+
+<p>The reason is that the BitPim developers have thoroughly 
+investigated the actual details.  Our goal is for things
+to "just work".  We thoroughly test our decisions and the
+alternatives.  This includes taking the phone beyond normal
+usage limits (eg what happens if every field is filled in 
+for a phonebook, what happens if we preview an image in
+all functionality of the phone such as wallpaper, sending
+it, deleting it etc)
+
+<p>If you think it could be done better, we would love to
+know!  However please make sure you thoroughly test your
+suggestions against <b>all</b> the relevant functionality
+of your phone, and that you do it with a wide variety
+of examples.  The BitPim developer code includes a test
+data generator that may be help.  Let us know if you
+would like to work with that or need it extended.
+
+<p>And the reason for the use of BMP instead of JPG
+on the LG VX6000 is because although JPG images preview
+fine, the phone doesn't set them correctly as wallpaper.
+
+<p>It is usually preferable that you do your investigative
+work using the BitPim source code.  In many cases you can
+just change one line of code.  For example to make the LG VX6000
+use jpg instead of bmp as the format, you can edit one
+line near the bottom of URL(http://bitpim.org/pyxr/c/projects/bitpim/com_lgvx6000.py.html#0097,com_lgvx6000.py).
+Get started with the <a href="internals-code.htm">code</a>!
+
+
+#include "pageend.h"

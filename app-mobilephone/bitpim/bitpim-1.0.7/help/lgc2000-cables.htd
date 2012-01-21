@@ -1,0 +1,5 @@
+#include "pagestart.h"
+
+<p>This phone was tested using a straight through serial cable. Other users have been able to use a straight through USB cable.
+
+#include "pageend.h"

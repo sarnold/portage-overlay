@@ -1,0 +1,15 @@
+--- src/astyle.h.orig	2008-09-27 15:34:39.192137370 -0700
++++ src/astyle.h	2008-09-27 15:33:56.352136720 -0700
+@@ -38,7 +38,11 @@
+ #include <vector>
+ #include <cctype>
+ 
+-using namespace std;
++// This is apparently bad practice; trying just the specific ones instead
++//using namespace std;
++using std::string;
++using std::vector;
++// might need one more
+ 
+ 
+ // 4996 - secure version deprecation warnings for .NET 2005

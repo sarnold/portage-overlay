@@ -1,0 +1,33 @@
+From a google of "cmx pmd mime"
+
+http://www.sprintdevelopers.com/posts14-viewnext.html
+
+Techie note. The Qualcomm CMX files are of the MIME type "application/x-pmd"
+------------------------------------------------------
+
+http://web.ics.purdue.edu/~butta/vision.html
+
+MIME types for some common media files are:
+ MID: audio/midi
+  JPG: image/jpeg
+  TXT: text/plain
+  QCP: audio/vnd.qcelp
+ JAD: text/vnd.sun.j2me.app-descriptor
+ JAR: application/java-archive
+ PNG: image/png
+  PMD: application/x-pmd
+ WBMP: image/vnd.wap.wbmp
+------------------------------------------------------
+
+http://www.howardforums.com/showthread.php?s=&threadid=240925
+
+MIME file info for an apache server(all SprintPCS MIME types)
+ 
+ AddType text/x-pcs-gcd gcd //GCD file
+ AddType audio/vnd.qcelp qcp //Qualcomm Purevoice files
+ AddType text/vnd.sun.j2me.app-descriptor jad //Java file descriptor
+ AddType application/java-archive jar //Compiled J2ME code
+ AddType application/x-pmd pmd //Animated Qualcomm file
+ AddType application/x-pmd cmx //Animated Qualcomm file
+------------------------------------------------------
+

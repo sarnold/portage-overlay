@@ -1,0 +1,61 @@
+--- a/src/tX_mouse.cc
++++ b/src/tX_mouse.cc
+@@ -32,6 +32,7 @@
+ #include "tX_engine.h"
+ #include "tX_vtt.h"
+ #include <stdlib.h>
++#include <string.h>
+ 
+ #define TX_MOUSE_SPEED_NORMAL 0.05
+ #define TX_MOUSE_SPEED_WARP 250000
+--- a/src/tX_seqpar.cc
++++ b/src/tX_seqpar.cc
+@@ -30,6 +30,7 @@
+ #include "tX_extdial.h"
+ #include "tX_engine.h"
+ #include <malloc.h>
++#include <string.h>
+ 
+ #define TX_SEQPAR_DEFAULT_SCALE 0.05
+ 
+--- a/src/tX_sequencer.cc
++++ b/src/tX_sequencer.cc
+@@ -25,6 +25,7 @@
+ #include "tX_sequencer.h"
+ #include "tX_mastergui.h"
+ #include "tX_global.h"
++#include <string.h>
+ 
+ tX_sequencer sequencer;
+ 
+--- a/src/tX_vtt.cc
++++ b/src/tX_vtt.cc
+@@ -41,6 +41,8 @@
+ 
+ #include "tX_loaddlg.h"
+ 
++#include <string.h>
++
+ #define USE_PREFETCH 1
+ 
+ #ifdef USE_PREFETCH
+--- a/src/tX_vttfx.cc
++++ b/src/tX_vttfx.cc
+@@ -28,6 +28,7 @@
+ #include "tX_vtt.h"
+ #define myvtt ((vtt_class *) vtt)
+ #include "tX_global.h"
++#include <string.h>
+ 
+ float ladspa_dummy_output_port;
+ 
+--- a/src/tX_vttgui.cc
++++ b/src/tX_vttgui.cc
+@@ -60,6 +60,7 @@
+ #include "tX_flash.h"
+ #include <stdio.h>
+ #include <ctype.h>
++#include <string.h>
+ 
+ #define WID_DYN TRUE, TRUE, 0
+ #define WID_FIX FALSE, FALSE, 0

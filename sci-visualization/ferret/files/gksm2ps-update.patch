@@ -1,0 +1,112 @@
+--- gksm2ps/gksm2ps.c.orig	2009-05-11 19:40:00.920661721 -0700
++++ gksm2ps/gksm2ps.c	2009-05-12 19:42:16.733602661 -0700
+@@ -80,12 +80,15 @@
+ 
+ /* Need to include wchar.h for RH9 - *kob* 10/03 */
+ #include <wchar.h>
+-#include "udposix.h"
++#include <stdlib.h>
++#include <string.h>
+ #include <math.h>
++#include <xgks.h>
++#include <udposix.h>
++#include "gks_implem.h"
++
+ #include <X11/Xlib.h>
+ #include <X11/Xutil.h>
+-#include <xgks.h>
+-#include <gks_implem.h>
+ #include <stdio.h>
+ 
+ #include <time.h>
+@@ -1202,7 +1205,7 @@
+ 
+       /* Check version number of metafile against gksm2ps */
+       if ((meta_file = fopen (file[i],"r")) == NULL) {
+-	fprintf ( stderr, "Can't open %s\n", meta_file);
++	fprintf ( stderr, "Can't open %p\n", meta_file);
+ 	exit (1);
+       }
+ 
+--- gksm2ps/resize_xgks_window.c.orig	2009-05-11 19:41:29.578912970 -0700
++++ gksm2ps/resize_xgks_window.c	2009-05-12 19:42:43.736658982 -0700
+@@ -45,11 +45,11 @@
+ 
+ /* Need to include wchar.h for RH9 - *kob* 10/03 */
+ #include <wchar.h>
+-#include "udposix.h"
+ #include <stdlib.h>
+ #include <time.h> 
+ #include <string.h>
+-#include <gks_implem.h>
++#include <udposix.h>
++#include "gks_implem.h"
+ 
+ resize_xgks_window (ws_id, x, y)
+ 
+--- gksm2ps/set_background.c.orig	2009-05-11 19:41:37.568740767 -0700
++++ gksm2ps/set_background.c	2009-05-12 19:42:56.906603504 -0700
+@@ -45,10 +45,10 @@
+ 
+ /* Need to include wchar.h for RH9 - *kob* 10/03 */
+ #include <wchar.h>
+-#include "udposix.h"
+ #include <stdlib.h>
+ #include <string.h>
+-#include <gks_implem.h>
++#include <udposix.h>
++#include "gks_implem.h"
+ 
+ set_background (ws_id, ndx)
+ Gint ws_id; 
+--- gksm2ps/xpreview.c.orig	2009-05-11 19:41:48.798910410 -0700
++++ gksm2ps/xpreview.c	2009-05-12 19:43:15.866603886 -0700
+@@ -51,11 +51,12 @@
+ 
+ /* Need to include wchar.h for RH9 - *kob* 10/03 */
+ #include <wchar.h>
+-#include "udposix.h"
+ #include <stdlib.h>
+ #include <stdio.h>
+-#include "xgks.h"
+-#include <gks_implem.h>
++
++#include <xgks.h>
++#include <udposix.h>
++#include "gks_implem.h"
+ #include <math.h>
+ 
+ #define CLEAR_WORKSTATION	1
+--- gksm2ps/Makefile.orig	2009-05-11 19:39:43.448286364 -0700
++++ gksm2ps/Makefile	2009-05-12 20:33:13.112604617 -0700
+@@ -94,15 +94,16 @@
+ x86_64-linux:	
+ 	${MAKE} gksm2ps \
+ 		CC=gcc \
+-		CFLAGS="-g -I/usr/lib/gcc/x86_64-redhat-linux/3.4.3/include -I../xgks/port -I../xgks/src/lib -I../xgks/src/lib/gksm $(G)" \
++		CFLAGS="my_flags -Igcc-include -I../xgks/port -I../xgks/src/lib -I../xgks/src/lib/gksm $(G)" \
+ 		LDFLAGS= \
+-		GKLIB="../xgks/src/lib/libxgks.a" \
+-		LIB="-L/usr/X11R6/lib64 -lX11 -lm"
++		GKLIB="/usr/lib64/libxgks.a" \
++		LIB="-L/usr/lib64/X11 -lX11 -lm"
+ 
+ gksm2ps:	gksm2ps.o xpreview.o \
+ 	resize_xgks_window.o set_background.o gksm.o batch_graphics.o
+ 	- $(CC) $(CFLAGS) $(LDFLAGS) -o gksm2ps gksm2ps.o xpreview.o \
+ 	 resize_xgks_window.o set_background.o gksm.o batch_graphics.o \
++	../ppl/tmapadds/restore_saved_line_colors.o \
+ 	../ppl/tmapadds/ws_line_bundle.o \
+ 	../ppl/tmapadds/query_xgks_wkstn.o \
+ 	$(GKLIB) $(LIB)
+--- gksm2ps/gksm.c.orig	2004-01-21 14:02:06.000000000 -0800
++++ gksm2ps/gksm.c	2009-05-12 22:34:56.244602392 -0700
+@@ -38,7 +38,7 @@
+ 
+ /* Need to include wchar.h for RH9 - *kob* 10/03 */
+ #include <wchar.h>
+-#include "udposix.h"
++#include <udposix.h>
+ #include <stdlib.h>
+ #include <time.h>		/* for time(), localtime(), and strftime() */
+ #include <sys/types.h>		/* for uid_t */

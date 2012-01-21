@@ -1,0 +1,890 @@
+<table cellpadding=5 cellspacing=5 border=1 class="grid center">
+<tr><th>
+<th>PHONEBOOK
+<th>CALENDAR
+<th>RINGTONE
+<th>WALLPAPER
+<th>MEMO
+<th>TODO
+<th>SMS
+<th>CALL HISTORY
+<th>PHONE INFO
+<th>AUTO DETECT
+</tr>
+<tr><th>E815
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>E815m
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-C2000
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>LG-G4015
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>LG-LG6190
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-LG6200
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-LG8100
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-LX5450
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>LG-LX5550
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R 
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-PM225
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-PM325
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-TM520
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+</tr>
+<tr><th>LG-VI125
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VI5225
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>LG-VX10
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+</tr>
+<tr><th>LG-VX3200
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>LG-VX4400
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>LG-VX4500
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VX4600
+<td align=center>R W
+<td align=center>R 
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>LG-VX4650
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VX5200
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VX5300
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VX6000
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>LG-VX6100
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VX7000
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>LG-VX8000
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>LG-VX8100
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VX8300
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VX8500
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VX8600
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VX9800
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>LG-VX9900
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>MM-5600
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>MM-7400
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>MM-7500
+<td align=center>R W
+<td align=center>R W
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>MM-8300
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>Other CDMA phone
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+</tr>
+<tr><th>PM-8200
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>RL-4920
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>RL-4930
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCH-A310
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>SCH-A650
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>SCH-A670
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>SCH-A930
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCH-A950
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-200
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-2400
+<td align=center>R W
+<td align=center>R W
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-3100
+<td align=center>R W
+<td align=center>R W
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-4900
+<td align=center>R W
+<td align=center>R W
+<td align=center> W
+<td align=center> W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-5300
+<td align=center>R W
+<td align=center>R W
+<td align=center> W
+<td align=center> W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-5400
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-5500
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-6600 (Katana)
+<td align=center>R W
+<td align=center>R W
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-7200
+<td align=center>R W
+<td align=center>R W
+<td align=center> W
+<td align=center> W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-7300
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-8100
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SCP-8100 (Bell)
+<td align=center>R W
+<td align=center>R W
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SK6100
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+</tr>
+<tr><th>SPH-A460
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SPH-A620 (VGA1000)
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SPH-A660 (VI660)
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SPH-A680
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SPH-A740
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SPH-A840
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SPH-A840 (Telus)
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SPH-N200
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>SPH-N400
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>V3c
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>V3cm
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>V710
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>V710m
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+<td align=center>X
+</tr>
+<tr><th>VI-2300
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>R 
+<td align=center>R 
+<td align=center>R 
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+<tr><th>VM4050
+<td align=center>R W
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>&nbsp;
+<td align=center>X
+</tr>
+</table>

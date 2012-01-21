@@ -1,0 +1,125 @@
+--- dvd-slideshow.orig	2008-09-14 17:18:40.982729286 -0700
++++ dvd-slideshow	2008-09-14 17:30:58.021730378 -0700
+@@ -3987,6 +3987,7 @@
+ if [ "$vcd" -eq 1 ] ; then
+         ac3=0  # force mp2
+         audio_bitrate=224
++        ffmpeg_audio_bitrate=224k
+ 	video_bitrate='1152'
+         audio_sample_rate=44100
+ 	mplex_type=1
+@@ -3995,6 +3996,7 @@
+ elif [ "$svcd" -eq 1 ] ; then
+         ac3=0  # force mp2
+         audio_bitrate=128
++        ffmpeg_audio_bitrate=128k
+ 	video_bitrate='4500'
+         audio_sample_rate=44100
+ 	mplex_type=4
+@@ -4002,6 +4004,7 @@
+ 	mpeg2enc_params="-v 0 -4 2 -2 1 -H -b 2500 -n n -s -f $mplex_type"
+ else
+         audio_bitrate=192
++        ffmpeg_audio_bitrate=192k
+ 	video_bitrate='3800'
+         audio_sample_rate=48000 
+ 	mplex_type=8
+@@ -4143,7 +4146,7 @@
+ [ "$vcd" -eq 1 ] && myecho "[dvd-slideshow] VCD mode"
+ [ "$svcd" -eq 1 ] && myecho "[dvd-slideshow] SVCD mode"
+ myecho "[dvd-slideshow] Video: $ntsc_or_pal $dvd_width"x"$dvd_height $framerate"fps" $aspect_ratio"
+-myecho "[dvd-slideshow] Audio: $mp2_or_ac3 $audio_sample_rate $audio_bitrate" 
++myecho "[dvd-slideshow] Audio: $mp2_or_ac3 $audio_sample_rate $audio_bitrate k" 
+ myecho "[dvd-slideshow] Debug=$debug  Autocrop=$autocrop Subtitles=$subtitle_type Border=$frame_border"
+ if [ "$manual_chapter_markers" == 1 ] ; then
+ 	myecho "[dvd-slideshow] Chapter markers= Manual"
+@@ -4174,7 +4177,7 @@
+ #			checkfor_lame
+ 			myecho "[dvd-slideshow] Decoding mp3 audio: $file"
+ 			# use ffmpeg instead of lame!
+-			ffmpeg -i "$file" -y -vn -ab $audio_bitrate -f wav -ar $audio_sample_rate -ac 2 "$tmpdir/audio$track"_"$audio_index_padded.wav" >> "$outdir/$logfile" 2>&1
++			ffmpeg -i "$file" -y -vn -ab $ffmpeg_audio_bitrate -f wav -ar $audio_sample_rate -ac 2 "$tmpdir/audio$track"_"$audio_index_padded.wav" >> "$outdir/$logfile" 2>&1
+ #			lame --decode "$file" "$tmpdir/audio$track"_"$audio_index_padded.wav" 2> /dev/null
+ 		elif [ "$suffix" == "ogg" ] ; then
+ 			checkfor_oggdec
+@@ -5815,13 +5818,13 @@
+ 			checkfor_lame
+ 			myecho "[dvd-slideshow] decoding mp3 audio file... be patient..."
+ 			if [ "$audiosmp" -eq 1 ] ; then
+-				ffmpeg -i "$file" -y -vn -ab $audio_bitrate -f wav -ar $audio_sample_rate -ac 2 "$tmpdir/audio$track"_"$audio_index_padded.wav" >> "$outdir/$logfile" 2>&1 &
++				ffmpeg -i "$file" -y -vn -ab $ffmpeg_audio_bitrate -f wav -ar $audio_sample_rate -ac 2 "$tmpdir/audio$track"_"$audio_index_padded.wav" >> "$outdir/$logfile" 2>&1 &
+ #				lame --decode "${file}" "$tmpdir/audio$track"_"$audio_index_padded.wav" 2> /dev/null &
+-#				ffmpeg -i "$file" -y -vn -ab $audio_bitrate -acodec pcm_s16be -f s16be -ar $audio_sample_rate -ac 2 "$tmpdir/audio$track"_"$audio_index_padded.raw" >> "$outdir/$logfile" 2>&1 &
++#				ffmpeg -i "$file" -y -vn -ab $ffmpeg_audio_bitrate -acodec pcm_s16be -f s16be -ar $audio_sample_rate -ac 2 "$tmpdir/audio$track"_"$audio_index_padded.raw" >> "$outdir/$logfile" 2>&1 &
+ 			else
+-				ffmpeg -i "$file" -y -vn -ab $audio_bitrate -f wav -ar $audio_sample_rate -ac 2 "$tmpdir/audio$track"_"$audio_index_padded.wav" >> "$outdir/$logfile" 2>&1
++				ffmpeg -i "$file" -y -vn -ab $ffmpeg_audio_bitrate -f wav -ar $audio_sample_rate -ac 2 "$tmpdir/audio$track"_"$audio_index_padded.wav" >> "$outdir/$logfile" 2>&1
+ #				lame --decode "${file}" "$tmpdir/audio$track"_"$audio_index_padded.wav" 2> /dev/null
+-#				ffmpeg -i "$file" -y -vn -ab $audio_bitrate -acodec pcm_s16be -f s16be -ar $audio_sample_rate -ac 2 "$tmpdir/audio$track"_"$audio_index_padded.raw" >> "$outdir/$logfile" 2>&1
++#				ffmpeg -i "$file" -y -vn -ab $ffmpeg_audio_bitrate -acodec pcm_s16be -f s16be -ar $audio_sample_rate -ac 2 "$tmpdir/audio$track"_"$audio_index_padded.raw" >> "$outdir/$logfile" 2>&1
+ 			fi
+ 		elif [ "$suffix" == "m4a" ] || [ "$suffix" == "aac" ] ; then
+ 			if [ "$audiosmp" -eq 1 ] ; then
+@@ -6103,7 +6106,7 @@
+ 	if [ "$ac3" -eq 1 ] && [ "$output_format" != 'flv' ] ; then
+ 		checkforprog ffmpeg
+ 		myecho "[dvd-slideshow] Creating ac3 audio for $file..."
+-		ffmpeg -i "$tmpdir/audio1.wav" -y -vn -ab $audio_bitrate -acodec ac3 -ar $audio_sample_rate -ac 6 "$tmpdir/audio1.ac3" >> "$outdir/$logfile" 2>&1
++		ffmpeg -i "$tmpdir/audio1.wav" -y -vn -ab $ffmpeg_audio_bitrate -acodec ac3 -ar $audio_sample_rate -ac 6 "$tmpdir/audio1.ac3" >> "$outdir/$logfile" 2>&1
+ 		if [ $? -ne 0 ] ; then
+ 			## ffmpeg errored
+ 			myecho "[dvd-slideshow] ERROR during ffmpeg execution!"
+@@ -6321,8 +6324,8 @@
+ 		checkforprog ffmpeg
+ 		check_rm "$tmpdir/audio1.ac3"
+ 	#	find "$tmpdir" -name audio1_\?\?\?\?.raw -print0 | xargs -0 sox -t raw -w -s -c 2 -r $audio_sample_rate - "$tmpdir/audio1.wav"
+-		cat "$tmpdir"/audio1_????.raw | sox -t raw -w -s -c 2 -r $audio_sample_rate - -t wav - 2> /dev/null |  ffmpeg -i - -vn -ab $audio_bitrate -acodec ac3 -ar $audio_sample_rate -ac 6 "$tmpdir/audio1.ac3" >> "$outdir/$logfile" 2>&1
+-#		ffmpeg -i "$tmpdir/audio1.wav" -vn -ab $audio_bitrate -acodec ac3 -ar $audio_sample_rate -ac 6 "$tmpdir/audio1.ac3" >> "$outdir/$logfile" 2>&1
++		cat "$tmpdir"/audio1_????.raw | sox -t raw -w -s -c 2 -r $audio_sample_rate - -t wav - 2> /dev/null |  ffmpeg -i - -vn -ab $ffmpeg_audio_bitrate -acodec ac3 -ar $audio_sample_rate -ac 6 "$tmpdir/audio1.ac3" >> "$outdir/$logfile" 2>&1
++#		ffmpeg -i "$tmpdir/audio1.wav" -vn -ab $ffmpeg_audio_bitrate -acodec ac3 -ar $audio_sample_rate -ac 6 "$tmpdir/audio1.ac3" >> "$outdir/$logfile" 2>&1
+ 		if [ $? -ne 0 ] ; then
+ 			## ffmpeg errored
+ 			myecho "[dvd-slideshow] ERROR during ffmpeg execution!"
+@@ -6550,7 +6553,7 @@
+ 		myecho "[dvd-slideshow] Creating ac3 audio..."
+ 		checkforprog ffmpeg
+ 		check_rm "$tmpdir/audio2.ac3"
+-		ffmpeg -i "$tmpdir/audio2.wav" -vn -ab $audio_bitrate -acodec ac3 -ar $audio_sample_rate -ac 6 "$tmpdir/audio2.ac3" >> "$outdir/$logfile" 2>&1
++		ffmpeg -i "$tmpdir/audio2.wav" -vn -ab $ffmpeg_audio_bitrate -acodec ac3 -ar $audio_sample_rate -ac 6 "$tmpdir/audio2.ac3" >> "$outdir/$logfile" 2>&1
+ 		if [ $? -ne 0 ] ; then
+ 			## ffmpeg errored
+ 			myecho "[dvd-slideshow] ERROR during ffmpeg execution!"
+--- dvd-menu.orig	2008-09-14 20:04:36.610730430 -0700
++++ dvd-menu	2008-09-14 20:13:49.677729333 -0700
+@@ -1032,19 +1032,19 @@
+ if [ "$vcd" -eq 1 ] ; then
+ 	# setup audio parameters
+ 	ac3=0
+-	audio_bitrate=224
++	audio_bitrate=224k
+ 	audio_sample_rate=44100
+ 	mplex_type=1
+ 	ffmpeg_target='vcd'
+ elif [ "$svcd" -eq 1 ] ; then
+ 	# setup audio parameters
+ 	ac3=0
+-	audio_bitrate=224
++	audio_bitrate=224k
+ 	audio_sample_rate=44100
+ 	mplex_type=4
+ 	ffmpeg_target='svcd'
+ else
+-	audio_bitrate=128
++	audio_bitrate=128k
+ 	audio_sample_rate=48000
+ 	mplex_type=8
+ 	ffmpeg_target='dvd'
+@@ -1098,7 +1098,7 @@
+ [ "$vcd" -eq 1 ] && myecho "[dvd-menu] Using VCD mode."
+ [ "$svcd" -eq 1 ] && myecho "[dvd-menu] Using SVCD mode."
+ myecho "[dvd-menu] Video: $ntsc_or_pal $resolution $framerate $aspect_ratio"
+-myecho "[dvd-menu] Audio: $mp2_or_ac3 $audio_bitrate $audio_sample_rate"
++myecho "[dvd-menu] Audio: $mp2_or_ac3 $audio_bitrate k $audio_sample_rate"
+ [ "$debug" -gt 0 ] && myecho "[dvd-menu] Debug=$debug"
+ if [ "$nocleanup" == 1 ] ; then
+         myecho "[dvd-menu] Leaving all temporary files in temp directory"

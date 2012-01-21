@@ -1,0 +1,66 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-nopvconv.png,No pvconv)
+
+<p>Phones that use CDMA chipsets from Qualcomm use the Qualcomm
+PureVoice format for storing audio.  In order to convert audio
+from another format to or from PureVoice, BitPim needs a program
+that can do so.
+
+<p>Qualcomm do have such a program, but their legal terms do
+not allow us to redistribute the program with BitPim, nor do they
+respond to email queries about distribution once they learn that
+no money is charged for BitPim.  Consequently you will need to 
+download the program and place it one of the directories BitPim 
+looks for it.
+
+<p><dl>
+
+<dt><p>Download
+
+<dd><p>The download site is URL(http://www.cdmatech.com/solutions/products/purevoice_download.jsp,
+http://www.cdmatech.com/solutions/products/purevoice_download.jsp).  
+You will want the version 3.0 converter.  
+
+<blockquote>
+<p><b>Mac note</b>: If you use MacOS then you are out of luck for the
+moment.  Quicktime does include the ability to play PureVoice, but
+that appears to be it.
+
+<p><b>Linux note</b>: The binary was made on some older version of
+Linux.  You may find it doesn't work on more recent versions.  You
+may be able to use the SDK to make a newer converter program, but
+carefully read the license agreements.  Unfortunately the legal
+terms prevent the BitPim team from being able to make an alternate 
+working binary for Linux, or from re-distributing one.
+
+</blockquote>
+
+<dt><p>Extract and copy
+
+<dd><p>The download is in an archive format such as ZIP or compressed
+tar.  Extract the contents, which should be around 3 files: the pvconv
+binary, a sample qcp file and a text file with the license agreement and
+other documentation. Copy/move the files to a directory that BitPim looks in.  
+These are listed in the dialog and are different for each platform.
+
+<dt><p>Test
+
+<dd><p>Verify the binary works and can find all necessary libraries.  This
+would be a command such as <code>pvconv&nbsp;PVsample.qcp</code> on Windows and
+<code>./pvconv&nbsp;PVsample.qcp</code> on Linux/Mac.
+
+<blockquote><b>Note</b>:  If you intend to use the pvconv program yourself,
+be aware that both the Linux and Windows versions have documentation claiming you
+can supply input and output filenames.  The version 3.0 converter has a
+bug and will error out if you give an output filename. 
+</blockquote>
+
+
+<dt><p>You are all set
+
+<dd><p>Retry your operation in BitPim and the conversions should work.
+
+</dl>
+
+#include "pageend.h"

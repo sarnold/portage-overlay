@@ -1,0 +1,26 @@
+#include "pagestart.h"
+
+<p>This section contains more details on the various error dialog
+boxes that can appear.
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Device Needs Attention,errors-deviceneedsattention.htm)
+    TOCITEM_0(Failed to open device,errors-failedtoopendevice.htm)
+    TOCITEM_0(No associated programs,errors-nomimeopencommand.htm)
+    TOCITEM_0(Failed to execute external command,errors-mimeexecfailed.htm)
+    TOCITEM_0(Failed to automatically detect port,errors-failedtoautodetectport.htm)
+    TOCITEM_0(An exception occurred,errors-exception.htm)
+    TOCITEM_0(Invalid Image File,error-invalidimagefile.htm)
+    TOCITEM_0(Zipfile corrupted,errors-zipfilecorrupted.htm)
+    TOCITEM_0(A Zipfile is required,error-zipfilerequired.htm)
+    TOCITEM_0(Failed to find PureVoice converter,error-nopvconv.htm)
+    TOCITEM_0(Phonebook busy on phone,error-phonebookbusy.htm)
+    TOCITEM_0(Data Communications Error,errors-datacomms.htm)
+    TOCITEM_0(Access has been blocked,errors-access-blocked.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h"

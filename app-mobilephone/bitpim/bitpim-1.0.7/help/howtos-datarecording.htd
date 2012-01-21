@@ -1,0 +1,27 @@
+#include "pagestart.h"
+<p>From time to time, BitPim developers may ask users to do data recording and send them the DR files to help with the debugging of the program.  Typically, DR is done to collect data associated with specific BitPim function(s) such as reading phonebook, reading ringtones, etc.
+<p>The overall process of data recording includes:
+<OL>
+	<li><p>Turn on BitPim Data Recording.
+	<li><p>Perform the specific BitPim tasks or functions.
+	<li><p>Turn off BitPim Data Recording.
+</OL>
+<p>To turn on BitPim Data Recording, perform the following steps:
+<OL>
+	<li><p>Main menu <B>Debug</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>Data Recording</B>, which would then bring up the DR Panel.
+
+SCREENSHOT(howto-datarecording1.png,)
+
+	<li><p>From the DR Panel, click on <B>Browse</B> and specify the DR file name & location.
+	<li><p>Click on <B>Record</B> to start recording.
+	<li><p>Click on <B>Close</B> to dismiss the DR Panel.
+</OL>
+<p><P>To turn off BitPim Data Recording, perform the following steps:
+<OL>
+	<li><p>Main menu <B>Debug</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>Data Recording</B>, which would then bring up the DR Panel.
+SCREENSHOT(howto-datarecording2.png,)
+
+	<li><p>Click on <B>Stop</B> to stop recording.
+	<li><p>Click on <B>Close</B> to dismiss the DR Panel.
+</OL>
+#include "pageend.h"

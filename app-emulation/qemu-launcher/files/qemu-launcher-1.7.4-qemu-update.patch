@@ -1,0 +1,129 @@
+--- qemu-launcher.pl.orig	2007-06-09 12:54:36.000000000 -0700
++++ qemu-launcher.pl	2010-01-10 17:20:21.465892662 -0800
+@@ -34,7 +34,7 @@
+ 
+ # Locale definitions
+ textdomain('qemu-launcher');
+-bindtextdomain('qemu-launcher', '_PREFIX_/share/locale/');
++bindtextdomain('qemu-launcher', '/usr/share/locale/');
+ setlocale(LC_MESSAGES, "");
+ 
+ # Constants
+@@ -79,7 +79,7 @@
+ 	'snapshot'      => FALSE,
+ 	'ifmac'         => '',
+ 	'kernelcmd'     => '',
+-	'gfxtype'       => 'pcivga',	# pcivga or vga
++	'gfxtype'       => 'vmware',		# vmware or std vga (vesa)
+ 	'sndtype'       => 'sb16',		# sb16 or es1370
+ 	'smbdir'        => '',
+ 	'numcpus'       => 1,
+@@ -201,7 +201,7 @@
+ my $drive = NULL;
+ 
+ # Detect Glade XML files
+-my $glade_files_dir = '_PREFIX_/share/qemu-launcher';
++my $glade_files_dir = '/usr/share/qemu-launcher';
+ 
+ if ( $glade_files_dir =~ m/PREFIX/)
+ {
+@@ -498,6 +498,10 @@
+ 	{
+ 		($gladexml->get_widget('gfxvgaradiobutton'))->set_active(TRUE);
+ 	}
++	elsif ( $config->{'gfxtype'} eq 'vmware' )
++	{
++		($gladexml->get_widget('gfxvmwareradiobutton'))->set_active(TRUE);
++	}
+ 
+ 	if ( $config->{'sndtype'} eq 'sb16' )
+ 	{
+@@ -695,6 +699,10 @@
+ 	{
+ 		$config{'gfxtype'} = 'vga';
+ 	}
++	elsif ( ($gladexml->get_widget('gfxvmwareradiobutton'))->get_active() )
++	{
++		$config{'gfxtype'} = 'vmware';
++	}
+ 
+ 	if ( ($gladexml->get_widget('sndsbradiobutton'))->get_active() )
+ 	{
+@@ -1281,7 +1289,13 @@
+ 		)
+ 	)
+ 	{
+-		push @qcmd_parts, '-std-vga';
++		push @qcmd_parts, '-vga std';
++	}
++	elsif (
++		( $config->{'gfxtype'} eq 'vmware' )
++	)
++	{
++		push @qcmd_parts, '-vga vmware';
+ 	}
+ 
+ 	if ( $config->{'serialdev'} )
+@@ -1316,7 +1330,7 @@
+ 		)
+ 	)
+ 	{
+-		push @qcmd_parts, '-kernel-kqemu';
++		push @qcmd_parts, '-enable-kvm';
+ 	}
+ 
+ 	if ( $config->{'args'} )
+@@ -2286,11 +2300,13 @@
+ 	{
+ 		($gladexml->get_widget('gfxpciradiobutton'))->set_sensitive($state);
+ 		($gladexml->get_widget('gfxvgaradiobutton'))->set_sensitive($state);
++		($gladexml->get_widget('gfxvmwareradiobutton'))->set_sensitive($state);
+ 	}
+ 	else
+ 	{
+ 		($gladexml->get_widget('gfxpciradiobutton'))->set_sensitive(0);
+ 		($gladexml->get_widget('gfxvgaradiobutton'))->set_sensitive(0);
++		($gladexml->get_widget('gfxvmwareradiobutton'))->set_sensitive(0);
+ 	}
+ } );
+ 
+@@ -2432,6 +2448,7 @@
+ 		( $sys_val_by_num{ $systypecombobox->get_active() } eq 'x86_64' )
+ 	)
+ 	{
++		$gladexml->get_widget('gfxvmwareradiobutton')->set_sensitive($state1);
+ 		$gladexml->get_widget('gfxvgaradiobutton')->set_sensitive($state1);
+ 		$gladexml->get_widget('gfxpciradiobutton')->set_sensitive($state1);
+ 
+@@ -2441,6 +2458,7 @@
+ 	}
+ 	else
+ 	{
++		$gladexml->get_widget('gfxvmwareradiobutton')->set_sensitive(0);
+ 		$gladexml->get_widget('gfxvgaradiobutton')->set_sensitive(0);
+ 		$gladexml->get_widget('gfxpciradiobutton')->set_sensitive(0);
+ 
+--- glade/qemulauncher.glade.orig	2007-06-09 12:54:36.000000000 -0700
++++ glade/qemulauncher.glade	2010-01-10 17:20:55.949890166 -0800
+@@ -3868,6 +3868,21 @@
+                                         <property name="position">1</property>
+                                       </packing>
+                                     </child>
++                                    <child>
++                                      <widget class="GtkRadioButton" id="gfxvmwareradiobutton">
++                                        <property name="visible">True</property>
++                                        <property name="can_focus">True</property>
++                                        <property name="tooltip" translatable="yes">VMWare emulated video card (for newer Xorg)</property>
++                                        <property name="label" translatable="yes">VMWare video driver</property>
++                                        <property name="use_underline">True</property>
++                                        <property name="draw_indicator">True</property>
++                                        <property name="group">gfxpciradiobutton</property>
++                                      </widget>
++                                      <packing>
++                                        <property name="expand">False</property>
++                                        <property name="position">2</property>
++                                      </packing>
++                                    </child>
+                                   </widget>
+                                 </child>
+                               </widget>

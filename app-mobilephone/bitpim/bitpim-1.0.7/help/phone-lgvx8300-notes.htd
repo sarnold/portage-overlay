@@ -1,0 +1,23 @@
+#include "pagestart.h"
+
+<p>This phone returns the number of phonebook entries in an unreliable way to BitPim.  There is a
+workaround in the BitPim code for it.  However the workaround does not work if the phonebook
+on the phone is completely empty.  To reliably read or write the phonebook with BitPim, you
+must ensure there is at least one entry on the phone already.
+
+<p>The videos taken by the phone use MPEG 4 for the video and Qualcomm's proprietary PureVoice
+format for the audio.  Most media players have no problem with the video but won't know how
+to do the audio.  Apple's QuickTime software (even on Windows) does understand the PureVoice
+format so you can use it to listen to the video as well.
+
+<H3>Ringtones</H3>
+<UL>
+<li><p>BitPim can make use of ringtone files stored on the miniSD card, see section <a href="phone-lgvx8300-howtos.htm">Howtos</a> for more details.
+</UL>
+
+<H3>Known Issues</H3>
+<UL>
+<LI><P>When writing phonebook contacts from BitPim to the phone, contacts' wallpaper and ringtone assignments may not always be set correctly.
+</UL>
+
+#include "pageend.h"

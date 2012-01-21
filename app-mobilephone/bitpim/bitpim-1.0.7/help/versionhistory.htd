@@ -1,0 +1,3925 @@
+#include "pagestart.h"
+   <H2><a name="1.0.7">Changes in 1.0.7</a></h2>
+    <UL>
+      <LI><P>Maintenacne: Upgrade to Sqlite-3.6.1 and APSW-3.5.9-r2.
+      <LI><P>Maintenance: Upgrade to pySerial-2.4.
+      <LI><P>Maintenance: Upgrade to paramiko-1.7.4 (Desmond).
+      <LI><P>Maintenance: Upgrade to PyWin32 Build 212.
+      <LI><P>Maintenance: Upgrade to wxPython-2.8.8.1.
+      <LI><P>New phone support: <B>Motorola V3m (Sprint)</B> (Initial)
+      <LI><P>Bug fix: iCalendar import does not process all exception dates.
+      <LI><P>Bug fix: <B>LG LX-570</B>: BitPim failed to read all contact entries.
+      <LI><P>Bug fix: iCalendar Import/Export: BitPim did not process all-day events properly.
+      <LI><P>Bug fix: iCalendar Import: BitPim failed to import monthly events.
+      <LI><P>Bug fix: BitPim failed to print <B>Memo</B> data.
+      <LI><P>Bug fix: <B>LG VX-9100</B>: BitPim failed to read media index file.
+      <LI><P>New phone support: <B>LG VX-9600 (Versa)</B> (Initial)
+      <LI><P>Bug fix: <B>LG VX-9400</B>: BitPim failed to write phonebook data.
+      <LI><P>Improvement: Users can now edit phone owner's name.
+      <LI><P>Maintenance: Upgrade to zlib-1.2.3
+      <LI><P>New phone support: <B>LG VX-11000</B> (Initial)
+      <LI><P>New phone support: <B>LG VX-9200</B> (Initial)
+      <LI><P>New phone support: <B>LG CX-9200</B> (Initial)
+      <LI><P>New phone support: <B>LG VX-5500</B> (Initial)
+      <LI><P>New phone support: <B>Samsung SCH-U750 (Alias 2)</B> (Initial)
+      <LI><P>Bug fix: Y2010 fix Sanyo SMS code
+    </UL>
+   </H2>
+   <h2><a name="1.0.6">Changes in 1.0.6</a></h2>
+    <ul>
+      <LI><P>Bug fix: <B>LG VX-8800/10000</B> Note Pad.
+      <LI><P>Improvement: <B>LG AX-8600</B> Call History and Note Pad (patch submitted by David Ritter).
+      <LI><P>Bug fix: <B>LG VX-8500/8800/10000</B>: better BREW file access (i.e. fewer "file block" errors).
+      <LI><P>Bug fix: <B>LG VX-9900</B>: access to the mmc1 dir via Command Line Interface (CLI).
+      <LI><P>Bug fix: <B>Motorola</B>: BitPim failed to read phonebook from some Motorola models.
+      <LI><P>Improvement: <B>Call History</B>: Navigate to other subtrees.
+      <LI><p>Bug fix: <B>SCP-6650</B>: Fix Katana-II phone/port detection
+      <li><p>Add "extrazero" fields to listfile and listdirectory responses so
+             that filesystem view will work for Samsung SPHA-900.  May break
+             filesystem view for other phones.
+      <li><p>New phone support: <b>Sanyo SCP-8400</b>
+      <LI><P>New phone support: <B>LG VX-9100 (enV2)</B>
+      <LI><P>Bug fix: Can't view Data Recording files on non-Intel Mac.
+      <LI><P>Bug fix: Correctly process BREW special files.
+      <LI><P>New phone support: <B>LG VX-8560</B>
+      <LI><P>New Phone support: <B>LG VX-9700</B>
+      <LI><P>New Phone support: <B>LG VX-8610</B>
+      <LI><P>Bug fix: LG VX-9900 SMS support.
+      <li><p>Bug fix: Sanyo SCP-7500.  Correctly read date on Sent messages.
+      <LI><P>Maintenance: Upgrade build script.
+      <LI><P>New phone support: <B>LG LX-570 (Musiq)</B> (Initial)
+      <LI><P>Bug fix: Support for the <B>LG VX-8800 V4</B>, <B>LG VX-8550 V4</B>, and <B>LG VX-10000 V9</B>.
+      <LI><P>Bug fix: Calendar Import Filter dialog raised exception.
+      <LI><P>Improvement: In the <B>Get Data from Phone</B> and <B>Send Data to Phone</B> dialog, clicking on either the <B>Add</B> or <B>Replace All</B> selection of a row will also enable that row.
+      <LI><P>Improvement: <B>Edit PhoneBook Entry</B> dialog: add/edit ICE setting.
+      <LI><P>Bug fix: <B>LG VX-8350</B>, <B>LG VX-8550</B>: failed to read/write large files.
+    </ul>
+
+   <h2><a name="1.0.5">Changes in 1.0.5</a></h2>
+    <ul>
+      <LI><P>New phone support: <B>Samsung SCH-A870 (VZW)</B>
+      <LI><P>Improvement: Call History duration display (patch submitted by ???)
+      <LI><P>Maintenance: Upgrade to SQLite 3.5.4.
+      <LI><P>Bug fix: Busy message dialog raised exception.
+    </ul>
+
+   <h2><a name="1.0.4">Changes in 1.0.4</a></h2>
+    <ul>
+      <LI><P>New phone support: <B>Samsung SCH-U740 (VZW)</B> (Initial)
+      <LI><P>Maintenance: Upgrade to wxPython 2.8.7.1
+      <LI><P>New phone support: <B>Motorola K1m</B> (Initial)
+      <LI><P>New phone support: <B>Samsung SCH-U470 (Juke)</B> (Initial)
+      <LI><P>New phone support: <B>Sanyo SCP-7050</B>
+      <LI><P>Bug fix: <B>LG-AX8600</B> max number of phone entries.
+      <LI><P>Bug fix: Linux RPM Build.
+      <LI><P>Bug fix: Phone detection for recent Sanyo phones
+      <LI><P>Bug fix: <B>Samsung SPH-M300</B>: ringtone conversion.
+      <LI><P>New phone support: <B>Motorola V3m (VZW)</B> (Initial)
+      <LI><P>New phone support: <B>Motorola V325 (VZW)</B> (Initial)
+      <LI><P>Bug fix: <B>LG VX-8550/5400/8800/10000:</B> display wrong caller ID number.
+      <LI><P>Bug fix: <B>LG VX-8800:</B> image preset resolutions.
+      <LI><P>Bug fix: Help Build scripts.
+    </ul>
+
+   <h2><a name="1.0.3">Changes in 1.0.3</a></h2>
+    <ul>
+      <LI><P>Improvement: Monthly Calendar Print: print one month per page.
+      <LI><P>New Feature: Command Line Interface.  See the <B>Help</B> pages for more details.
+      <LI><P>Bug fix: <B>Export SMS</B> menu throws exception.
+      <li><p>New phone support: <b>SCP-3200</b>  Untested.
+      <LI><P>Bug fix: <B>LG VX-8550</B>: Memo support.
+      <LI><P>New phone support: <B>LG VX-8800</B> (initial).
+      <LI><P>New phone support: <B>LG VX-10000</B> (initial).
+      <LI><P>New phone support: <B>Samsung SPH-M300 (Sprint)</B> (initial).
+      <LI><P>New phone support: <B>LG VX-8350</B> (initial).
+      <LI><P>New phone support: <B>LG VX-5400</B> (initial).
+      <LI><P>New phone support: <B>Samsung SPH-A900</B> (initial, phonebook read only).
+      <LI><P>Improvement: print SMS items in sorted order.
+      <LI><P>Maintenance: patches to libusb wrapper as submitted by Mark Rages and Thomas Rachel.
+      <LI><P>Maintenance: Upgrade to SQLite 3.5.3.
+      <LI><P>Bug fix: <B>LG VX-8550</B> text memo/notepad.
+      <LI><P>Bug fix: <B>LG VX-8550</B> phonebook.
+    </ul>
+
+   <h2><a name="1.0.2">Changes in 1.0.2</a></h2>
+    <ul>
+      <LI><P>Maintenance: Upgrade to Python 2.5.1
+      <LI><P>Maintenance: Upgrade to SQLITE 3.4.1
+      <LI><P>Maintenance: Upgrade to paramiko 1.7.1 (Amy)
+      <LI><P>Maintenance: Upgrade to wxPython 2.8.4.2
+      <LI><P>Improvement: List software components used by BitPim in the <B>About Dialog</B>.
+      <LI><P>Improvement: <B>LG VX-8300</B> firmware V3 support.
+      <LI><P>Bug fix: <B>LG VX-9400</B> get group error.
+      <LI><P>Bug fix: <B>LG VX-8700</B> decrease data packet size.
+      <LI><P>Improvement: Added <B>Comm Timeout</B> setting to the <B>BitPim Settings</B> dialog.
+      <LI><P>Maintenance: New shorter BitPim description string.
+      <LI><P>Bug fix: Set maximum number of calendar entries that can be sent to <B>LG</B> phones.
+      <LI><P>Improvement: iCal support: WKST parameter.  
+      <LI><P>Improvement: Allow reading of prefix 1 and other non-digit phone numbers from the phone.
+      <LI><P>Bug fix: Outlook calendar import: all-day events that span more than one day.
+      <LI><P>Bug fix: Calendar events summary window pop-up during Get Phone Data freezes BitPim.
+      <LI><P>Improvement: display ringtone information in the Contact Editor dialog.
+      <li><p>New phone support: <B>SCP-6650</b> (Katana-II)
+      <LI><P>Bug fix: <B>LG VX-8550</B>: BitPim failed to write contacts to the phone.
+      <LI><P>Improvement: Display the number of contacts in the <B>Phonebook</B> view.
+    </ul>
+
+   <h2><a name="1.0.1">Changes in 1.0.1</a></h2>
+    <ul>
+      <LI><P>Maintenance: Gentoo tbz2 package.
+      <LI><P>Maintenance: Improved support for <B>LG VX-5300, VX-8500, VX8600,
+      VX-8700, VX-9400.</B>
+      <LI><P>Bug fix: <B>LG VX-9400</B> calendar support.
+      <lI><p>Improvement: Reading ringtones on RL4930 also reads voice memos
+      <LI><P>Improvement: Increase read/write data block size for <B>LG VX-8700/9400</B>.
+      <LI><P>New phone support: <B>LG VX-8550</B> (initial).
+      <LI><P>Maintenance: Disable T9 User Database read.
+      <LI><P>Bug fix: BitPim fails to auto-detect when a phone is disconnected and a different model is connected.
+      <LI><P>Improvement: Feature to allow users to automatically create trouble reports suitable for posting to the BitPim Developer List or emailing to BitPim developers.
+      <li><p>Improvement: <b>Sanyo SCP-6600</b> Change maximum phone number
+		length from 32 to 48 digits.
+      <LI><P>New phone support: <B>LG AX-8600</B> (initial).
+      <LI><P>Improvement: <B>LG VX-8700</B> memo support.
+      <LI><P>Bug fix: <B>Samsung SCH-A930/A950</B>: Calendar time off by 1 hour (again!).
+      <LI><P>Bug fix: Float file timestamp values raised exception.
+    </ul>
+
+   <h2><a name="1.0.0">Changes in 1.0.0</a></h2>
+    <ul>
+      <LI><P>Improvement (Windows): users can now toggle between the Help window and BitPim window.
+      <LI><P>Bug fix: <B>LG VX-8100/8300/8500/8600/8700:</B> non-existing calendar file raised exception during calendar send.
+      <LI><P>Bug fix: <B>LG VX-8700</B>: bad phone file date crashed BitPim.
+      <LI><P>Bug fix: Motorola E815/E815m/V3c/V3cm auto-detection.
+      <LI><P>Bug fix (Linux): Contact entry editor does not work properly with 2 or more ringtones or wallpapers.
+      <LI><P>Bug fix: <B>Samsung SCH-A930/A950</B>: Calendar time off by 1 hour.
+      <LI><P>New phone support: <B>LG VX-9400</B>.
+      <LI><P>Maintenance: <B>LG VX-8700</B>: updated default image resolutions.
+      <LI><P>Maintenance (Linux): Auto port detection and phone detection.  See the Linux USB Help for more details.
+      <LI><P>Maintenance (Linux): binary deb package.
+      <LI><P>Maintenance: replaced getopt with gnu_getopt.
+      <LI><P>Maintenance: updated Mac build script.
+    </ul>
+
+   <h2><a name="0.9.15">Changes in 0.9.15</a></h2>
+    <ul>
+      <LI><P>Bug fix: Calendar Import Preset dialog does not work properly on Linux.
+      <LI><P>Bug fix: Phonebook preview pane does not work at startup on Linux.
+      <LI><P>Bug fix: BitPim failed to export SMS entries with no dates.
+      <LI><P>New feature: SMS Print.
+      <LI><P>Bug fix: libusb on Debian.
+      <LI><P>New feature: Memo Print.
+      <LI><P>New feature: Generate HTML files from Print Dialog.
+      <LI><P>Bug fix: <B>LG VX8100/8300/8500:</B> Invalid monthly events crashed BitPim.
+      <LI><P>New feature: Added the <B>Playlist Size</B> field to the <B>Playlist</B> display.
+      <LI><P>Maintenance: Display more info when ringtone conversions fail.
+      <LI><P>Bug fix: bad/non-existing wallpaper image crashes Phonebook view.
+      <LI><P>Bug fix: Phone filesystem view does not properly set the sash position on Linux.
+      <LI><P>New feature: Enable drag-and-drop feature for Linux.
+      <LI><P>New phone support: <B>Verizon Wireless LG VX-8700</B>
+      <LI><P>New feature: <B>LG VX8500/8600/8700</B> BitPim can now "request"
+      the phone to enter Diagnostic Mode (DM).
+      <LI><P>Bug fix: Right-click in filesystem view does not immediately pop
+      up the context menu.
+      <LI><P>New feature: Phone auto-detection on Linux.
+      <LI><P>New feature: Copy-and-paste files from GTK to BitPim.
+      <LI><P>Bug fix: bitfling process does not start.
+      <LI><P>Bug fix: SMS Export Browse dialog does not show CSV files.
+      <LI><P>Maintenance: Upgrade to wxPython-2.8.4.0
+      <LI><P>Maintenance: Upgrade to sqlite-3.3.17
+    </ul>
+
+   <h2><a name="0.9.14">Changes in 0.9.14</a></h2>
+    <ul>
+      <li><p>Bug fix: media vtable reads wrong files.
+      <li><p>Maintenance: update component package versions.
+      <li><p>Bug fix: <B>Samsung SCH-A930/950</B> calendar timezone.
+      <li><p>Bug fix: iCalendar import fails to correctly set ALARM value.
+      <li><p>Bug fix: BitPim imports invalid Outlook montly events, which are failed to send to the <B>LG VX8100/8300/8500</B>.
+      <li><p>Maintenance: Upgrade to wxPython-2.8.3.0.
+      <li><p>Bug fix: Calendar Import Wizard truncates path name.
+      <li><p>Bug fix: Create Data Storage Wizard truncates path name.
+      <li><p>New feature: <B>Samsung SCH-A930:</B> retrieve video files along with wallpapers.
+      <li><p>New feature: Add <B>Next 7 Days</B> preset option to calendar import filter.
+      <li><p>Bug fix: Phone contact editor incorrectly displays wallpaper and ringtone assignments.
+      <li><p>New feature: Add <B>Merge</B> option to the calendar import process.
+      <li><p>New feature: Add <B>HowTos</B> and <B>FAQ</B> to the <B>Help</B> menu.
+    </ul>
+
+   <h2><a name="0.9.13">Changes in 0.9.13</a></h2>
+    <ul>
+      <li><p>Bug fix: prevent two BitPim instances using the same storage area.
+      <li><p>New feature: display the storage name (if available) on the BitPim main window.
+      <li><p>Bug fix: New daylight saving time in iCal calendar export.
+      <li><p>Bug fix: Motorola V710 support.
+      <li><p>Bug fix: T9 Editor failed to delete words.
+      <li><p>Bug fix: <B>LG VX8500:</B> failed to send T9 data to the phone.
+      <li><p>Added Phone Info for Sanyo Phones.
+      <li><p>New feature: <B>LG UX5000</B> support.
+    </ul>
+
+   <h2><a name="0.9.12">Changes in 0.9.12</a></h2>
+    <ul>
+      <li><p>New feature: prevent two BitPim instances using the same storage area.
+      <li><p>Bug fix: Build 0.9.11 database compatibility issue.
+      <li><p>Bug fix: <B>LG VX-8500:</B> limit the size of each playlist to 50 songs.
+      <li><p>Bug fix: <B>LG VX-8600:</B> disable Play List feature.
+    </ul>
+
+   <h2><a name="0.9.11">Changes in 0.9.11</a></h2>
+    <ul>
+      <li><p>New phone support: <B>SCP-2400</B>.
+      <li><p>Bug fix: Calendar Import Preset does not adjust dates.
+      <li><p>Help pages update.
+      <li><p>VCard import now detects Apple's files that are in Unicode format but without byte order markers
+      <li><p>Bug fix: <B>LG VX-8600</B> Call History feature.
+      <li><p>Additional support features for <B>LG VX-9900</B>.
+      <li><p>Bug fix: Added the "Secret" field to the Phone Entry Editor Dialog.
+      <li><p>Bug fix: Print preview crashed BitPim.
+      <li><p>Bug fix: Revert-to-saved not working in GTK.
+      <li><p>Bug fix: Switched to OS native buttons in dialogs.
+      <li><p>Bug fix: <B>LG VX</B> Busy phonebook crashed BitPim.
+      <li><p>New phone support: <B>LG VX-5300</B>
+      <li><p>New feature: Help menu item that takes users directly to the Help page of the current phone model (if available).  This feature is also available from a Help button from the Set Phone wizard.
+      <li><p>Moved menu item <b>Phone Info</b> from main menu <b>Edit</b> to <b>View</b>.
+      <li><p>Sanyo SCP-6600 (Katana): Writing the phonebook now supported.
+      <li><p>Bug fix: Windows comscan crashed BitPim.
+      <li><p>Bug fix: Improved <b>LG VX-8500/8600</B> T9 User Database feature.
+      <li><p>Design change: storing media data via Sqlite virtual tables.
+      <li><p>New feature: Create New BitPim Data Storage wizard.
+      <li><p>Bug fix: iCalendar import.
+    </ul>
+
+   <h2><a name="0.9.10">Changes in 0.9.10</a></h2>
+    <ul>
+      <li><p>Bug fix: Unknown command line parameter crashes BitPim.
+      <li><p>New phone support: <B>LG VX-8600</B>.
+      <li><p>New phone support: <B>Sanyo SCP-200</B>.
+      <li><p>New phone support: <B>LG VX-9900</B> (phonebook, wallpapers, and ringtones).
+      <li><p>New feature: T9 User Database maintenance.  Initially, only the LG VX-8500/8600 supports this feature.
+    </ul>
+
+   <h2><a name="0.9.09">Changes in 0.9.09</a></h2>
+    <ul>
+      <li><p>Bug fix: Adding mp3 ringtones crashes BitPim (<B>LG-VX8300</B>)
+      <li><p><b>Windows</b>:  Fixed issue where BitPim would silently fail if <tt>My Documents</tt>
+      didn't exist (eg on an external USB drive that isn't plugged in). 
+      <li><p>Sanyo phones: Read "Sent" messages as well received messages when
+	  reading SMS.  Add auto-detection for newer Sanyo phones (SCP-3100,
+	  SCP-6600, and MM-7500) and Bell SCP-8100.
+      <li><p>Bug fix: Timezone issues with Samsung A930/A950 calendar events.
+      <li><p>Sanyo SCP-6600 (Katana): Reading the phonebook now supported.
+      <li><p>Bug fix: bad BREW file date crashes BitPim.
+      <li><p>New feature: Added Splash Screen Time duration to the Config Dialog.
+      <li><p>New feature: Calendar Import Preset.
+    </ul>
+
+   <h2><a name="0.9.08">Changes in 0.9.08</a></h2>
+    <ul>
+      <li><p>Added Sanyo MM-5600 support.
+      <li><p>Show libusb device Product ID and Vendor ID in the Comm Port Settings dialog.
+      <li><p>Handled media unicode file names for the <B>LG-VX8300/VX8500</B>. 
+      <li><p>Clarified phonebook writing error message. 
+      <li><p>Fixed deleting nonexisting media files bug (<B>LG-VX8100</B>).
+      <li><p>Fixed iCal import DTEND property.
+      <li><p>Fixed support for adding 3g2 video files.
+      <li><p>Added the <B>Replace All</B> and <B>Merge</B> options to the Contacts Import dialog.
+      <li><p>Support for Telus SPH-A840, phonebook and calendar only, added.
+      <li><p>Sanyo SPH-6600 (Katana): Phonebook and wallpaper/ringtone writing
+	not supported.  Camera images read with wallpaper. 
+      <li><p>Added file infor support for WMA file type.
+      <li><p>For <B>LG VX</B> phones: ignore invalid calendar events read from phones.
+      <li><p>Added the capability to export BitPim calendar data to iCalendar format.
+      <li><p>Improved display of non-recurrent calendar events that span more than 1 day.
+      <li><p>Added an option to reformat contact names during the contact import process.
+      <li><p>Bug fix: BitPim crashed due to corrupted config file.
+      <li><p>Bug fix: BitPim crashed due to corrupted Call History file.
+      <li><p>Bug fix: Bad phone contact entry crashes BitPim.
+      <li><p>For Sprint Samsung phones, include location in event name.
+      <li><p>New feature: display calendar events inside a Tool Tip window.
+      <li><p>New feature: copy/paste of SMS text to the clipboard.
+      <li><p>Bug workaround: Unicode characters crash CSV contact export.
+    </ul>
+
+   <h2><a name="0.9.07">Changes in 0.9.07</a></h2>
+    <ul>
+      <li><p>Fixed phonebook and filesystem splitter display.
+      <li><p>On Windows, sync the current help topic with the TOC.
+      <li><p>Sanyo phones: Improve setting of alarms for calendar
+      <li><p>Renamed menu item AutoSync to Auto Calendar Import, and moved it to under Import menu item.
+      <li><p>Fixed adding media files decode exceptions.
+      <li><p>Added support for the LG VX8500 phone.  See the Help for more details.
+      <li><p>Increased A930 max ringtone size to 290K.
+      <li><p>Capability to read ringtone files for the LG VX8500.
+      <li><p>Added MS Windows Media Player Play List (wpl) files import.
+      <li><p>Fixed Shift+Add feature for Linux.
+    </ul>
+
+   <h2><a name="0.9.06">Changes in 0.9.06</a></h2>
+    <ul>
+      <li><p>Fix crash on reading SMS messages from Sanyo phones
+      <li><p>Added Import Calendar Wizard feature.
+      <li><p>Handled local filesystem file names.
+      <li><p>Added unicode support to the Samsung A930/A950.
+      <li><p>Fixed calendar support for the LG VX8300.
+      <li><p>Fixed various Help screen shots.
+    </ul>
+
+   <h2><a name="0.9.05">Changes in 0.9.05</a></h2>
+    <ul>
+      <li><p>Raise bitpim phonebook group limit from 10 to 30 on LG-VX5200/8100/9800. 
+      <li><p>Fixed Set Phone wizard for Linux plaform.
+      <li><p>Fixed auto-detection to include libusb ports for Linux.
+      <li><p>Fixed bug: BitPim does not always terminate on Linux.
+      <li><p>Fixed bug: get calendar data raised exception.
+      <li><p>Add support for calendar on <B>LG-VX8300</B> (Verizon).
+      <li><p>Fixed vCard Photo field import problem.
+      <li><p>Added support for Samsung <B>SCH-A930</B> phone.
+    </ul>
+
+   <h2><a name="0.9.04">Changes in 0.9.04</a></h2>
+    <ul>
+      <li><p>Add support for <B>LG-VX8300</B> (Verizon). Calendar not supported. 
+      Phonebook ringer and wallpaper assignment not supported.
+      <li><p>Fixed bug: Calendar read raised exception.
+      <li><p>Fixed bug: LG VX7000 media read raised exception.
+      <li><p>Yet another attempt to fix LG VX6000/6100 auto-detection.
+      <li><p>Added a work-around that allows storing ringtones on miniSD cards for the <B>VX9800 (V2+)</B>, which was inadvertently left out from release <B>0.9.03</B>.
+    </ul>
+
+   <h2><a name="0.9.03">Changes in 0.9.03</a></h2>
+    <ul>
+      <li><p>Added Call History and SMS support to the A950.
+      <li><p>Fix bug:Exception in wallpaper pane when it contains unrecognised image formats.
+      <li><p>Fixed SMS feature for V3c(m) phones.
+      <li><p>Fixed backup dir bug.
+      <li><p>Added Calendar Read Merge feature.
+      <li><p>Fixed bug: phonebook preview with bad image.
+      <li><p>Fixed bug: BitPim crashes when VX9800 fails to read media files.
+      <li><p>Improved phone detection scheme for VX6100.
+      <li><p><b>Linux</b> ISO 8559-1 encoding is now found 
+      <li><p>Added a work-around that allows storing ringtones on miniSD cards for the <B>VX8100</B> and <B>VX9800</B>.
+    </ul>
+
+   <h2><a name="0.9.02">Changes in 0.9.02</a></h2>
+    <ul>
+      <li><p><b>NOTE: If you run this version going back to an earlier version 
+          will cause all the wallpaper/ringers in BitPim to disappear.</b>
+      <li><p>Fixed media view toolbar bitmap problem.
+      <li><p>Fixed status bar redraw problem.
+      <li><p>Fixed bug: calendar entry dialog color coded fields not working properly.
+      <li><p>Added auto-detect current phone model first.
+      <li><p>Added Sanyo MM-7500 support.  Wallpaper/ringer writing are currently
+	  disabled.  Playlist and call history support are not yet available.
+      <li><p>Added phone detection status indicator.
+    </ul>
+
+   <h2><a name="0.9.01">Changes in 0.9.01</a></h2>
+    <ul>
+      <li><p><b>NOTE: If you run this version going back to an earlier version 
+          will cause all the wallpaper/ringers in BitPim to disappear.</b>
+      <li><p>Fixed A950 Phonebook reading problem.
+      <li><p>Added phone detection for the Motorola E815.
+      <li><p>Increased the size of the phonebook from 500 to 1000 entries for the V3c and E815.
+      <li><p>Fixed V170(m) SMS reading problem.
+      <li><p>Fixed Data Recording playback bug.
+      <li><p>Fixed Linux Unicode alias error for the Motorola phones.
+      <li><p>Added support for Sanyo SCP-3100 (Sprint). See the <a
+href="phones-sanyo-model-notes.htm#scp3100">SCP-3100 model notes</a>
+for driver information.
+      <li><p>Added A950 Phonebook write.
+      <li><p>Added iCalendar import feature.
+      <li><p>Added Google Calendar import feature.
+      <li><p>Fixed bug: cannot shutdown PC while BitPim is in the System Tray.
+      <li><p>Fixed bug: undocking laptop crashes BitPim.
+      <li><p>Fixed bug: run minimized does not go to System Tray.
+      <li><p>Added color coded program status.
+      <li><p>New GUI layout for media, separate nodes for all origins.
+      <li><p>Added summary screen to show size and quantity of media.
+      <li><p>Add right-click menus to media-related items in tree view.
+      <li><p>Add feature to move media from one origin to another (right-click file to move).
+      <li><p>Add support for media files of the same name in different origins.
+      <li><p>Add ability to add media to all origins, note: some origins are read only so updates in
+          BitPim will not appear in the phone, check phone help.
+      <li><p>Add feature to export media files (right-click in tree view) to zip file and filesystem.
+      <li><p>Add list view for media panel.
+      <li><p>Fixed incorrect wallpaper sizes on LG-VX8100.
+      <li><p>Fixed bug in preview window for wallpaper editor which cause it to be cropped in some cases.
+      <li><p>Add support for preserving media file timestamps (not implemented on all phones).
+      <li><p>Internal storage of media moved to database, media files now stored in origin directories.
+      <li><p>Added patch to prevent 0 size ringers when getting ringers from phones which block reading (e.g. 8100)
+          when the ringers were previously uploaded using bitpim.
+      <li><p>Fixed auto-detection for phones that have 2 comm ports.
+    </ul>
+
+   <h2><a name="0.9.00">Changes in 0.9.00</a></h2>
+    <ul>
+      <li><p>Fixed BREW file timestamp issue.
+      <li><p>Fix bug writing the phonebook to the LG-VX9800.
+      <li><p>Got around V3cm reading ringtones issue.
+      <li><p>Fixed A950 reading non-existing index file issue.
+      <li><p>Organized-by-size GUI update.
+    </ul>
+
+   <h2><a name="0.8.14">Changes in 0.8.14</a></h2>
+    <ul>
+      <li><p>Allow access to 'My Sounds' on LG-VX5200.
+      <li><p>Added suport for the <B>SCH-A950</B> phone.  See the Help section for more details.
+      <li><p>Added phone detection for Motorola V3c/V3cm phones.  Support for V3c/V3cm is indentical to the V710/V710m phones.
+    </ul>
+
+   <h2><a name="0.8.13">Changes in 0.8.13</a></h2>
+    <ul>
+      <li><p>Fixed bug saving wallpaper and ringtones in rightclick menu.
+      <li><p>Fixed bug requiring restart after phone model change.
+      <li><p><b>LG-PM325</b> Add write support for phonebook, calendar, wallpaper
+	and ringtones.
+      <li><p>Add support for iso-8859-1 characters on, LG-VX4400, LG-LX5450, Toshiba VM4050, LG-PM225, LG-PM325.
+          This will allow phonebooks with names with accented characters and other non-ascii characters supported by the phone to work.
+      <li><p>Added support for the Motorola V710 phone.  Supported features include phonebook, calendar, ringtones, wallpapers, and SMS.  See the Help section for more details.
+      <li><p>Added support to the Motorola V710m, which is the V710+OBEX.
+      <li><p>Add support for <B>LG-LX5550</B> (Alltel).
+      <li><p>Add support for <B>LG8100</B> (Telus Mobility).
+      <li><p><b>Sprint Samsung phones</b> Increase limit on ringers to 250K.
+    </ul>
+
+   <h2><a name="0.8.12">Changes in 0.8.12</a></h2>
+    <ul>
+      <li><p>Fixed Task Bar Icon discrepancies.
+      <li><p>Improved Data Recording playback.
+      <li><p>Fixed bugs introduced with new GUI, phone reboot, standby, todolist send/get, call history stats, drag and drop.
+      <li><p>Add support for iso-8859-1 characters on, LG-VX5200, LG-VX6100, LG-VX7000, LX-VX8100, LG-VX9800. 
+          This will allow phonebooks with names with accented characters and other non-ascii characters supported by the phone to work.
+      <li><p>Added System-Tray-On-Closed feature.
+      <li><p><b>LG VI125</b>: Add readonly phonebook support for this Sprint phone.
+    </ul>
+
+   <h2><a name="0.8.11">Changes in 0.8.11</a></h2>
+    <ul>
+      <li><p>Fixed bugs with new GUI, getting call history, phonebook column picker and outlook import filter.
+      <li><p>Fixed exception when outlook is not installed for Windows.
+      <li><p>Fixed exception when trying to access blocked files.
+      <li><p><b>LG VX7000</b>: Cope gracefully when updating ringtones and the index says a file exists that doesn't actually exist.
+      <li><p>Add support for <B>LG6190</B> (Bell Mobility).
+      <li><p>Fix bug writing phonebook on LG-PM225.
+      <li><p>Added Data Recording feature.
+   </ul>	
+
+   <h2><a name="0.8.10">Changes in 0.8.10</a></h2>
+    <ul>
+      <li><p>New look and feel for BitPim main screen
+      <li><p>Fixed bug in 0.8.09 that caused exception in media conversion
+   </ul>	
+
+   <h2><a name="0.8.09">Changes in 0.8.09</a></h2>
+    <ul>
+      <li><p><b>Samsung A620/A740/A840:</b> Add capability to upload wallpaper
+             to phone.  Fix writing of calendar alarm times.  (Rounds down
+             to 0, 10, 30, or 60 minutes).
+      <li><p>Add read support for <b>LG-PM325</b> phonebook, calendar, wallpaper
+	  ringtones, call history and SMS.
+      <li><p>Added new toolbar to main window.
+      <li><p>Added Call History export to CSV format.
+      <li><p>Add phonebook read/write support for <b>LG VI-5225</b> (STI-Mobile).
+      <li><p><b>Import Outlook Contacts:</b>Added contact category priority filter.
+      <li><p>Add support for <B>LG6200</B> (Bell Mobility).
+      <li><p>Added Phone Setting Wizard feature.
+      <li><p><b>Windows</b> libusb is no longer looked for on Windows.  (To use libusb on Windows, 
+      you had to have a device driver first.  And if you had a device driver, you'd have no need for libusb.)
+      <li><p><b>Mac</b> The native Mac online help system is used for BitPim help.  
+      (Note: if the help viewer is slow or has other issues then that is a <a href="http://www.thexlab.com/faqs/helpviewer.html">known issue</a>
+      and nothing to do with BitPim)
+      <li><p><b>Mac</b> The top pane of the comm port selection dialog would startup zero sized so you wouldn't know it is there.  Now forced to be
+     shown.
+    </ul>
+
+   <h2><a name="0.8.08">Changes in 0.8.08</a></h2>
+    <ul>
+      <li><p>Add support for <B>Samsung VI660 (SPH-A660)</B>.
+      <li><p>Fixed the issue of BitPim not being aware of passing midnight.
+      <li><p>Added color coded labels to editable fields.
+      <li><p>Add support for <B>LG C2000 (Cingular)</B>.
+      <li><p>Added phone detection at BitPim startup.
+      <li><p>Added Call History historical data viewing capability.
+      <li><p>Allow Media filenames to contain hyphen, underscore and brackets on LG-VX8100/9800
+      <li><p>Add support for <B>LG-PM225 (Sprint)</B>.
+      <li><p><b>Samsung A740/A840:</b> On writing phonebook to phone, use default
+	 ringer and wallpaper.  (Instead of Boardwalk and "People 20").
+      <li><p>Added SMS historical data viewing capability.
+    </ul>
+
+   <h2><a name="0.8.07">Changes in 0.8.07</a></h2>
+    <ul>
+      <li><p>Added phonebook read support for the <B>Samsung SPH-N400</B>.
+      <li><p>Add support for <B>Sanyo RL-4930</B>.
+      <li><p>Add support for <B>Samsung SPH-A840</B>.
+      <li><p>Fixed bug importing repeating all-day events from Outlook
+      <li><p>There is now a help page for when CRC errors are detected
+      <li><p>Added Playlist Management feature.
+      <li><p>Added Playlist support to the <B>LG-VX9800</B>.
+      <li><p>Added a work-around for not being able to read ringtone files
+          from the <B>LG-VX8100(V6/7)</B>.
+    </ul>
+
+   <h2><a name="0.8.06">Changes in 0.8.06</a></h2>
+    <ul>
+       <li><p>Added a feature that allows Window users to minimize BitPim into
+           the System Tray (Task Bar Icon).  Users can enable/disable this
+           option from the Settings dialog.
+	<li><p><b>Samsung Sprint Phones:</b> Fixed group assignments for
+	phonebook writes.
+       <li><p>Added support for the Toshiba VM4050 phonebook writing and fixed
+        bug in phonebook read, added VM4050 to help screens
+       <li><p>Fixed bug that hid autosync feature added in previous version
+       <li><p>Added support for LG-VX6100 Memo (notepad) read/write
+       <li><p>Fixed Help display bug on Mac & Linux.
+       <li><p>Added the Preset Duration parameter to the Calendar Import Filter 
+           Dialog.
+       <li><p>Added the feature that allows the Calendar Import Filter Dialog to
+           remember its previous settings.
+       <li><p>Added the capablity to set Category, Ringtone, or Wallpaper to 
+           multiple contacts.  Please see the <b>Howtos</b> section of the Help
+           file for more details.
+    </ul>
+
+   <h2><a name="0.8.05">Changes in 0.8.05</a></h2>
+    <ul>
+       <li><p>Fixed bug that prevented writing wallpaper and ringtones to the LG VX5200
+       <li><p>Displayed expanded view of the SMS tree upon initialization.
+       <li><p>Improved Phone Contact Editor part 2.
+       <li><p>Added support for the Toshiba VM4050 (phonebook reading and auto detect only)
+       <li><p>Add 'AutoSync' feature to automate synchronizing PC calendar with phone
+       <li><p>Fixed LG-VX3200 phonebook read/write exception.
+       <li><p>Added Import Outlook Notes feature.
+       <li><p><b>Samsung A620/A740:</b>  Can now write ringtones to phone.  Calendar fixes.
+       <li><p>Fixed LG-VX8100/9800 phonebook speed dial bug.
+       <li><p>Added Import Outlook Tasks feature.
+       <li><p>Fixed Outlook Calendar all-day events spreading to the next day.
+       <li><p>Add support for Sanyo VI-2300.
+       <li><p><b>Sanyo Phones:</b> Add reading of sms and todo.
+       <li><p>Fixed bug that prevented writing memos to the LG VX5200
+       <li><p>Added support for multiple data directories feature.  Please see the <B>Howtos</B> section for more details.
+    </ul>
+
+   <h2><a name="0.8.04">Changes in 0.8.04</a></h2>
+    <ul>
+      <li><p>Added a feature to the Phone Contact Editor that allows users to
+      navigate to the next/previous contact item.
+      <li><p>For calendar events, combined the description and location with the
+      format 'description[location]'.
+      <li><p><b>LG VX8100/VX9800</b>:
+          <ul>
+              <li><p>Added a feature to to get/send <b>My Sounds</b> media files.
+              <li><p>Preserved previous ringtone and image IDs.
+          </ul>
+      <li><p>Fixed failed-to-write-contact-entry exception.
+      <li><p>Fixed failed-to-read-media-file exception.
+      <li><p>In the <b>Today</b> tab, fixed the order of the <b>SMS</b> and
+      <b>Call History</b> items.
+      <li><p><b>Sprint Samsung Phones:</b> Fixed calendar writing.
+      <li><p><b>Sanyo Phones:</b> Fix phonebook writing that was broken
+             in 8.03.  Avoid exceptions when writing media to phone.
+             (Occured with MM-8300).
+      <li><p>Fix problem with <b>pager</b> and <b>none</b> numbers causing exceptions on
+      LG VX5200, LG VX8100 and a few other LG phones.
+    </ul>
+
+   <h2><a name="0.8.03">Changes in 0.8.03</a></h2>
+    <ul>
+      <li><p>Added full support for the LG LX5450 (Alltel).
+      <li><p>Fixed SMS Deletion exception.
+      <li><p>Added SMS Export to CSV and mbox formats.
+      <li><p>Update filesystem tab with new look and feel. Supports drag and drop 
+          for copying files into the phone's file system.
+      <li><p><b>Sanyo phones:</b> Added reading of call history.
+      <li><p><b>Sanyo picture phones:</b> On reading camera pics, rename
+	duplicate filenames.  This prevents smaller "saved to phone"
+	pictures from clobbering the original "in camera" pictures.
+      <li><p><b>LG VX8100/VX-9800:</b> Added the capability to retrieve video files.  
+      These files can also be played by an appropriate software player (if installed).
+      <li><p>Fixed apparent program frozen issue.
+      <li><p>Fixed Filesystem Backup exception.
+    </ul>
+
+   <h2><a name="0.8.02">Changes in 0.8.02</a></h2>
+    <ul>
+  	<li><p><b>Sanyo MM-7400</b> Add calendar write support.
+   	<li><p><b>Sanyo MM-8300</b> Handle clear of unused events properly
+	       when writing the calendar.
+        <li><p>Fixed problem with writing wallpapers and ringtones to the LG-VX9800.
+        <li><p>Fixed problem with parsing SMS outbox messages from the LG-VX9800.
+        <li><p>Added every-nth-month capability to the Calendar feature.
+        <li><p>Fixed exception generated when a calendar event with a long description is read.
+        <li><p>Allowed the LG-VX8100 to access wallpapers and ringtones files stored on the miniSD card, similar to the LG-VX9800.
+	<li><p>Add support for Samsung SPH-A740 (Sprint).  Read/write of phonebook
+	    and calendar, and reading of wallpaper/camera and ringtones
+	    supported.
+    </ul>
+
+   <h2><a name="0.8.01">Changes in 0.8.01</a></h2>
+    <ul>
+      <li><p>Fixed LG-VX7000 Call History feature.
+      <li><p>Added full support to the LG-VX9800.
+      <li><p>Added Calendar, Call History, Memo, and SMS support to the LG-VX3200.
+      <li><p>Add calendar write support for MM-8300
+      <li><p>Improved phonebook writing feature of the LG-G4015.
+    </ul>
+   <h2><a name="0.8.00">Changes in 0.8.00</a></h2>
+
+
+
+    <ul>
+
+      <li><p>Fixed LG VX8100 wallpaper size.
+
+      <li><p>Added phone detection for unknown CDMA phones.
+
+      <li><p>Added full support for the LG VX5200.
+
+      <li><p>Improved UNICODE support
+
+      <li><p>Added full support for the LG VX4500.
+
+      <li><p>Added support for the Sanyo MM-8300
+
+      <li><p>Fixed Calendar tab background redraw problem.
+
+      <li><p>Fixed Phone File System Dir Listing problem.
+
+      <li><p><b>Samsung SPH-A620</b> Wallpaper readout now includes pictures
+
+	 in wallet and downloaded images/screensavers
+
+      <li><p>Preserved "_HELP_NAVTREE_ID" in Help htd files.
+
+      <li><p>Fixed LG VX8100 PhoneBook support to allow 'W' character (Wait) in dialstrings.
+
+      <li><p>Added LG G4015 phone support.
+
+      <li><p>Accommodated .ics file extension for vCalendar Import.
+
+      <li><p>Added Calendar and Memo support to the LG VX8000 phone.
+
+
+
+    </ul>
+
+
+
+   <h2><a name="0.7.37">Changes in 0.7.37</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Fixed and improved 'bad cache dir' problem.
+
+
+
+      <li><p>Turned on protocol log during auto-detection process.
+
+
+
+      <li><p>Adapted several Palm's vCard extensions.
+
+
+
+      <li><p>Added phonebook read/write support for the SPH-N200.
+
+
+
+      <li><p>Added full support for the LG VX-6000.
+
+
+
+      <li><p>Added phone file system emulation for development.
+
+
+
+      <li><p>Provided a temporary fix for LG VX8100 BREW file system listing.
+
+
+
+    </ul>
+
+
+
+   <h2><a name="0.7.36">Changes in 0.7.36</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>In the SMS tab, display the messages in the order of received
+
+          date/time.
+
+
+
+      <li><p>Added Calendar support to LG-VX4400.
+
+
+
+      <li><p>Added a warning message dialog if a ringtone being added is
+
+          too big.
+
+
+
+      <li><p>Added a dialog to display Outlook Calendar Items that failed to
+
+          import.
+
+
+
+      <li><p>Added the capability to retrieve Voice Memo data from the 
+
+          LG VX-4650.
+
+
+
+      <li><p>Completed all Help files.
+
+
+
+    </ul>
+
+
+
+   <h2><a name="0.7.35">Changes in 0.7.35</a></h2>
+
+
+
+    <ul>
+
+      <li><p>Fixed bug that caused the horizontal scrolled-bar of the
+
+          phonebook tab to disappear after turning on & off the
+
+          preview panel.
+
+
+
+      <li><p>Fixed a bug that caused old monthly event data to generate
+
+          exceptions.
+
+
+
+      <li><p>Added the Today tab.
+
+
+
+      <li><p>Added Volume Adjustment feature to mp3 media conversion.
+
+
+
+      <li><p>Added a file caching capability when reading BREW EFS files from
+
+          the phone.  This feature avoids reading unchanged media files
+
+          repetitively from phone.
+
+
+
+      <li><p>For SMS messages, added field 'Read' and 'Delivery Confirmation'.
+
+
+
+      <li><p>For Calendar Events, added field 'Vibrate'.
+
+
+
+      <li><p>For CAll History, added field 'Duration'.
+
+
+
+      <li><p>Added support to LG-VX8100 phones: phonebook, calendar,
+
+          wallpapers, ringtones, text memo, call history, phone info,
+
+          and auto-detection.
+
+
+
+      <li><p>Added support to LG-VX4650 phones: phonebook, calendar,
+
+          wallpapers, ringtones, text memo, call history,
+
+          and auto-detection.
+
+    </ul>
+
+
+
+
+
+   <h2><a name="0.7.34">Changes in 0.7.34</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p><b>Sanyo MM-7400</b> Increase wallpaper upload size to 176x220.
+
+
+
+      <li><p>Fixed shift+Add wallpaper feature.
+
+
+
+      <li><p>Improved Hex Editor.
+
+
+
+      <li><p>Fixed media name change notification to Phonebook contacts and
+
+          Calendar events.  When users rename wallpapers or ringtones, the
+
+          changes will be propagated to all Phonebook contacts and Calendar
+
+          events, which may require (re)syncing data between BitPim and the
+
+          phones.
+
+
+
+      <li><p>Added TimeZone capability to vCalendar Import.
+
+
+
+      <li><p>Added "nth *day (ie 1st Monday) of every month" repeat feature
+
+          to Calendar Events.  Also extended this feature to other
+
+          Calendar Import/Export capabilities.
+
+
+
+      <li><p>Added BCI file support (work-around) to wallpaper tab.  Waiting
+
+          for a wxPython fix to fully integrate BCI with wxPython & BitPim.
+
+
+
+      <li><p>Fixed Samsung SCH-A650/A670 SMS parsing error.
+
+
+
+      <li><p>Fixed Samsung SCH-A650/A670 Contacts Names Unicode error.
+
+
+
+      <li><p>Fixed Contacts & Calendar print problems.
+
+
+
+      <li><p>Fixed exception caused by righ-click in the File System View
+
+          window.
+
+
+
+      <li><p>Fixed bug 878876: Toggle Phonebook Preview pane.
+
+
+
+      <li><p>Added the capability for users to view historical phonebook data.
+
+
+
+    </ul>
+
+
+
+   <h2><a name="0.7.33">Changes in 0.7.33</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Added a feature that would allow BitPim to download (and upload)
+
+          wallpapers and ringtones which file names may be illegal on the
+
+          host system.
+
+
+
+      <li><p>Added numerical input fields for Clip Start, Clip End, and QCP Clip
+
+          Volume to the Ringtone Conversion Dialog.
+
+
+
+      <li><p>Added sound/size optimization for QCP conversion to the Ringtone
+
+          Conversion Dialog.
+
+
+
+      <li><p>Fixed a bug which raised an exception when trying to print out
+
+          Calendar Events that have '&'s in its summaries/descriptions.
+
+
+
+      <li><p>Made some improvements to the HexViewer feature.
+
+
+
+      <li><p>Fixed a resizing bug in the Contacts Import Dialog.
+
+
+
+      <li><p>Updated several bits of help including a section on the LG VX8000.
+
+        You can now get Mac Prolific PL2303 drivers from the Prolific website.
+
+        Thanks to David Hechtman for the information.
+
+
+
+      <li><p><b>LG VX-3200</b>  Some support added for this phone.  Make sure
+
+          you read the help notes first.  This functionality was contributed
+
+          by Bruce Schurmann.
+
+
+
+    </ul>
+
+
+
+
+
+   <h2><a name="0.7.32">Changes in 0.7.32</a></h2>
+
+
+
+    <ul>
+
+      <li><p>Added a simple List View and Monthly View calendar events print
+
+          capability.
+
+      <li><p>For any phone that can be auto-detected, users now can assign
+
+          an owner's name to it.
+
+      <li><p>In Windows, added the capability to drag-and-drop wallpaper and
+
+          ringtone files from BitPim to other Windows applications.
+
+      <li><p>For the Wallpaper and Ringer tabs, added the 'copy', 'paste',
+
+          and 'rename' menu items (and capability) to the context menu
+
+          (right click) and the main menu.
+
+      <li><p>Added 'Expand All' and 'Collapse All' context menu items to the
+
+          SMS tab.
+
+      <li><p>Added 'Organize Items by', 'Expand All', and 'Collapse All' to
+
+          the Call History tab.  The Call History items can now be
+
+          organized by type, by date, or by number/contact.
+
+      <li><p>Add auto-detection Sanyo phones and Samsung SPH-A460 and SPH-A620.
+
+      <li><p>Add reading and write todos (task list) for SPH-A460 and A620.
+
+          Reorganized some A460 and A620
+
+	  code to make supporting other Samsung phones easier
+
+      <li><p><b>Sanyo MM-7400</b> Should now read all media from the phone.
+
+      <li><p>Added CSV Calendar Import/Export feature.
+
+      <li><p>Updated versions of various components used by BitPim
+
+    </ul>
+
+
+
+   <h2><a name="0.7.31">Changes in 0.7.31</a></h2>
+
+
+
+    <ul>
+
+      <li><p>Added the Call History tab to the main BitPim display.
+
+      <li><p>Added an initial implementation of the Phone Auto-Detect feature.
+
+          Currently, the only phones that support this feature are the
+
+          Samsung SCH-A310/A650/A670.
+
+      <li><p>Minor display improvement to ther SMS Tab display.
+
+      <li><p><b>Samsung SCH-A670</b>  Some bug fixes:
+
+        <ul>
+
+          <li><p>Better transition from mode Modem to Brew and back.
+
+          <li><p>Eliminated the "Cannot seek large file" error message.  To avoid
+
+              this error message, users would need to re-download camera
+
+              images from the phone (Get Data -> Wallpapers)
+
+          <li><p>Fixed bug with adding jpeg and GIF wallpaper images.
+
+        </ul>
+
+    </ul>
+
+
+
+   <h2><a name="0.7.30">Changes in 0.7.30</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Added speed dial, wallpaper, and ringtone info to vCard Import/Export.
+
+
+
+      <li><p>Added Contacts CSV Export.
+
+
+
+      <li><p>Added Phone Info Dialog feature.  Supported phones include the 
+
+          Samsung SCh-A310/SCH-A650/A670.
+
+
+
+      <li><p>Added a feature that allows users to add raw/unprocessed image files.
+
+      This feature is invoked by pressing a shift key while clicking on the
+
+      'Add' button.  On the Samsung SCH-A670, this feature can be used to add
+
+      GIF or animated GIF files, which are not directly supported by BitPim.
+
+
+
+      <li><p><b>LG Phones</b>  When corrupt data is detected on the phone
+
+        you will be given a detailed help page about it rather than
+
+        just an exception.
+
+
+
+      <li><p><b>Samsung SPH-A460</b> Can read/write phonebook and calendar.
+
+        See the Samsung
+
+        <a href="phones-samsung-model-specific-notes.htm">model notes</a>
+
+        for information about oddities when writing the phonebook to the phone.
+
+
+
+      <li><p><b>Samsung SPH-A460</b> Read todolist from phone
+
+
+
+      <li><p><b>LG VX6100</b> Set maximum filename length for ringers and
+
+      wallpaper to 20 characters.   (John O'Shaughnessy)
+
+
+
+      <li><p><b>LG VX6100</b> Increased wallpaper size from 128x148 to
+
+      132x148 (and 132x160 for fullscreen)  (John O'Shaughnessy)
+
+
+
+      <li><p><b>LG TM520/VX10</b> Support for these phones will be removed in
+
+        0.7.31 unless someone steps forward to maintain them.
+
+
+
+    </ul>
+
+
+
+
+
+   <h2><a name="0.7.29">Changes in 0.7.29</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>BitFling now works with SPH-A620 and probably other Samsung phones.
+
+
+
+      <li><p>Added the Task Todo tab to the main BitPim display.
+
+
+
+      <li><p>Added the SMS tab to the main BitPim display.
+
+
+
+      <li><p>Cosmetic and usability tweaks from Adit Panchal
+
+
+
+      <li><p>There is now a <a href="phones-featuressupported.htm">table in the online help</a>
+
+        that lists which BitPim features are supported by which phones.  The page also
+
+        points to what features will be supported and when.
+
+
+
+      <li><p><b>LG VX8000</b> Initial support for this phone added
+
+
+
+      <li><p><b>Samsung SCH-A650/A670</b>Added Task Todo and SMS support.
+
+
+
+      <li><p><b>Samsung SPH-A620/VGA1000</b> Camera picture filenames now
+
+             use caption name instead of timestamp based filename.
+
+
+
+    </ul>
+
+
+
+
+
+   <h2><a name="0.7.28">Changes in 0.7.28</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Many cosmetic and usability tweaks from Adit Panchal
+
+
+
+      <li><p>BitFling has been fixed.
+
+
+
+      <li><p>When adding images you can tell BitPim what you intend to
+
+      use the image for (eg fullscreen startup image or outside LCD
+
+      callerid).  This is all part of a display that lets you select
+
+      exactly what part of the image you want imported.  Note that we
+
+      don't have all the sizes for phone models.  If you have details
+
+      on specific image sizes for various uses for phone models, then
+
+      <a
+
+      href="http://thread.gmane.org/gmane.comp.mobile.bitpim.user/2373">read
+
+      this set of messages</a> and then post to tbe bitpim-user
+
+      mailing list.
+
+
+
+      <li><p><b>Sanyo MM-7400</b> Disabled calendar writing.
+
+
+
+      <li><p>Added 2 more filtering parameters to Calendar Import function.
+
+
+
+      <li><p>Added phone textual memo/note feature.
+
+
+
+      <li><p>Added a feature that allows users to check for any BitPim
+
+      program updates.
+
+
+
+    </ul>
+
+
+
+
+
+   <h2><a name="0.7.27">Changes in 0.7.27</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Added the capability to import data from vCalendar data files.
+
+
+
+      <li><p><b>Mac</b> Now have the Metal appearance.  Will not be
+
+      getting an 'i' prefix.  Download is reduced in size by a third.
+
+
+
+      <li><p><b>Sanyo SCP-7300</b> Increased wallpaper size from 132x144 to 132x176.
+
+
+
+      <li><p><b>Sanyo MM-7400</b> Reading and writing of calendar should work
+
+
+
+      <li><p><b>Samsung SPH-A620/VGA1000</b>Work around buggy phone software that
+
+	caused the apparent number of numbers in phone to increase with
+
+	repeated writes of phonebook.  Preserve birthdays, where possible,
+
+	when writting phonebook.
+
+
+
+      <li><p><b>LG Phones</b> The length of memos has been increased to
+
+      what each phone model supports (64 chars on VX4500 and VX6100,
+
+      48 on VX4600, 32 on all other models.)
+
+
+
+      <li><p><b>SK6100/SK Music Slider</b> (Pelephone, Israel)  Added basic
+
+	read-only access to the phonebook.
+
+
+
+      <li><p><b>Samsung SCH-A670</b> Some fixes and enhancements:
+
+          <ul>
+
+            <li><p>Create media directories if they do not exist.
+
+            <li><p>For contact names, if Full name is not specified, will use
+
+                "First Middle Last" combination.
+
+            <li><p>jpeg is now the default wallpaper format, which will allow
+
+                these images to be reliably used as contact pix id.
+
+            <li><p>Video clips can now be downloaded with other wallpaper images.
+
+          </ul>
+
+
+
+    </ul>
+
+
+
+
+
+    <h2><a name="0.7.26">Changes in 0.7.26</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>There is now a read-only mode, set in the preferences.  If
+
+      you turn read-only on then BitPim won't do anything that does
+
+      modifications to your phone.  If you turn read-only off, then
+
+      you have to restart BitPim for it to take effect.
+
+
+
+      <li><p><b>Mac</b> Many changes:
+
+
+
+        <ul>
+
+          <li><p>Fixed various issues so that the ringer format
+
+              conversion (except PureVoice/QCP) can happen.
+
+
+
+          <li><p>Wallpaper and ringtone pane background forced to white
+
+
+
+          <li><p>Items in the wallpaper and ringtone panes can be double
+
+          clicked on (or right click menu - Open) and they will be
+
+          launched in the appropriate program.
+
+
+
+        </ul>
+
+
+
+      
+
+      <li><p><b>Samsung SCH-A670</b> Fixed ringtone format conversion process.
+
+
+
+      <li><p><b>Samsung SPH-A620/VGA1000</b> Can now write the phonebook to the phone.
+
+	     Ringtone and wallpaper assignments are not preserved.
+
+
+
+      <li><p><b>Sanyo Phones</b> Calendar code has been updated to newer BitPim internal
+
+	     calendar format.  Please note any problems.
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7.25">Changes in 0.7.25</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>The ringers tab now identifies audio file types
+
+
+
+      <li><p>You can double click on items in the wallpaper and ringer
+
+      tabs to launch the default program associated with that file
+
+      type.
+
+
+
+      <li><p>BitPim can now convert non-midi audio files into something
+
+      your phone will support such as MP3 or Qualcomm PureVoice.  Make
+
+      sure you read and understand the <a
+
+      href="http://www.bitpim.org/testhelp/dialog-audioconversion.htm">documentation</a>
+
+      which is also available by pressing help in the dialog box.  You
+
+      can easily make your phone not work any more.
+
+
+
+        <p>MP3 ringtones are used for LG phones.  PureVoice/QCP
+
+        ringtones are used for Samsung SCH A650/A670.
+
+
+
+      <li><p>Import of Outlook Calendar data is now supported.
+
+
+
+      <li><p>Calendar bugs fixed:
+
+         <ul>
+
+         <li><p>Calendar GUI now displays on Mac
+
+         <li><p>Sending repeat calendar events to the phone
+
+         </ul>
+
+
+
+      <li><p><b>Samsung SPH-A620/VGA1000</b> Phonebook reads fixed to work with
+
+             phones with old firmware.  Reading of camera pictures fixed.
+
+             Ringtones can now be read from phone.
+
+
+
+      <li><p><b>LG VX6100</b> Underscore character "_" now supported in
+
+      ringer and wallpaper file names.  Number of ringers allowed
+
+      increased from 30 to 60.  Number of wallpaper allowed increased
+
+      from 30 to 60.  Number of camera images allowed increased from
+
+      20 to 60.
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7.24">Changes in 0.7.24</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Bitmap (BMP) images with less than 236 colours are saved in
+
+      the smaller 8 bit format (ie using a palette).
+
+
+
+      <li><p>The wallpaper and ringtone displays have been replaced with
+
+      an improved user interface in both functionality and appearance.
+
+      The wallpaper display now works out image information directly
+
+      from the file (eg you could rename a jpeg to .png and it will
+
+      see work out that it is jpeg).  You can also organize in various
+
+      ways (try the right click menu).  The ringtone display also uses
+
+      the new interface but doesn't have the file type recognition or
+
+      organizing implemented yet.
+
+
+
+      <li><p>The matching of imported/incoming phonebook entries against
+
+      what you already have has been sped up.  (A C implementation of
+
+      the Jaro Winkler algorithm is used.)  There is also a progress
+
+      dialog with estimated remaining time displayed if there is a lot
+
+      of matching to do (multiply the number of incoming items with
+
+      the number of existing items to get an idea of how much work is
+
+      done).
+
+
+
+      <li><p>The phonebook and calendar data is now stored in a
+
+      transactional database (we use SQLite behind the scenes) which
+
+      allows for implementing undo, archiving of old entries,
+
+      concurrent instances of BitPim, storing old data so we can
+
+      calculate changes for doing syncing and various other goodness.
+
+      The other types of data (eg wallpaper and ringtones) will also
+
+      be changing to use this database.
+
+
+
+      <li><p>There is now an improved user interface for adding and
+
+      editing calendar events.  Most of the phone modules do not (yet)
+
+      support the extra fields available, but will do so over the next
+
+      few releases.
+
+
+
+      <li><p><b>SCH-A670</b> Phonebook contacts now fully support wallpaper
+
+      and ringtone assignments.  Uploaded wallpapers are automatically
+
+      converted to 128x96 24-bit BMP format and can be used for
+
+      phonebook wallpaper assignments.  Better transition in and out of
+
+      File System mode.  Calendar repeat events are now supported.
+
+
+
+      <li><p><b>SCH-A650</b> Wallpaper images with 256 colors or fewer are
+
+      converted to 8-bit PNG format.  Others are converted to 24-bit PNG
+
+      format.  Better transition in and out of File System mode.  Calendar
+
+      repeat events are now supported.
+
+
+
+      <li><p><b>Sanyo MM-7400</b> Disable reading of ringer/wallpaper
+
+      assignments (which are really not handled properly for Sanyo phones
+
+      anyway) so that phonebook read will work.  Disabled calendar options
+
+      as they seem not to work.
+
+ 
+
+    </ul>
+
+
+
+    <h2><a name="0.7.23">Changes in 0.7.23</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Added option to filesystem browser (Brew mode) to return phone
+
+      to modem mode (AT commands).  Known to work for some Samsung and
+
+      Sanyo models.  Use with caution on other phones.
+
+
+
+      <li><p><b>Outlook</b> When importing contacts, only email addresses
+
+      with a a type of SMTP are imported.  Other ones, such as those
+
+      used for X.400 email, are ignored.
+
+
+
+     <li><p><b>SCH-A650</b> Correctly retrieve and save ringtone
+
+     assignments in phonebook entries.
+
+      
+
+     <li><p><b>Sanyo MM-7400</b> Please do not use 0.7.23 for this phone,
+
+            use 0.7.24 or a later version.
+
+            [Added option for this phone.  Assumes
+
+            that this phone is similar to the PM-8200.  If you find
+
+            bugs, or experience timouts and are willing to help debug
+
+            the driver for this phone, please post on one of the
+
+            mailing lists.]
+
+
+
+
+
+      <li><p><li><b>LG VX6100</b> Support for this phone has now been
+
+      added courtesy of John O'Shaughnessy.
+
+      
+
+        <ul>
+
+
+
+          <li><p>Wallpaper reading (including camera images) and writing works.
+
+          
+
+          <li><p>Ringtone reading and writing works.          
+
+          
+
+          <li><p>Phonebook reading and writing works with the exception that wallpapers
+
+              set in BitPim are ignored when sent to the phone.         
+
+
+
+          <li><p>Calendar reading works.  Calendar writing does not.
+
+
+
+          
+
+        </ul>
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7.22">Changes in 0.7.22</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Fix a bug in the import process when two imported entries
+
+      matched the same existing entry.  Now the best import entry is
+
+      always chosen, and the underlying data consistency is
+
+      maintained.
+
+
+
+      <li><p>Fixed SF bug #1062904: users cannot close calendar editor
+
+      dialog.
+
+
+
+      <li><p><b>SCH-A650</b> Fixed bugs in reading and writing phonebook,
+
+      calendar, wallpapers, and ringtones.
+
+
+
+      <li><p><b>SCH-A670</b> Added support for download of camera pictures 
+
+      as part of wallpaper gets. Partial support for caller-id assignments
+
+      in phonebook: assignments of ringers and gallery photos (not other
+
+      wallpapers) made on phone are preserved in BitPim. 
+
+
+
+      <li><p><b>eGroupware</b> Workarounds for various bugs in
+
+      eGroupware.  Note that eGroupware has an issue with categories,
+
+      and you may experience issues when editing in both BitPim and
+
+      the eGroupware web interface.
+
+
+
+      <li><p>There are some visual glitches in the phonebook import
+
+      dialog.  Resize the window and they will go away. (Long story).
+
+        
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7.21">Changes in 0.7.21</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>You can now export to eGroupware
+
+
+
+      <li><p><b>Windows 95/98/Me</b> The Microsoft Layer For Unicode is
+
+      now installed with BitPim so you won't get random crashes in
+
+      MSVCRT.DLL
+
+
+
+      <li><p><b>Samsung Phones</b>  Preliminary support for various features has
+
+	added for the following phones. Various features may be incomplete
+
+	or buggy.
+
+	<ul>
+
+	<li><p><b>SCH-A310</b> Reading and writing of the calendar and phonebook
+
+	<li><p><b>SPH-A620</b> Reading of the phonebook.  Reading and writing
+
+	      of the calendar.  Reading of photos from the phone's camera.
+
+	<li><p><b>SCH-A650</b> Reading and writing of the phonebook, calendar,
+
+		ringtones and wallpaper.
+
+	<li><p><b>SCH-A670</b> Reading and writing of the phonebook, calendar,
+
+		ringtones and wallpaper.
+
+	</ul>
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7.20">Changes in 0.7.20</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>You can now import phonebook contact information from eGroupware
+
+
+
+      <li><p><b>Windows</b> The Microsoft CHM (Compressed HTML) format
+
+      help file is now used from within BitPim, and so you will get
+
+      the standard Microsoft Help viewer instead of the wxWidgets one.
+
+      As a bonus the Microsoft Viewer understands stylesheets so you
+
+      will see the help text in all its green glory!
+
+
+
+      <li><p><b>Mac</b> py2app is now used for packaging BitPim up.  Let us know
+
+        if you see any issues.
+
+
+
+      <li><p><b>Sanyo Phones</b> Wallpaper written to Sanyo phones is now
+
+        more likely to be accepted by the phone.  The PNG files are
+
+        converted to 8 bit colour and the size of the colour map is
+
+        reduced to make the file size less than 16K.
+
+	
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7.19">Changes in 0.7.19</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Various minor tweaks and cleanups.
+
+
+
+      <li><p>Sometimes Outlook comma separates the Categories field
+
+      instead of semi-colon like normal.  BitPim now deals with this
+
+      in the import.
+
+
+
+      <li><p>Fixed omitted field that was caused by importing vcards with
+
+      a "uid" field.
+
+
+
+      <li><p><b>LG VX7000</b> Support for this phone has now been added
+
+      thanks to a phone loan by <a
+
+      href="misc-rpiwireless.htm">RPI Wireless</a>.  LG took the
+
+      opportunity to make the firmware functionality and quality worse
+
+      than their previous phones.  There may still be some problems
+
+      where the code assumes the phone won't be as stupid as it
+
+      actually is.
+
+
+
+        <ul>
+
+
+
+          <li><p>The phonebook reading and writing works, although there
+
+          may be some minor issues with the writing due to the new
+
+          restricted fields available.  It also looks like the speed
+
+          dials might not be written exactly right due to the phone
+
+          re-arranging some phone numbers some of the time.
+
+
+
+          <li><p>LG halved the number of phone number types available.
+
+          Phone number types that the phone doesn't have (eg Pager)
+
+          are ignored.
+
+
+
+          <li><p>The phone is very reluctant to reveal how many phonebook
+
+          entries are present.  BitPim works around this, but the
+
+          workaround will fail if you have no entries at all.
+
+          Consequently do not ask BitPim to read the phonebook if it
+
+          is empty.
+
+
+
+          <li><p>Calendar reading/writing doesn't work.  (They tweaked
+
+          some of the fields since prior phone models).
+
+
+
+          <li><p>Wallpaper and ringtone reading and writing work.  The
+
+          BitPim code currently limits you to 50 of each.  If anyone
+
+          knows what the real limit is, or why the phone goes to the
+
+          trouble of storing the total amount of space used by the
+
+          ringtones and wallpapers then please post on bitpim-devel.
+
+
+
+        </ul>
+
+
+
+      <li><p><b>Sanyo Phones</b> Allow entries with no name.
+
+
+
+      <li><p><b>Linux</b> BitPim is now packaged using cx-Freeze 3.0
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7.18">Changes in 0.7.18</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>You can now filter by categories in the import dialogs.
+
+
+
+      <li><p>Your previous settings for the filters (eg requiring a name,
+
+      number, email address etc) as well as the categories are
+
+      remembered.
+
+
+
+      <li><p>vCard import now understands charsets instead of always
+
+      using ISO 8859-1.  It also correctly deals with vCards already
+
+      in a Unicode file as Apple Addressbook likes to do.
+
+
+
+      <li><p>All the standard character set converters are now included
+
+      with the binary distribution of BitPim instead of just two or
+
+      three.  This allows almost any charset to be used in vcards.
+
+
+
+      <li><p>An issue with transparency and black backgrounds on 16 bit
+
+      colour displays on Windows was fixed (thanks to Kevin Swan for
+
+      providing the test files and screenshots).
+
+
+
+      <li><p>We decided to stay with wxPython 2.5.  Currently the Mac
+
+      version is not Unicode, but the other platforms are.  That will
+
+      be addressed in the future.
+
+
+
+      <li><p>Many minor tweaks and fixes for GUI issues reported on the
+
+      mailing lists.  Thanks to all those who took the time to give
+
+      accurate reproducible reports.
+
+
+
+      <li><p>Fixed a filesystem protocol issue where the LG VX7000 was
+
+      behaving differently than all the other phones.  This will fix
+
+      some Motorola V710 issues as well.
+
+
+
+      <li><p><b>Sanyo Phones</b>
+
+      	<ul>
+
+	<li><p>For some Sanyo phones, the default (first)
+
+        phone number for each name will be preserved for reads and writes.
+
+	<li><p>Deleting call alarms read from phone won't cause exception.
+
+	(Pre 0.7.18 calendar data must be overwritten by reading from phone.)
+
+	</ul>
+
+
+
+      <li><p><b>Samsung A620</b> Added support for downloading camera
+
+      pictures.  No support yet for phonebook, calendar, wallpapers
+
+      etc.
+
+
+
+    </ul>
+
+
+
+
+
+
+
+    <h2><a name="0.7.17">Changes in 0.7.17</a></h2>
+
+
+
+    <ul>
+
+      
+
+      <li><p>The only change in this version is that BitPim now uses
+
+      wxPython 2.5.  wxPython is the library BitPim uses for the user
+
+      interface (GUI).  This is a significant stability and
+
+      compatibility upgrade against the previous version of wxPython.
+
+      Mac users in particular should notice a big difference.  For
+
+      Linux users, the underlying library is changed from GTK1 to GTK2
+
+      which is nicer as well.  <b>Note</b> We have not made any bug
+
+      fixes or any other behavioral changes.  This is so that we can
+
+      distinguish issues being with the upgrade to wxPython 2.5 vs
+
+      generic in BitPim.
+
+
+
+      <li><p>With the upgrade to wxPython 2.5, BitPim now also uses
+
+      unicode for the user interface.  We have not yet tested how the
+
+      phones will deal with this.  They likely won't like it.  We will
+
+      be fixing this is future BitPim releases.  You are advised not
+
+      to try non-ascii characters until we fixed the various phone
+
+      modules to cope with it correctly.
+
+      
+
+    </ul>
+
+
+
+
+
+    <h2><a name="0.7.16">Changes in 0.7.16</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>The correct entries are used when you use "selected entries"
+
+      for phonebook printing or vCard export.
+
+
+
+      <li><p>You can now select all with Ctrl-A, delete with the Del key
+
+      and add new with Ctrl-N in most panes.
+
+
+
+      <li><p>Speed dials are now shown in [square brackets] in the
+
+      various phonebook views.
+
+
+
+      <li><p>The dialog that helps show how newly read phonebook data is
+
+      merged with existing data is back with completely new user
+
+      interface.  Please click the Help button to understand what it
+
+      is showing and how to change things.
+
+
+
+      <li><p>US phonenumbers are now normalised and formatted in a
+
+      standard way.  Other phone numbers are left alone.
+
+
+
+      <li><p>Improved vcard output.  Unfortunately several programs
+
+      refuse to import them despite following the standard to the
+
+      letter.  Any assistance in figuring out how the other programs
+
+      are broken would be appreciated.
+
+
+
+      <li><p>Some changes to the underlying code for escaping and
+
+      unescaping characters in the protocols.  This was needed because
+
+      the Samsung SCH-A650 was unnecessarily escaping data which the
+
+      code didn't account for.  Thanks to Stu Grossman for discovering
+
+      this.
+
+
+
+      <li><p>When you double click on a field in the phonebook, the
+
+      editor starts up with focus on that field.
+
+
+
+      <li><p>More columns are available in the phonebook view.  They are
+
+      of interest if you have entries with lots of data (eg more than
+
+      5 phone numbers).  Note that BitPim has always stored all data,
+
+      it just didn't have columns pre-defined for all of it.
+
+
+
+      <li><p>You <b>must</b> use a device driver instead of direct USB
+
+      access to phones modem interfaces or USB to serial devices.
+
+      Although the help makes this somewhat clear, many users
+
+      try anyway.  BitPim will now mark those interfaces as unavailable.
+
+
+
+      <li><p><b>Windows</b> Some of the packages BitPim uses started
+
+      leaving off version numbers on their DLLs.  This caused the
+
+      installer to not replace the older files with the new ones.  The
+
+      installer has now been told to always replace files in the
+
+      BitPim program files directory.  That will ensure upgrades and
+
+      downgrades always work as expected (as of 0.7.16 anyway).
+
+      Thanks to Allen Day for finding the underlying cause.
+
+
+
+     <li><p><b>Sanyo phones</b> Fixed reading of calendar which was broken in
+
+	0.7.15.
+
+
+
+     <li><p><b>Sanyo SCP-4920</b> Really actually fix the  ordering of
+
+	phone number types.
+
+
+
+    </ul>
+
+
+
+
+
+    <h2><a name="0.7.15">Changes in 0.7.15</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>You can now export the phonebook in vCard format.  Note that
+
+      this code is still a work in progress and is still being worked
+
+      on.  (The vCard standard is hairy and no other program
+
+      implements vCards 100% to the letter, so the export code is
+
+      trying to deal with that).
+
+
+
+        <p>Also note that there is a bug that means the wrong entries
+
+          are output when you ask to export just the selected ones.
+
+          This will be fixed in the next release.  (The same bug
+
+          affects printing and no one had spotted it!)
+
+
+
+      <li><p>You can now import Evolution contacts that are not 
+
+	stored in db files.  BitPim runs
+
+	<code>evolution-addressbook-exporter</code> behind the scenes. 
+
+	Note that you must be running Evolution 1.4 for this to
+
+	work.  [Code from Peter Pletcher]
+
+
+
+     <li><p><b>Sanyo phones</b> Fixed crash on upload of some calendar entries.
+
+        Events written to phone will show proper alarm interval on phone.
+
+        Media write code will only try to write wallpaper and ringers that
+
+        are not already on phone.  Media code will not try to write camera
+
+        pictures.  BitPim will still often encounter errors from the phone
+
+        (Usually "Sanyo Error code 109") because of Sanyo file size
+
+        limitations.  See the note on
+
+        <a href="phones-sanyo-notes.htm#mediaerrors">Sanyo Error Codes</a> for
+
+        more information.
+
+
+
+     <li><p><b>Sanyo SCP-4920</b> Actually fix the  ordering of phone number
+
+	types so that they agree on the phone and in BitPim.  (0.7.13 fix
+
+	didn't work)
+
+
+
+      <li><p><b>Sanyo SCP-8100 (Bell Mobility-Canada)</b> Fixed reading and
+
+	writing of the phonebook.
+
+
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7.14">Changes in 0.7.14</a></h2>
+
+
+
+    <ul>
+
+      
+
+      <li><p>There is no longer any console output on Linux or Mac,
+
+	and there shouldn't be the I/O errors on Windows which
+
+	were indirectly caused by console output issues when
+
+	a console isn't present.
+
+
+
+      <li><p>vCard reading sped up considerably
+
+
+
+      <li><p>If the files supplied for CSV or vCard import are in Unicode
+
+      (eg UTF 16) then they will be read correctly
+
+
+
+      <li><p>You can now import contacts from Qtopia Desktop (eg as used
+
+      with the Sharp Zaurus)
+
+
+
+      <li><p>The dialog used to confirm a phonebook being read in/imported
+
+	is now not shown.  It was coming up blank for many Mac users
+
+	and was somewhat user unfriendly anyway.  Any UI designers out
+
+	there want to help work on a replacement?
+
+
+
+      <li><p><b>LG VX4500</b> Speed dials now read/written correctly
+
+
+
+      <li><p><b>Sanyo Phones</b> Reduce WALLPAPER_HEIGHT for several
+
+             phones so that wallpaper uploads won't fail
+
+
+
+      <li><p><b>Sanyo SCP-8100 (Bell Canada)</b> Initial support for the Bell
+
+        (Canada) version of the SCP-8100.  The firmware in this phone
+
+	is somewhat different from Sprint 8100.  This release can read the
+
+        phonebook, wallpaper and ringers from the phone.  However, writing
+
+	to the phonebook and reading/writing the calendar will crash BitPim.
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7.13">Changes in 0.7.13</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>You can now import contacts from Outlook.  The importing
+
+      should work well.
+
+
+
+      <li><p>You can import contacts from Evolution.  You may experience
+
+      some issues.  Please include an exported vcard of any problem
+
+      records if you make any bug reports.  The Evolution importer
+
+      uses the vCard importer behind the scenes so please read the
+
+      notes below.
+
+
+
+      <li><p>You can import contacts from vCards.  You may experience
+
+      some issues.  Please include the vcard if you make any bug reports.
+
+
+
+	<blockquote><b>Note</b> The vCard import code is very slow
+
+	  and the vCard "standard" is a great big hairy mess that 
+
+	  no program implements correctly.  BitPim does its best
+
+	  (part of the reason the code is slow).  There will be
+
+	  speed ups in future releases.
+
+	</blockquote>
+
+
+
+      <li><p>BitPim no longer makes any attempt to convert
+
+	ringtones you add to be in a valid format.  That
+
+	functionality will be added in the next major release.
+
+
+
+      <li><p>Considerably sped up the display of images in the 
+
+	right hand pane for wallpaper view
+
+
+
+     <li><p><b>LG Phones</b> If the phonebook has multiple entries with the
+
+	same serial number (which is a serious problem) then BitPim detects
+
+	this and raises an alert.
+
+
+
+     <li><p><b>Sanyo Phones</b> Added ability to write wallpaper and ringers for
+
+        all Sanyo phones.  
+
+	See the Ringer/Wallpaper section
+
+	of the <a href="phones-sanyo-notes.htm#media">Sanyo notes</a>
+
+	for further information.
+
+
+
+     <li><p><b>Sanyo SCP-4920</b> Fixed ordering of phone number types so that
+
+	they agree on the phone and in BitPim.
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7.12">Changes in 0.7.12</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p><a href="versionscheme.htm">Version number system</a> is now sane.  The development
+
+      series is now 0.7.12.
+
+
+
+      <li><p>Keystrokes work correctly again in the calendar
+
+
+
+    <li><p>Some tweaks in the filesystem directory reading protocol as some
+
+     phone models added a spurious extra byte (eg Kyocera KX414)
+
+
+
+     <li><p><b>Sanyo phones</b> qcp ringtones are now also transferred from the
+
+       phone.
+
+
+
+     <li><p><b>Sanyo SCP-4900</b> Preliminary support to transfer ringers
+
+	and images to the phone.  This may work for the SCP-5300 and
+
+        SCP-7200 if you set the phone to the 4900 in BitPim.
+
+
+
+     <li><p><b>Sanyo PM-8200</b> Can now write phonebook and calendar to
+
+       the phone.
+
+	
+
+     <li><p><b>Sanyo RL-4920</b> Added support for this phone.  Please
+
+	provide feed back if there are problems.
+
+	
+
+    </ul>
+
+
+
+    <h2><a name="0.7-test11">Changes in 0.7 - test 11</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Started code to import Outlook Contacts (disabled in
+
+	this build)
+
+
+
+      <li><p>Various minor tweaks and bug fixes for issues commonly
+
+	occurring in the mailing lists
+
+
+
+      <li><p>Tweaked where the settings that remembered window sizes
+
+      and positions is stored to make the config file/registry a
+
+      little cleaner.  The first time you run this version it
+
+      will use the default sizes/positions, and remember them 
+
+      from that point on.
+
+
+
+      <li><p><b>Sanyo phones</b> Transfer of ringtones from phone fixed.
+
+	(For those phones that support media downloads, namely everything
+
+	except 4900 and 5300.)  Sanyo PM-8200 is still read-only.
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7-test10">Changes in 0.7 - test 10</a></h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>The routines to switch into Brew mode and LG phonebook mode
+
+      have been tweaked and should be more reliable.
+
+
+
+      <li><p><b>Mac</b> The preferences and About dialog are now in the
+
+      normal place for Mac applications.
+
+
+
+      <li><p><b>Audiovox CDM8900</b> This phone is no longer supported by
+
+      BitPim.  Do not use this phone with BitPim.  Do not ask for
+
+      support.  The internal software in this phone is very fragile,
+
+      and the phone can be rendered completely inoperable through trivial
+
+      operations.
+
+
+
+      <li><p><b>LG TM520/VX10</b> The code has been re-instated for this
+
+      phone.  The other LG items in this change log do not apply to
+
+      this phone which uses different code.
+
+
+
+      <li><p><b>LG VX4600</b> Reading/writing wallpapers and ringtones
+
+      for this phone added.  Status of phonebook and calendar is not
+
+      known.
+
+
+
+      <li><p><b>LG phones</b> BitPim previously required that entries
+
+      have at least one phone number to write them to the phone.  This
+
+      has now been relaxed to fit the phone's requirement that there
+
+      is at least one phone number or at least one email address.  (ie
+
+      previously BitPim wouldn't write an entry with only an email
+
+      address and no phone numbers.  Now it will).
+
+
+
+      <li><p><b>LG phones</b> LG phones now use slightly different code
+
+      for determining the number of phonebook entries.  It now also
+
+      works correctly with phones that can have more than 255
+
+      phonebook entries and you actually have more than that number of
+
+      entries.
+
+
+
+      <li><p><b>LG phones</b> Speed dials are now read and written.
+
+	
+
+      <li><p><b>LG phones</b> If the speed dials or group information
+
+      change (ie different than what is already stored on the phone),
+
+      then the phone has to be rebooted for the change to take effect.
+
+      BitPim does this automatically.
+
+
+
+      <li><p><b>LG phones</b> You no longer get an exception if the
+
+      description for a calendar entry is too long.
+
+
+
+      <li><p><b>Sanyo phones</b> Phonebook on phone no longer messed up
+
+      if duplicate names are written to phone.
+
+
+
+      <li><p><b>Sanyo SCP-5400 and SCP-7300</b> Broken in test9, now
+
+      fixed.
+
+
+
+      <li><p><b>Sanyo SCP-5400, SCP-5500, SCP-7300, SCP-8100</b> Improved
+
+      media reading from these phones.  Images and ringtones from the
+
+      camera, Vision download, and cable upload areas can now be read
+
+      from the phone.  Filenames for camera images have "$camera_"
+
+      prepended so they are not overwritten by wallpapers made from
+
+      pictures.  Mp4 videos on SCP-5500 won't crash BitPim.
+
+
+
+      <li><p><b>Sanyo PM-8200</b> Untested, read-only support added.
+
+      Reading of the phonebook will probably work.  Reading the
+
+      calendar, camera images, wallpaper and ringers may work.
+
+
+
+    </ul>
+
+
+
+    <h2><a name="0.7-test9">Changes in 0.7 - test 9</a></h2>
+
+
+
+     <ul>
+
+
+
+      <li><p>You can now save the selected items from the wallpaper and ringtone
+
+	views.
+
+
+
+    <li><p>You can drag and drop items out of the wallpaper and ringtone views
+
+	(drag out not supported on Linux)
+
+
+
+    <li><p>BitFling is finally available
+
+
+
+    <li><p>Started wallpaper download support for Sanyo SCP-8100 and
+
+      SCP-5500.  Only camera pictures on the phone will be
+
+      downloaded.  Wallpaper on the phone that was uploaded with Vision or by
+
+      cable is not yet transferred.  Videos (on the SCP-5500) will be
+
+      transferred but will cause all sorts of exceptions/errors.  The videos
+
+      can be found in the BitPim files directory.  <b>Please do not report
+
+      bugs yet.  Use at your own risk.</b>
+
+
+
+   </ul>
+
+
+
+
+
+    <h2><a name="0.7-test8">Changes in 0.7 - test 8</a></h2>
+
+    
+
+    <ul>
+
+
+
+      <li><p>Any combinations of carriage returns and newlines can be used 
+
+	to terminate the end of line for importing CSV files.
+
+
+
+      <li><p>The ringers pane now uses the same layout and underlying code
+
+	as the wallpaper pane.  This makes it usable under Mac and
+
+	Linux.  Double clicking items has no effect any more though as
+
+	that code is incomplete.
+
+      
+
+      <li><p><b>LG VX6000</b> BitPim converts images to BMP.  It was
+
+      converting them to JPG, but although the phone previews them
+
+      correctly, it won't set them as wallpaper correct0ly.
+
+      
+
+      <li><p><b>Sanyo SCP-5400</b> Add support for reading and writing the
+
+        phonebook and calendar.
+
+
+
+    </ul>
+
+
+
+    <h2>Changes in 0.7 - test 7</h2>
+
+    
+
+    <ul>
+
+
+
+      <li><p><b>Sanyo Phones</b> Reboot phone after calendar writes.  Reboot
+
+        now doesn't cause device name to change.
+
+
+
+      <li><p><b>Sanyo SCP-5500</b> Fix calendar writes.  Phone put in offline
+
+	mode before calendar writes.
+
+
+
+      <li><p><b>Sanyo SCP-7200</b> Phone put in offline mode before calendar
+
+	writes.
+
+
+
+      <li><p><b>Sanyo SCP-7300</b> Add support for reading and writing the
+
+        phonebook and calendar.  Phone put in offline mode before calendar
+
+	writes.
+
+
+
+    </ul>
+
+
+
+
+
+    <h2>Changes in 0.7 - test 6</h2>
+
+
+
+    <ul>
+
+      
+
+      <li><p>Added 'Other CDMA Phone' type that you can select if your phone uses
+
+	the Brew filesystem protocol, but the other features are not supported
+
+	in BitPim.
+
+
+
+      <li><p>Started Audiovox CDM 8900 support
+
+
+
+      <li><p>BitPim has changed to the GNU GPL license (details in the LICENSE file
+
+	in the source code)
+
+
+
+      <li><p>Characters special to HTML such as ampersand (&amp;) no longer
+
+	cause exceptions in the phonebook
+
+
+
+      <li><p><b>Sanyo SCP-5300</b> Added builtin ringers list.
+
+
+
+      <li><p><b>Sanyo SCP-5500</b> Fix write phonebook to phone failure.  Add
+
+	calendar support.
+
+
+
+      <li><p><b>Sanyo SCP-7200</b> Reading and writing the phonebook is supported.
+
+	Calendar is untested.
+
+
+
+      <li><p><b>Windows</b> BitPim will now work with ports numbered higher than
+
+	<code>com9</code>.  
+
+
+
+      <li><p><b>Windows</b> BitPim now finds the location of <i>My
+
+      Documents</i> using the correct API call instead of looking in
+
+      the registry (a bad way of doing it for various reasons).
+
+
+
+    </ul>
+
+    
+
+
+
+    <h2>Changes in 0.7 - test 5</h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Saving of position/size for the following windows:
+
+      <ul>
+
+      	<li><p>Main Application
+
+      	<li><p>Config Dialog
+
+      	<li><p>Comm Browser Dialog
+
+      	<li><p>Print Preview Window
+
+	  </ul>
+
+      <li><p>When saving to JPEG, the quality is set to 100 (ie almost lossless)
+
+
+
+      <li><p><b>Sanyo Phones</b> Added data integrity measures like used for
+
+      Brew and LG phones.
+
+
+
+      <li><p><b>Sanyo SCP-5500</b> Added initial support for this phone (aka
+
+      VM4500.)  Phonebook reading and writing work.
+
+
+
+	</ul>
+
+
+
+    <h2>Changes in 0.7 - test 4</h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>You can now print from the phonebook.
+
+
+
+      <li><p>The wallpaper tab is now based on a new 'media' displayer
+
+      which will also be used for ringtones, voice memos etc.  This 3
+
+      pane layout lets you see thumbnails, and detailed information at
+
+      the same time.  There is also a preview area on the right where
+
+      many actions will be available (eg format conversions, mass
+
+      resizing).  Please report any problems you see in the interface.
+
+	The following are known to be incomplete:
+
+	<ul>
+
+	  <li><p>Rename
+
+	  <li><p>Preview area
+
+	  <li><p>Double clicking/Open launching an external program
+
+	</ul>
+
+
+
+      <li><p>Wallpapers: The format to convert added images to, the maximum name
+
+      length and filename characters (as well as case) now come from
+
+      each phone's profile rather than being hardcoded to BMP, 19
+
+      characters and lower case alphanumerics.  VX6000 users will now
+
+      appreciate the default format for them being JPEG.
+
+
+
+      <li><p><b>Windows</b> Now using py2exe 0.5 and InnoSetup 4.1.5.
+
+      The new LZMA (aka 7zip) compression in the latter results in a
+
+      700kb smaller setup file.
+
+
+
+      <li><p><b>LG VX4500</b> This phone has been added but testing of
+
+      writing the phonebook is not complete.  Additionally some values
+
+      may still be wrong for builtin wallpaper names, sizes and
+
+      formats etc.  If you have some developer ability (eg you can
+
+      convert between decimal and hexadecimal) then please join
+
+      bitpim-devel mailing list and help complete support for this
+
+      phone.
+
+
+
+      <li><p><b>Sanyo Phones</b> Fix calendar saving which was broken in test 3.
+
+
+
+    </ul>
+
+
+
+    <h2>Changes in 0.7 - test 3</h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>If a read or write of a file in the filesystem takes more than 3
+
+	seconds, the log will now tell you how many bytes per second the
+
+	transfer worked out at.
+
+	
+
+      <li><p>Several data integrity measures in the Brew protocol code.  This
+
+	includes throwing exceptions if file sizes don't match expectations,
+
+	verifying protocol checksums, logging junk data in packets etc
+
+	
+
+      <li><p>You can now put phones into offline mode as well as reboot them.
+
+	To do so, right click on a directory in the filesystem view
+
+	and choose the relevant option.  Offline mode may help overwriting
+
+	some files.  Note that once in offline mode your phone will
+
+	not do any calls and will probably display a fairly scary message
+
+	on the display.  The only way to get out of offline mode is to
+
+	reboot the phone, either through the menu or manually.
+
+	
+
+	<p>It has also been my experience that the LG phones do not 
+
+	  correctly setup their USB if you reboot them while attached
+
+	  to the computer.  Unplugging the cable and putting it back
+
+	  in fixes that.
+
+
+
+      <li><p>USB debugging (of libusb) has been turned off.  It seemed to be
+
+	causing some problems on Mac, and wasn't being particularly useful
+
+	anyway.
+
+	  
+
+      <li><p><b>LG VX4400/6000</b> Added data integrity measures to LG
+
+	sync protocol (the code is very similar to the Brew protocol
+
+	code and the measures are the same as described above).
+
+	
+
+      <li><p><b>LG VX4400/6000</b> Zero length calendar files are now dealt with
+
+	correctly.  This would typically happen if you had never used your
+
+	calendar.
+
+	
+
+      <li><p><b>Sanyo Phones</b> The Date/Time for calendar entries is now
+
+	correct for all time zones, not just EST.
+
+
+
+      <li><p><b>Sanyo Phones</b> Now silently truncates long phone numbers
+
+	instead of failing.  Also get first phone number type when bitpim
+
+	data not sorted.
+
+
+
+    </ul>
+
+
+
+
+
+    <h2>Changes in 0.7 - test 2</h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>You can now clear the contents of the log panes from the
+
+	view menu
+
+
+
+      <li><p>Fixed several nasty issues that would affect first time
+
+	users with poor interaction between config dialogs, splash
+
+	screens and the help tour appearing.
+
+      
+
+      <li><p>The get and send dialogs now adjust to what features are
+
+	supported between BitPim and your phone.  For example it
+
+	won't allow you to select wallpapers on Sanyo phones since
+
+	we don't have that code (yet).
+
+
+
+      <li><p>Several updates to the CSV import, including implementing
+
+      the "Private" and "Category" fields, adding a "Categories"
+
+      field, adding a toggle so you can say whether the first row is
+
+      headers or not (the DSV library guesses weren't too reliable),
+
+      none of the filters are ticked by default.
+
+
+
+      <li><p>You can now sort by any column in the phonebook
+
+
+
+      <li><p>There are now first, middle and last name columns available in 
+
+	the phonebook
+
+
+
+      <li><p>Implemented missing code that will derive a full name from its
+
+	pieces (and vice versa).  This is relevant where an entry was
+
+	imported as pieces (f,m,l) but phones write out only a full
+
+	name (or vice versa).
+
+
+
+      <li><p>You can double click in the phonebook entry preview (on the
+
+	right) to edit the entry.
+
+
+
+      <li><p>When using libusb, we have a builtin database of vendor, product and
+
+	interface information as well USB protocols.  This is used to give
+
+	more detail in the port browser.
+
+
+
+      <li><p>Modems are now also listed along with serial ports (and workalikes)
+
+	in the com port browser.  This means that auto-detection of Sanyo
+
+	phones should work.
+
+
+
+      <li><p>Devices that are likely to be the selected phone are now marked with
+
+	an asterisk in the com port browser
+
+
+
+      <li><p>The com port browser and auto detect code are now passed the phone
+
+	module and only pay attention to devices that are that phone (before 
+
+	they would notice any phone supported by BitPim)
+
+
+
+      <li><p><b>Windows</b> Generate a dotted quad style version id for bitpim.exe
+
+	otherwise upgrades can leave old versions of the executable in place
+
+	when upgrading.
+
+
+
+      <li><p><b>LG VX4400</b> BitPim now works correctly if your phonebook is
+
+	completely empty.
+
+
+
+      <li><p><b>LG VX4400/VX6000</b> BitPim now copes if the calendar exceptions
+
+	file is not present.
+
+
+
+      <li><p><b>LG TM520/VX10</b> These phones are no longer being maintained
+
+	and cannot be selected.  If you would like to maintain them, please
+
+	follow the instructions on the BitPim developer page.
+
+
+
+    </ul>
+
+
+
+
+
+    <h2>Changes in 0.7 - test 1</h2>
+
+
+
+	<ul>
+
+
+
+        <li><p>You can save the contents of the com port browser as HTML
+
+        so other people can see what you see.
+
+
+
+	<li><p>Protocol descriptions are now used throughout making
+
+	maintenance and coding a lot easier.
+
+
+
+	<li><p>Exceptions have their details copied to the Log window
+
+
+
+	<li><p>Exceptions now include local variables from the last 6 frames
+
+	making it easier to diagnose what happened
+
+
+
+	<li><p>If a protocol decoding exception occurs, then buffer
+
+	details are dumped to the ordinary log
+
+
+
+	<li><p>Introduced a 0.3 second delay after grabbing each file
+
+	when making a backup.  If this isn't done the phone eventually
+
+	gets overwhelmed and returns truncated buffers amongst other
+
+	things
+
+
+
+	<li><p>Support for Sanyo 4900/8100 added
+
+
+
+	<li><p>Support for LG VX6000 added.  Thanks to URL(misc-rpiwireless.htm,www.rpiwireless.com) for
+
+	the loan of a phone and cable.
+
+
+
+	<li><p>There is incomplete support for the LG TM520 and VX10.
+
+	Developers are welcome to contribute the remainder of the
+
+	support.
+
+
+
+        <li><p>Totally revamped phonebook pane
+
+
+
+	<li><p>Phonebook entry editor that allows ordering and editing
+
+	 of all fields
+
+
+
+	<li><p>Groups can be edited in the phonebook entry editor
+
+
+
+	<li><p>Phonebook entries can be imported from CSV with predefined
+
+	profiles for Palm Desktop, Mozilla and Outlook Express
+
+
+
+	<li><p>Import dialog with intelligent matching against
+
+	existing entries (in a similar manner to how you do reconciliation
+
+	with banking programs).
+
+
+
+	<li><p>The wallpaper view resizes all images when viewing (note the
+
+        files on disk are <b>not</b> modified.  This means that you
+
+	will see complete camera images rather than just the top left
+
+	corner.
+
+
+
+	<li><p>BitPim can now access appropriate devices via direct USB
+
+	even if a driver is not installed.  This allows using straight
+
+	USB cables on all platforms.  Note however that the VX4400 has
+
+	a timeout issue in its USB implementation that also affects
+
+	direct USB access.  The VX6000 and other phones do not have
+
+	this problem.
+
+
+
+	<li><p><b>Windows</b> Fixed a bug in comscan that could result in
+
+	not completely enumerating registry keys.  This would result
+
+	in some COM ports not being found that were perfectly valid.
+
+
+
+        <li><p><b>Windows</b> Updated to InnoSetup 4
+
+
+
+	<li><p><b>LG VX4400/VX6000</b> When writing out wallpaper/ringtones,
+
+	files to be written are only actually written if they are
+
+	a different length than the one on the phone.  This makes it
+
+	considerably quicker to update wallpapers and ringtones.
+
+
+
+	<li><p><b>LG VX4400/VX6000</b> The groups file on the phone is
+
+	now updated based on the categories you use in your entries.
+
+	Please see the phone specific notes in the online help for
+
+	important information about this.  Support requests where the
+
+	notes have obviously not been read will be ignored.
+
+
+
+	<li><p><b>LG VX4400/VX6000</b> The algorithm for ordering and
+
+	values of the indices for wallpapers and ringtones was changed.
+
+	If you read in everything, you can delete the index files from
+
+        the filesystem view and write out your phonebook, calendar,
+
+	wallpaper and ringtones.  The new indices will start from zero
+
+	and all phonebook entries etc will be updated.  It appears that
+
+	the VX4400 is less stupid with the new number allocation scheme.
+
+
+
+	<li><p><b>LG VX4400/VX6000</b> Wallpaper and ringtone index files
+
+	will be created if they don't exist already.
+
+
+
+	<li><p><b>Developer</b> A protocol analyser is available.  Press
+
+	Ctrl-Alt-P in a Log pane to see it.  You can also run the
+
+	standalone version.
+
+
+
+	<li><p><b>Developer</b> Protocol examples are in the examples
+
+	directory in CVS
+
+
+
+      <li><p><b>Developer</b> There is code to interface with the
+
+	Windows Address Book using COM/MAPI in <code>native/wab</code>
+
+
+
+	</ul>
+
+
+
+	<h2>Changes in 0.62</h2>
+
+
+
+ 	<ul>
+
+	<li><p>Scrolling in the log windows now always leaves text visible
+
+	<li><p>Absurd dates on files in filesystem view no longer cause an exception
+
+	<li><p>Work around the LGE buggy driver which has difficulty with the concept
+
+            of timeouts
+
+        <li><p>Updated to pySerial 2, wxPython 2.4.2.4 on all platforms and
+
+            Python 2.3.2 on Windows
+
+	</ul>
+
+    
+
+
+
+	<h2>Changes in 0.61</h2>
+
+
+
+	<ul>
+
+	<li><p>Com port detection works correctly on Windows 2000
+
+	<li><p>Device drivers with incorrectly formatted dates are handled without generating an error
+
+	</ul>
+
+
+
+      <h2>Changes in 0.6 - test 5</h2>
+
+
+
+	<ul>
+
+
+
+	<li><p>Fixed reading file contents to be more stringent.  This corrected
+
+	an issue seen with the LG VX6000 that returned extra nonsense on the
+
+	end of read file requests.
+
+
+
+	<li><p>Added *, #, P and T as the list of allowed characters in phone numbers
+
+	for the VX4400
+
+
+
+	<li><p>You can now paste from the clipboard into wallpaper tab.  (Not too useful
+
+	since you will probably want to crop the images yourself, as well as give them
+
+	a sensible name.)
+
+
+
+	<li><p>Hid the File Print/Print Preview menu items since they don't do anything
+
+	either
+
+
+
+	<li><p>John Franklin figured out the ?internal field for calendar entries
+
+
+
+	</ul>
+
+
+
+
+
+
+
+
+
+      <h2>Changes in 0.6 - test 4</h2>
+
+
+
+	<ul>
+
+
+
+	<li><p>BCI (Brew Compressed Images) are now supported.  They will be displayed
+
+	in the wallpaper view, and correctly uploaded to the phone etc.
+
+
+
+	<li><p>Filesystem view now shows file sizes and last modified dates
+
+
+
+	<li><p>You can backup and restore directories/trees from the filesystem view
+
+
+
+	<li><p>All issues in open SourceForge bug reports fixed
+
+
+
+	<li><p>Updated to newest pySerial
+
+
+
+	</ul>
+
+
+
+
+
+      <h2>Changes in 0.6 - test 3</h2>
+
+
+
+    <ul>
+
+      <li><p>Removed the 'Version Information' setting from get phone
+
+      data, as it isn't possible with the straight USB cable, and
+
+      requires the phone to be in RS232 mode with the USB to serial
+
+      cable.  You can easily get this information from the phone
+
+      itself.
+
+
+
+	<li><p>Removed the File Save/New/Open menus as they did nothing,
+
+	and some users may have been lead to believe they did
+
+
+
+	<li><p>Splash screen
+
+
+
+	<li><p>Online help is hooked in
+
+
+
+	<li><p>Include a manifest file so that Windows XP users will
+
+	see all the widgets in their hideous XP style glory
+
+
+
+	<li><p>Removed the separate version history html file since it
+
+	is now part of the online help
+
+
+
+	<li><p>Updated to Python 2.3 on Windows
+
+
+
+	<li><p>Tour is now shown on startup if it is the first time you
+
+	have run BitPim
+
+
+
+	 <li><p>Auto comm port detection and recovery on comms errors.
+
+
+
+	<li><p>Config dialog no longer pops up on first use as sensible
+
+	decisions are made.  You can now browse the com ports in the
+
+	config dialog
+
+
+
+	<li><p>Filesystem view being on/off now remembered
+
+	
+
+	<li><p>The notebook page/pane you were last viewing is remembered and set
+
+	on startup
+
+
+
+	<li><p>The files stored on disk are now versioned so if the format
+
+	changes on an upgrade, old ones can be dealt with appropriately
+
+
+
+	<li><p>Huge numbers of minor usability and functionality fixes
+
+
+
+	</ul>
+
+
+
+
+
+      <h2>Changes in 0.6 - test 2</h2>
+
+
+
+    <ul>
+
+      <li><p>Now make two attempts to open commport with a delay as it sometimes fails on first
+
+	open
+
+      <li><p>Added a half second delay when switching baud rates as the phone may not be able
+
+	to switch as quickly as the host
+
+	</ul>
+
+
+
+      <h2>Changes in 0.6 - test 1</h2>
+
+    <ul>
+
+      <li><p>Can now read and write files bigger than 64kb
+
+      <li><p>Calendar is now shown
+
+      <li><p>Worked around Python bug that joins("f:\\", "subdir") giving "f:\\\\subdir"
+
+	which is not a valid pathname.  This should only have affected users who
+
+	told BitPim to use the root directory of a drive, or who mapped their
+
+	My Documents folder to the root directory of a drive.
+
+    </ul>
+
+
+
+   <h2>Changes in 0.53</h2>
+
+
+
+
+
+    <ul>
+
+      <li><p>Also ignore ZbThumbnail.info in the BitPim wallpaper directory (some camera software
+
+	litters the directory with it)
+
+	</ul>
+
+
+
+
+
+
+
+     <h2>Changes in 0.52</h2>
+
+
+
+    <ul>
+
+      <li><p>The ringtone tab was also refreshed if you selected to only get wallpaper
+
+      <li><p>Reading images/ringtones from the phone ONLY uses the index now.  The
+
+	brew/shared directory could also contain other stuff such as scores from
+
+	games that BitPim should have been ignoring.
+
+      <li><p>You can now do merging as well as overwriting when sending wallpapers
+
+	and ringtones to the phone.
+
+      <li><p>Increased precision of calculation for scaling since it was sometimes
+
+	out by one pixel
+
+      <li><p>Added refresh to the context menu of directories in filesystem view.
+
+	You can refresh anyway by closing and opening the directory, but this
+
+	wouldn't work with empty directories.
+
+    </ul>
+
+
+
+      <h2>Changes in 0.51</h2>
+
+
+
+    <ul>
+
+      <li><p>Index generation for ringtones and wallpapers corrected
+
+	</ul>
+
+
+
+
+
+      <h2>Changes in 0.5</h2>
+
+
+
+    <ul>
+
+      <li><p>If you change the comm port while BitPim is running, it will
+
+	actually pick up the change (in earlier versions you had to exit
+
+	and restart due to a bug).
+
+	<li><p>If mode transition fails, you now get a helpful dialog explaining
+
+	possible steps to resolve.
+
+	<li><p>Files in the root directory in filesystem view are now listed
+
+	<li><p>Files are displayed in the wallpaper and ringtone view in alphabetical order
+
+	<li><p>The wallpaper and ringtone index files are somewhat cleaner, although the
+
+	phone still misbehaves is you delete an entry on the phone (this is a bug
+
+	in the phone and happens no matter what tool you use)
+
+	<li><p>No more than 30 index entries are added for the wallpaper and ringtone indexes (the limit of the phone)
+
+	<li><p>Added a guid in the installer setup so that previous versions are uninstalled
+
+	correctly.  It is recommended that you uninstall versions before 0.5 before
+
+	installing 0.5 to keep your add/remove programs entries clean.
+
+	<li><p>Wallpapers and ringtones are written out in alphabetical order
+
+	<li><p>BitPim now has an icon
+
+	<li><p>We now send a generic initialization command.  This allows the filesystem
+
+	view to work on other Brew phones (AudioVox 9500 and Motorola T720 are known
+
+	to work).  The wallpaper and ringtone stuff should <b>NOT</b> be used on these
+
+	other phones.
+
+	<li><p>If you add an entry in the phonebook, the label for that
+
+	row is now updated when you change the name.
+
+	<li><p>Ignore the files Windows dumps in the BitPim directories (thumbs.db,
+
+	desktop.ini etc)
+
+	<li><p>Update to wxPython 2.4.0.6
+
+	<li><p>Changed field sizes in status bar so that they are less likely to
+
+	truncate on smaller screens
+
+	<li><p>Group strings are now read from the phone
+
+	<li><p>Pressing enter in phonebook moves selection to the right rather than down
+
+	<li><p>Updating log text and protocol log is now down in an OnIdle handler.  This
+
+	means the user interface remains usable even when large amounts of logging happen.
+
+	Feel free to watch as much logging as you want when you want
+
+    </ul>
+
+
+
+      <h2>Changes in 0.4</h2>
+
+
+
+    <ul>
+
+      <li><p>Serial numbers on phonebook entries are now preserved when
+
+      writing to the phone.  This means you won't lose speeddials and
+
+      voicedials (as happened with 0.3).
+
+      </il>
+
+	</ul>
+
+
+
+      <h2>Changes in 0.3</h2>
+
+
+
+    <ul>
+
+
+
+      <li><p>Cope with ringtones directory not existing on phone
+
+
+
+	<li><p>Cope with wallpapers directory not existing on phone
+
+
+
+      <li><p>Can now write out your phonebook.
+
+
+
+	<li><p>Can now crudely edit your phonebook
+
+
+
+	<li><p>Changed wallpaper size to be 120x98 instead of 120x100 so
+
+	that it comes out correctly centered vertically
+
+
+
+	<li><p>The ondisk format of the phonebook has changed.  If you
+
+	used 0.2, please delete any stored phonebook (defaults to
+
+	<code>My&nbsp;Documents\\bitpim\\phonebook\\index.idx</code>)
+
+	otherwise BitPim may refuse to start.
+
+
+
+	</ul>
+
+
+
+
+
+
+
+      <h2>Changes in 0.2</h2>
+
+
+
+    <ul>
+
+      <li><p>Fixed the issue of wallpapers inside a certain size range
+
+      causing image load failures in the user interface.
+
+      <li><p>Wallpapers that are resized won't have a one pixel wide
+
+      black line in the framing area.
+
+      <li><p>Phonebook is now saved to disk when read.
+
+      <li><p>The underlying plumbing for the phonebook has been sorted out which will make
+
+	editing it possible soon
+
+
+
+</ul>
+
+
+
+      <h2>Changes in 0.1</h2>
+
+
+
+    <ul>
+
+      <li><p>First alpha release
+
+    </ul>
+
+
+
+
+
+#include "pageend.h"
+

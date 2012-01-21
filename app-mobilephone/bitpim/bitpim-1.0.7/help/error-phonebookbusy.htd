@@ -1,0 +1,8 @@
+#include "pagestart.h"
+
+<p>The operating on the phonebook could not be completed because
+it is busy on the phone.  Typically this is because you are viewing
+or editing entries on the phone itself.  Exit to the main menu and
+try the operation again from BitPim.
+
+#include "pageend.h"

@@ -1,0 +1,19 @@
+#include "pagestart.h"
+
+<p>The Sanyo SCP-6600 uses the URL(phones-sanyo-cables.htm,same straight through USB cable) as used by many other Sanyo phones.
+
+<h2>Drivers</h2>
+<blockquote>
+<h3>Windows</h3>
+<p>These cables require a driver.  The Driver may be downloaded from
+URL(http://support.susteen.com/ics/support/default.asp?deptID=2623,DataPilot)
+(Go to "Downloads" and then download the "Motorola/Sanyo Phone Driver").
+Other Sanyo drivers may not work with this phone.
+<h3>Linux</h3>
+<p>BitPim uses direct USB access to communicate with this phone under Linux.
+See the URL(howto-linuxusb.htm,Linux USB Setup Howto) for information
+on setting up device permissions.
+</blockquote>
+
+
+#include "pageend.h"

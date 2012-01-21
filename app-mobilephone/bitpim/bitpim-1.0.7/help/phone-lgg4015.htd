@@ -1,0 +1,19 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+
+<p>Phonebook, wallpaper, ringers, calendar, call history, SMS.  The SMS feature supports text messages only and will silently ignore other parts of the message.  BitPim can autodetect this phone if it is connected to the PC via a USB-to-Serial cable.
+
+<h2>Contents</h2>
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Cables,lgg4015-cables.htm)
+    TOCITEM_0(Notes,lgg4015-notes.htm)
+    TOCITEM_0(Howtos,lgg4015-howtos.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h"

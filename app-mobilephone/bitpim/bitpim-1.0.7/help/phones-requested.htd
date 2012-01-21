@@ -1,0 +1,85 @@
+#include "pagestart.h"
+
+<p>These phones are not currently supported by BitPim but have been requested
+by BitPim users.  Phones that are not available/accessible to the BitPim
+developers are unlikely to be supported.  We would appreciate any
+<a href="contributing.htm#phoneloan">loans and donations</a> of these and
+other phones.
+
+<p>TABLE_GRID
+
+<tr>
+<th>Manufacturer</th>
+<th>Model</th>
+<th>Carrier</th>
+</tr>
+
+<tr>
+<td>LG</td>
+<td>AX-355</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>LG</td>
+<td>LX-550</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>LG</td>
+<td>VX-8600</td>
+<td>Verizon Wireless</td>
+</tr>
+
+<tr>
+<td>LG</td>
+<td>VX-9400</td>
+<td>Verizon Wireless</td>
+</tr>
+
+<tr>
+<td>LG</td>
+<td>VX-9900</td>
+<td>Verizon Wireless</td>
+</tr>
+
+<tr>
+<td>Samsung</td>
+<td>SCH-A790</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>Samsung</td>
+<td>SCH-A900</td>
+<td>&nbsp;</td>
+</tr>
+
+<tr>
+<td>Samsung</td>
+<td>SCH-U620</td>
+<td>Verizon Wireless</td>
+</tr>
+
+<tr>
+<td>Sanyo</td>
+<td>SCP-200</td>
+<td>Sprint</td>
+</tr>
+
+<tr>
+<td>Sanyo</td>
+<td>SCP-2400</td>
+<td>Sprint</td>
+</tr>
+
+<tr>
+<td>Sanyo</td>
+<td>SCP-8400</td>
+<td>Sprint</td>
+</tr>
+
+</table>
+
+#include "pageend.h"

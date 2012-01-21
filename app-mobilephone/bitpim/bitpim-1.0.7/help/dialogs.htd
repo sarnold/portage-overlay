@@ -1,0 +1,26 @@
+#include "pagestart.h"
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Settings,ref-settings.htm)
+    TOCITEM_0(Comm Port Settings,ref-commsettingsdialog.htm)
+    TOCITEM_0(File Contents View,ref-hexviewdialog.htm)
+    TOCITEM_0(Restore Files,dialog-restore.htm)
+    TOCITEM_0(Get Phone Data,dialog-getphonedata.htm)
+    TOCITEM_0(Send Phone Data,dialog-sendphonedata.htm)
+    TOCITEM_0(Editing Calendar Events,editingcalendarevents.htm)
+    TOCITEM_0(Merging phonebook entries,dialog-mergingphonebookentries.htm)
+    TOCITEM_0(Audio Conversion,dialog-audioconversion.htm)
+    TOCITEM_0(Calendar Import,dialog-calendarimport.htm)
+    TOCITEM_0(Image Preview,dialog-imagepreview.htm)
+    TOCITEM_0(Calendar Merge,dialog-calendarmerge.htm)
+    TOCITEM_0(Calendar Import Wizard,dialog-calimpwiz.htm)
+    TOCITEM_0(Calendar Import Preset,dialog-calimppreset.htm)
+    TOCITEM_0(Create New BitPim Data Storage,dialog-newdb.htm)
+    TOCITEM_0(Create Trouble Report,dialog-troublereport.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h"

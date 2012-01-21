@@ -1,0 +1,70 @@
+<html>
+
+<py-line code="_pagebreak=False"/>
+<py-open code="for m in events:"/>
+
+<py-open code="if _pagebreak:"/>
+${pagebreakstr}
+<py-clause code="else:"/>
+<py-line code="_pagebreak=True"/>
+<py-close/>
+
+<head>
+<h3 align="center">Calendar Events</h3>
+<h5 align="center">${date_range}</h5>
+</head>
+
+<body>
+
+<table class="table">
+<theader>
+<tr>
+<th class="day_name">Sunday</th>
+<th class="day_name">Monday</th>
+<th class="day_name">Tuesday</th>
+<th class="day_name">Wednesday</th>
+<th class="day_name">Thursday</th>
+<th class="day_name">Friday</th>
+<th class="day_name">Saturday</th>
+</tr>
+</theader>
+<tr>
+<td class="month_name">${m[0]}</td>
+</tr>
+
+<py-open code="for n in m[1:]:"/>
+
+<tr>
+
+<py-open code="for e in n:"/>
+
+<py-open code="if len(e[0]):"/>
+
+<td class="date_cell"><span class="date_number">${e[0]}</span><br/>
+<py-open code="for s in e[1]:"/>
+<span class="event_item">${s}</span><br/>
+<py-close/>
+
+</td>
+
+<py-clause code="else:"/>
+
+<td class="date_cell">&nbsp</td>
+
+<py-close/>
+
+<py-close/>
+
+</tr>
+
+<py-close/>
+
+</table>
+
+<br/><br/><br/><br/>
+
+</body>
+
+<py-close/>
+
+</html>

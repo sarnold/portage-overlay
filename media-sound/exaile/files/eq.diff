@@ -1,0 +1,18 @@
+=== modified file 'plugins/equalizer/__init__.py'
+--- plugins/equalizer/__init__.py	2010-06-16 15:17:28 +0000
++++ plugins/equalizer/__init__.py	2010-08-23 17:19:46 +0000
+@@ -235,10 +235,11 @@
+         """
+         Adjust the specified band
+         """
++        widget_name = gtk.Buildable.get_name(widget)
+         if widget.get_value() != settings.get_option(
+-                "plugin/equalizer/band%s" % widget.get_name()[-1]):
++                "plugin/equalizer/band%s" % widget_name[-1]):
+             settings.set_option("plugin/equalizer/band%s" %
+-                    widget.get_name()[-1], widget.get_value())
++                    widget_name[-1], widget.get_value())
+             self.ui.get_object("combo-presets").set_active(0)
+ 
+     def adjust_preamp(self, widget, data):
+

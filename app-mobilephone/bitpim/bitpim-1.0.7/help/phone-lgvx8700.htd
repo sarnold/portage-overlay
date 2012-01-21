@@ -1,0 +1,11 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+
+<p>Phonebook, wallpaper, ringers, calendar, memo, call history, SMS, and file system.  BitPim can autodetect this phone if it is connected to the PC via a straight USB cable.<BR>
+
+<p>We have successfully connected to this phone using the Verizon Music Essentials Kit sold for the VX8500 and VX8600 phones. The cable that comes with this kit has a "brick" in the middle. BitPim can autodetect this phone using this cable. The drivers included with this kit work fine for the VX8700. We did not try the Verison music software.<br>
+
+<P>Due to their similarities, please see the <a href="phone-lgvx8600.htm">LG VX8600 Help</a> for more details.
+
+#include "pageend.h"

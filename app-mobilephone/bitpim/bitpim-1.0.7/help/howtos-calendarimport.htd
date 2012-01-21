@@ -1,0 +1,22 @@
+#include "pagestart.h"
+
+SCREENSHOT(howto-importcalendar1.jpg,Import Calendar)
+<P>
+<OL>
+<li><p>Choose a specific calendar format to import: <B>File</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>Import</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;[<B>CSV Calendar</B>, <B>vCalendar</B>, <B>iCalendar</B>, <B>Google Calendar</B>, or <B>Outlook Calendar</B>].
+<P>
+SCREENSHOT(howto-importcalendar2.jpg,)
+
+<li><p>From the Import Calendar Dialog, specify the source from which to import calendar data.  The source can either be a file or an Outlook folder.
+<li><p>Read all the calendar items from the source.  The Import Calendar Dialog will list all the items that have been successfully read.
+<li><p>Optionally set one or more filtering parameters to eliminate unwanted items.
+<li><p>Import the data into BitPim by using one of the following methods:
+
+<OL type="a">
+<li><p><B>Replace All:</B> First  delete all existing calendar data in BitPim, and then import the new data.
+<li><p><B>Add:</B> Import the new data with existing data intact.  This could result in duplicate data items.
+<LI><P><B>Merge:</B> Bring up the <a href="dialog-calendarmerge.htm">Calendar Merge</a> dialog, which allows users to merge the new data with existing BitPim data.
+</OL> 
+
+</OL>
+#include "pageend.h"

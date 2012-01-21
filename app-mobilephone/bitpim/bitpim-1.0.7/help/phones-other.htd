@@ -1,0 +1,11 @@
+#include "pagestart.h"
+
+<p>BitPim is intended to support multiple phones, but the main authors only
+have a limited subset of phones.  Support for other phones depends on others 
+<a href="contributing.htm">contributing</a>.  
+
+<p>I believe that most recent CDMA phones will work for the 
+<a href="tab-filesystem.htm">filesystem view</a>, but none of the other features will.
+
+
+#include "pageend.h"

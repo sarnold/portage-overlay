@@ -1,0 +1,280 @@
+#include "pagestart.h"
+
+<p>These phones are the best supported by BitPim as the developers have them.
+We appreciate <a href="contributing.htm#phoneloan">phone loans</a>.
+
+<p>Phones that are listed here, but not in the list of supported phones are
+still being worked on.  URL(http://bitpim.org/papers/phonespecs/,How to get phonespecs)
+
+<p>TABLE_GRID
+<tr>
+<th>Manufacturer
+<th>Model
+<th>Notes
+</tr>
+
+<tr>
+<td>Audiovox
+<td>CDM8900
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).  
+Unfortunately the internal software on this phone proved to be
+too fragile and the phone is not supported by BitPim.  The phone is also bricked
+after having been replaced 3 times in prior brickings!
+</tr>
+
+<tr>
+<td>Audiovox
+<td>CDM8920
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).  
+</tr>
+
+<tr>
+<td>Kyocera
+<td>2235
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).
+</tr>
+
+<tr>
+<td>LG
+<td>G4015
+<td>Kindly donated by Rodney Myers.
+</tr>
+
+<tr>
+<TD>LG
+<TD>LX-570
+<TD> Kindly loaned by Matt Matolesi
+</tr>
+
+<tr>
+<td>LG
+<td>VX-4400
+<td>Personal phone.
+</tr>
+
+<tr>
+<td>LG
+<td>VX-4500
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).
+</tr>
+
+<tr>
+<td>LG
+<td>VX-4650
+<td>Personal phone.
+</tr>
+
+<tr>
+<td>LG
+<td>VX-6000
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).
+</tr>
+
+<tr>
+<td>LG
+<td>VX-7000
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).
+</tr>
+
+<tr>
+<td>LG
+<td>VX-8000
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).
+</tr>
+
+<tr>
+<td>LG
+<td>VX-8610
+<td>Kindly loaned by Rachel Boyle
+</tr>
+
+<tr>
+<td>LG
+<td>VX-9100
+<td>Kindly loaned by Rachel Boyle
+</tr>
+
+<tr>
+<td>Motorola
+<td>K1m
+<td>Kindly donated by David Lewanda.
+</tr>
+
+<tr>
+<td>Motorola
+<td>V60c
+<td>Kindly donated by Rob Ross.
+</tr>
+
+<tr>
+<td>Motorola
+<td>V60s
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).
+</tr>
+
+<tr>
+<td>Motorola
+<td>V3m
+<td>Kindly donated by Brian Camper.
+</tr>
+
+<tr>
+<td>Motorola
+<td>V60t
+<td>Kindly donated by Andy Hall.
+</tr>
+
+<tr>
+<td>Motorola
+<td>V325
+<td>Kindly donated by Alan Shields
+</tr>
+
+<tr>
+<td>Motorola
+<td>T720
+<td>Kindly loaned by URL(http://www.Ringarama.com/,Ringarama).
+</tr>
+
+<tr>
+<td>Nokia
+<td>PM-3205
+<td>Personal phone.
+</tr>
+
+<tr>
+<td>Samsung
+<td>SCH-8500
+<td>Kindly loaned by John Sabato.
+</tr>
+
+<tr>
+<td>Samsung
+<td>SCH-A310
+<td>Personal phone.
+</tr>
+
+<tr>
+<td>Samsung
+<td>SCH-A670
+<td>Personal phone.
+</tr>
+
+<tr>
+<td>Samsung
+<td>SCH-A950
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).
+</tr>
+
+<tr>
+<td>Samsung
+<td>SCH-U740
+<td>Kindly loaned by Adam Milnor.
+</tr>
+
+<tr>
+<td>Samsung
+<td>SGH-P107
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless) and personal phone.
+</tr>
+
+<tr>
+<td>Samsung
+<td>SPH-A460
+<td>Kindly loaned by URL(http://www.rapidigm.com/,Rapidigm).
+</tr>
+
+<tr>
+<td>Samsung
+<td>SPH-A500
+<td>Kindly loaned by Jim Asta.
+</tr>
+
+<tr>
+<td>Samsung
+<td>SPH-A620 (VGA1000)
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless) and personal phone.
+</tr>
+
+<tr>
+<td>Samsung
+<td>SPH-A740
+<td>Kindly loaned by Christopher R. White
+</tr>
+
+<tr>
+<td>Samsung
+<td>SPH-N200
+<td>Kindly loaned by URL(http://www.craytonelectronics.com/,Crayton Electronics).
+</tr>
+
+<tr>
+<td>Samsung
+<td>SPH-N240
+<td>Kindly loaned by URL(http://www.rapidigm.com/,Rapidigm).
+</tr>
+
+<tr>
+<td>Samsung
+<td>SPH-N400
+<td>Kindly loaned by URL(http://www.craytonelectronics.com/,Crayton Electronics).
+</tr>
+
+<tr>
+<td>Sanyo
+<td>SCP-3100
+<td>Kindly loaned by URL(http://www.rpiwireless.com/,RPI Wireless)
+</tr>
+
+<tr>
+<td>Sanyo
+<td>SCP-4900
+<td>Kindly loaned by URL(http://www.rapidigm.com/,Rapidigm).
+</tr>
+
+<tr>
+<td>Sanyo
+<td>SCP-5400
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).
+</tr>
+
+<tr>
+<td>Sanyo
+<td>SCP-5500 (VM4500)
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).
+</tr>
+
+<tr>
+<td>Sanyo
+<td>SCP-8100
+<td>Phones kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless)
+and URL(http://www.rapidigm.com/,Rapidigm).
+</tr>
+
+<tr>
+<td>Sanyo
+<td>PM-8200
+<td>Personal phone.
+</tr>
+
+<tr>
+<td>Sanyo
+<td>MM-8300
+<td>Kindly loaned by the folks at URL(http://www.ringerpost.com/,Ringerpost.com).
+</tr>
+
+<tr>
+<td>Toshiba
+<td>VM4050
+<td>Kindly loaned by the folks at URL(http://www.3gcables.com/,3gcables.com).
+</tr>
+
+<tr>
+<td>Palm
+<td>Treo 650
+<td>Kindly loaned by URL(misc-rpiwireless.htm,RPI Wireless).
+</tr>
+
+</table>
+
+#include "pageend.h"

@@ -1,0 +1,52 @@
+#include "pagestart.h"
+
+<h4>SPH-A620 (VGA1000), SPH-A660, SPH-A740, SPH-A840 (Sprint)</h4>
+BitPim can read and write the phonebook and calendar.  Wallpaper and ringers
+can be read and written to the phone.  For phones with cameras,
+pictures and videos are read with the wallpaper.
+<p>
+Many of these Samsung models are also available from carriers other
+than Sprint in the Americas.  While these phones are not officially
+supported by BitPim, many of the capabilities may work.  In many
+cases, the phonebook and calendar can be transferred, but media
+(photos, wallpaper, ringers) transfer does work.
+<p>
+These phones have a limit of 300 numbers, urls and emails.  There is
+an internal counter of numbers, urls of emails.  This counter can
+become corrupted (particularly in BitPim version 0.7.26), such that
+the phone thinks that there are more numbers on the phone than there
+actually are.  This then limits how many numbers can be saved to the
+phone.  The only way to reset this counter to a correct value is to
+wipe the phonebook and rewrite it.  The phonebook can be wiped using
+an option in the phones security menu.  Make sure you have good backup
+of the phonebook.
+<p>
+Ringer and wallpaper assignments for phonebook entries are not
+preserved when writing the phonebook to the phone.
+<p>
+<ul>
+<li><p>URL(http://product.samsung.com/cgi-bin/nabc/product/b2c_product_detail.jsp?eUser=&prod_id=VGA1000,SPH-A620/VGA1000
+product page)
+<li><p>URL(http://www.samsung.com/search/search.asp?qt=A620&la=en&col=wu+wsimsi+download&tabpage=1&radio=1&select=0&x=0&y=0#,Manual)
+</ul>
+
+<h4>SPH-A840 on Telus (Canada)</h4>
+BitPim supports the phonebook and calendar on this phone.  Groups are
+not read or restored.  Email addresses and "Other" entries are not saved to
+the phone.  The default number for a given contact may sometimes change
+on saving the phonebook.
+
+<h4>SPH-A460</h4>
+BitPim can read and write the phonebook and calendar on this older
+Sprint phone.  The phone does not support up/downloading of ringtones
+and wallpaper and does not have a filesystem.
+
+The phone can go into an odd state after writing the phonebook to the
+phone.  The internal LCD screen may be blank even though the phone is
+on.  Power cycling the phone may be sufficient to restore the phone to
+normal operation.  If this doesn't help, remove and replace the battery.
+
+<h4>SPH-N400</h4>
+Only reading the phonebook is supported for this phone.
+
+#include "pageend.h"

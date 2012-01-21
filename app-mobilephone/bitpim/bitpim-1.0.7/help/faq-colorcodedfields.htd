@@ -1,0 +1,9 @@
+#include "pagestart.h"
+<p>The color-coded field names indicate their applicability to the current selected phone model.  The meanings of the colors are:
+<p>
+<UL>
+<li><p><B><FONT COLOR="Blue">Blue</FONT></B>: This field is <B>applicable</B> to the current phone model.
+<li><p><B><FONT COLOR="Red">Red</FONT></B>: This field is <B>not applicable</B> to the current phone model.
+<li><p><B><FONT COLOR="Black">Black</FONT></B>: The applicability of this field to the current phone model is <B>unknown</B>.
+</UL>
+#include "pageend.h"

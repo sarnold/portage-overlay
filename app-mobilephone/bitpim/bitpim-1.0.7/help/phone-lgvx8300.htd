@@ -1,0 +1,28 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+
+<p>Phonebook (but not ringer/wallpaper assignments), wallpaper (including camera), ringers, filesystem, call history, SMS & Memo.
+The Memo feature on the phone is limited, it does not support a subject or a category.
+The SMS feature in BitPim does not support pictures or sounds in messages. If a message contains one of these it will be silently ignored and only the text part of the message will be shown.
+BitPim can autodetect this phone if it is connected to the PC via USB. If you are connected via Bluetooth bitpim will only detect
+the phone on Windows XP SP2 if you are using the native windows drivers.
+BitPim can make use of ringtone & wallpaper files stored on the miniSD card, see section <a href="phone-lgvx8300-howtos.htm">Howtos</a> for more details.
+
+<h2>FAQs and support</h2>
+
+<p>If you know of a good support group, please let us know so we can add details here.
+
+<h2>Contents</h2>
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Cables,phone-lgvx8300-cables.htm)
+    TOCITEM_0(Notes,phone-lgvx8300-notes.htm)
+    TOCITEM_0(Howtos,phone-lgvx8300-howtos.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h"

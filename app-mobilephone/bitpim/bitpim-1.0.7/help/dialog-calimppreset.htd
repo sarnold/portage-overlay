@@ -1,0 +1,62 @@
+#include "pagestart.h"
+<P>This dialog allows users to create, edit, and execute Calendar Import Presets.  These presets store all of the necessary parameters of frequent calendar import operations, and can be "executed" with a single mouse click, thus effectively provide "shortcuts" to these imports.<BR>
+
+SCREENSHOT(screen-calimppreset.png,)
+<P><BR>
+<H2>Buttons</H2>
+<DL>
+<DT><P><B>Import:</B></DT>
+<DD>Execute the selected (highlighted) preset.
+<DT><P><B>New:</B></DT>
+<DD>Create a new preset and bring up the <A HREF="#calimpresetwiz">Calendar Preset Wizard</A> that lets users defining the parameters of this preset.
+<DT><P><B>Edit:</B></DT>
+<DD>Bring up the <A HREF="#calimpresetwiz">Calendar Preset Wizard</A> that lets users updating the parameters of the selected preset.
+<DT><P><B>Delete:</B></DT>
+<DD>Delete the selected preset.
+<DT><P><B>Cancel</B></DT>
+<DD>Quit the dialog.
+</DL>
+<P><BR>
+<H1><a name="calimpresetwiz">Calendar Import Preset Wizard</a></H1>
+<P><BR>
+SCREENSHOT(screen-calimppresetwiz1.png,)
+<P><BR>
+<P><BR>
+SCREENSHOT(screen-calimppresetwiz2.png,)
+<P><BR>
+<P><BR>
+SCREENSHOT(screen-calimppresetwiz3.png,)
+<P><BR>
+<P>Click on <B>Browse</B> to select the source from which calendar data would be imported.  Depending on the data type, the source could either be a file, an \URL, or an Outlook folder.
+<P><BR>
+SCREENSHOT(screen-calimppresetwiz4.png,)
+<P><BR>
+<P>Click on <B>Modify</B> to set/change various <a href="dialog-calendarimport.htm#importfilter">filtering paramters.</a>
+<P><BR>
+SCREENSHOT(screen-calimppresetwiz5.png,)
+<P><BR>
+<UL>
+<LI><P><B>Replace All:</B> Import, then replace all BitPim calendar data with the new data.
+<LI><P><B>Add:</B> Import, then add the new calendar data to existing BitPim data.  This may produce duplicate calendar events.
+<LI><P><B>Preview:</B>  Read the data, then bring up a <A HREF="#calimpresetpreview">Calendar Import Preview</A> dialog from which users can take further actions.
+<LI><P><B>Merge:</B>  Read the data, then bring up the <A HREF="dialog-calendarmerge.htm">Calendar Merge</A> dialog from which users can take further actions.
+</UL>
+<P><BR>
+<H1><a name="calimpresetpreview">Calendar Import Preset Preview</a></H1>
+<P><BR>
+SCREENSHOT(screen-calimppresetpreview.png,)
+<P><BR><BR>
+This dialog displays a list of calendar events available for import and allows users to take further actions on them.
+<H2>Buttons</H2>
+<DL>
+<DT><P><B>Replace All:</B></DT>
+<DD>Discard current BitPim calendar data and replace them with the preview data.
+<DT><P><B>Add:</B></DT>
+<DD>Add the preview data to existing BitPim calendar data.  This may cause duplicate events.
+<DT><P><B>Merge:</B></DT>
+<DD>Bring up the <a href="dialog-calendarmerge.htm">Calendar Merge</a> dialog.
+<DT><P><B>Cancel</B></DT>
+<DD>Discard the preview data and close this dialog.
+</DL>
+<BR>
+#include "pageend.h"

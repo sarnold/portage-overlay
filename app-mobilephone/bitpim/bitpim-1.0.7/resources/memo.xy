@@ -1,0 +1,34 @@
+<html>
+<!--
+<py-line code="Id=''"/>
+$Id: memo.xy 4206 2007-04-27 20:19:34Z djpham $
+
+Need to pass in the following data:
+dns['items']=a dict of memo.MemoEntry
+dns['keys']=a list of (sorted) keys of dns['memoitems']
+-->
+
+<head></head>
+<body>
+
+<py-open code="for k in keys:"/>
+<py-line code="_memo=items[k]"/>
+
+<p>
+<py-open code="if _memo.date:"/>
+<b>Date:</b> ${_memo.date}<br/>
+<py-close/>
+<py-open code="if _memo.categories:"/>
+<py-line code="_catstr=','.join([x['category'] for x in _memo.categories])"/>
+<b>Categories:</b> ${_catstr}<br/>
+<py-close/>
+<py-open code="if _memo.subject:"/>
+<b>Subject:</b> ${_memo.subject}<br/>
+<py-close/>
+<b>Text:</b> ${_memo.text}<br/>
+
+</p><br/>
+<py-close/>
+
+</body>
+</html>

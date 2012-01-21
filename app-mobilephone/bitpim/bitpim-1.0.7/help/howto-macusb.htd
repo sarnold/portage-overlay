@@ -1,0 +1,27 @@
+#include "pagestart.h"
+
+<h2>USB device drivers</h2>
+
+<p>MacOS X provides a kernel extension  that can talk to the modem
+interface on phones connected via a direct USB cable.  This kernel
+extension is named <code>USBAppleCDCMDriver.kext</code> and will be
+autodetected and used if the chipset in the phone is supported. This
+will create a device entry called <code>usbserialXXX</code>. The
+XXX will vary based on how the phone is plugged into the USB bus.
+This can be used in the System Preferences panel as a network interface
+for PPP connections provided you have the correct modem scripts.
+
+<p>MacOS X does not provide device drivers for USB to serial converters.
+Since there is a wide variety of converter chips, there is also a wide 
+variety of drivers that you will have to find on the web.  (Often
+the chip manufacturers do not provide them, but their OEMs do).
+
+<h2>Direct USB access</h2>
+
+<p>BitPim can access USB devices directly.  Note that you must not
+have any program or device driver using the data interface. It is OK
+to have the system kernel extension loaded providing access to the
+modem interface at the same time you use bitpim to talk to the data
+interface.
+
+#include "pageend.h"

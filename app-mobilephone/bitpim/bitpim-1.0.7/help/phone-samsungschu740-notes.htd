@@ -1,0 +1,66 @@
+#include "pagestart.h"
+<H3>Firmware Version</H3>
+<UL>
+<li><p>The firmware version of the loaner phone, which was used for development & test, is <B>u740.ZL05</B>
+<li><p>The hardware version is <B>u740.10</B>
+</UL>
+
+<H3>Phonebook</H3>
+<UL>
+<li><p>The phone will ignore any entries with no numbers and no emails.
+<li><p><B>Groups (Categories)</B> names cannot be added, changed, or deleted from BitPim, it must be done from the phone.
+<LI><P><B>Picture ID:</B>  BitPim cannot to use any of the phone's built-in wallpapers (<B>Preload1</B> through <B>Preloaded8</B>) as Picture ID of a contact.  BitPim can use another other wallpapers/images as Picture IDs.
+</UL>
+
+<H3>Calendar</H3>
+<UL>
+<li><p>BitPim supports up to 100 calendar events.
+<li><p>All recurrent events are open-ended.  When viewed or edited from BitPim, the open-ended date would show as '4000-01-01'.
+<li><p>All recurrent events are automatically converted to have an interval of 1 (ie. an every-other-day-event in BitPim becomes an every-day-event in the phone, etc.)
+<li><p>The alert of an event can be set either to a ringtone or to vibrate, but not both.
+<li><p>BitPim cannot set the alert of an event to 'Light Only'.
+<LI><P>BitPim does not support the <B>Reminder</B> field.  It discards the value of this field when reading calendar data from the phone, and sets this field to <B>Once</B> when sending calendar data to the phone.
+</UL>
+
+<H3>Ringtones</H3>
+<UL>
+<li><p>BitPim does not delete ringtones on the phone.  You must delete them manually from the phone.
+<li><p>The limit of the size of a ringtone is arbitrarily set at 100,000 bytes.  Exceeding this limit will display a warning.  If you have a more accurate limit, please post it to the BitPim Users list.
+<li><p>BitPim will not be able to retrieve ringtones purchased with GIN.
+<li><p>BitPim will neither retrieve nor send ringtones from/to the microSD card.
+</UL>
+
+<H3>Wallpapers</H3>
+<UL>
+<li><p>BitPim only saves wallpaper images to the <B>Default Album</B>.
+<li><p>The default format is JPEG.
+<li><p>The default resolutions are:
+<UL>
+<li><p><B>wallpaper:</B>220x184
+<li><p><B>outsidelcd:</B>128x96
+<li><p><B>pictureid:</B>128x96
+</UL>
+<li><p>BitPim will not be able to retrieve wallpapers purchased with GIN.
+<li><p>BitPim will neither retrieve nor send wallpapers from/to the microSD card.
+</UL>
+
+<H3>Video</H3>
+<UL>
+<LI><P>BitPim can retrieve video files from the phone.  It does not retrieve video files stored on the microSD card.
+<LI><P>The format of the video files is 3GPP2 (".3g2"), which can be played by, among other media players, QuickTime.
+<LI><P>BitPim will neither delete nor send video files to the phone.
+</UL>
+
+<H3>Memo/Notepad</H3>
+<UL>
+<li><p>BitPim supports up to 30 notepad items.
+<li><p>The maximum length of a notepad item is 130 characters.
+</UL>
+
+<H3>SMS</H3>
+<UL>
+<LI><P>BitPim can only retrieve text messages.
+<LI><P>BitPim will neither deleter nor send/restore messages to the phone.
+</UL>
+
+#include "pageend.h"

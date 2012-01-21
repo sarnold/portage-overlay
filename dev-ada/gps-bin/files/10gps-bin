@@ -1,0 +1,2 @@
+PATH=/opt/gps-bin/bin
+LDPATH=/opt/gps-bin/lib:/usr/lib32

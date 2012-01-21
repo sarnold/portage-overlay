@@ -1,0 +1,23 @@
+#include "pagestart.h"
+
+<p>There has been a report that this phone will crash if wallpaper image filenames
+do not have an extension. BitPim will always ensure that there is an extension
+unless you rename the file yourself.
+
+<p>This phone returns the number of phonebook entries in an unreliable way to BitPim.  There is a
+workaround in the BitPim code for it.  However the workaround does not work if the phonebook 
+on the phone is completely empty.  To reliably read or write the phonebook with BitPim, you
+must ensure there is at least one entry on the phone already.
+
+<p>Wallpaper and ringtone reading and writing work.  The
+BitPim code currently limits you to 50 of each.  If anyone
+knows what the real limit is, or why the phone goes to the
+trouble of storing the total amount of space used by the
+ringtones and wallpapers then please let the developers know.
+
+<p>The videos taken by the phone use MPEG 4 for the video and Qualcomm's proprietary PureVoice
+format for the audio.  Most media players have no problem with the video but won't know how
+to do the audio.  Apple's QuickTime software (even on Windows) does understand the PureVoice
+format so you can use it to listen to the video as well.
+
+#include "pageend.h"

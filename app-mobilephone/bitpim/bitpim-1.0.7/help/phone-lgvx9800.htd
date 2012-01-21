@@ -1,0 +1,19 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+
+<p>Phonebook, wallpaper, ringers, calendar, memo, call history, SMS, and file system.  The SMS feature supports text messages only and will silently ignore other parts of the message.  BitPim can autodetect this phone if it is connected to the PC via a straight USB cable.  BitPim can also make use of wallpaper and ringtone files stored on the miniSD card.
+
+<h2>Contents</h2>
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Cables,phone-lgvx9800-cables.htm)
+    TOCITEM_0(Notes,phone-lgvx9800-notes.htm)
+    TOCITEM_0(Howtos,phone-lgvx9800-howtos.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h"

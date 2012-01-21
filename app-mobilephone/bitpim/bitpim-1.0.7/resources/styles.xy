@@ -1,0 +1,112 @@
+### BITPIM
+###
+### Copyright (C) 2003-2004 Roger Binns <rogerb@rogerbinns.com>
+###
+### This program is free software; you can redistribute it and/or modify
+### it under the terms of the BitPim license as detailed in the LICENSE file.
+###
+### $Id: styles.xy 1519 2004-08-20 09:58:57Z rogerb $
+
+# This is pure Python code which sets up the styles and provides
+# some helper functions
+
+styles={}
+
+styles['table']={ '': ('width', "100%", 'cellpadding', "5", 'cellspacing', "0"),
+                  'td': ('valign', 'top')
+                  }
+
+# Panels are the rectangles containing each section.  The
+# styles are used in a TD tag
+
+styles['wallpaperpanel']={ '': ('bgcolor', "#c2d4e6", 'width', '72') }
+styles['ringtonepanel']= { '': ('bgcolor', "#7f97d4", 'width', '20') }
+styles['namepanel']={ '': ('valign', "center", 'align', "center", 'bgcolor', "#c2d4e6") }
+styles['categoryflagspanel']={ '': ('bgcolor', "#91c37f", 'width', '75') }
+styles['urlpanel']={'': ('bgcolor', "#c2d4e6") }
+
+styles['numberroweven']={'': ('bgcolor', "#99aabb") }
+styles['numberrowodd']={ '': ('bgcolor', "#bbaa99") }
+
+styles['emailroweven']={'': ('bgcolor', "#aabb99") }
+styles['emailrowodd']={ '': ('bgcolor', "#d47f97") }
+
+styles['memopanel']={ '': ('bgcolor', "#91c37f") }
+
+styles['addresseven']={ '': ('bgcolor', "#c2d4e6") } 
+styles['addressodd']={ '': ('bgcolor', "#7f97d4") }
+
+# Individual text items
+styles['url']={ '': ('color', "#2727ee") }
+# styles['addresstext']=''
+
+styles['name']={ '+font': ('color', "#0000ff", 'size', "+1"),
+                 '+b': () }
+styles['secret']={ '+font': ('size', '-2') }
+styles['category']={ '+font': ('color', "#123456") }
+styles['numbertype']={ 'td': ('width', '75', 'align', 'right'),
+                       '+b': () }
+styles['email']={ '+code': () }
+
+# Some functions used to make life easier
+def formatname(name):
+    # Returns a string of the name in name.
+    # Since there can be many fields, we try to make sense of them
+    res=""
+    res+=name.get("full", "")
+    f=name.get("first", "")
+    m=name.get("middle", "")
+    l=name.get("last", "")
+    if len(f) or len(m) or len(l):
+        if len(res):
+            res+=" | "
+        # severe abuse of booleans
+        res+=f+(" "*bool(len(f)))
+        res+=m+(" "*bool(len(m)))
+        res+=l+(" "*bool(len(l)))
+    if name.has_key("nickname"):
+        res+=" ("+name["nickname"]+")"
+    return res
+
+import phonenumber
+def formatnumber(number):
+    sd=number.get("speeddial", None)
+    if sd is None:
+        return phonenumber.format(number['number'])
+    return "%s [%d]" % (phonenumber.format(number['number']), sd)
+
+def get_flag(entry, name, default=None):
+    # looks for the named flag
+    for flag in entry.get('flags', []):
+        if flag.has_key(name):
+            return flag[name]
+    return default
+        
+def has_flag(entry,name):
+    # Looks for the named flag and returns true if it is set to True
+    # else false is returned
+    return get_flag(entry,name,False)
+
+def titlecase(string):
+    # uppercases first letter
+    return string[0].upper()+string[1:]
+
+def urltype(url):
+    # returns the type of the url, or empty string
+    res=url.get("type","")
+    if len(res):
+        return "("+titlecase(res)+")"
+    return res
+
+def formataddress(address):
+    res=""
+    for field in "type", "company", "street", "street2", "city", "state", "postalcode", "country":
+        if address.has_key(field):
+            res+=htmlify(address[field])+"<br/>"
+    return res
+
+def htmlify(string):
+    return string.replace("&", "&amp;").replace('"', "&quot;").replace("<", "&lt;").replace(">", "&gt;").replace("\n", "<br/>")
+
+        
+	

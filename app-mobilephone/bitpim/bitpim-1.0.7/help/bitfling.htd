@@ -1,0 +1,24 @@
+#include "pagestart.h"
+
+<p>BitFling is a way for BitPim to run on one machine and your phone
+to be connected to a different machine, even across the Internet.
+It uses a protocol over a secure connection to ensure this is safe.
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Configuring BitFling,bitfling-configure.htm)
+    TOCITEM_0(Configuring BitPim to use BitFling,bitpim-bitfling-configure.htm)
+    TOCITEM_0(Security Considerations,bitfling-security.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+<p>The technical details are that the BitFling protocol uses 
+URL(http://www.xmlrpc.com/,XML-RPC) over an URL(http://en.wikipedia.org/wiki/Ssh,SSH)
+connection.  The SSH connection is provided by the 
+URL(http://www.lag.net/~robey/paramiko/,Paramiko) library.
+The only channel present is for BitFling.  There is no shell access
+or port forwarding implemented or permitted.
+
+#include "pageend.h"

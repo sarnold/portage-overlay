@@ -1,0 +1,122 @@
+--- src/fortran/inputsamp.fc.orig	2009-04-25 15:16:43.780670361 -0700
++++ src/fortran/inputsamp.fc	2009-04-25 15:17:14.721921916 -0700
+@@ -45,6 +45,7 @@
+ 
+ #include "udposix.h"
+ #include <stdlib.h>
++#include <string.h>
+ #include "xgks.h"
+ #include "fortxgks.h"
+ 
+--- src/fortran/inqwsdesc.fc.orig	2009-04-25 15:18:12.288671531 -0700
++++ src/fortran/inqwsdesc.fc	2009-04-25 15:18:32.767669705 -0700
+@@ -56,6 +56,7 @@
+ 
+ #include "udposix.h"
+ #include <stdlib.h>
++#include <string.h>
+ #include "xgks.h"
+ #include "fortxgks.h"
+ 
+--- src/fortran/output.fc.orig	2009-04-25 15:18:59.402682440 -0700
++++ src/fortran/output.fc	2009-04-25 15:23:33.043670345 -0700
+@@ -43,8 +43,8 @@
+ 
+ #define OUTPUT
+ #include "udposix.h"
++#include <stdlib.h>
+ #include <string.h>
+-/*  #include <stdlib.h> */
+ #include "xgks.h"
+ #include "fortxgks.h"
+ 
+--- src/lib/x/xcolours.c.orig	2009-04-25 15:39:58.212671502 -0700
++++ src/lib/x/xcolours.c	2009-04-25 15:40:31.700920552 -0700
+@@ -64,6 +64,7 @@
+ #include "udposix.h"
+ #include <stdlib.h>
+ #include <assert.h>
++#include <string.h>
+ #include "gks_implem.h"
+ 
+ #ifdef lint
+--- src/lib/x/xtext.c.orig	2009-04-25 15:40:54.903919815 -0700
++++ src/lib/x/xtext.c	2009-04-25 15:41:10.325920653 -0700
+@@ -43,6 +43,7 @@
+ #include <unistd.h>
+ #include <stdio.h>
+ #include <stdlib.h>
++#include <string.h>
+ #include <sys/types.h>
+ #include <sys/stat.h>
+ #include <fcntl.h>
+--- src/lib/gdadds.c.orig	2009-04-25 15:40:54.903919815 -0700
++++ src/lib/gdadds.c	2009-04-25 15:41:10.325920653 -0700
+44d44
+< //#include <malloc.h>
+48d48
+< #include <stdlib.h>
+--- src/lib/mkerrmsg.c.orig	2009-04-25 18:36:21.364919492 -0700
++++ src/lib/mkerrmsg.c	2009-04-25 19:06:17.677670056 -0700
+@@ -67,9 +67,9 @@
+ 	"\n#ifndef GKSERRMSG_H_INCLUDED\n#define GKSERRMSG_H_INCLUDED\n");
+ 
+     (void) printf("#ifdef GKS_ERROR_C\n");
+-    while (gets(line) != NULL) {
++    while (fgets(line, 1024, stdin) != NULL) {
+ 	if (strncmp("#define", line, 7) != 0)
+-	    puts(line);
++	    fputs(line, stdout);
+ 	else {
+ 	    if (first) {
+ 		(void) printf("static char *GKSErrorMessages0to200[] = {\n");
+--- fontdb/mkfont.c.orig	2009-04-25 21:02:49.269672429 -0700
++++ fontdb/mkfont.c	2009-04-25 21:05:00.476919420 -0700
+@@ -37,6 +37,7 @@
+ /* LINTLIBRARY */
+ 
+ #include "udposix.h"
++#include <stdlib.h>
+ #include <stdio.h>
+ #include <string.h>
+ #include <sys/types.h>
+--- progs/pline.c.orig	2009-04-25 21:10:08.708670680 -0700
++++ progs/pline.c	2009-04-25 21:10:57.301921406 -0700
+@@ -38,6 +38,7 @@
+     static char	afsid[]	= "$__Header$";
+ #endif
+ 
++#include <stdlib.h>
+ #include "xgks.h"
+ 
+ 
+--- src/lib/gdadds.c.orig	2009-04-25 21:23:38.831672577 -0700
++++ src/lib/gdadds.c	2009-04-25 21:24:26.718670511 -0700
+@@ -40,6 +40,9 @@
+ /* J. Sirott PMEL 1997 */
+ 
+ 
++#define _GNU_SOURCE
++#include <stdlib.h>
++#include <regex.h>
+ #include <unistd.h>
+ #include <stdio.h>
+ #include <math.h>
+--- src/lib/gd.c.orig	2009-04-25 21:29:46.916922312 -0700
++++ src/lib/gd.c	2009-04-25 21:30:57.180671481 -0700
+@@ -34,12 +34,13 @@
+ *
+ */
+ 
++#define _GNU_SOURCE
++#include <stdlib.h>
++#include <regex.h>
+ #include <unistd.h>
+-//#include <malloc.h>
+ #include <stdio.h>
+ #include <math.h>
+ #include <string.h>
+-#include <stdlib.h>
+ #include "gif/gd.h"
+ #include "gif/mtables.h"
+ 

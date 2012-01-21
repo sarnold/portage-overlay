@@ -1,0 +1,66 @@
+#include "pagestart.h"
+
+<p>There are three ways to use multiple users with BitPim.
+
+<h2>Multiple users at the operating system level (recommended)</h2>
+
+<p>BitPim stores its settings for the current user.  If you have
+multiple phones and users, and login to your operating system as
+separate users, then it will work fine.  (On Windows XP, use the
+windows key together with L to switch users).  This is the recommended
+way of doing things and requires no extra configuration.
+
+<h2>One user at the operating system level, sharing phone data</h2>
+
+<p>BitPim is designed to allow sharing of phone data across multiple
+phones.  You can just connect and use multiple phones without further
+configuration.  This will effectively merge the information across the
+phones.
+
+<p>In future releases we expect to use categories to limit what gets
+put on each phone.
+
+<h2>One user at the operating system level, seperate phone data</h2>
+
+<p>If you only login to your computer as one user, but would like to have separate BitPim
+data settings for multiple phones, then you will need to tell BitPim either the data directory name
+or the configuration file name upon initialization.
+
+<p>BitPim stores all of its settings in a configuration file with a
+default name of <code>.bitpim</code>.  The name of the current data
+directory and configuration file are displayed in the <a
+href="ref-settings.htm">settings dialog</a>.  To specify a different
+data directory, you can use the following command: 
+
+<p><code>bitpim -d [data dir name]</code>
+
+<p>To specify a different configuration file to use, use the following command:
+<p><code>bitpim -c [config file name]</code>
+
+<p>In Windows, files with extension <code>.bitpim</code> are associated with the BitPim program, ie, you can double-click on such
+a file to launch BitPim using that file as the configuration file.  As a result, to use a different data directory, Windows users
+can simply double-click on the associated configuration file located in that data directory.
+
+<p>To create and use a new BitPim data directory, Windows users can do the following steps:
+<OL>
+<li><p>Create a new data directory.
+<li><p>In that data directory, create an empty file named <code>.bitpim</code>
+<li><p>Double-click on the <code>.bitpim</code> file to launch BitPim using the new configuration file and data directory.
+</OL>
+
+<p>If you want to create and use a new BitPim data directory, but also want to maintain previous BitPim settings,
+you can do the following steps:
+<OL>
+<li><p>Create a new data directory.
+<li><p>Copy the previous BitPim configuration file to the new data directory.
+<li><p>Double-click on the copied configuration file in the new data directory.
+</OL>
+
+<p>You can also drag out the <code>.bitpim</code> file from a data
+directory with your right mouse button and drop it onto your desktop
+or into your menus.  When prompted say that you want to create a
+shortcut.
+
+<P>Additionally, BitPim automates the above process via the <a href="dialog-newdb.htm">Create New BitPim Data Storage</a> wizard.
+
+#include "pageend.h"

@@ -1,0 +1,3868 @@
+--- /dev/null
++++ b/drivers/gpu/drm/via_chrome9/via_chrome9_dma.c
+@@ -0,0 +1,1283 @@
++/*
++ * Copyright 1998-2003 VIA Technologies, Inc. All Rights Reserved.
++ * Copyright 2001-2003 S3 Graphics, Inc. All Rights Reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person
++ * obtaining a copy of this software and associated documentation
++ * files (the "Software"), to deal in the Software without
++ * restriction, including without limitation the rights to use,
++ * copy, modify, merge, publish, distribute, sub license,
++ * and/or sell copies of the Software, and to permit persons to
++ * whom the Software is furnished to do so, subject to the
++ * following conditions:
++ *
++ * The above copyright notice and this permission notice
++ * (including the next paragraph) shall be included in all
++ * copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
++ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NON-INFRINGEMENT. IN NO EVENT SHALL VIA, S3 GRAPHICS, AND/OR
++ * ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
++ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include "drmP.h"
++#include "drm.h"
++#include "via_chrome9_drm.h"
++#include "via_chrome9_drv.h"
++#include "via_chrome9_3d_reg.h"
++#include "via_chrome9_dma.h"
++
++#define NULLCOMMANDNUMBER 256
++unsigned int NULL_COMMAND_INV[4] =
++	{ 0xCC000000, 0xCD000000, 0xCE000000, 0xCF000000 };
++
++void
++via_chrome9ke_assert(int a)
++{
++}
++
++unsigned int
++protect_size_value(unsigned int size)
++{
++	unsigned int i;
++	for (i = 0; i < 8; i++)
++		if ((size > (1 << (i + 12)))
++		    && (size <= (1 << (i + 13))))
++			return i + 1;
++	return 0;
++}
++
++void via_chrome9_dma_init_inv(struct drm_device *dev)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *)dev->dev_private;
++	struct drm_via_chrome9_dma_manager *lpcmdmamanager =
++		dev_priv->dma_manager;
++
++	if (dev_priv->chip_sub_index == CHIP_H6S2) {
++		unsigned int *pgarttable;
++		unsigned int i, entries, gartoffset;
++		unsigned char sr6a, sr6b, sr6c, sr6f, sr7b;
++		unsigned int *addrlinear;
++		unsigned int size, alignedoffset;
++
++		entries = dev_priv->pagetable_map.pagetable_size /
++			sizeof(unsigned int);
++		pgarttable = dev_priv->pagetable_map.pagetable_handle;
++
++		gartoffset = dev_priv->pagetable_map.pagetable_offset;
++
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++		sr6c = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++		sr6c &= (~0x80);
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++
++		sr6a = (unsigned char)((gartoffset & 0xff000) >> 12);
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6a);
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6a);
++
++		sr6b = (unsigned char)((gartoffset & 0xff00000) >> 20);
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6b);
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6b);
++
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++		sr6c = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++		sr6c |= ((unsigned char)((gartoffset >> 28) & 0x01));
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x7b);
++		sr7b = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++		sr7b &= (~0x0f);
++		sr7b |= protect_size_value(dev_priv->
++			pagetable_map.pagetable_size);
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr7b);
++
++		for (i = 0; i < entries; i++)
++			writel(0x80000000, pgarttable+i);
++
++		/*flush*/
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6f);
++		do {
++			sr6f = getmmioregisteru8(dev_priv->mmio->handle,
++				0x83c5);
++		} while (sr6f & 0x80);
++
++		sr6f |= 0x80;
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6f);
++
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++		sr6c = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++		sr6c |= 0x80;
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++
++		if (dev_priv->drm_agp_type != DRM_AGP_DISABLED) {
++			size = lpcmdmamanager->dmasize * sizeof(unsigned int) +
++			dev_priv->agp_size;
++			alignedoffset = 0;
++			entries = (size + PAGE_SIZE - 1) / PAGE_SIZE;
++			addrlinear =
++				(unsigned int *)dev_priv->pcie_vmalloc_nocache;
++
++			setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++			sr6c =
++			getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++			sr6c &= (~0x80);
++			setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++
++			setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6f);
++			do {
++				sr6f = getmmioregisteru8(dev_priv->mmio->handle,
++					0x83c5);
++			} while (sr6f & 0x80);
++
++			for (i = 0; i < entries; i++)
++				writel(page_to_pfn(vmalloc_to_page(
++				(void *)addrlinear + PAGE_SIZE * i)) &
++				0x3fffffff, pgarttable + i + alignedoffset);
++
++			sr6f |= 0x80;
++			setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6f);
++
++			setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++			sr6c =
++			getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++			sr6c |= 0x80;
++			setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++		}
++
++	}
++
++	if (dev_priv->drm_agp_type == DRM_AGP_DOUBLE_BUFFER)
++		set_agp_double_cmd_inv(dev);
++	else if (dev_priv->drm_agp_type == DRM_AGP_RING_BUFFER)
++		set_agp_ring_cmd_inv(dev);
++
++	return ;
++}
++
++static unsigned int
++init_pcie_gart(struct drm_via_chrome9_private *dev_priv)
++{
++	unsigned int *pgarttable;
++	unsigned int i, entries, gartoffset;
++	unsigned char sr6a, sr6b, sr6c, sr6f, sr7b;
++
++	if (!dev_priv->pagetable_map.pagetable_size)
++		return 0;
++
++	entries = dev_priv->pagetable_map.pagetable_size / sizeof(unsigned int);
++
++	pgarttable =
++		ioremap_nocache(dev_priv->fb_base_address +
++				dev_priv->pagetable_map.pagetable_offset,
++				dev_priv->pagetable_map.pagetable_size);
++	if (pgarttable)
++		dev_priv->pagetable_map.pagetable_handle = pgarttable;
++	else
++		return 0;
++
++	/*set gart table base */
++	gartoffset = dev_priv->pagetable_map.pagetable_offset;
++
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++	sr6c = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++	sr6c &= (~0x80);
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++
++	sr6a = (unsigned char) ((gartoffset & 0xff000) >> 12);
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6a);
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6a);
++
++	sr6b = (unsigned char) ((gartoffset & 0xff00000) >> 20);
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6b);
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6b);
++
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++	sr6c = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++	sr6c |= ((unsigned char) ((gartoffset >> 28) & 0x01));
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x7b);
++	sr7b = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++	sr7b &= (~0x0f);
++	sr7b |= protect_size_value(dev_priv->pagetable_map.pagetable_size);
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr7b);
++
++	for (i = 0; i < entries; i++)
++		writel(0x80000000, pgarttable + i);
++	/*flush */
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6f);
++	do {
++		sr6f = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++	}
++	while (sr6f & 0x80)
++		;
++
++	sr6f |= 0x80;
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6f);
++
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++	sr6c = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++	sr6c |= 0x80;
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++
++	return 1;
++}
++
++
++static unsigned int *
++alloc_bind_pcie_memory(struct drm_via_chrome9_private *dev_priv,
++	unsigned int size, unsigned int offset)
++{
++	unsigned int *addrlinear;
++	unsigned int *pgarttable;
++	unsigned int entries, alignedoffset, i;
++	unsigned char sr6c, sr6f;
++
++	if (!size)
++		return NULL;
++
++	entries = (size + PAGE_SIZE - 1) / PAGE_SIZE;
++	alignedoffset = (offset + PAGE_SIZE - 1) / PAGE_SIZE;
++
++	if ((entries + alignedoffset) >
++	    (dev_priv->pagetable_map.pagetable_size / sizeof(unsigned int)))
++		return NULL;
++
++	addrlinear =
++		__vmalloc(entries * PAGE_SIZE, GFP_KERNEL | __GFP_HIGHMEM,
++			  PAGE_KERNEL_NOCACHE);
++
++	if (!addrlinear)
++		return NULL;
++
++	pgarttable = dev_priv->pagetable_map.pagetable_handle;
++
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++	sr6c = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++	sr6c &= (~0x80);
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6f);
++	do {
++		sr6f = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++	}
++	while (sr6f & 0x80)
++		;
++
++	for (i = 0; i < entries; i++)
++		writel(page_to_pfn
++		       (vmalloc_to_page((void *) addrlinear + PAGE_SIZE * i)) &
++		       0x3fffffff, pgarttable + i + alignedoffset);
++
++	sr6f |= 0x80;
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6f);
++
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++	sr6c = getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++	sr6c |= 0x80;
++	setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++
++	return addrlinear;
++
++}
++
++void
++set_agp_double_cmd_inv(struct drm_device *dev)
++{
++	/* we now don't use double buffer */
++	return;
++}
++
++void
++set_agp_ring_cmd_inv(struct drm_device *dev)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	struct drm_via_chrome9_dma_manager *lpcmdmamanager =
++		(struct drm_via_chrome9_dma_manager *) dev_priv->dma_manager;
++	unsigned int agpbuflinearbase = 0, agpbufphysicalbase = 0;
++	unsigned long *pFree;
++	unsigned int dwstart, dwend, dwpause, agpcurraddr, agpcurstat, curragp;
++	unsigned int dwreg60, dwreg61, dwreg62, dwreg63,
++		dwreg64, dwreg65, dwjump;
++
++	lpcmdmamanager->pFree = lpcmdmamanager->pBeg;
++
++	agpbuflinearbase = (unsigned int) lpcmdmamanager->addr_linear;
++	agpbufphysicalbase =
++		(dev_priv->chip_agp ==
++		 CHIP_PCIE) ? 0 : (unsigned int) dev->agp->base +
++		lpcmdmamanager->pphysical;
++	/*add shadow offset */
++
++	curragp =
++		getmmioregister(dev_priv->mmio->handle, INV_RB_AGPCMD_CURRADDR);
++	agpcurstat =
++		getmmioregister(dev_priv->mmio->handle, INV_RB_AGPCMD_STATUS);
++
++	if (agpcurstat & INV_AGPCMD_InPause) {
++		agpcurraddr =
++			getmmioregister(dev_priv->mmio->handle,
++					INV_RB_AGPCMD_CURRADDR);
++		pFree = (unsigned long *) (agpbuflinearbase + agpcurraddr -
++					   agpbufphysicalbase);
++		addcmdheader2_invi(pFree, INV_REG_CR_TRANS, INV_ParaType_Dummy);
++		if (dev_priv->chip_sub_index == CHIP_H6S2)
++			do {
++				addcmddata_invi(pFree, 0xCCCCCCC0);
++				addcmddata_invi(pFree, 0xDDD00000);
++			}
++			while ((u32)((unsigned int) pFree) & 0x7f)
++				;
++			/*for 8*128bit aligned */
++		else
++			do {
++				addcmddata_invi(pFree, 0xCCCCCCC0);
++				addcmddata_invi(pFree, 0xDDD00000);
++			}
++			while ((u32) ((unsigned int) pFree) & 0x1f)
++				;
++			/*for 256bit aligned */
++		dwpause =
++			(u32) (((unsigned int) pFree) - agpbuflinearbase +
++			       agpbufphysicalbase - 16);
++
++		dwreg64 = INV_SubA_HAGPBpL | INV_HWBasL(dwpause);
++		dwreg65 =
++			INV_SubA_HAGPBpID | INV_HWBasH(dwpause) |
++			INV_HAGPBpID_STOP;
++
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_TRANS,
++				INV_ParaType_PreCR);
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++				dwreg64);
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++				dwreg65);
++
++		while (getmmioregister(dev_priv->mmio->handle,
++			INV_RB_ENG_STATUS) & INV_ENG_BUSY_ALL)
++			;
++	}
++	dwstart =
++		(u32) ((unsigned int) lpcmdmamanager->pBeg - agpbuflinearbase +
++		       agpbufphysicalbase);
++	dwend = (u32) ((unsigned int) lpcmdmamanager->pEnd - agpbuflinearbase +
++		       agpbufphysicalbase);
++
++	lpcmdmamanager->pFree = lpcmdmamanager->pBeg;
++	if (dev_priv->chip_sub_index == CHIP_H6S2) {
++		addcmdheader2_invi(lpcmdmamanager->pFree, INV_REG_CR_TRANS,
++				   INV_ParaType_Dummy);
++		do {
++			addcmddata_invi(lpcmdmamanager->pFree, 0xCCCCCCC0);
++			addcmddata_invi(lpcmdmamanager->pFree, 0xDDD00000);
++		}
++		while ((u32)((unsigned long *) lpcmdmamanager->pFree) & 0x7f)
++			;
++	}
++	dwjump = 0xFFFFFFF0;
++	dwpause =
++		(u32)(((unsigned int) lpcmdmamanager->pFree) -
++		16 - agpbuflinearbase + agpbufphysicalbase);
++
++	DRM_DEBUG("dwstart = %08x, dwend = %08x, dwpause = %08x\n", dwstart,
++		  dwend, dwpause);
++
++	dwreg60 = INV_SubA_HAGPBstL | INV_HWBasL(dwstart);
++	dwreg61 = INV_SubA_HAGPBstH | INV_HWBasH(dwstart);
++	dwreg62 = INV_SubA_HAGPBendL | INV_HWBasL(dwend);
++	dwreg63 = INV_SubA_HAGPBendH | INV_HWBasH(dwend);
++	dwreg64 = INV_SubA_HAGPBpL | INV_HWBasL(dwpause);
++	dwreg65 = INV_SubA_HAGPBpID | INV_HWBasH(dwpause) | 
++INV_HAGPBpID_PAUSE;
++
++	if (dev_priv->chip_sub_index == CHIP_H6S2)
++		dwreg60 |= 0x01;
++
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_TRANS,
++			INV_ParaType_PreCR);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg60);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg61);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg62);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg63);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg64);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg65);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++			INV_SubA_HAGPBjumpL | INV_HWBasL(dwjump));
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++			INV_SubA_HAGPBjumpH | INV_HWBasH(dwjump));
++
++	/* Trigger AGP cycle */
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++			INV_SubA_HFthRCM | INV_HFthRCM_10 | INV_HAGPBTrig);
++
++	/*for debug */
++	curragp =
++		getmmioregister(dev_priv->mmio->handle, INV_RB_AGPCMD_CURRADDR);
++
++	lpcmdmamanager->pinusebysw = lpcmdmamanager->pFree;
++}
++
++/* Do hw intialization and determine whether to use dma or mmio to talk
++with hw */
++int
++via_chrome9_hw_init(struct drm_device *dev,
++	struct drm_via_chrome9_init *init)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	unsigned retval = 0;
++	unsigned int *pgarttable, *addrlinear = NULL;
++	int pages;
++	struct drm_clb_event_tag_info *event_tag_info;
++	struct drm_via_chrome9_dma_manager *lpcmdmamanager = NULL;
++
++	if (init->chip_agp == CHIP_PCIE) {
++		dev_priv->pagetable_map.pagetable_offset =
++			init->garttable_offset;
++		dev_priv->pagetable_map.pagetable_size = init->garttable_size;
++		dev_priv->agp_size = init->agp_tex_size;
++		/* prepare for PCIE texture buffer */
++	} else {
++		dev_priv->pagetable_map.pagetable_offset = 0;
++		dev_priv->pagetable_map.pagetable_size = 0;
++	}
++
++	dev_priv->dma_manager =
++		kmalloc(sizeof(struct drm_via_chrome9_dma_manager), GFP_KERNEL);
++	if (!dev_priv->dma_manager) {
++		DRM_ERROR("could not allocate system for dma_manager!\n");
++		return -ENOMEM;
++	}
++
++	lpcmdmamanager =
++		(struct drm_via_chrome9_dma_manager *) dev_priv->dma_manager;
++	((struct drm_via_chrome9_dma_manager *)
++		dev_priv->dma_manager)->dmasize = init->DMA_size;
++	((struct drm_via_chrome9_dma_manager *)
++		dev_priv->dma_manager)->pphysical = init->DMA_phys_address;
++
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_TRANS, 0x00110000);
++	if (dev_priv->chip_sub_index == CHIP_H6S2) {
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++				0x06000000);
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++				0x07100000);
++	} else {
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++				0x02000000);
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++				0x03100000);
++	}
++
++	/* Specify fence command read back ID */
++	/* Default the read back ID is CR */
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_TRANS,
++			INV_ParaType_PreCR);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++			INV_SubA_HSetRBGID | INV_HSetRBGID_CR);
++
++	DRM_DEBUG("begin to init\n");
++
++	if (dev_priv->chip_sub_index == CHIP_H6S2) {
++		dev_priv->pcie_vmalloc_nocache = 0;
++		if (dev_priv->pagetable_map.pagetable_size)
++			retval = init_pcie_gart(dev_priv);
++
++		if (retval && dev_priv->drm_agp_type != DRM_AGP_DISABLED) {
++			addrlinear =
++				alloc_bind_pcie_memory(dev_priv,
++						       lpcmdmamanager->dmasize +
++						       dev_priv->agp_size, 0);
++			if (addrlinear) {
++				dev_priv->pcie_vmalloc_nocache = (unsigned long)
++					addrlinear;
++			} else {
++				dev_priv->bci_buffer =
++					vmalloc(MAX_BCI_BUFFER_SIZE);
++				dev_priv->drm_agp_type = DRM_AGP_DISABLED;
++			}
++		} else {
++			dev_priv->bci_buffer = vmalloc(MAX_BCI_BUFFER_SIZE);
++			dev_priv->drm_agp_type = DRM_AGP_DISABLED;
++		}
++	} else {
++		if (dev_priv->drm_agp_type != DRM_AGP_DISABLED) {
++			pgarttable = NULL;
++			addrlinear = (unsigned int *)
++				ioremap(dev->agp->base +
++					lpcmdmamanager->pphysical,
++					lpcmdmamanager->dmasize);
++			dev_priv->bci_buffer = NULL;
++		} else {
++			dev_priv->bci_buffer = vmalloc(MAX_BCI_BUFFER_SIZE);
++			/* BCI path always use this block of memory8 */
++		}
++	}
++
++	/*till here we have known whether support dma or not */
++	pages = dev->sg->pages;
++	event_tag_info = vmalloc(sizeof(struct drm_clb_event_tag_info));
++	memset(event_tag_info, 0, sizeof(struct drm_clb_event_tag_info));
++	if (!event_tag_info)
++		return DRM_ERROR(" event_tag_info allocate error!");
++
++	/* aligned to 16k alignment */
++	event_tag_info->linear_address =
++		(int
++		 *) (((unsigned int) dev_priv->shadow_map.shadow_handle +
++		      0x3fff) & 0xffffc000);
++	event_tag_info->event_tag_linear_address =
++		event_tag_info->linear_address + 3;
++	dev_priv->event_tag_info = (void *) event_tag_info;
++	dev_priv->max_apertures = NUMBER_OF_APERTURES_CLB;
++
++	/* Initialize DMA data structure */
++	lpcmdmamanager->dmasize /= sizeof(unsigned int);
++	lpcmdmamanager->pBeg = addrlinear;
++	lpcmdmamanager->pFree = lpcmdmamanager->pBeg;
++	lpcmdmamanager->pinusebysw = lpcmdmamanager->pBeg;
++	lpcmdmamanager->pinusebyhw = lpcmdmamanager->pBeg;
++	lpcmdmamanager->lastissuedeventtag = (unsigned int) (unsigned long *)
++		lpcmdmamanager->pBeg;
++	lpcmdmamanager->ppinusebyhw =
++		(unsigned int **) ((char *) (dev_priv->mmio->handle) +
++				   INV_RB_AGPCMD_CURRADDR);
++	lpcmdmamanager->bdmaagp = dev_priv->chip_agp;
++	lpcmdmamanager->addr_linear = (unsigned int *) addrlinear;
++
++	if (dev_priv->drm_agp_type == DRM_AGP_DOUBLE_BUFFER) {
++		lpcmdmamanager->maxkickoffsize = lpcmdmamanager->dmasize >> 1;
++		lpcmdmamanager->pEnd =
++			lpcmdmamanager->addr_linear +
++			(lpcmdmamanager->dmasize >> 1) - 1;
++		set_agp_double_cmd_inv(dev);
++		if (dev_priv->chip_sub_index == CHIP_H6S2) {
++			DRM_INFO("DMA buffer initialized finished.\n");
++			DRM_INFO("Use PCIE Double Buffer type!\n");
++			DRM_INFO("Total PCIE DMA buffer size = %8d bytes.\n",
++				 lpcmdmamanager->dmasize << 2);
++		} else {
++			DRM_INFO("DMA buffer initialized finished.\n");
++			DRM_INFO("Use AGP Double Buffer type!\n");
++			DRM_INFO("Total AGP DMA buffer size = %8d bytes.\n",
++				 lpcmdmamanager->dmasize << 2);
++		}
++	} else if (dev_priv->drm_agp_type == DRM_AGP_RING_BUFFER) {
++		lpcmdmamanager->maxkickoffsize = lpcmdmamanager->dmasize;
++		lpcmdmamanager->pEnd =
++			lpcmdmamanager->addr_linear + lpcmdmamanager->dmasize;
++		set_agp_ring_cmd_inv(dev);
++		if (dev_priv->chip_sub_index == CHIP_H6S2) {
++			DRM_INFO("DMA buffer initialized finished.\n");
++			DRM_INFO("Use PCIE Ring Buffer type!\n");
++			DRM_INFO("Total PCIE DMA buffer size = %8d bytes.\n",
++				 lpcmdmamanager->dmasize << 2);
++		} else {
++			DRM_INFO("DMA buffer initialized finished.\n");
++			DRM_INFO("Use AGP Ring Buffer type!\n");
++			DRM_INFO("Total AGP DMA buffer size = %8d bytes.\n",
++				 lpcmdmamanager->dmasize << 2);
++		}
++	} else if (dev_priv->drm_agp_type == DRM_AGP_DISABLED) {
++		lpcmdmamanager->maxkickoffsize = 0x0;
++		if (dev_priv->chip_sub_index == CHIP_H6S2)
++			DRM_INFO("PCIE init failed! Use PCI\n");
++		else
++			DRM_INFO("AGP init failed! Use PCI\n");
++	}
++	return 0;
++}
++
++static void
++kickoff_bci_inv(struct drm_device *dev,
++		struct drm_via_chrome9_flush *dma_info)
++{
++	u32 hdtype, dwqwcount, i, dwcount, add1, addr2, swpointer,
++		swpointerend;
++	unsigned long *pcmddata;
++	int result;
++
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	/*pcmddata = __s3gke_vmalloc(dma_info->cmd_size<<2); */
++	pcmddata = dev_priv->bci_buffer;
++
++	if (!pcmddata)
++		return;
++	result = copy_from_user((int *) pcmddata, dma_info->usermode_dma_buf,
++				dma_info->cmd_size << 2);
++	if (result) {
++		DRM_ERROR("In function kickoff_bci_inv,\
++		copy_from_user is fault. \n");
++		return ;
++	}
++	result = via_chrome9_verify_command_stream(
++		(const uint32_t *)pcmddata,	dma_info->cmd_size << 2,
++		dev, dev_priv->chip_sub_index == CHIP_H6S2 ? 0 : 1);
++	if (result) {
++		DRM_ERROR("The command has the security issue \n");
++		return ;
++	}
++	swpointer = 0;
++	swpointerend = (u32) dma_info->cmd_size;
++	while (swpointer < swpointerend) {
++		hdtype = pcmddata[swpointer] & INV_AGPHeader_MASK;
++		switch (hdtype) {
++		case INV_AGPHeader0:
++		case INV_AGPHeader5:
++			dwqwcount = pcmddata[swpointer + 1];
++			swpointer += 4;
++
++			for (i = 0; i < dwqwcount; i++) {
++				setmmioregister(dev_priv->mmio->handle,
++						pcmddata[swpointer],
++						pcmddata[swpointer + 1]);
++				swpointer += 2;
++			}
++			break;
++
++		case INV_AGPHeader1:
++			dwcount = pcmddata[swpointer + 1];
++			add1 = 0x0;
++			swpointer += 4;	/* skip 128-bit. */
++
++			for (; dwcount > 0; dwcount--, swpointer++,
++				add1 += 4) {
++				setmmioregister(dev_priv->hostBlt->handle,
++						add1, pcmddata[swpointer]);
++			}
++			break;
++
++		case INV_AGPHeader4:
++			dwcount = pcmddata[swpointer + 1];
++			add1 = pcmddata[swpointer] & 0x0000FFFF;
++			swpointer += 4;	/* skip 128-bit. */
++
++			for (; dwcount > 0; dwcount--, swpointer++)
++				setmmioregister(dev_priv->mmio->handle, add1,
++						pcmddata[swpointer]);
++			break;
++
++		case INV_AGPHeader2:
++			add1 = pcmddata[swpointer + 1] & 0xFFFF;
++			addr2 = pcmddata[swpointer] & 0xFFFF;
++
++			/* Write first data (either ParaType or whatever) to
++			add1 */
++			setmmioregister(dev_priv->mmio->handle, add1,
++					pcmddata[swpointer + 2]);
++			swpointer += 4;
++
++			/* The following data are all written to addr2,
++			   until another header is met */
++			while (!is_agp_header(pcmddata[swpointer])
++			       && (swpointer < swpointerend)) {
++				setmmioregister(dev_priv->mmio->handle, addr2,
++						pcmddata[swpointer]);
++				swpointer++;
++			}
++			break;
++
++		case INV_AGPHeader3:
++			add1 = pcmddata[swpointer] & 0xFFFF;
++			addr2 = add1 + 4;
++			dwcount = pcmddata[swpointer + 1];
++
++			/* Write first data (either ParaType or whatever) to
++			add1 */
++			setmmioregister(dev_priv->mmio->handle, add1,
++					pcmddata[swpointer + 2]);
++			swpointer += 4;
++
++			for (i = 0; i < dwcount; i++) {
++				setmmioregister(dev_priv->mmio->handle, addr2,
++						pcmddata[swpointer]);
++				swpointer++;
++			}
++			break;
++
++		case INV_AGPHeader6:
++			break;
++
++		case INV_AGPHeader7:
++			break;
++
++		default:
++			swpointer += 4;	/* Advance to next header */
++		}
++
++		swpointer = (swpointer + 3) & ~3;
++	}
++}
++
++void
++kickoff_dma_db_inv(struct drm_device *dev)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	struct drm_via_chrome9_dma_manager *lpcmdmamanager =
++		dev_priv->dma_manager;
++
++	u32 BufferSize = (u32) (lpcmdmamanager->pFree - lpcmdmamanager->pBeg);
++
++	unsigned int agpbuflinearbase =
++		(unsigned int) lpcmdmamanager->addr_linear;
++	unsigned int agpbufphysicalbase =
++		(unsigned int) dev->agp->base + lpcmdmamanager->pphysical;
++	/*add shadow offset */
++
++	unsigned int dwstart, dwend, dwpause;
++	unsigned int dwreg60, dwreg61, dwreg62, dwreg63, dwreg64, dwreg65;
++	unsigned int CR_Status;
++
++	if (BufferSize == 0)
++		return;
++
++	/* 256-bit alignment of AGP pause address */
++	if ((u32) ((unsigned long *) lpcmdmamanager->pFree) & 0x1f) {
++		addcmdheader2_invi(lpcmdmamanager->pFree, INV_REG_CR_TRANS,
++				   INV_ParaType_Dummy);
++		do {
++			addcmddata_invi(lpcmdmamanager->pFree, 0xCCCCCCC0);
++			addcmddata_invi(lpcmdmamanager->pFree, 0xDDD00000);
++		}
++		while (((unsigned int) lpcmdmamanager->pFree) & 0x1f)
++			;
++	}
++
++	dwstart =
++		(u32) (unsigned long *)lpcmdmamanager->pBeg -
++		agpbuflinearbase + agpbufphysicalbase;
++	dwend = (u32) (unsigned long *)lpcmdmamanager->pEnd -
++		agpbuflinearbase + agpbufphysicalbase;
++	dwpause =
++		(u32)(unsigned long *)lpcmdmamanager->pFree -
++		agpbuflinearbase + agpbufphysicalbase - 4;
++
++	dwreg60 = INV_SubA_HAGPBstL | INV_HWBasL(dwstart);
++	dwreg61 = INV_SubA_HAGPBstH | INV_HWBasH(dwstart);
++	dwreg62 = INV_SubA_HAGPBendL | INV_HWBasL(dwend);
++	dwreg63 = INV_SubA_HAGPBendH | INV_HWBasH(dwend);
++	dwreg64 = INV_SubA_HAGPBpL | INV_HWBasL(dwpause);
++	dwreg65 = INV_SubA_HAGPBpID | INV_HWBasH(dwpause) | INV_HAGPBpID_STOP;
++
++	/* wait CR idle */
++	CR_Status = getmmioregister(dev_priv->mmio->handle, INV_RB_ENG_STATUS);
++	while (CR_Status & INV_ENG_BUSY_CR)
++		CR_Status =
++			getmmioregister(dev_priv->mmio->handle,
++					INV_RB_ENG_STATUS);
++
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_TRANS,
++			INV_ParaType_PreCR);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg60);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg61);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg62);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg63);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg64);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg65);
++
++	/* Trigger AGP cycle */
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++			INV_SubA_HFthRCM | INV_HFthRCM_10 | INV_HAGPBTrig);
++
++	if (lpcmdmamanager->pBeg == lpcmdmamanager->addr_linear) {
++		/* The second AGP command buffer */
++		lpcmdmamanager->pBeg =
++			lpcmdmamanager->addr_linear +
++			(lpcmdmamanager->dmasize >> 2);
++		lpcmdmamanager->pEnd =
++			lpcmdmamanager->addr_linear + lpcmdmamanager->dmasize;
++		lpcmdmamanager->pFree = lpcmdmamanager->pBeg;
++	} else {
++		/* The first AGP command buffer */
++		lpcmdmamanager->pBeg = lpcmdmamanager->addr_linear;
++		lpcmdmamanager->pEnd =
++			lpcmdmamanager->addr_linear +
++			(lpcmdmamanager->dmasize / 2) - 1;
++		lpcmdmamanager->pFree = lpcmdmamanager->pBeg;
++	}
++	CR_Status = getmmioregister(dev_priv->mmio->handle, 
++INV_RB_ENG_STATUS); }
++
++
++void
++kickoff_dma_ring_inv(struct drm_device *dev)
++{
++	unsigned int dwpause, dwreg64, dwreg65;
++
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	struct drm_via_chrome9_dma_manager *lpcmdmamanager =
++		dev_priv->dma_manager;
++
++	unsigned int agpbuflinearbase =
++		(unsigned int) lpcmdmamanager->addr_linear;
++	unsigned int agpbufphysicalbase =
++		(dev_priv->chip_agp ==
++		 CHIP_PCIE) ? 0 : (unsigned int) dev->agp->base +
++		lpcmdmamanager->pphysical;
++	/*add shadow offset */
++
++	/* 256-bit alignment of AGP pause address */
++	if (dev_priv->chip_sub_index == CHIP_H6S2) {
++		if ((u32)
++		    ((unsigned long *) lpcmdmamanager->pFree) & 0x7f) {
++			addcmdheader2_invi(lpcmdmamanager->pFree,
++					   INV_REG_CR_TRANS,
++					   INV_ParaType_Dummy);
++			do {
++				addcmddata_invi(lpcmdmamanager->pFree,
++						0xCCCCCCC0);
++				addcmddata_invi(lpcmdmamanager->pFree,
++						0xDDD00000);
++			}
++			while ((u32)((unsigned long *) lpcmdmamanager->pFree) &
++				0x7f)
++				;
++		}
++	} else {
++		if ((u32)
++		    ((unsigned long *) lpcmdmamanager->pFree) & 0x1f) {
++			addcmdheader2_invi(lpcmdmamanager->pFree,
++					   INV_REG_CR_TRANS,
++					   INV_ParaType_Dummy);
++			do {
++				addcmddata_invi(lpcmdmamanager->pFree,
++						0xCCCCCCC0);
++				addcmddata_invi(lpcmdmamanager->pFree,
++						0xDDD00000);
++			}
++			while ((u32)((unsigned long *) lpcmdmamanager->pFree) &
++				0x1f)
++				;
++		}
++	}
++
++
++	dwpause = (u32) ((unsigned long *) lpcmdmamanager->pFree)
++		- agpbuflinearbase + agpbufphysicalbase - 16;
++
++	dwreg64 = INV_SubA_HAGPBpL | INV_HWBasL(dwpause);
++	dwreg65 = INV_SubA_HAGPBpID | INV_HWBasH(dwpause) | 
++INV_HAGPBpID_PAUSE;
++
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_TRANS,
++			INV_ParaType_PreCR);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg64);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg65);
++
++	lpcmdmamanager->pinusebysw = lpcmdmamanager->pFree;
++}
++
++static int
++waitchipidle_inv(struct drm_via_chrome9_private *dev_priv)
++{
++	unsigned int count = 50000;
++	unsigned int eng_status;
++	unsigned int engine_busy;
++
++	do {
++		eng_status =
++			getmmioregister(dev_priv->mmio->handle,
++					INV_RB_ENG_STATUS);
++		engine_busy = eng_status & INV_ENG_BUSY_ALL;
++		count--;
++	}
++	while (engine_busy && count)
++		;
++	if (count && engine_busy == 0)
++		return 0;
++	return -1;
++}
++
++void
++get_space_db_inv(struct drm_device *dev,
++	struct cmd_get_space *lpcmgetspacedata)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	struct drm_via_chrome9_dma_manager *lpcmdmamanager =
++		dev_priv->dma_manager;
++
++	unsigned int dwRequestSize = lpcmgetspacedata->dwRequestSize;
++	if (dwRequestSize > lpcmdmamanager->maxkickoffsize) {
++		DRM_INFO("too big DMA buffer request!!!\n");
++		via_chrome9ke_assert(0);
++		*lpcmgetspacedata->pcmddata = (unsigned int) NULL;
++		return;
++	}
++
++	if ((lpcmdmamanager->pFree + dwRequestSize) >
++	    (lpcmdmamanager->pEnd - INV_CMDBUF_THRESHOLD * 2))
++		kickoff_dma_db_inv(dev);
++
++	*lpcmgetspacedata->pcmddata = (unsigned int) lpcmdmamanager->pFree; }
++
++void
++rewind_ring_agp_inv(struct drm_device *dev)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	struct drm_via_chrome9_dma_manager *lpcmdmamanager =
++		dev_priv->dma_manager;
++
++	unsigned int agpbuflinearbase =
++		(unsigned int) lpcmdmamanager->addr_linear;
++	unsigned int agpbufphysicalbase =
++		(dev_priv->chip_agp ==
++		 CHIP_PCIE) ? 0 : (unsigned int) dev->agp->base +
++		lpcmdmamanager->pphysical;
++	/*add shadow offset */
++
++	unsigned int dwpause, dwjump;
++	unsigned int dwReg66, dwReg67;
++	unsigned int dwreg64, dwreg65;
++
++	addcmdheader2_invi(lpcmdmamanager->pFree, INV_REG_CR_TRANS,
++			   INV_ParaType_Dummy);
++	addcmddata_invi(lpcmdmamanager->pFree, 0xCCCCCCC7);
++	if (dev_priv->chip_sub_index == CHIP_H6S2)
++		while ((unsigned int) lpcmdmamanager->pFree & 0x7F)
++			addcmddata_invi(lpcmdmamanager->pFree, 0xCCCCCCC7);
++	else
++		while ((unsigned int) lpcmdmamanager->pFree & 0x1F)
++			addcmddata_invi(lpcmdmamanager->pFree, 0xCCCCCCC7);
++	dwjump = ((u32) ((unsigned long *) lpcmdmamanager->pFree))
++		- agpbuflinearbase + agpbufphysicalbase - 16;
++
++	lpcmdmamanager->pFree = lpcmdmamanager->pBeg;
++
++	dwpause = ((u32) ((unsigned long *) lpcmdmamanager->pFree))
++		- agpbuflinearbase + agpbufphysicalbase - 16;
++
++	dwreg64 = INV_SubA_HAGPBpL | INV_HWBasL(dwpause);
++	dwreg65 = INV_SubA_HAGPBpID | INV_HWBasH(dwpause) | 
++INV_HAGPBpID_PAUSE;
++
++	dwReg66 = INV_SubA_HAGPBjumpL | INV_HWBasL(dwjump);
++	dwReg67 = INV_SubA_HAGPBjumpH | INV_HWBasH(dwjump);
++
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_TRANS,
++			INV_ParaType_PreCR);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwReg66);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwReg67);
++
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg64);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN, dwreg65);
++	lpcmdmamanager->pinusebysw = lpcmdmamanager->pFree;
++}
++
++
++void
++get_space_ring_inv(struct drm_device *dev,
++		   struct cmd_get_space *lpcmgetspacedata)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	struct drm_via_chrome9_dma_manager *lpcmdmamanager =
++		dev_priv->dma_manager;
++	unsigned int dwUnFlushed;
++	unsigned int dwRequestSize = lpcmgetspacedata->dwRequestSize;
++
++	unsigned int agpbuflinearbase =
++		(unsigned int) lpcmdmamanager->addr_linear;
++	unsigned int agpbufphysicalbase =
++		(dev_priv->chip_agp ==
++		 CHIP_PCIE) ? 0 : (unsigned int) dev->agp->base +
++		lpcmdmamanager->pphysical;
++	/*add shadow offset */
++	u32 BufStart, BufEnd, CurSW, CurHW, NextSW, BoundaryCheck;
++
++	dwUnFlushed =
++		(unsigned int) (lpcmdmamanager->pFree - lpcmdmamanager->pBeg);
++	/*default bEnableModuleSwitch is on for metro,is off for rest */
++	/*cmHW_Module_Switch is context-wide variable which is enough for 2d/3d
++	   switch in a context. */
++	/*But we must keep the dma buffer being wrapped head and tail by 3d cmds
++	   when it is kicked off to kernel mode. */
++	/*Get DMA Space (If requested, or no BCI space and BCI not forced. */
++
++	if (dwRequestSize > lpcmdmamanager->maxkickoffsize) {
++		DRM_INFO("too big DMA buffer request!!!\n");
++		via_chrome9ke_assert(0);
++		*lpcmgetspacedata->pcmddata = 0;
++		return;
++	}
++
++	if (dwUnFlushed + dwRequestSize > lpcmdmamanager->maxkickoffsize)
++		kickoff_dma_ring_inv(dev);
++
++	BufStart =
++		(u32)((unsigned int) lpcmdmamanager->pBeg) - agpbuflinearbase +
++		agpbufphysicalbase;
++	BufEnd = (u32)((unsigned int) lpcmdmamanager->pEnd) - agpbuflinearbase +
++		agpbufphysicalbase;
++	dwRequestSize = lpcmgetspacedata->dwRequestSize << 2;
++	NextSW = (u32) ((unsigned int) lpcmdmamanager->pFree) + dwRequestSize +
++		INV_CMDBUF_THRESHOLD * 8 - agpbuflinearbase +
++		agpbufphysicalbase;
++
++	CurSW = (u32)((unsigned int) lpcmdmamanager->pFree) - agpbuflinearbase +
++		agpbufphysicalbase;
++	CurHW = getmmioregister(dev_priv->mmio->handle, 
++INV_RB_AGPCMD_CURRADDR);
++
++	if (NextSW >= BufEnd) {
++		kickoff_dma_ring_inv(dev);
++		CurSW = (u32) ((unsigned int) lpcmdmamanager->pFree) -
++			agpbuflinearbase + agpbufphysicalbase;
++		/* make sure the last rewind is completed */
++		CurHW = getmmioregister(dev_priv->mmio->handle,
++					INV_RB_AGPCMD_CURRADDR);
++		while (CurHW > CurSW)
++			CurHW = getmmioregister(dev_priv->mmio->handle,
++						INV_RB_AGPCMD_CURRADDR);
++		/* Sometime the value read from HW is unreliable,
++		so need double confirm. */
++		CurHW = getmmioregister(dev_priv->mmio->handle,
++					INV_RB_AGPCMD_CURRADDR);
++		while (CurHW > CurSW)
++			CurHW = getmmioregister(dev_priv->mmio->handle,
++						INV_RB_AGPCMD_CURRADDR);
++		BoundaryCheck =
++			BufStart + dwRequestSize + INV_QW_PAUSE_ALIGN * 16;
++		if (BoundaryCheck >= BufEnd)
++			/* If an empty command buffer can't hold
++			the request data. */
++			via_chrome9ke_assert(0);
++		else {
++			/* We need to guarntee the new commands have no chance
++			to override the unexected commands or wait until there
++			is no unexecuted commands in agp buffer */
++			if (CurSW <= BoundaryCheck) {
++				CurHW = getmmioregister(dev_priv->mmio->handle,
++							INV_RB_AGPCMD_CURRADDR);
++				while (CurHW < CurSW)
++					CurHW = getmmioregister(
++					dev_priv->mmio->handle,
++					INV_RB_AGPCMD_CURRADDR);
++				/*Sometime the value read from HW is unreliable,
++				   so need double confirm. */
++				CurHW = getmmioregister(dev_priv->mmio->handle,
++							INV_RB_AGPCMD_CURRADDR);
++				while (CurHW < CurSW) {
++					CurHW = getmmioregister(
++						dev_priv->mmio->handle,
++						INV_RB_AGPCMD_CURRADDR);
++				}
++				rewind_ring_agp_inv(dev);
++				CurSW = (u32) ((unsigned long *)
++					       lpcmdmamanager->pFree) -
++					agpbuflinearbase + agpbufphysicalbase;
++				CurHW = getmmioregister(dev_priv->mmio->handle,
++							INV_RB_AGPCMD_CURRADDR);
++				/* Waiting until hw pointer jump to start
++				and hw pointer will */
++				/* equal to sw pointer */
++				while (CurHW != CurSW) {
++					CurHW = getmmioregister(
++						dev_priv->mmio->handle,
++						INV_RB_AGPCMD_CURRADDR);
++				}
++			} else {
++				CurHW = getmmioregister(dev_priv->mmio->handle,
++							INV_RB_AGPCMD_CURRADDR);
++
++				while (CurHW <= BoundaryCheck) {
++					CurHW = getmmioregister(
++						dev_priv->mmio->handle,
++						INV_RB_AGPCMD_CURRADDR);
++				}
++				CurHW = getmmioregister(dev_priv->mmio->handle,
++							INV_RB_AGPCMD_CURRADDR);
++				/* Sometime the value read from HW is
++				unreliable, so need double confirm. */
++				while (CurHW <= BoundaryCheck) {
++					CurHW = getmmioregister(
++						dev_priv->mmio->handle,
++						INV_RB_AGPCMD_CURRADDR);
++				}
++				rewind_ring_agp_inv(dev);
++			}
++		}
++	} else {
++		/* no need to rewind Ensure unexecuted agp commands will
++		not be override by new
++		agp commands */
++		CurSW = (u32) ((unsigned int) lpcmdmamanager->pFree) -
++			agpbuflinearbase + agpbufphysicalbase;
++		CurHW = getmmioregister(dev_priv->mmio->handle,
++					INV_RB_AGPCMD_CURRADDR);
++
++		while ((CurHW > CurSW) && (CurHW <= NextSW))
++			CurHW = getmmioregister(dev_priv->mmio->handle,
++						INV_RB_AGPCMD_CURRADDR);
++
++		/* Sometime the value read from HW is unreliable,
++		so need double confirm. */
++		CurHW = getmmioregister(dev_priv->mmio->handle,
++					INV_RB_AGPCMD_CURRADDR);
++		while ((CurHW > CurSW) && (CurHW <= NextSW))
++			CurHW = getmmioregister(dev_priv->mmio->handle,
++						INV_RB_AGPCMD_CURRADDR);
++	}
++	/*return the space handle */
++	*lpcmgetspacedata->pcmddata = (unsigned int) lpcmdmamanager->pFree; }
++
++void
++release_space_inv(struct drm_device *dev,
++		  struct cmd_release_space *lpcmReleaseSpaceData)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	struct drm_via_chrome9_dma_manager *lpcmdmamanager =
++		dev_priv->dma_manager;
++	unsigned int dwReleaseSize = lpcmReleaseSpaceData->dwReleaseSize;
++	int i = 0;
++
++	lpcmdmamanager->pFree += dwReleaseSize;
++
++	/* aligned address */
++	while (((unsigned int) lpcmdmamanager->pFree) & 0xF) {
++		/* not in 4 unsigned ints (16 Bytes) align address,
++		insert NULL Commands */
++		*lpcmdmamanager->pFree++ = NULL_COMMAND_INV[i & 0x3];
++		i++;
++	}
++
++	if ((dev_priv->chip_sub_index == CHIP_H5 ||
++		dev_priv->chip_sub_index == CHIP_H6S2) &&
++		(dev_priv->drm_agp_type == DRM_AGP_RING_BUFFER)) {
++		addcmdheader2_invi(lpcmdmamanager->pFree, INV_REG_CR_TRANS,
++				   INV_ParaType_Dummy);
++		for (i = 0; i < NULLCOMMANDNUMBER; i++)
++			addcmddata_invi(lpcmdmamanager->pFree, 0xCC000000);
++	}
++}
++
++int
++via_chrome9_ioctl_flush(struct drm_device *dev, void *data,
++	struct drm_file *file_priv)
++{
++	struct drm_via_chrome9_flush *dma_info = data;
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	int ret = 0;
++	int result = 0;
++	struct cmd_get_space getspace;
++	struct cmd_release_space releasespace;
++	unsigned long *pcmddata = NULL;
++
++	switch (dma_info->dma_cmd_type) {
++		/* Copy DMA buffer to BCI command buffer */
++	case flush_bci:
++	case flush_bci_and_wait:
++		if (dma_info->cmd_size <= 0)
++			return 0;
++		if (dma_info->cmd_size > MAX_BCI_BUFFER_SIZE) {
++			DRM_INFO("too big BCI space request!!!\n");
++			return 0;
++		}
++
++		kickoff_bci_inv(dev, dma_info);
++		waitchipidle_inv(dev_priv);
++		break;
++		/* Use DRM DMA buffer manager to kick off DMA directly */
++	case dma_kickoff:
++		break;
++
++		/* Copy user mode DMA buffer to kernel DMA buffer,
++		then kick off DMA */
++	case flush_dma_buffer:
++	case flush_dma_and_wait:
++		if (dma_info->cmd_size <= 0)
++			return 0;
++
++		getspace.dwRequestSize = dma_info->cmd_size;
++		if ((dev_priv->chip_sub_index == CHIP_H5 ||
++			dev_priv->chip_sub_index == CHIP_H6S2) &&
++			(dev_priv->drm_agp_type == DRM_AGP_RING_BUFFER))
++			getspace.dwRequestSize += (NULLCOMMANDNUMBER + 4);
++		/* Patch for VT3293 agp ring buffer stability */
++		getspace.pcmddata = (unsigned int *) &pcmddata;
++
++		if (dev_priv->drm_agp_type == DRM_AGP_DOUBLE_BUFFER)
++			get_space_db_inv(dev, &getspace);
++		else if (dev_priv->drm_agp_type == DRM_AGP_RING_BUFFER)
++			get_space_ring_inv(dev, &getspace);
++		if (pcmddata) {
++			/*copy data from userspace to kernel-dma-agp buffer */
++			result = copy_from_user((int *)
++						pcmddata,
++						dma_info->usermode_dma_buf,
++						dma_info->cmd_size << 2);
++			if (result) {
++				DRM_ERROR("In function via_chrome9_ioctl_flush,\
++				copy_from_user is fault. \n");
++				return -EINVAL;
++			}
++
++		result = via_chrome9_verify_command_stream(
++			(const uint32_t *)pcmddata, dma_info->cmd_size << 2,
++			dev, dev_priv->chip_sub_index == CHIP_H6S2 ? 0 : 1);
++		if (result) {
++			DRM_ERROR("The user command has security issue.\n");
++			return -EINVAL;
++		}
++
++			releasespace.dwReleaseSize = dma_info->cmd_size;
++			release_space_inv(dev, &releasespace);
++			if (dev_priv->drm_agp_type == DRM_AGP_DOUBLE_BUFFER)
++				kickoff_dma_db_inv(dev);
++			else if (dev_priv->drm_agp_type == DRM_AGP_RING_BUFFER)
++				kickoff_dma_ring_inv(dev);
++
++			if (dma_info->dma_cmd_type == flush_dma_and_wait)
++				waitchipidle_inv(dev_priv);
++		} else {
++			DRM_INFO("No enough DMA space");
++			ret = -ENOMEM;
++		}
++		break;
++
++	default:
++		DRM_INFO("Invalid DMA buffer type");
++		ret = -EINVAL;
++		break;
++	}
++	return ret;
++}
++
++int
++via_chrome9_ioctl_free(struct drm_device *dev, void *data,
++	struct drm_file *file_priv)
++{
++	return 0;
++}
++
++int
++via_chrome9_ioctl_wait_chip_idle(struct drm_device *dev, void *data,
++			 struct drm_file *file_priv)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++
++	waitchipidle_inv(dev_priv);
++	/* maybe_bug here, do we always return 0 */
++	return 0;
++}
++
++int
++via_chrome9_ioctl_flush_cache(struct drm_device *dev, void *data,
++		      struct drm_file *file_priv)
++{
++	return 0;
++}
+--- /dev/null
++++ b/drivers/gpu/drm/via_chrome9/via_chrome9_drm.c
+@@ -0,0 +1,943 @@
++/*
++ * Copyright 1998-2003 VIA Technologies, Inc. All Rights Reserved.
++ * Copyright 2001-2003 S3 Graphics, Inc. All Rights Reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person
++ * obtaining a copy of this software and associated documentation
++ * files (the "Software"), to deal in the Software without
++ * restriction, including without limitation the rights to use,
++ * copy, modify, merge, publish, distribute, sub license,
++ * and/or sell copies of the Software, and to permit persons to
++ * whom the Software is furnished to do so, subject to the
++ * following conditions:
++ *
++ * The above copyright notice and this permission notice
++ * (including the next paragraph) shall be included in all
++ * copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
++ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NON-INFRINGEMENT. IN NO EVENT SHALL VIA, S3 GRAPHICS, AND/OR
++ * ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
++ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ */
++#include "drmP.h"
++#include "via_chrome9_drm.h"
++#include "via_chrome9_drv.h"
++#include "via_chrome9_mm.h"
++#include "via_chrome9_dma.h"
++#include "via_chrome9_3d_reg.h"
++
++#define VIA_CHROME9DRM_VIDEO_STARTADDRESS_ALIGNMENT 10
++
++void *via_chrome9_dev_v4l;
++void *via_chrome9_filepriv_v4l;
++
++void __via_chrome9ke_udelay(unsigned long usecs)
++{
++	unsigned long start;
++	unsigned long stop;
++	unsigned long period;
++	unsigned long wait_period;
++	struct timespec tval;
++
++#ifdef NDELAY_LIMIT
++#define UDELAY_LIMIT    (NDELAY_LIMIT/1000) /* supposed to be 10 msec */
++#else
++#define UDELAY_LIMIT    (10000)             /* 10 msec */
++#endif
++
++	if (usecs > UDELAY_LIMIT) {
++		start = jiffies;
++		tval.tv_sec = usecs / 1000000;
++		tval.tv_nsec = (usecs - tval.tv_sec * 1000000) * 1000;
++		wait_period = timespec_to_jiffies(&tval);
++		do {
++			stop = jiffies;
++
++			if (stop < start)
++				period = ((unsigned long)-1 - start) + stop + 1;
++			else
++				period = stop - start;
++
++		} while (period < wait_period);
++	} else
++		udelay(usecs);  /* delay value might get checked once again */ }
++
++int via_chrome9_ioctl_process_exit(struct drm_device *dev, void *data,
++	struct drm_file *file_priv)
++{
++	return 0;
++}
++
++int via_chrome9_ioctl_restore_primary(struct drm_device *dev,
++	void *data, struct drm_file *file_priv)
++{
++	return 0;
++}
++
++void Initialize3DEngine(struct drm_via_chrome9_private *dev_priv) {
++	int i;
++	unsigned int StageOfTexture;
++
++	if (dev_priv->chip_sub_index == CHIP_H5 ||
++		dev_priv->chip_sub_index == CHIP_H5S1) {
++		setmmioregister(dev_priv->mmio->handle, 0x43C,
++			0x00010000);
++
++		for (i = 0; i <= 0x8A; i++) {
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(unsigned int) i << 24);
++		}
++
++		/* Initial Texture Stage Setting*/
++		for (StageOfTexture = 0; StageOfTexture < 0xf;
++		StageOfTexture++) {
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++				(0x00020000 | 0x00000000 |
++				(StageOfTexture & 0xf)<<24));
++		/*  *((unsigned int volatile*)(pMapIOPort+HC_REG_TRANS_SET)) =
++		(0x00020000 | HC_ParaSubType_Tex0 | (StageOfTexture &
++		0xf)<<24);*/
++			for (i = 0 ; i <= 0x30 ; i++) {
++				setmmioregister(dev_priv->mmio->handle,
++				0x440, (unsigned int) i << 24);
++			}
++		}
++
++		/* Initial Texture Sampler Setting*/
++		for (StageOfTexture = 0; StageOfTexture < 0xf;
++		StageOfTexture++) {
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++				(0x00020000 | 0x00020000 |
++				(StageOfTexture & 0xf)<<24));
++			/* *((unsigned int volatile*)(pMapIOPort+
++			HC_REG_TRANS_SET)) = (0x00020000 | 0x00020000 |
++			( StageOfTexture & 0xf)<<24);*/
++			for (i = 0 ; i <= 0x30 ; i++) {
++				setmmioregister(dev_priv->mmio->handle,
++				0x440, (unsigned int) i << 24);
++			}
++		}
++
++		setmmioregister(dev_priv->mmio->handle, 0x43C,
++			(0x00020000 | 0xfe000000));
++		/* *((unsigned int volatile*)(pMapIOPort+HC_REG_TRANS_SET)) =
++			(0x00020000 | HC_ParaSubType_TexGen);*/
++		for (i = 0 ; i <= 0x13 ; i++) {
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(unsigned int) i << 24);
++			/* *((unsigned int volatile*)(pMapIOPort+
++			HC_REG_Hpara0)) = ((unsigned int) i << 24);*/
++		}
++
++		/* Initial Gamma Table Setting*/
++		/* Initial Gamma Table Setting*/
++		/* 5 + 4 = 9 (12) dwords*/
++		/* sRGB texture is not directly support by H3 hardware.
++		We have to set the deGamma table for texture sampling.*/
++
++		/* degamma table*/
++		setmmioregister(dev_priv->mmio->handle, 0x43C,
++			(0x00030000 | 0x15000000));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(0x40000000 | (30 << 20) | (15 << 10) | (5)));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			((119 << 20) | (81 << 10) | (52)));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			((283 << 20) | (219 << 10) | (165)));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			((535 << 20) | (441 << 10) | (357)));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			((119 << 20) | (884 << 20) | (757 << 10) |
++			(640)));
++
++		/* gamma table*/
++		setmmioregister(dev_priv->mmio->handle, 0x43C,
++			(0x00030000 | 0x17000000));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(0x40000000 | (13 << 20) | (13 << 10) | (13)));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(0x40000000 | (26 << 20) | (26 << 10) | (26)));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(0x40000000 | (39 << 20) | (39 << 10) | (39)));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			((51 << 20) | (51 << 10) | (51)));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			((71 << 20) | (71 << 10) | (71)));
++		setmmioregister(dev_priv->mmio->handle,
++			0x440, (87 << 20) | (87 << 10) | (87));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(113 << 20) | (113 << 10) | (113));
++		setmmioregister(dev_priv->mmio->handle,
++			0x440, (135 << 20) | (135 << 10) | (135));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(170 << 20) | (170 << 10) | (170));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(199 << 20) | (199 << 10) | (199));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(246 << 20) | (246 << 10) | (246));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(284 << 20) | (284 << 10) | (284));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(317 << 20) | (317 << 10) | (317));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(347 << 20) | (347 << 10) | (347));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(373 << 20) | (373 << 10) | (373));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(398 << 20) | (398 << 10) | (398));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(442 << 20) | (442 << 10) | (442));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(481 << 20) | (481 << 10) | (481));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(517 << 20) | (517 << 10) | (517));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(550 << 20) | (550 << 10) | (550));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(609 << 20) | (609 << 10) | (609));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(662 << 20) | (662 << 10) | (662));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(709 << 20) | (709 << 10) | (709));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(753 << 20) | (753 << 10) | (753));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(794 << 20) | (794 << 10) | (794));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(832 << 20) | (832 << 10) | (832));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(868 << 20) | (868 << 10) | (868));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(902 << 20) | (902 << 10) | (902));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(934 << 20) | (934 << 10) | (934));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(966 << 20) | (966 << 10) | (966));
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			(996 << 20) | (996 << 10) | (996));
++
++
++		/*
++		For Interrupt Restore only All types of write through
++		regsiters should be write header data to hardware at
++		least before it can restore. H/W will automatically
++		record the header to write through state buffer for
++		resture usage.
++		By Jaren:
++		HParaType = 8'h03, HParaSubType = 8'h00
++						8'h11
++						8'h12
++						8'h14
++						8'h15
++						8'h17
++		HParaSubType 8'h12, 8'h15 is initialized.
++		[HWLimit]
++		1. All these write through registers can't be partial
++		update.
++		2. All these write through must be AGP command
++		16 entries : 4 128-bit data */
++
++		 /* Initialize INV_ParaSubType_TexPal  	 */
++		setmmioregister(dev_priv->mmio->handle, 0x43C,
++			(0x00030000 | 0x00000000));
++		for (i = 0; i < 16; i++) {
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x00000000);
++		}
++
++		/* Initialize INV_ParaSubType_4X4Cof */
++		/* 32 entries : 8 128-bit data */
++		setmmioregister(dev_priv->mmio->handle, 0x43C,
++			(0x00030000 | 0x11000000));
++		for (i = 0; i < 32; i++) {
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x00000000);
++		}
++
++		/* Initialize INV_ParaSubType_StipPal */
++		/* 5 entries : 2 128-bit data */
++		setmmioregister(dev_priv->mmio->handle, 0x43C,
++			(0x00030000 | 0x14000000));
++		for (i = 0; i < (5+3); i++) {
++			setmmioregister(dev_priv->mmio->handle,
++				0x440, 0x00000000);
++		}
++
++		/* primitive setting & vertex format*/
++		setmmioregister(dev_priv->mmio->handle, 0x43C,
++			(0x00040000 | 0x14000000));
++		for (i = 0; i < 52; i++) {
++			setmmioregister(dev_priv->mmio->handle,
++			0x440, ((unsigned int) i << 24));
++		}
++		setmmioregister(dev_priv->mmio->handle, 0x43C,
++			0x00fe0000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x4000840f);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x47000400);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x44000000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x46000000);
++
++		/* setting Misconfig*/
++		setmmioregister(dev_priv->mmio->handle, 0x43C,
++			0x00fe0000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x00001004);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x0800004b);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x0a000049);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x0b0000fb);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x0c000001);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x0d0000cb);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x0e000009);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x10000000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x110000ff);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x12000000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x130000db);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x14000000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x15000000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x16000000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x17000000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x18000000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x19000000);
++		setmmioregister(dev_priv->mmio->handle, 0x440,
++			0x20000000);
++		} else if (dev_priv->chip_sub_index == CHIP_H6S2) {
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++				0x00010000);
++			for (i = 0; i <= 0x9A; i++) {
++				setmmioregister(dev_priv->mmio->handle, 0x440,
++					(unsigned int) i << 24);
++			}
++
++			/* Initial Texture Stage Setting*/
++			for (StageOfTexture = 0; StageOfTexture <= 0xf;
++			StageOfTexture++) {
++				setmmioregister(dev_priv->mmio->handle, 0x43C,
++					(0x00020000 | 0x00000000 |
++					(StageOfTexture & 0xf)<<24));
++				for (i = 0 ; i <= 0x30 ; i++) {
++					setmmioregister(dev_priv->mmio->handle,
++					0x440, (unsigned int) i << 24);
++				}
++			}
++
++			/* Initial Texture Sampler Setting*/
++			for (StageOfTexture = 0; StageOfTexture <= 0xf;
++			StageOfTexture++) {
++				setmmioregister(dev_priv->mmio->handle, 0x43C,
++					(0x00020000 | 0x20000000 |
++					(StageOfTexture & 0xf)<<24));
++				for (i = 0 ; i <= 0x36 ; i++) {
++					setmmioregister(dev_priv->mmio->handle,
++						0x440, (unsigned int) i << 24);
++				}
++			}
++
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++				(0x00020000 | 0xfe000000));
++			for (i = 0 ; i <= 0x13 ; i++) {
++				setmmioregister(dev_priv->mmio->handle, 0x440,
++					(unsigned int) i << 24);
++				/* *((unsigned int volatile*)(pMapIOPort+
++				HC_REG_Hpara0)) =((unsigned int) i << 24);*/
++			}
++
++			/* Initial Gamma Table Setting*/
++			/* Initial Gamma Table Setting*/
++			/* 5 + 4 = 9 (12) dwords*/
++			/* sRGB texture is not directly support by
++			H3 hardware.*/
++			/* We have to set the deGamma table for texture
++			sampling.*/
++
++			/* degamma table*/
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++				(0x00030000 | 0x15000000));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(0x40000000 | (30 << 20) | (15 << 10) | (5)));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				((119 << 20) | (81 << 10) | (52)));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				((283 << 20) | (219 << 10) | (165)));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				((535 << 20) | (441 << 10) | (357)));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				((119 << 20) | (884 << 20) | (757 << 10)
++				| (640)));
++
++			/* gamma table*/
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++				(0x00030000 | 0x17000000));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(0x40000000 | (13 << 20) | (13 << 10) | (13)));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(0x40000000 | (26 << 20) | (26 << 10) | (26)));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(0x40000000 | (39 << 20) | (39 << 10) | (39)));
++			setmmioregister(dev_priv->mmio->handle,
++				0x440, ((51 << 20) | (51 << 10) | (51)));
++			setmmioregister(dev_priv->mmio->handle,
++				0x440, ((71 << 20) | (71 << 10) | (71)));
++			setmmioregister(dev_priv->mmio->handle,
++				0x440, (87 << 20) | (87 << 10) | (87));
++			setmmioregister(dev_priv->mmio->handle,
++				0x440, (113 << 20) | (113 << 10) | (113));
++			setmmioregister(dev_priv->mmio->handle,
++				0x440, (135 << 20) | (135 << 10) | (135));
++			setmmioregister(dev_priv->mmio->handle,
++				0x440, (170 << 20) | (170 << 10) | (170));
++			setmmioregister(dev_priv->mmio->handle,
++				0x440, (199 << 20) | (199 << 10) | (199));
++			setmmioregister(dev_priv->mmio->handle,
++				0x440, (246 << 20) | (246 << 10) | (246));
++			setmmioregister(dev_priv->mmio->handle,
++				0x440, (284 << 20) | (284 << 10) | (284));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(317 << 20) | (317 << 10) | (317));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(347 << 20) | (347 << 10) | (347));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(373 << 20) | (373 << 10) | (373));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(398 << 20) | (398 << 10) | (398));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(442 << 20) | (442 << 10) | (442));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(481 << 20) | (481 << 10) | (481));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(517 << 20) | (517 << 10) | (517));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(550 << 20) | (550 << 10) | (550));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(609 << 20) | (609 << 10) | (609));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(662 << 20) | (662 << 10) | (662));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(709 << 20) | (709 << 10) | (709));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(753 << 20) | (753 << 10) | (753));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(794 << 20) | (794 << 10) | (794));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(832 << 20) | (832 << 10) | (832));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(868 << 20) | (868 << 10) | (868));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(902 << 20) | (902 << 10) | (902));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(934 << 20) | (934 << 10) | (934));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(966 << 20) | (966 << 10) | (966));
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				(996 << 20) | (996 << 10) | (996));
++
++
++			/* For Interrupt Restore only
++			All types of write through regsiters should be write
++			header data to hardware at least before it can restore.
++			H/W will automatically record the header to write
++			through state buffer for restureusage.
++			By Jaren:
++			HParaType = 8'h03, HParaSubType = 8'h00
++			     8'h11
++			     8'h12
++			     8'h14
++			     8'h15
++			     8'h17
++			HParaSubType 8'h12, 8'h15 is initialized.
++			[HWLimit]
++			1. All these write through registers can't be partial
++			update.
++			2. All these write through must be AGP command
++			16 entries : 4 128-bit data */
++
++			/* Initialize INV_ParaSubType_TexPal  	 */
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++				(0x00030000 | 0x00000000));
++			for (i = 0; i < 16; i++) {
++				setmmioregister(dev_priv->mmio->handle, 0x440,
++					0x00000000);
++			}
++
++			/* Initialize INV_ParaSubType_4X4Cof */
++			/* 32 entries : 8 128-bit data */
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++				(0x00030000 | 0x11000000));
++			for (i = 0; i < 32; i++) {
++				setmmioregister(dev_priv->mmio->handle, 0x440,
++					0x00000000);
++			}
++
++			/* Initialize INV_ParaSubType_StipPal */
++			/* 5 entries : 2 128-bit data */
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++				(0x00030000 | 0x14000000));
++			for (i = 0; i < (5+3); i++) {
++				setmmioregister(dev_priv->mmio->handle, 0x440,
++					0x00000000);
++			}
++
++			/* primitive setting & vertex format*/
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++			(0x00040000));
++			for (i = 0; i <= 0x62; i++) {
++				setmmioregister(dev_priv->mmio->handle, 0x440,
++					((unsigned int) i << 24));
++			}
++
++			/*ParaType 0xFE - Configure and Misc Setting*/
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++			(0x00fe0000));
++			for (i = 0; i <= 0x47; i++) {
++				setmmioregister(dev_priv->mmio->handle, 0x440,
++					((unsigned int) i << 24));
++			}
++			/*ParaType 0x11 - Frame Buffer Auto-Swapping and
++			Command Regulator Misc*/
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++			(0x00110000));
++			for (i = 0; i <= 0x20; i++) {
++				setmmioregister(dev_priv->mmio->handle, 0x440,
++					((unsigned int) i << 24));
++			}
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++				0x00fe0000);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x4000840f);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x47000404);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x44000000);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x46000005);
++
++			/* setting Misconfig*/
++			setmmioregister(dev_priv->mmio->handle, 0x43C,
++			0x00fe0000);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x00001004);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x08000249);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x0a0002c9);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x0b0002fb);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x0c000000);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x0d0002cb);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x0e000009);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x10000049);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x110002ff);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x12000008);
++			setmmioregister(dev_priv->mmio->handle, 0x440,
++				0x130002db);
++		}
++}
++
++int  via_chrome9_drm_resume(struct pci_dev *pci)
++{
++	struct drm_device *dev = (struct drm_device *)pci_get_drvdata(pci);
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *)dev->dev_private;
++
++	if (!dev_priv->initialized)
++		return 0;
++
++	Initialize3DEngine(dev_priv);
++
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_TRANS, 0x00110000);
++	if (dev_priv->chip_sub_index == CHIP_H6S2) {
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++			0x06000000);
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++			0x07100000);
++	} else{
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++			0x02000000);
++		setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++			0x03100000);
++	}
++
++
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_TRANS,
++	INV_ParaType_PreCR);
++	setmmioregister(dev_priv->mmio->handle, INV_REG_CR_BEGIN,
++	INV_SubA_HSetRBGID | INV_HSetRBGID_CR);
++
++	if (dev_priv->chip_sub_index == CHIP_H6S2) {
++		unsigned int i;
++		/* Here restore SR66~SR6F SR79~SR7B */
++		for (i = 0; i < 10; i++) {
++			setmmioregisteru8(dev_priv->mmio->handle,
++				0x83c4, 0x66 + i);
++			setmmioregisteru8(dev_priv->mmio->handle,
++				0x83c5, dev_priv->gti_backup[i]);
++		}
++
++		for (i = 0; i < 3; i++) {
++			setmmioregisteru8(dev_priv->mmio->handle,
++				0x83c4, 0x79 + i);
++			setmmioregisteru8(dev_priv->mmio->handle,
++			 0x83c5, dev_priv->gti_backup[10 + i]);
++		}
++	}
++
++	via_chrome9_dma_init_inv(dev);
++
++	return 0;
++}
++
++int  via_chrome9_drm_suspend(struct pci_dev *pci,
++	pm_message_t state)
++{
++	int i;
++	struct drm_device *dev = (struct drm_device *)pci_get_drvdata(pci);
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *)dev->dev_private;
++
++	if (!dev_priv->initialized)
++		return 0;
++
++	if (dev_priv->chip_sub_index != CHIP_H6S2)
++		return 0;
++
++	/* Save registers from SR66~SR6F */
++	for (i = 0; i < 10; i++) {
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x66 + i);
++		dev_priv->gti_backup[i] =
++			getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++	}
++
++	/* Save registers from SR79~SR7B */
++	for (i = 0; i < 3; i++) {
++		setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x79 + i);
++		dev_priv->gti_backup[10 + i] =
++			getmmioregisteru8(dev_priv->mmio->handle, 0x83c5);
++	}
++
++	   return 0;
++}
++
++int via_chrome9_driver_load(struct drm_device *dev,
++	unsigned long chipset)
++{
++	struct drm_via_chrome9_private *dev_priv;
++	int ret = 0;
++	static int associate;
++
++	if (!associate) {
++		pci_set_drvdata(dev->pdev, dev);
++		dev->pdev->driver = &dev->driver->pci_driver;
++		associate = 1;
++	}
++
++	dev->counters += 4;
++	dev->types[6] = _DRM_STAT_IRQ;
++	dev->types[7] = _DRM_STAT_PRIMARY;
++	dev->types[8] = _DRM_STAT_SECONDARY;
++	dev->types[9] = _DRM_STAT_DMA;
++
++	dev_priv = drm_calloc(1, sizeof(struct drm_via_chrome9_private),
++		DRM_MEM_DRIVER);
++	if (dev_priv == NULL)
++		return -ENOMEM;
++
++	/* Clear */
++	memset(dev_priv, 0, sizeof(struct drm_via_chrome9_private));
++
++	dev_priv->dev = dev;
++	dev->dev_private = (void *)dev_priv;
++
++	ret = drm_sman_init(&dev_priv->sman, 2, 12, 8);
++	if (ret)
++		drm_free(dev_priv, sizeof(*dev_priv), DRM_MEM_DRIVER);
++	return ret;
++}
++
++int via_chrome9_driver_unload(struct drm_device *dev)
++{
++	struct drm_via_chrome9_private *dev_priv = dev->dev_private;
++
++	drm_sman_takedown(&dev_priv->sman);
++
++	drm_free(dev_priv, sizeof(struct drm_via_chrome9_private),
++		DRM_MEM_DRIVER);
++
++	dev->dev_private = 0;
++
++	return 0;
++}
++
++static int via_chrome9_initialize(struct drm_device *dev,
++	struct drm_via_chrome9_init *init)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *)dev->dev_private;
++
++	dev_priv->chip_agp = init->chip_agp;
++	dev_priv->chip_sub_index = init->chip_sub_index;
++
++	dev_priv->usec_timeout = init->usec_timeout;
++	dev_priv->front_offset = init->front_offset;
++	dev_priv->back_offset = init->back_offset >>
++		VIA_CHROME9DRM_VIDEO_STARTADDRESS_ALIGNMENT <<
++		VIA_CHROME9DRM_VIDEO_STARTADDRESS_ALIGNMENT;
++	dev_priv->available_fb_size = init->available_fb_size -
++		(init->available_fb_size %
++		(1 << VIA_CHROME9DRM_VIDEO_STARTADDRESS_ALIGNMENT));
++	dev_priv->depth_offset = init->depth_offset;
++
++	/* Find all the map added first, doing this is necessary to
++	intialize hw */
++	if (via_chrome9_map_init(dev, init)) {
++		DRM_ERROR("function via_chrome9_map_init ERROR !\n");
++		goto error;
++	}
++
++	/* Necessary information has been gathered for initialize hw */
++	if (via_chrome9_hw_init(dev, init)) {
++		DRM_ERROR("function via_chrome9_hw_init ERROR !\n");
++		goto error;
++	}
++
++	/* After hw intialization, we have kown whether to use agp
++	or to use pcie for texture */
++	if (via_chrome9_heap_management_init(dev, init)) {
++		DRM_ERROR("function \
++			via_chrome9_heap_management_init ERROR !\n");
++		goto error;
++	}
++
++	dev_priv->initialized = 1;
++
++	return 0;
++
++error:
++	/* all the error recover has been processed in relevant function,
++	so here just return error */
++	return -EINVAL;
++}
++
++static void via_chrome9_cleanup(struct drm_device *dev,
++	struct drm_via_chrome9_init *init)
++{
++	struct drm_via_chrome9_dma_manager *lpcmdmamanager = NULL;
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *)dev->dev_private;
++	DRM_DEBUG("function via_chrome9_cleanup run!\n");
++
++	if (!dev_priv)
++		return ;
++
++	lpcmdmamanager =
++		(struct drm_via_chrome9_dma_manager *)dev_priv->dma_manager;
++	if (dev_priv->pcie_vmalloc_nocache) {
++		vfree((void *)dev_priv->pcie_vmalloc_nocache);
++		dev_priv->pcie_vmalloc_nocache = 0;
++		if (lpcmdmamanager)
++			lpcmdmamanager->addr_linear = NULL;
++	}
++
++	if (dev_priv->pagetable_map.pagetable_handle) {
++		iounmap(dev_priv->pagetable_map.pagetable_handle);
++		dev_priv->pagetable_map.pagetable_handle = NULL;
++	}
++
++	if (lpcmdmamanager && lpcmdmamanager->addr_linear) {
++		iounmap(lpcmdmamanager->addr_linear);
++		lpcmdmamanager->addr_linear = NULL;
++	}
++
++	kfree(lpcmdmamanager);
++	dev_priv->dma_manager = NULL;
++
++	if (dev_priv->event_tag_info) {
++		vfree(dev_priv->event_tag_info);
++		dev_priv->event_tag_info = NULL;
++	}
++
++	if (dev_priv->bci_buffer) {
++		vfree(dev_priv->bci_buffer);
++		dev_priv->bci_buffer = NULL;
++	}
++
++	via_chrome9_memory_destroy_heap(dev, dev_priv);
++
++	/* After cleanup, it should to set the value to null */
++	dev_priv->sarea = dev_priv->mmio = dev_priv->hostBlt =
++	dev_priv->fb = dev_priv->shadow_map.shadow = 0;
++	dev_priv->sarea_priv = 0;
++	dev_priv->initialized = 0;
++}
++
++/*
++Do almost everything intialize here,include:
++1.intialize all addmaps in private data structure
++2.intialize memory heap management for video agp/pcie
++3.intialize hw for dma(pcie/agp) function
++
++Note:all this function will dispatch into relevant function
++*/
++int via_chrome9_ioctl_init(struct drm_device *dev, void *data,
++	struct drm_file *file_priv)
++{
++	struct drm_via_chrome9_init *init = (struct drm_via_chrome9_init 
++*)data;
++
++	switch (init->func) {
++	case VIA_CHROME9_INIT:
++		if (via_chrome9_initialize(dev, init)) {
++			DRM_ERROR("function via_chrome9_initialize error\n");
++			return -1;
++		}
++		via_chrome9_filepriv_v4l = (void *)file_priv;
++		via_chrome9_dev_v4l = (void *)dev;
++		break;
++
++	case VIA_CHROME9_CLEANUP:
++		via_chrome9_cleanup(dev, init);
++		via_chrome9_filepriv_v4l = 0;
++		via_chrome9_dev_v4l = 0;
++		break;
++
++	default:
++		return -1;
++	}
++
++	return 0;
++}
++
++int via_chrome9_ioctl_allocate_event_tag(struct drm_device *dev,
++	void *data, struct drm_file *file_priv)
++{
++	struct drm_via_chrome9_event_tag *event_tag = data;
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *)dev->dev_private;
++	struct drm_clb_event_tag_info *event_tag_info =
++		dev_priv->event_tag_info;
++	unsigned int *event_addr = 0, i = 0;
++
++	for (i = 0; i < NUMBER_OF_EVENT_TAGS; i++) {
++		if (!event_tag_info->usage[i])
++			break;
++	}
++
++	if (i < NUMBER_OF_EVENT_TAGS) {
++		event_tag_info->usage[i] = 1;
++		event_tag->event_offset = i;
++		event_tag->last_sent_event_value.event_low = 0;
++		event_tag->current_event_value.event_low = 0;
++		event_addr = event_tag_info->linear_address +
++		event_tag->event_offset * 4;
++		*event_addr = 0;
++		return 0;
++	} else {
++		return -7;
++	}
++
++	return 0;
++}
++
++int via_chrome9_ioctl_free_event_tag(struct drm_device *dev,
++	void *data, struct drm_file *file_priv)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *)dev->dev_private;
++	struct drm_clb_event_tag_info *event_tag_info =
++		dev_priv->event_tag_info;
++	struct drm_via_chrome9_event_tag *event_tag = data;
++
++	event_tag_info->usage[event_tag->event_offset] = 0;
++	return 0;
++}
++
++void via_chrome9_lastclose(struct drm_device *dev)
++{
++	via_chrome9_cleanup(dev, 0);
++	return ;
++}
++
++static int via_chrome9_do_wait_vblank(struct drm_via_chrome9_private
++		*dev_priv)
++{
++	int i;
++
++	for (i = 0; i < dev_priv->usec_timeout; i++) {
++		VIA_CHROME9_WRITE8(0x83d4, 0x34);
++		if ((VIA_CHROME9_READ8(0x83d5)) & 0x8)
++			return 0;
++		__via_chrome9ke_udelay(1);
++	}
++
++	return -1;
++}
++
++void via_chrome9_preclose(struct drm_device *dev, struct drm_file 
++*file_priv) {
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	struct drm_via_chrome9_sarea *sarea_priv = NULL;
++
++	if (!dev_priv)
++		return ;
++
++	sarea_priv = dev_priv->sarea_priv;
++	if (!sarea_priv)
++		return ;
++
++	if ((sarea_priv->page_flip == 1) &&
++		(sarea_priv->current_page != VIA_CHROME9_FRONT)) {
++		__volatile__ unsigned long *bci_base;
++		if (via_chrome9_do_wait_vblank(dev_priv))
++			return;
++
++		bci_base = (__volatile__ unsigned long *)(dev_priv->bci);
++
++		bci_set_stream_register(bci_base, 0x81c4, 0xc0000000);
++		bci_set_stream_register(bci_base, 0x81c0,
++			dev_priv->front_offset);
++		bci_send(bci_base, 0x64000000);/* wait vsync */
++
++		sarea_priv->current_page = VIA_CHROME9_FRONT;
++	}
++}
++
++int via_chrome9_is_agp(struct drm_device *dev)
++{
++	/* filter out pcie group which has no AGP device */
++	if (dev->pci_device == 0x1122 || dev->pci_device == 0x5122) {
++		dev->driver->driver_features &=
++		~(DRIVER_USE_AGP | DRIVER_USE_MTRR | DRIVER_REQUIRE_AGP);
++		return 0;
++	}
++	return 1;
++}
+--- /dev/null
++++ b/drivers/gpu/drm/via_chrome9/via_chrome9_drv.c
+@@ -0,0 +1,217 @@
++/*
++ * Copyright 1998-2003 VIA Technologies, Inc. All Rights Reserved.
++ * Copyright 2001-2003 S3 Graphics, Inc. All Rights Reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person
++ * obtaining a copy of this software and associated documentation
++ * files (the "Software"), to deal in the Software without
++ * restriction, including without limitation the rights to use,
++ * copy, modify, merge, publish, distribute, sub license,
++ * and/or sell copies of the Software, and to permit persons to
++ * whom the Software is furnished to do so, subject to the
++ * following conditions:
++ *
++ * The above copyright notice and this permission notice
++ * (including the next paragraph) shall be included in all
++ * copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
++ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NON-INFRINGEMENT. IN NO EVENT SHALL VIA, S3 GRAPHICS, AND/OR
++ * ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
++ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include "drmP.h"
++#include "via_chrome9_drm.h"
++#include "via_chrome9_drv.h"
++#include "via_chrome9_dma.h"
++#include "via_chrome9_mm.h"
++#include "via_chrome9_3d_reg.h"
++
++#include "drm_pciids.h"
++
++#define RING_BUFFER_INIT_FLAG 1
++#define RING_BUFFER_CLEANUP_FLAG 2
++
++static int dri_library_name(struct drm_device *dev, char *buf) {
++	return snprintf(buf, PAGE_SIZE, "via_chrome9");
++}
++
++int via_chrome9_drm_authmagic(struct drm_device *dev, void *data,
++	struct drm_file *file_priv)
++{
++	return 0;
++}
++
++int via_chrome9_drm_get_pci_id(struct drm_device *dev,
++	void *data, struct drm_file *file_priv)
++{
++	unsigned int *reg_val = data;
++	outl(0x8000002C, 0xCF8);
++	*reg_val = inl(0xCFC);
++	outl(0x8000012C, 0xCF8);
++	*(reg_val+1) = inl(0xCFC);
++	outl(0x8000022C, 0xCF8);
++	*(reg_val+2) = inl(0xCFC);
++	outl(0x8000052C, 0xCF8);
++	*(reg_val+3) = inl(0xCFC);
++
++    return 0;
++}
++int via_chrome9_drm_judge(struct drm_device *dev, void *data,
++	struct drm_file *file_priv)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++
++	if (dev_priv->initialized)
++		*(int *)data = 1;
++	else
++		*(int *)data = -1;
++	return 0;
++}
++
++int via_chrome9_dma_init(struct drm_device *dev, void *data,
++	struct drm_file *file_priv)
++{
++	int tmp;
++	unsigned char sr6c;
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *)dev->dev_private;
++	tmp = *((int *)data);
++
++	switch (tmp) {
++	case RING_BUFFER_INIT_FLAG:
++		via_chrome9_dma_init_inv(dev);
++		break;
++	case RING_BUFFER_CLEANUP_FLAG:
++		if (dev_priv->chip_sub_index == CHIP_H6S2) {
++			setmmioregisteru8(dev_priv->mmio->handle, 0x83c4, 0x6c);
++			sr6c = getmmioregisteru8(dev_priv->mmio->handle,
++				0x83c5);
++			sr6c &= 0x7F;
++			setmmioregisteru8(dev_priv->mmio->handle, 0x83c5, sr6c);
++		}
++	break;
++	}
++	return 0;
++}
++
++
++
++struct drm_ioctl_desc via_chrome9_ioctls[] = {
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_INIT, via_chrome9_ioctl_init,
++		DRM_AUTH|DRM_MASTER|DRM_ROOT_ONLY),/* via_chrome9_map.c*/
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_FLUSH, via_chrome9_ioctl_flush, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_FREE, via_chrome9_ioctl_free, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_ALLOCATE_EVENT_TAG,
++		via_chrome9_ioctl_allocate_event_tag, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_FREE_EVENT_TAG,
++		via_chrome9_ioctl_free_event_tag, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_ALLOCATE_APERTURE,
++		via_chrome9_ioctl_allocate_aperture, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_FREE_APERTURE,
++		via_chrome9_ioctl_free_aperture, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_ALLOCATE_VIDEO_MEM,
++	via_chrome9_ioctl_allocate_mem_wrapper,	DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_FREE_VIDEO_MEM,
++		via_chrome9_ioctl_free_mem_wrapper, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_WAIT_CHIP_IDLE,
++		via_chrome9_ioctl_wait_chip_idle, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_PROCESS_EXIT,
++		via_chrome9_ioctl_process_exit, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_RESTORE_PRIMARY,
++		via_chrome9_ioctl_restore_primary, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_FLUSH_CACHE,
++		via_chrome9_ioctl_flush_cache, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_ALLOCMEM,
++		via_chrome9_ioctl_allocate_mem_base, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_FREEMEM,
++		via_chrome9_ioctl_freemem_base, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_CHECKVIDMEMSIZE,
++		via_chrome9_ioctl_check_vidmem_size, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_PCIEMEMCTRL,
++		via_chrome9_ioctl_pciemem_ctrl, DRM_AUTH),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_AUTH_MAGIC, via_chrome9_drm_authmagic, 0),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_GET_PCI_ID,
++		via_chrome9_drm_get_pci_id, 0),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_INIT_JUDGE, via_chrome9_drm_judge, 0),
++	DRM_IOCTL_DEF(DRM_VIA_CHROME9_DMA, via_chrome9_dma_init, 0) };
++
++int via_chrome9_max_ioctl = DRM_ARRAY_SIZE(via_chrome9_ioctls);
++
++static struct pci_device_id pciidlist[] = {
++	via_chrome9DRV_PCI_IDS
++};
++
++int  via_chrome9_driver_open(struct drm_device *dev,
++	struct drm_file *priv)
++{
++	priv->authenticated = 1;
++	return 0;
++}
++
++static struct drm_driver driver = {
++	.driver_features = DRIVER_USE_AGP | DRIVER_REQUIRE_AGP |
++		DRIVER_HAVE_DMA | DRIVER_FB_DMA | DRIVER_USE_MTRR,
++	.open = via_chrome9_driver_open,
++	.load = via_chrome9_driver_load,
++	.unload = via_chrome9_driver_unload,
++	.device_is_agp = via_chrome9_is_agp,
++	.dri_library_name = dri_library_name,
++	.reclaim_buffers = drm_core_reclaim_buffers,
++	.reclaim_buffers_locked = NULL,
++	.reclaim_buffers_idlelocked = via_chrome9_reclaim_buffers_locked,
++	.lastclose = via_chrome9_lastclose,
++	.preclose = via_chrome9_preclose,
++	.get_map_ofs = drm_core_get_map_ofs,
++	.get_reg_ofs = drm_core_get_reg_ofs,
++	.ioctls = via_chrome9_ioctls,
++	.fops = {
++		 .owner = THIS_MODULE,
++		 .open = drm_open,
++		 .release = drm_release,
++		 .ioctl = drm_ioctl,
++		 .mmap = drm_mmap,
++		 .poll = drm_poll,
++		 .fasync = drm_fasync,
++	},
++	.pci_driver = {
++		 .name = DRIVER_NAME,
++		 .id_table = pciidlist,
++		 .resume = via_chrome9_drm_resume,
++		 .suspend = via_chrome9_drm_suspend,
++	},
++
++	.name = DRIVER_NAME,
++	.desc = DRIVER_DESC,
++	.date = DRIVER_DATE,
++	.major = DRIVER_MAJOR,
++	.minor = DRIVER_MINOR,
++	.patchlevel = DRIVER_PATCHLEVEL,
++};
++
++static int __init via_chrome9_init(void)
++{
++	driver.num_ioctls = via_chrome9_max_ioctl;
++	via_chrome9_init_command_verifier();
++	DRM_INFO("via_chrome9 verify function enabled. \n");
++	driver.dev_priv_size = sizeof(struct drm_via_chrome9_private);
++	return drm_init(&driver);
++}
++
++static void __exit via_chrome9_exit(void)
++{
++	drm_exit(&driver);
++}
++
++module_init(via_chrome9_init);
++module_exit(via_chrome9_exit);
++
++MODULE_AUTHOR(DRIVER_AUTHOR);
++MODULE_DESCRIPTION(DRIVER_DESC);
++MODULE_LICENSE("GPL and additional rights");
+--- /dev/null
++++ b/drivers/gpu/drm/via_chrome9/via_chrome9_mm.c
+@@ -0,0 +1,433 @@
++/*
++ * Copyright 1998-2003 VIA Technologies, Inc. All Rights Reserved.
++ * Copyright 2001-2003 S3 Graphics, Inc. All Rights Reserved.
++ *
++ * Permission is hereby granted, free of charge, to any person
++ * obtaining a copy of this software and associated documentation
++ * files (the "Software"), to deal in the Software without
++ * restriction, including without limitation the rights to use,
++ * copy, modify, merge, publish, distribute, sub license,
++ * and/or sell copies of the Software, and to permit persons to
++ * whom the Software is furnished to do so, subject to the
++ * following conditions:
++ *
++ * The above copyright notice and this permission notice
++ * (including the next paragraph) shall be included in all
++ * copies or substantial portions of the Software.
++ *
++ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
++ * EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES
++ * OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND
++ * NON-INFRINGEMENT. IN NO EVENT SHALL VIA, S3 GRAPHICS, AND/OR
++ * ITS SUPPLIERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
++ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++ * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR
++ * THE USE OR OTHER DEALINGS IN THE SOFTWARE.
++ */
++
++#include "drmP.h"
++#include "via_chrome9_drm.h"
++#include "via_chrome9_drv.h"
++#include "drm_sman.h"
++#include "via_chrome9_mm.h"
++
++#define VIA_CHROME9_MM_GRANULARITY 4
++#define VIA_CHROME9_MM_GRANULARITY_MASK ((1 << VIA_CHROME9_MM_GRANULARITY) - 1)
++
++
++int via_chrome9_map_init(struct drm_device *dev,
++	struct drm_via_chrome9_init *init)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *)dev->dev_private;
++
++	dev_priv->sarea = drm_getsarea(dev);
++	if (!dev_priv->sarea) {
++		DRM_ERROR("could not find sarea!\n");
++		goto error;
++	}
++	dev_priv->sarea_priv =
++		(struct drm_via_chrome9_sarea *)((unsigned char *)dev_priv->
++		sarea->handle + init->sarea_priv_offset);
++
++	dev_priv->fb = drm_core_findmap(dev, init->fb_handle);
++	if (!dev_priv->fb) {
++		DRM_ERROR("could not find framebuffer!\n");
++		goto error;
++	}
++	/* Frame buffer physical base address */
++	dev_priv->fb_base_address = init->fb_base_address;
++
++	if (init->shadow_size) {
++		/* find apg shadow region mappings */
++	dev_priv->shadow_map.shadow = drm_core_findmap(dev, init->
++	shadow_handle);
++		if (!dev_priv->shadow_map.shadow) {
++			DRM_ERROR("could not shadow map!\n");
++			goto error;
++			}
++		dev_priv->shadow_map.shadow_size = init->shadow_size;
++		dev_priv->shadow_map.shadow_handle = (unsigned int *)dev_priv->
++			shadow_map.shadow->handle;
++		init->shadow_handle = dev_priv->shadow_map.shadow->offset;
++		}
++	if (init->agp_tex_size && init->chip_agp != CHIP_PCIE) {
++		/* find apg texture buffer mappings */
++		if (!(drm_core_findmap(dev, init->agp_tex_handle))) {
++			DRM_ERROR("could not find agp texture map !\n");
++			goto error;
++		}
++		dev_priv->agp_size = init->agp_tex_size;
++		dev_priv->agp_offset = init->agp_tex_handle;
++	}
++	/* find mmio/dma mappings */
++	dev_priv->mmio = drm_core_findmap(dev, init->mmio_handle);
++	if (!dev_priv->mmio) {
++		DRM_ERROR("failed to find mmio region!\n");
++		goto error;
++		}
++
++	dev_priv->hostBlt = drm_core_findmap(dev, init->hostBlt_handle);
++	if (!dev_priv->hostBlt) {
++		DRM_ERROR("failed to find host bitblt region!\n");
++		goto error;
++		}
++
++	dev_priv->drm_agp_type = init->agp_type;
++	if (init->agp_type != AGP_DISABLED && init->chip_agp != CHIP_PCIE) {
++		dev->agp_buffer_map = drm_core_findmap(dev, init->dma_handle);
++		if (!dev->agp_buffer_map) {
++			DRM_ERROR("failed to find dma buffer region!\n");
++			goto error;
++			}
++		}
++
++	dev_priv->bci  = (char *)dev_priv->mmio->handle + 0x10000;
++
++	return 0;
++
++error:
++	/* do cleanup here, refine_later */
++	return -EINVAL;
++}
++
++int via_chrome9_heap_management_init(struct drm_device *dev,
++	struct drm_via_chrome9_init *init)
++{
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	int ret = 0;
++
++	/* video memory management. range: 0 ---- video_whole_size */
++	mutex_lock(&dev->struct_mutex);
++	ret = drm_sman_set_range(&dev_priv->sman, VIA_CHROME9_MEM_VIDEO,
++		0, dev_priv->available_fb_size >> VIA_CHROME9_MM_GRANULARITY);
++	if (ret) {
++		DRM_ERROR("VRAM memory manager initialization ******ERROR\
++			!******\n");
++		mutex_unlock(&dev->struct_mutex);
++		goto error;
++	}
++	dev_priv->vram_initialized = 1;
++	/* agp/pcie heap management.
++	note:because agp is contradict with pcie, so only one is enough
++	for managing both of them.*/
++	init->agp_type = dev_priv->drm_agp_type;
++	if (init->agp_type != AGP_DISABLED && dev_priv->agp_size) {
++		ret = drm_sman_set_range(&dev_priv->sman, VIA_CHROME9_MEM_AGP,
++		0, dev_priv->agp_size >> VIA_CHROME9_MM_GRANULARITY);
++	if (ret) {
++		DRM_ERROR("AGP/PCIE memory manager initialization ******ERROR\
++			!******\n");
++		mutex_unlock(&dev->struct_mutex);
++		goto error;
++		}
++	dev_priv->agp_initialized = 1;
++	}
++	mutex_unlock(&dev->struct_mutex);
++	return 0;
++
++error:
++	/* Do error recover here, refine_later */
++	return -EINVAL;
++}
++
++
++void via_chrome9_memory_destroy_heap(struct drm_device *dev,
++	struct drm_via_chrome9_private *dev_priv)
++{
++	mutex_lock(&dev->struct_mutex);
++	drm_sman_cleanup(&dev_priv->sman);
++	dev_priv->vram_initialized = 0;
++	dev_priv->agp_initialized = 0;
++	mutex_unlock(&dev->struct_mutex);
++}
++
++void via_chrome9_reclaim_buffers_locked(struct drm_device *dev,
++				struct drm_file *file_priv)
++{
++	return;
++}
++
++int via_chrome9_ioctl_allocate_aperture(struct drm_device *dev,
++	void *data, struct drm_file *file_priv)
++{
++	return 0;
++}
++
++int via_chrome9_ioctl_free_aperture(struct drm_device *dev,
++	void *data, struct drm_file *file_priv)
++{
++	return 0;
++}
++
++
++/* Allocate memory from DRM module for video playing */
++int via_chrome9_ioctl_allocate_mem_base(struct drm_device *dev, void 
++*data, struct drm_file *file_priv) {
++	struct drm_via_chrome9_mem *mem = data;
++	struct drm_memblock_item *item;
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	unsigned long tmpSize = 0, offset = 0, alignment = 0;
++	/* modify heap_type to agp for pcie, since we treat pcie/agp heap
++	no difference in heap management */
++	if (mem->type == memory_heap_pcie) {
++		if (dev_priv->chip_agp != CHIP_PCIE) {
++			DRM_ERROR("User want to alloc memory from pcie heap \
++			but via_chrome9.ko has no this heap exist.\n");
++			return -EINVAL;
++		}
++	mem->type = memory_heap_agp;
++	}
++
++	if (mem->type > VIA_CHROME9_MEM_AGP) {
++		DRM_ERROR("Unknown memory type allocation\n");
++		return -EINVAL;
++	}
++	mutex_lock(&dev->struct_mutex);
++	if (0 == ((mem->type == VIA_CHROME9_MEM_VIDEO) ?
++		dev_priv->vram_initialized : dev_priv->agp_initialized)) {
++		DRM_ERROR("Attempt to allocate from uninitialized\
++			memory manager.\n");
++		mutex_unlock(&dev->struct_mutex);
++		return -EINVAL;
++		}
++	tmpSize = (mem->size + VIA_CHROME9_MM_GRANULARITY_MASK) >>
++		VIA_CHROME9_MM_GRANULARITY;
++	mem->size = tmpSize << VIA_CHROME9_MM_GRANULARITY;
++	alignment = (dev_priv->alignment & 0x80000000) ? dev_priv->
++	alignment & 0x7FFFFFFF : 0;
++	alignment /= (1 << VIA_CHROME9_MM_GRANULARITY);
++	item = drm_sman_alloc(&dev_priv->sman, mem->type, tmpSize, alignment,
++	(unsigned long)file_priv);
++	mutex_unlock(&dev->struct_mutex);
++	/* alloc failed */
++	if (!item) {
++		DRM_ERROR("Allocate memory failed ******ERROR******.\n");
++		return -ENOMEM;
++	}
++	/* Till here every thing is ok, we check the memory type allocated
++	and return appropriate value to user mode  Here the value return to
++	user is very difficult to operate. BE CAREFULLY!!! */
++	/* offset is used by user mode ap to calculate the virtual address
++	which is used to access the memory allocated */
++	mem->index = item->user_hash.key;
++	offset = item->mm->offset(item->mm, item->mm_info) <<
++	VIA_CHROME9_MM_GRANULARITY;
++	switch (mem->type) {
++	case VIA_CHROME9_MEM_VIDEO:
++		mem->offset = offset + dev_priv->back_offset;
++		break;
++	case VIA_CHROME9_MEM_AGP:
++	/* return different value to user according to the chip type */
++		if (dev_priv->chip_agp == CHIP_PCIE) {
++			mem->offset = offset +
++			((struct drm_via_chrome9_dma_manager *)dev_priv->
++				dma_manager)->dmasize * sizeof(unsigned long);
++		} else {
++		mem->offset = offset;
++		}
++		break;
++	default:
++	/* Strange thing happen! Faint. Code bug! */
++		DRM_ERROR("Enter here is impossible ******\
++		ERROR******.\n");
++		return -EINVAL;
++	}
++	/*DONE. Need we call function copy_to_user ?NO. We can't even
++	touch user's space.But we are lucky, since kernel drm:drm_ioctl
++	will to the job for us.  */
++	return 0;
++}
++
++/* Allocate video/AGP/PCIE memory from heap management */
++int via_chrome9_ioctl_allocate_mem_wrapper(struct drm_device
++	*dev, void *data, struct drm_file *file_priv)
++{
++	struct drm_via_chrome9_memory_alloc *memory_alloc =
++		(struct drm_via_chrome9_memory_alloc *)data;
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	struct drm_via_chrome9_mem mem;
++
++	mem.size = memory_alloc->size;
++	mem.type = memory_alloc->heap_type;
++	dev_priv->alignment = memory_alloc->align | 0x80000000;
++	if (via_chrome9_ioctl_allocate_mem_base(dev, &mem, file_priv)) {
++		DRM_ERROR("Allocate memory error!.\n");
++		return -ENOMEM;
++		}
++	dev_priv->alignment = 0;
++	/* Till here every thing is ok, we check the memory type allocated and
++	return appropriate value to user mode Here the value return to user is
++	very difficult to operate. BE CAREFULLY!!!*/
++	/* offset is used by user mode ap to calculate the virtual address
++	which is used to access the memory allocated */
++	memory_alloc->offset = mem.offset;
++	memory_alloc->heap_info.lpL1Node = (void *)mem.index;
++	memory_alloc->size = mem.size;
++	switch (memory_alloc->heap_type) {
++	case VIA_CHROME9_MEM_VIDEO:
++		memory_alloc->physaddress = memory_alloc->offset +
++		dev_priv->fb_base_address;
++		memory_alloc->linearaddress = (void *)memory_alloc->physaddress;
++		break;
++	case VIA_CHROME9_MEM_AGP:
++		/* return different value to user according to the chip type */
++		if (dev_priv->chip_agp == CHIP_PCIE) {
++			memory_alloc->physaddress = memory_alloc->offset;
++			memory_alloc->linearaddress = (void *)memory_alloc->
++			physaddress;
++		} else {
++			memory_alloc->physaddress = dev->agp->base +
++			memory_alloc->offset +
++			((struct drm_via_chrome9_dma_manager *)
++			dev_priv->dma_manager)->dmasize * sizeof(unsigned long);
++			memory_alloc->linearaddress =
++			(void *)memory_alloc->physaddress;
++		}
++		break;
++	default:
++		/* Strange thing happen! Faint. Code bug! */
++		DRM_ERROR("Enter here is impossible ******ERROR******.\n");
++		return -EINVAL;
++	}
++	return 0;
++}
++
++int via_chrome9_ioctl_free_mem_wrapper(struct drm_device *dev,
++	void *data, struct drm_file *file_priv)
++{
++	struct drm_via_chrome9_memory_alloc *memory_alloc = data;
++	struct drm_via_chrome9_mem mem;
++
++	mem.index = (unsigned long)memory_alloc->heap_info.lpL1Node;
++	if (via_chrome9_ioctl_freemem_base(dev, &mem, file_priv)) {
++		DRM_ERROR("function free_mem_wrapper error.\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++
++int via_chrome9_ioctl_freemem_base(struct drm_device *dev,
++	void *data, struct drm_file *file_priv)
++{
++	struct drm_via_chrome9_private *dev_priv = dev->dev_private;
++	struct drm_via_chrome9_mem *mem = data;
++	int ret;
++
++	mutex_lock(&dev->struct_mutex);
++	ret = drm_sman_free_key(&dev_priv->sman, mem->index);
++	mutex_unlock(&dev->struct_mutex);
++	DRM_DEBUG("free = 0x%lx\n", mem->index);
++
++	return ret;
++}
++
++int via_chrome9_ioctl_check_vidmem_size(struct drm_device *dev,
++	void *data, struct drm_file *file_priv)
++{
++	return 0;
++}
++
++int via_chrome9_ioctl_pciemem_ctrl(struct drm_device *dev,
++	void *data, struct drm_file *file_priv)
++{
++	int result = 0;
++	struct drm_via_chrome9_private *dev_priv = dev->dev_private;
++	struct drm_via_chrome9_pciemem_ctrl *pcie_memory_ctrl = data;
++	switch (pcie_memory_ctrl->ctrl_type) {
++	case pciemem_copy_from_user:
++		result = copy_from_user((void *)(
++		dev_priv->pcie_vmalloc_nocache+
++		pcie_memory_ctrl->pcieoffset),
++		pcie_memory_ctrl->usermode_data,
++		pcie_memory_ctrl->size);
++		break;
++	case pciemem_copy_to_user:
++		result = copy_to_user(pcie_memory_ctrl->usermode_data,
++		(void *)(dev_priv->pcie_vmalloc_nocache+
++		pcie_memory_ctrl->pcieoffset),
++		pcie_memory_ctrl->size);
++		break;
++	case pciemem_memset:
++		memset((void *)(dev_priv->pcie_vmalloc_nocache +
++		pcie_memory_ctrl->pcieoffset),
++		pcie_memory_ctrl->memsetdata,
++		pcie_memory_ctrl->size);
++		break;
++	default:
++		break;
++	}
++	return 0;
++}
++
++
++int via_fb_alloc(struct drm_via_chrome9_mem *mem)
++{
++	struct drm_device *dev = (struct drm_device *)via_chrome9_dev_v4l;
++	struct drm_via_chrome9_private *dev_priv;
++
++	if (!dev || !dev->dev_private || !via_chrome9_filepriv_v4l) {
++		DRM_ERROR("V4L work before X initialize DRM module !!!\n");
++		return -EINVAL;
++	}
++
++	dev_priv = (struct drm_via_chrome9_private *)dev->dev_private;
++	if (!dev_priv->vram_initialized ||
++		mem->type != VIA_CHROME9_MEM_VIDEO) {
++		DRM_ERROR("the memory type from V4L is error !!!\n");
++		return -EINVAL;
++	}
++
++	if (via_chrome9_ioctl_allocate_mem_base(dev,
++		mem, via_chrome9_filepriv_v4l)) {
++		DRM_ERROR("DRM module allocate memory error for V4L!!!\n");
++		return -EINVAL;
++	}
++
++	return 0;
++}
++EXPORT_SYMBOL(via_fb_alloc);
++
++int via_fb_free(struct drm_via_chrome9_mem *mem)
++{
++	struct drm_device *dev = (struct drm_device *)via_chrome9_dev_v4l;
++	struct drm_via_chrome9_private *dev_priv;
++
++	if (!dev || !dev->dev_private || !via_chrome9_filepriv_v4l)
++		return -EINVAL;
++
++	dev_priv = (struct drm_via_chrome9_private *)dev->dev_private;
++	if (!dev_priv->vram_initialized ||
++		mem->type != VIA_CHROME9_MEM_VIDEO)
++		return -EINVAL;
++
++	if (via_chrome9_ioctl_freemem_base(dev, mem, via_chrome9_filepriv_v4l))
++		return -EINVAL;
++
++	return 0;
++}
++EXPORT_SYMBOL(via_fb_free);
+--- /dev/null
++++ b/drivers/gpu/drm/via_chrome9/via_chrome9_verifier.c
+@@ -0,0 +1,977 @@
++/*
++* (C) 2008 by VIA Technologies, Inc. All Rights Reserved.
++* based on via_verifier.c, which is
++* Copyright 2004 The Unichrome Project. All Rights Reserved.
++* Copyright 2005 Thomas Hellstrom. All Rights Reserved.
++*
++* Permission is hereby granted, free of charge, to any person obtaining a
++* copy of this software and associated documentation files (the "Software"),
++* to deal in the Software without restriction, including without limitation
++* the rights to use, copy, modify, merge, publish, distribute, sub license,
++* and/or sell copies of the Software, and to permit persons to whom the
++* Software is furnished to do so, subject to the following conditions:
++*
++* The above copyright notice and this permission notice (including the
++* next paragraph) shall be included in all copies or substantial portions
++* of the Software.
++*
++* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
++* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
++* FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL
++* THE AUTHOR(S), AND/OR THE COPYRIGHT HOLDER(S) BE LIABLE FOR ANY CLAIM, DAMAGES
++* OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE,
++* ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
++* DEALINGS IN THE SOFTWARE.
++*
++* This code was written using docs obtained under NDA from VIA Inc.
++*
++* Don't run this code directly on an AGP buffer. Due to cache problems it will
++* be very slow.
++*/
++
++#include "via_chrome9_3d_reg.h"
++#include "drmP.h"
++#include "drm.h"
++#include "via_chrome9_drm.h"
++#include "via_chrome9_verifier.h"
++#include "via_chrome9_drv.h"
++
++
++enum verifier_state {
++	state_command,
++	state_header0,
++	state_header1,
++	state_header2,
++	state_header3,
++	state_header4,
++	state_header5,
++	state_header6,
++	state_header7,
++	state_error
++};
++
++enum hazard {
++	no_check = 0,
++	check_render_target_addr0,
++	check_render_target_addr1,
++	check_render_target_addr_mode,
++	check_z_buffer_addr0,
++	check_z_buffer_addr1,
++	check_z_buffer_addr_mode,
++	check_zocclusion_addr0,
++	check_zocclusion_addr1,
++	check_coarse_z_addr0,
++	check_coarse_z_addr1,
++	check_fvf_addr_mode,
++	check_t_level0_facen_addr0,
++	check_fence_cmd_addr0,
++	check_fence_cmd_addr1,
++	check_fence_cmd_addr2,
++	forbidden_command
++};
++
++/*
++ * Associates each hazard above with a possible multi-command
++ * sequence. For example an address that is split over multiple
++ * commands and that needs to be checked at the first command
++ * that does not include any part of the address.
++ */
++
++static enum drm_via_chrome9_sequence seqs[] = {
++	no_sequence,
++	dest_address,
++	dest_address,
++	dest_address,
++	z_address,
++	z_address,
++	z_address,
++	zocclusion_address,
++	zocclusion_address,
++	coarse_z_address,
++	coarse_z_address,
++	fvf_address,
++	tex_address,
++	fence_cmd_address,
++	fence_cmd_address,
++	fence_cmd_address,
++	no_sequence
++};
++
++struct hz_init {
++	unsigned int code;
++	enum hazard hz;
++};
++/* for atrribute other than context hazard detect */
++static struct hz_init init_table1[] = {
++	{0xcc, no_check},
++	{0xcd, no_check},
++	{0xce, no_check},
++	{0xcf, no_check},
++	{0xdd, no_check},
++	{0xee, no_check},
++	{0x00, no_check},
++	{0x01, no_check},
++	{0x10, check_z_buffer_addr0},
++	{0x11, check_z_buffer_addr1},
++	{0x12, check_z_buffer_addr_mode},
++	{0x13, no_check},
++	{0x14, no_check},
++	{0x15, no_check},
++	{0x16, no_check},
++	{0x17, no_check},
++	{0x18, no_check},
++	{0x19, no_check},
++	{0x1a, no_check},
++	{0x1b, no_check},
++	{0x1c, no_check},
++	{0x1d, no_check},
++	{0x1e, no_check},
++	{0x1f, no_check},
++	{0x20, no_check},
++	{0x21, check_zocclusion_addr0},
++	{0x22, check_zocclusion_addr1},
++	{0x23, no_check},
++	{0x24, no_check},
++	{0x25, no_check},
++	{0x26, no_check},
++	{0x27, no_check},
++	/* H5 only*/
++	{0x28, no_check},
++	{0x29, check_coarse_z_addr0},
++	{0x2a, check_coarse_z_addr1},
++	{0x33, no_check},
++	{0x34, no_check},
++	{0x35, no_check},
++	{0x36, no_check},
++	{0x37, no_check},
++	{0x38, no_check},
++	{0x39, no_check},
++	{0x3A, no_check},
++	{0x3B, no_check},
++	{0x3C, no_check},
++	{0x3D, no_check},
++	{0x3E, no_check},
++	{0x3F, no_check},
++	/*render target check */
++	{0x50, check_render_target_addr0},
++	/* H5/H6 different */
++	{0x51, check_render_target_addr_mode},
++	{0x52, check_render_target_addr1},
++	{0x53, no_check},
++	{0x58, check_render_target_addr0},
++	{0x59, check_render_target_addr_mode},
++	{0x5a, check_render_target_addr1},
++	{0x5b, no_check},
++	{0x60, check_render_target_addr0},
++	{0x61, check_render_target_addr_mode},
++	{0x62, check_render_target_addr1},
++	{0x63, no_check},
++	{0x68, check_render_target_addr0},
++	{0x69, check_render_target_addr_mode},
++	{0x6a, check_render_target_addr1},
++	{0x6b, no_check},
++	{0x70, no_check},
++	{0x71, no_check},
++	{0x72, no_check},
++	{0x73, no_check},
++	{0x74, no_check},
++	{0x75, no_check},
++	{0x76, no_check},
++	{0x77, no_check},
++	{0x78, no_check},
++	{0x80, no_check},
++	{0x81, no_check},
++	{0x82, no_check},
++	{0x83, no_check},
++	{0x84, no_check},
++	{0x85, no_check},
++	{0x86, no_check},
++	{0x87, no_check},
++	{0x88, no_check},
++	{0x89, no_check},
++	{0x8a, no_check},
++	{0x90, no_check},
++	{0x91, no_check},
++	{0x92, no_check},
++	{0x93, no_check},
++	{0x94, no_check},
++	{0x95, no_check},
++	{0x96, no_check},
++	{0x97, no_check},
++	{0x98, no_check},
++	{0x99, no_check},
++	{0x9a, no_check},
++	{0x9b, no_check},
++	{0xaa, no_check}
++};
++
++/* for texture stage's hazard detect */
++static struct hz_init init_table2[] = {
++	{0xcc, no_check},
++	{0xcd, no_check},
++	{0xce, no_check},
++	{0xcf, no_check},
++	{0xdd, no_check},
++	{0xee, no_check},
++	{0x00, no_check},
++	{0x01, no_check},
++	{0x02, no_check},
++	{0x03, no_check},
++	{0x04, no_check},
++	{0x05, no_check},
++	/* H5/H6 diffent */
++	{0x18, check_t_level0_facen_addr0},
++	{0x20, no_check},
++	{0x21, no_check},
++	{0x22, no_check},
++	{0x30, no_check},
++	{0x50, no_check},
++	{0x51, no_check},
++	{0x9b, no_check},
++};
++
++/*Check for flexible vertex format */
++static struct hz_init init_table3[] = {
++	{0xcc, no_check},
++	{0xcd, no_check},
++	{0xce, no_check},
++	{0xcf, no_check},
++	{0xdd, no_check},
++	{0xee, no_check},
++	/* H5/H6 different */
++	{0x00, check_fvf_addr_mode},
++	{0x01, no_check},
++	{0x02, no_check},
++	{0x03, no_check},
++	{0x04, no_check},
++	{0x05, no_check},
++	{0x08, no_check},
++	{0x09, no_check},
++	{0x0a, no_check},
++	{0x0b, no_check},
++	{0x0c, no_check},
++	{0x0d, no_check},
++	{0x0e, no_check},
++	{0x0f, no_check},
++	{0x10, no_check},
++	{0x11, no_check},
++	{0x12, no_check},
++	{0x13, no_check},
++	{0x14, no_check},
++	{0x15, no_check},
++	{0x16, no_check},
++	{0x17, no_check},
++	{0x18, no_check},
++	{0x19, no_check},
++	{0x1a, no_check},
++	{0x1b, no_check},
++	{0x1c, no_check},
++	{0x1d, no_check},
++	{0x1e, no_check},
++	{0x1f, no_check},
++	{0x20, no_check},
++	{0x21, no_check},
++	{0x22, no_check},
++	{0x23, no_check},
++	{0x24, no_check},
++	{0x25, no_check},
++	{0x26, no_check},
++	{0x27, no_check},
++	{0x28, no_check},
++	{0x29, no_check},
++	{0x2a, no_check},
++	{0x2b, no_check},
++	{0x2c, no_check},
++	{0x2d, no_check},
++	{0x2e, no_check},
++	{0x2f, no_check},
++	{0x40, no_check},
++	{0x41, no_check},
++	{0x42, no_check},
++	{0x43, no_check},
++	{0x44, no_check},
++	{0x45, no_check},
++	{0x46, no_check},
++	{0x47, no_check},
++	{0x48, no_check},
++	{0x50, no_check},
++	{0x51, no_check},
++	{0x52, no_check},
++	{0x60, no_check},
++	{0x61, no_check},
++	{0x62, no_check},
++	{0x9b, no_check},
++	{0xaa, no_check}
++};
++/*Check for 364 fence command id*/
++static struct hz_init init_table4[] = {
++	{0xcc, no_check},
++	{0xcd, no_check},
++	{0xce, no_check},
++	{0xcf, no_check},
++	{0xdd, no_check},
++	{0xee, no_check},
++	{0x00, no_check},
++	{0x01, check_fence_cmd_addr0},
++	{0x02, check_fence_cmd_addr1},
++	{0x03, check_fence_cmd_addr2},
++	{0x10, no_check},
++	{0x11, no_check},
++	{0x12, no_check},
++	{0x13, no_check},
++	{0x14, no_check},
++	{0x18, no_check},
++	{0x19, no_check},
++	{0x1a, no_check},
++	{0x1b, no_check},
++	{0x1c, no_check},
++	{0x20, no_check},
++	{0xab, no_check},
++	{0xaa, no_check}
++};
++
++/*Check for 353 fence command id*/
++static struct hz_init init_table5[] = {
++	{0xcc, no_check},
++	{0xcd, no_check},
++	{0xce, no_check},
++	{0xcf, no_check},
++	{0xdd, no_check},
++	{0xee, no_check},
++	{0x00, no_check},
++	{0x01, no_check},
++	{0x02, no_check},
++	{0x03, no_check},
++	{0x04, check_fence_cmd_addr0},
++	{0x05, check_fence_cmd_addr1},
++	{0x06, no_check},
++	{0x07, check_fence_cmd_addr2},
++	{0x08, no_check},
++	{0x09, no_check},
++	{0x0a, no_check},
++	{0x0b, no_check},
++	{0x0c, no_check},
++	{0x0d, no_check},
++	{0x0e, no_check},
++	{0x0f, no_check},
++	{0x10, no_check},
++	{0x11, no_check},
++	{0x12, no_check},
++	{0x18, no_check},
++	{0x19, no_check},
++	{0x1a, no_check},
++	{0x30, no_check},
++	{0x31, no_check},
++	{0x32, no_check},
++	{0x68, no_check},
++	{0x69, no_check},
++	{0x6a, no_check},
++	{0x6b, no_check},
++	{0xab, no_check},
++	{0xaa, no_check}
++};
++
++static enum hazard init_table_01_00[256];
++static enum hazard init_table_02_0n[256];
++static enum hazard init_table_04_00[256];
++static enum hazard init_table_11_364[256];
++static enum hazard init_table_11_353[256];
++
++/*Require fence command id location reside in the shadow system memory */
++static inline int check_fence_cmd_addr_range(struct 
++drm_via_chrome9_state *seq,
++	unsigned long fence_cmd_add, unsigned long size, struct drm_device 
++*dev) {
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *)dev->dev_private;
++	if (!dev_priv->shadow_map.shadow)
++		return -1;
++	if ((fence_cmd_add < dev_priv->shadow_map.shadow->offset) ||
++		(fence_cmd_add + size >
++		dev_priv->shadow_map.shadow->offset +
++		dev_priv->shadow_map.shadow->size))
++		return -1;
++	return 0;
++}
++
++/*
++ * Currently we only catch the fence cmd's address, which will
++ * access system memory inevitably.
++ * NOTE:No care about AGP address.(we just think all AGP access are safe now).
++ */
++
++static inline int finish_current_sequence(struct drm_via_chrome9_state 
++*cur_seq) {
++	switch (cur_seq->unfinished) {
++	case fence_cmd_address:
++		if (cur_seq->fence_need_check)
++			if (check_fence_cmd_addr_range(cur_seq,
++				cur_seq->fence_cmd_addr, 4, cur_seq->dev))
++				return -EINVAL;
++			break;
++	default:
++		break;
++	}
++	cur_seq->unfinished = no_sequence;
++	return 0;
++}
++/* Only catch the cmd which potentially access the system memory, and treat all
++ * the other cmds are safe.
++ */
++static inline int
++investigate_hazard(uint32_t cmd, enum hazard hz,
++	struct drm_via_chrome9_state *cur_seq)
++{
++	register uint32_t tmp;
++
++	if (cur_seq->unfinished && (cur_seq->unfinished != seqs[hz])) {
++		int ret = finish_current_sequence(cur_seq);
++		if (ret)
++			return ret;
++	}
++
++	switch (hz) {
++	case check_render_target_addr0:
++		tmp = ((cmd >> 24) - 0x50) >> 3;
++		cur_seq->unfinished = dest_address;
++		cur_seq->render_target_addr[tmp] = cmd << 8;
++		break;
++	case check_render_target_addr1:
++		cur_seq->unfinished = dest_address;
++		tmp = ((cmd >> 24) - 0x50) >> 3;
++		cur_seq->render_target_pitch[tmp] = (cmd & 0x000001FF) >> 5;
++		break;
++	case check_render_target_addr_mode:
++		cur_seq->unfinished = dest_address;
++		if (!cur_seq->agp)
++			if (((cmd & 0x00300000) >> 20) == 2) {
++				DRM_ERROR("Attempt to place \
++					render target in system memory\n");
++				return -EINVAL;
++			}
++		break;
++	case check_z_buffer_addr0:
++		cur_seq->unfinished = z_address;
++		break;
++	case check_z_buffer_addr1:
++		cur_seq->unfinished = z_address;
++		if ((cmd & 0x00000003) == 2) {
++			DRM_ERROR("Attempt to place \
++					Z buffer in system memory\n");
++			return -EINVAL;
++		}
++		break;
++	case check_z_buffer_addr_mode:
++		cur_seq->unfinished = z_address;
++		if (((cmd & 0x00000060) >> 5) == 2) {
++			DRM_ERROR("Attempt to place \
++					stencil buffer in system memory\n");
++			return -EINVAL;
++		}
++		break;
++	case check_zocclusion_addr0:
++		cur_seq->unfinished = zocclusion_address;
++		break;
++	case check_zocclusion_addr1:
++		cur_seq->unfinished = zocclusion_address;
++		if (((cmd & 0x00c00000) >> 22) == 2) {
++			DRM_ERROR("Attempt to access system memory\n");
++			return -EINVAL;
++		}
++		break;
++	case check_coarse_z_addr0:
++		cur_seq->unfinished = coarse_z_address;
++		if (((cmd & 0x00300000) >> 20) == 2)
++			return -EINVAL;
++		break;
++	case check_coarse_z_addr1:
++		cur_seq->unfinished = coarse_z_address;
++		break;
++	case check_fvf_addr_mode:
++		cur_seq->unfinished = fvf_address;
++		if (!cur_seq->agp)
++			if (((cmd & 0x0000c000) >> 14) == 2) {
++				DRM_ERROR("Attempt to place \
++					fvf buffer in system memory\n");
++			return -EINVAL;
++			}
++		break;
++	case check_t_level0_facen_addr0:
++		cur_seq->unfinished = tex_address;
++		if (!cur_seq->agp)
++			if ((cmd & 0x00000003) == 2 ||
++				((cmd & 0x0000000c) >> 2) == 2 ||
++				((cmd & 0x00000030) >> 4) == 2 ||
++				((cmd & 0x000000c0) >> 6) == 2 ||
++				((cmd & 0x0000c000) >> 14) == 2 ||
++				((cmd & 0x00030000) >> 16) == 2) {
++				DRM_ERROR("Attempt to place \
++					texture buffer in system memory\n");
++			return -EINVAL;
++			}
++		break;
++	case check_fence_cmd_addr0:
++		cur_seq->unfinished = fence_cmd_address;
++		if (cur_seq->agp)
++			cur_seq->fence_cmd_addr =
++			(cur_seq->fence_cmd_addr & 0xFF000000) |
++			(cmd & 0x00FFFFFF);
++		else
++			cur_seq->fence_cmd_addr =
++			(cur_seq->fence_cmd_addr & 0x00FFFFFF) |
++			((cmd & 0x000000FF) << 24);
++		break;
++	case check_fence_cmd_addr1:
++		cur_seq->unfinished = fence_cmd_address;
++		if (!cur_seq->agp)
++			cur_seq->fence_cmd_addr =
++			(cur_seq->fence_cmd_addr & 0xFF000000) |
++			(cmd & 0x00FFFFFF);
++		break;
++	case check_fence_cmd_addr2:
++		cur_seq->unfinished = fence_cmd_address;
++		if (cmd & 0x00040000)
++			cur_seq->fence_need_check = 1;
++		else
++			cur_seq->fence_need_check = 0;
++		break;
++	default:
++		/*We think all the other cmd are safe.*/
++		return 0;
++	}
++	return 0;
++}
++
++static inline int verify_mmio_address(uint32_t address)
++{
++	if ((address > 0x3FF) && (address < 0xC00)) {
++		DRM_ERROR("Invalid VIDEO DMA command. "
++			  "Attempt to access 3D- or command burst area.\n");
++		return 1;
++	} else if ((address > 0xDFF) && (address < 0x1200)) {
++		DRM_ERROR("Invalid VIDEO DMA command. "
++			  "Attempt to access PCI DMA area.\n");
++		return 1;
++	} else if ((address > 0x1DFF) && (address < 0x2200)) {
++		DRM_ERROR("Invalid VIDEO DMA command. "
++			  "Attempt to access CBU ROTATE SPACE registers.\n");
++		return 1;
++	} else if ((address > 0x23FF) && (address < 0x3200)) {
++		DRM_ERROR("Invalid VIDEO DMA command. "
++			  "Attempt to access PCI DMA2 area..\n");
++		return 1;
++	} else if (address > 0x33FF) {
++		DRM_ERROR("Invalid VIDEO DMA command. "
++			  "Attempt to access VGA registers.\n");
++		return 1;
++	}
++	return 0;
++}
++
++static inline int is_dummy_cmd(uint32_t cmd)
++{
++	if ((cmd & INV_DUMMY_MASK) == 0xCC000000 ||
++			(cmd & INV_DUMMY_MASK) == 0xCD000000 ||
++			(cmd & INV_DUMMY_MASK) == 0xCE000000 ||
++			(cmd & INV_DUMMY_MASK) == 0xCF000000 ||
++			(cmd & INV_DUMMY_MASK) == 0xDD000000)
++			return 1;
++	return 0;
++}
++
++static inline int
++verify_2d_tail(uint32_t const **buffer, const uint32_t *buf_end,
++	uint32_t dwords)
++{
++	const uint32_t *buf = *buffer;
++
++	if (buf_end - buf < dwords) {
++		DRM_ERROR("Illegal termination of 2d command.\n");
++		return 1;
++	}
++
++	while (dwords--) {
++		if (!is_dummy_cmd(*buf++)) {
++			DRM_ERROR("Illegal 2d command tail.\n");
++			return 1;
++		}
++	}
++
++	*buffer = buf;
++	return 0;
++}
++
++static inline int
++verify_video_tail(uint32_t const **buffer, const uint32_t *buf_end,
++		  uint32_t dwords)
++{
++	const uint32_t *buf = *buffer;
++
++	if (buf_end - buf < dwords) {
++		DRM_ERROR("Illegal termination of video command.\n");
++		return 1;
++	}
++	while (dwords--) {
++		if (*buf && !is_dummy_cmd(*buf)) {
++			DRM_ERROR("Illegal video command tail.\n");
++			return 1;
++		}
++		buf++;
++	}
++	*buffer = buf;
++	return 0;
++}
++
++static inline enum verifier_state via_chrome9_check_header0(uint32_t 
++const **buffer, const uint32_t *buf_end) {
++	const uint32_t *buf = *buffer;
++	uint32_t cmd, qword, dword;
++
++	qword = *(buf+1);
++	buf += 4;
++	dword = qword << 1;
++
++	if (buf_end - buf < dword)
++		return state_error;
++
++	while (qword-- > 0) {
++		cmd = *buf;
++		/* Is this consition too restrict? */
++		if ((cmd & 0xFFFF) > 0x1FF) {
++			DRM_ERROR("Invalid header0 command io address 0x%x \
++				Attempt to access non-2D mmio area.\n", cmd);
++			return state_error;
++		}
++		buf += 2;
++	}
++
++	if ((dword & 3) && verify_2d_tail(&buf, buf_end, 4 - (dword & 0x3)))
++		return state_error;
++
++	*buffer = buf;
++	return state_command;
++}
++
++static inline enum verifier_state via_chrome9_check_header1(uint32_t 
++const **buffer, const uint32_t *buf_end) {
++	uint32_t dword;
++	const uint32_t *buf = *buffer;
++
++	dword = *(buf + 1);
++	buf += 4;
++
++	if (buf + dword > buf_end)
++		return state_error;
++
++	buf += dword;
++
++	if ((dword & 0x3) && verify_2d_tail(&buf, buf_end, 4 - (dword & 0x3)))
++		return state_error;
++
++	*buffer = buf;
++	return state_command;
++}
++
++static inline enum verifier_state via_chrome9_check_header2(uint32_t 
++const **buffer,
++	const uint32_t *buf_end, struct drm_via_chrome9_state *hc_state) {
++	uint32_t cmd1, cmd2;
++	enum hazard hz;
++	const uint32_t *buf = *buffer;
++	const enum hazard *hz_table;
++
++	if ((buf_end - buf) < 4) {
++		DRM_ERROR
++		    ("Illegal termination of DMA HALCYON_HEADER2 sequence.\n");
++		return state_error;
++	}
++	cmd1 = *buf & 0x0000FFFF;
++	cmd2 = *++buf & 0x0000FFFF;
++	if (((cmd1 != INV_REG_CR_BEGIN) && (cmd1 != INV_REG_3D_BEGIN)) ||
++		((cmd2 != INV_REG_CR_TRANS) && (cmd2 != INV_REG_3D_TRANS))) {
++		DRM_ERROR
++		    ("Illegal IO address of DMA HALCYON_HEADER2 sequence.\n");
++		return state_error;
++	}
++	/* Advance to get paratype and subparatype */
++	cmd1 = *++buf & 0xFFFF0000;
++
++	switch (cmd1) {
++	case INV_ParaType_Attr:
++		buf += 2;
++		hz_table = init_table_01_00;
++		break;
++	case (INV_ParaType_Tex | (INV_SubType_Tex0 << 24)):
++	case (INV_ParaType_Tex | (INV_SubType_Tex1 << 24)):
++	case (INV_ParaType_Tex | (INV_SubType_Tex2 << 24)):
++	case (INV_ParaType_Tex | (INV_SubType_Tex3 << 24)):
++	case (INV_ParaType_Tex | (INV_SubType_Tex4 << 24)):
++	case (INV_ParaType_Tex | (INV_SubType_Tex5 << 24)):
++	case (INV_ParaType_Tex | (INV_SubType_Tex6 << 24)):
++	case (INV_ParaType_Tex | (INV_SubType_Tex7 << 24)):
++		buf += 2;
++		hc_state->texture_index = (cmd1 & INV_ParaSubType_MASK) >> 24;
++		hz_table = init_table_02_0n;
++		break;
++	case INV_ParaType_FVF:
++		buf += 2;
++		hz_table = init_table_04_00;
++		break;
++	case INV_ParaType_CR:
++		buf += 2;
++		if (hc_state->agp)
++			hz_table = init_table_11_364;
++		else
++			hz_table = init_table_11_353;
++		break;
++	case INV_ParaType_Dummy:
++		buf += 2;
++		while ((buf < buf_end) && !is_agp_header(*buf))
++			if (!is_dummy_cmd(*buf))
++				return state_error;
++			else
++				buf++;
++
++		if ((buf_end > buf) && ((buf_end - buf) & 0x3))
++			return state_error;
++		return state_command;
++	/* We think cases below are all safe. So we feedback only when these
++	these cmd has another header there.
++	*/
++	case INV_ParaType_Vdata:
++	case (INV_ParaType_Tex |
++		((INV_SubType_Tex0 | INV_SubType_TexSample) << 24)):
++	case (INV_ParaType_Tex |
++		((INV_SubType_Tex1 | INV_SubType_TexSample) << 24)):
++	case (INV_ParaType_Tex |
++		((INV_SubType_Tex2 | INV_SubType_TexSample) << 24)):
++	case (INV_ParaType_Tex |
++		((INV_SubType_Tex3 | INV_SubType_TexSample) << 24)):
++	case (INV_ParaType_Tex |
++		((INV_SubType_Tex4 | INV_SubType_TexSample) << 24)):
++	case (INV_ParaType_Tex |
++		((INV_SubType_Tex5 | INV_SubType_TexSample) << 24)):
++	case (INV_ParaType_Tex |
++		((INV_SubType_Tex6 | INV_SubType_TexSample) << 24)):
++	case (INV_ParaType_Tex |
++		((INV_SubType_Tex7 | INV_SubType_TexSample) << 24)):
++	case (INV_ParaType_Tex | (INV_SubType_General << 24)):
++	case INV_ParaType_Pal:
++	case INV_ParaType_PreCR:
++	case INV_ParaType_Cfg:
++	default:
++		buf += 2;
++		while ((buf < buf_end) && !is_agp_header(*buf))
++			buf++;
++		*buffer = buf;
++		return state_command;
++	}
++
++	while (buf < buf_end && !is_agp_header(*buf)) {
++		cmd1 = *buf++;
++		hz = hz_table[cmd1 >> 24];
++		if (hz) {
++			if (investigate_hazard(cmd1, hz, hc_state))
++				return state_error;
++		} else if (hc_state->unfinished &&
++			finish_current_sequence(hc_state))
++			return state_error;
++
++	}
++	if (hc_state->unfinished && finish_current_sequence(hc_state))
++		return state_error;
++	*buffer = buf;
++	return state_command;
++}
++
++static inline enum verifier_state via_chrome9_check_header3(uint32_t 
++const **buffer,
++	const uint32_t *buf_end)
++{
++	const uint32_t *buf = *buffer;
++
++	buf += 4;
++	while (buf < buf_end && !is_agp_header(*buf))
++		buf += 4;
++
++	*buffer = buf;
++	return state_command;
++}
++
++
++static inline enum verifier_state via_chrome9_check_vheader4(uint32_t 
++const **buffer,
++	const uint32_t *buf_end)
++{
++	uint32_t data;
++	const uint32_t *buf = *buffer;
++
++	if (buf_end - buf < 4) {
++		DRM_ERROR("Illegal termination of video header4 command\n");
++		return state_error;
++	}
++
++	data = *buf++ & ~INV_AGPHeader_MASK;
++	if (verify_mmio_address(data))
++		return state_error;
++
++	data = *buf;
++	buf += 2;
++
++	if (*buf++ != 0x00000000) {
++		DRM_ERROR("Illegal header4 header data\n");
++		return state_error;
++	}
++
++	if (buf_end - buf < data)
++		return state_error;
++	buf += data;
++
++	if ((data & 3) && verify_video_tail(&buf, buf_end, 4 - (data & 3)))
++		return state_error;
++	*buffer = buf;
++	return state_command;
++
++}
++
++static inline enum verifier_state via_chrome9_check_vheader5(uint32_t 
++const **buffer, const uint32_t *buf_end) {
++	uint32_t data;
++	const uint32_t *buf = *buffer;
++	uint32_t i;
++
++	if (buf_end - buf < 4) {
++		DRM_ERROR("Illegal termination of video header5 command\n");
++		return state_error;
++	}
++
++	data = *++buf;
++	buf += 2;
++
++	if (*buf++ != 0x00000000) {
++		DRM_ERROR("Illegal header5 header data\n");
++		return state_error;
++	}
++	if ((buf_end - buf) < (data << 1)) {
++		DRM_ERROR("Illegal termination of video header5 command\n");
++		return state_error;
++	}
++	for (i = 0; i < data; ++i) {
++		if (verify_mmio_address(*buf++))
++			return state_error;
++		buf++;
++	}
++	data <<= 1;
++	if ((data & 3) && verify_video_tail(&buf, buf_end, 4 - (data & 3)))
++		return state_error;
++	*buffer = buf;
++	return state_command;
++}
++
++int
++via_chrome9_verify_command_stream(const uint32_t *buf,
++	unsigned int size, struct drm_device *dev, int agp)
++{
++
++	struct drm_via_chrome9_private *dev_priv =
++		(struct drm_via_chrome9_private *) dev->dev_private;
++	struct drm_via_chrome9_state *hc_state = &dev_priv->hc_state;
++	struct drm_via_chrome9_state saved_state = *hc_state;
++	uint32_t cmd;
++	const uint32_t *buf_end = buf + (size >> 2);
++	enum verifier_state state = state_command;
++
++	hc_state->dev = dev;
++	hc_state->unfinished = no_sequence;
++	hc_state->agp = agp;
++
++	while (buf < buf_end) {
++
++		switch (state) {
++		case state_header0:
++			state = via_chrome9_check_header0(&buf, buf_end);
++			break;
++		case state_header1:
++			state = via_chrome9_check_header1(&buf, buf_end);
++			break;
++		case state_header2:
++			state = via_chrome9_check_header2(&buf,
++				buf_end, hc_state);
++			break;
++		case state_header3:
++			state = via_chrome9_check_header3(&buf, buf_end);
++			break;
++		case state_header4:
++			state = via_chrome9_check_vheader4(&buf, buf_end);
++			break;
++		case state_header5:
++			state = via_chrome9_check_vheader5(&buf, buf_end);
++			break;
++		case state_header6:
++		case state_header7:
++			DRM_ERROR("Unimplemented Header 6/7 command.\n");
++			state = state_error;
++			break;
++		case state_command:
++			cmd = *buf;
++			if (INV_AGPHeader2 == (cmd & INV_AGPHeader_MASK))
++				state = state_header2;
++			else if (INV_AGPHeader1 == (cmd & INV_AGPHeader_MASK))
++				state = state_header1;
++			else if (INV_AGPHeader5 == (cmd & INV_AGPHeader_MASK))
++				state = state_header5;
++			else if (INV_AGPHeader6 == (cmd & INV_AGPHeader_MASK))
++				state = state_header6;
++			else if (INV_AGPHeader3 == (cmd & INV_AGPHeader_MASK))
++				state = state_header3;
++			else if (INV_AGPHeader4 == (cmd & INV_AGPHeader_MASK))
++				state = state_header4;
++			else if (INV_AGPHeader7 == (cmd & INV_AGPHeader_MASK))
++				state = state_header7;
++			else if (INV_AGPHeader0 == (cmd & INV_AGPHeader_MASK))
++				state = state_header0;
++			else {
++				DRM_ERROR("Invalid command sequence\n");
++				state = state_error;
++			}
++			break;
++		case state_error:
++		default:
++			*hc_state = saved_state;
++			return -EINVAL;
++		}
++	}
++	if (state == state_error) {
++		*hc_state = saved_state;
++		return -EINVAL;
++	}
++	return 0;
++}
++
++
++static void
++setup_hazard_table(struct hz_init init_table[],
++enum hazard table[], int size)
++{
++	int i;
++
++	for (i = 0; i < 256; ++i)
++		table[i] = forbidden_command;
++
++	for (i = 0; i < size; ++i)
++		table[init_table[i].code] = init_table[i].hz;
++}
++
++void via_chrome9_init_command_verifier(void)
++{
++	setup_hazard_table(init_table1, init_table_01_00,
++			   sizeof(init_table1) / sizeof(struct hz_init));
++	setup_hazard_table(init_table2, init_table_02_0n,
++			   sizeof(init_table2) / sizeof(struct hz_init));
++	setup_hazard_table(init_table3, init_table_04_00,
++			   sizeof(init_table3) / sizeof(struct hz_init));
++	setup_hazard_table(init_table4, init_table_11_364,
++			   sizeof(init_table4) / sizeof(struct hz_init));
++	setup_hazard_table(init_table5, init_table_11_353,
++			   sizeof(init_table5) / sizeof(struct hz_init));
++}

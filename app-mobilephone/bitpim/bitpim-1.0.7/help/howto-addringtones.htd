@@ -1,0 +1,15 @@
+#include "pagestart.h"
+
+<OL>
+<li><p>Switch to the <B>Ringers</B> tab.
+<li><p>Click on <B>+</B> taskbar icon, or main menu <B>Edit</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>New...</B>
+<li><p>Select a sound file to add.  If a conversion is not required, the sound file will be added directly to the <B>Ringers</B> tab; otherwise the <B>Convert Audio Dialog</B> will be displayed.
+<p><P><IMG SRC="howto-addringtone.jpg" BORDER="0">
+<p>
+<li><p>From the <B>Convert Audio Dialog</B>, set the appropriate conversion parameters and click on <B>Convert</B>.
+<li><p>Once the conversion is done, create your sound clip by setting the <B>Clip Start</B>, <B>Clip Duration</B>, and <B>Volume Adjustment</B> parameters and  clicking on <B>Set</B>.
+<li><p>Optionally, click on <B>Play Clip</B> to listen to the sound clip and readjust the clip if necessary.
+<li><p>Once you're satisfied with the sound clip, click on <B>OK</B> to create the clip and add it to the <B>Ringers</B> tab, or click on <B>Cancel</B> to forget the whole thing.
+</OL>
+
+#include "pageend.h"

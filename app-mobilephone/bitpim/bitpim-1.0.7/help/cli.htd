@@ -1,0 +1,100 @@
+#include "pagestart.h"
+<P>BitPim now provides a stand-alone, Command Line Interface (CLI) feature that allows users to access and manipulate the phone file system without using the full BitPim GUI.
+<H2>Syntax</H2>
+<P>The general BitPim CLI syntax is:
+<P>
+<CODE>
+bitpim [CLI Command & Arguments] [-p comm port] [-f phone model]
+</CODE>
+<P>or if you're running from source:
+<P><CODE>
+python bp.py [CLI Command & Arguments] [-p comm port] [-f phone model]
+</CODE>
+<P>where:
+<P>
+<B><CODE>CLI Command & Arguments</CODE></B>: a space-separated string specifying the command and its arguments.<BR>
+<B><CODE>-p comm port</CODE></B> (optional): specify the interface comm port through which BitPim communicates with the phone.<BR>
+<B><CODE>-f phone model</CODE></B> (optional): specify the phone model of the current phone.
+<P>If either the comm port or the phone model is not specified, BitPim will use the current settings in the config file.  If neither the comm port nor the phone model is available, BitPim will exit with an error.
+<H3>File and Dir Name Syntax</H3>
+<P>Depending on the commands, the arguments can include one or more file or directory names.  These files or directories can either reside locally on the PC or on the phone file system (FS), each of which has different syntax.
+<P>The syntax for specifying local file and directory names is defined by the OS.
+<P>The syntax for specifying phone FS is as follows:
+<P><CODE><B>phone:/</B>[dir]<B>/</B>[dir]<B>/</B>...<B>/</B>[dir|file]</CODE>
+<P>The directory name <B>"."</B> can be used to specify the current directory.<BR>
+Currently, this syntax does not support wildcard characters.
+<H2>Available Commands</H2>
+<H3>ls [dir name] ...</H3>
+List the names of the files and directories of the specified <CODE>dir name</CODE> on the phone file system.  The arguments specify one or more phone FS dir names.  The prefix <B><CODE>phone:</CODE></B> may be omitted from the directory names.  The file/directory names are listed one per line.
+<P>Examples:
+<P><CODE>bitpim "ls phone:/nvm /pim"</CODE><BR>
+lists the files and directories in phone FS dir "/nvm" and "/pim".
+
+<P><CODE>bitpim "ls phone:/" -p com5 -f LG-VX8500</CODE><BR>
+lists the files and directories in the root directories of the phone FS using port <B>com5</B> and phone model <B>LG VX-8500</B>.
+
+<P><CODE>bitpim "ls /" -c configfile</CODE><BR>
+lists the files and directories in the root directory of the phone FS using the settings in the config file named <B>configfile</B>.
+
+<H3>ll [dir name] ...</H3>
+This command is similar to the <B>ls</B> command, with the following additions:
+<OL>
+<LI>Each directory entry displays a "d" in the first column (file entries display blanks).
+<LI>Each file entry dislays the file size and last-modified date/time if available.
+</OL>
+
+<H3>cp [source dir/file name] [source dir/file name] ... [target dir name]</H3>
+This command transfers file(s) from/to the phone FS.  The syntax of the of <B>[target dir name]</B> dictates the direction of the transfer.  If <B>[target dir name]</B> specifies a phone FS directory, this command copies files from either your PC or the phone FS to the target directory on the phone FS.  If <B>[target dir name]</B> specifies a local directory, this command copies files from the phones FS to your local PC.  In this case, all the source files/directories are assumed to be from the phone FS (ie. this command does not do local-to-local files copy).
+<P>Examples:
+<P><CODE>
+bitpim "cp nvm ."<BR>
+bitpim "cp phone:/nvm ."<BR>
+</CODE>
+copies all files from the phone FS directory <B>nvm</B> to the local current directory.
+<P><CODE>
+bitpim "cp nvm phone:/nvm/nvm tmp"<BR>
+</CODE>
+copies all files from the phone directory <B>nvm</B> and <B>nvm/nvm</B> to local directory <B>tmp</B>.
+<P><CODE>
+bitpim "cp tune.mp3 phone:/nvm/nvm01.dat phone:/test"<BR>
+</CODE>
+copies local file <B>tune.mp3</B> and phone FS file <B>nvm/nvm01.dat</B> to the phone FS directory <B>test</B>.
+
+<H3>mkdir [dir name] ...</H3>
+This command creates one or more directories on the phone FS.  The <B>[dir name]</B> arguments are assumed to be on the phone FS, and the prefix <B>phone:</B> may be omitted.
+<P>Example:
+<P><CODE>
+bitpim "mkdir tmp phone:/tmp/tmp1"<BR>
+</CODE>creates 2 directories on the phone FS: <B>tmp</B> and <B>tmp/tmp1</B>.
+
+<H3>rm [file name] ...</H3>
+This command deletes one or more files on the phone FS.  The arguments specify one or more phone FS file names.  All file are assumed to reside on the phone FS and the prefix <B><CODE>phone:</CODE></B> may be omitted from the file names.
+<P>Examples:
+<P><CODE>
+bitpim "rm file1.txt phone:file2.txt tmp/file3.txt"<BR>
+</CODE>delete file <B>file1.txt, file2.txt, tmp/file3.txt</B> from the phone FS.
+
+<H3>rmdir [dir name] ...</H3>
+This command deletes one or more directories on the phone FS.  The arguments specify one or more phone FS directory names.  All directories are assumed to reside on the phone FS, and the prefix <B>phone:</B> may be omitted.  The directories being deleted must be empty.
+<P>Examples:
+<P><CODE>
+bitpim "rmdir tmp phone:tmp1"<BR>
+</CODE>deletes directory <B>tmp</B> and <B>tmp1</B> from the phone FS.
+
+<H3>cli</H3>
+This command provides a primitive interactive BitPim shell that allows users to enter BitPim CLI commands and view the results.  There are several subcommands available only within the shell.  These subcommands are:
+
+<H4>cd [dir name]</H4>
+This command sets the current phone FS working directory to the specified one.  Non-full-path phone FS file names and directory names (name that do not start with <B>"/"</B>) specified in subsequent commands will be relative to the current working directory.  The prefix <B>phone:</B> may be omitted from the argument.
+
+<H4>cdu</H4>
+This command sets the current working directory to the parent directory.
+
+<H4>pwd<BR>
+cwd</H4>
+This command prints the name of the current workding directory.
+
+<H4>exit</H4>
+This command exits the shell and terminates the program.
+
+#include "pageend.h"

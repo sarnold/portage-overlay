@@ -1,0 +1,148 @@
+#include "pagestart.h"
+
+<h2>Sanyo Phone Notes</h2>
+
+<p>While the various Sanyo phones have different form factors and some
+have cameras, they all share a similar phonebook and calendar
+structure.
+
+<h3>Writing to phonebook</h3>
+
+<p>When BitPim reads phonebook or calendar information from the phone,
+the display on the phone will look as it normally does.  However, when
+phonebook data is being sent to the phone, the display will show this
+or something similar (model dependent):
+
+IMAGE(sanyo4900-scarymessage.jpg,Service required.  Please call 1-888-211-4727 for assistance.)
+
+<p>This is normal, do not interrupt BitPim or disconnect the cable
+until the transfer is done.  When the transfer is done, the phone will
+be rebooted:
+
+IMAGE(sanyo4900-poweroff.jpg,Powering Off)
+
+<h3>Phonebook Notes</h3>
+
+<p>The various fields have maximum lengths when writing to the
+phonebook.  Currently if you edit a value to be longer than the
+maximum field length, they will be silently truncated.  Here are
+maximum field lengths as used on the 4900, 5300 and 8100.
+
+TABLE
+	  <tr><td>Name</td><td>16</td></tr>
+	  <tr><td>Home #</td><td>49</td></tr>
+	  <tr><td>Office #</td><td>49</td></tr>
+	  <tr><td>Mobile #</td><td>49</td></tr>
+	  <tr><td>Pager #</td><td>49</td></tr>
+	  <tr><td>Data #</td><td>49</td></tr>
+	  <tr><td>Fax #</td><td>49</td></tr>
+	  <tr><td>Other #</td><td>49</td></tr>
+	  <tr><td>Email</td><td>49</td></tr>
+	  <tr><td>Url</td><td>49</td></tr>
+	    </table>
+
+<p>The SCP-5500 has the same fields, but the sizes of the fields are different.
+
+<p>These phones can hold phone numbers for up to 300 names.  The
+official literature for the phone indicates that up to 500 phone
+numbers can be held in the phone, far less than 300&times;7=2100.  The
+500 number limit comes from a lookup buffer used by the phone to
+display the name and use custom ringers and wallpapers based on caller
+ID.  BitPim will happily load up to 2100 numbers into the phone, but
+the caller ID stuff will only work for the first 500 numbers loaded.
+Also, it is unknown how the on-phone phonebook editor will function
+when one tries to add or remove phone numbers.
+
+<p>These phones do allow entries without a phone number, email or url.
+
+<p>The phones have a built in voice dialing capability.  At present,
+BitPim does not handle voice dial data or assignments when reading or
+writing to the phone.
+
+<h3>Calendar</h3>
+
+<p>The phones have a built in calendar that can hold up to 100 events.
+Each event has a description and a location, each of which can be up
+to 14 characters long.  The calendar holds the start time, start time,
+and the time that an alarm will go off to remind one of the event.
+The alarm can either be either a beep, a female voice that says "Check
+your schedule" or a silent alarm.  The event can also be set to repeat
+daily, weekly, monthly, or yearly.
+
+<p>When BitPim reads the calendar from the phone, the description and
+location are concatenated with a "/" placed between them.  When
+writing the calendar to the phone, if a BitPim calendar description
+contains a "/", then the text after the slash is written to the
+location field on the phone.
+
+<p>This phone can also hold up to 15 "Call Alarm" entries.  These work
+like events, but instead hold a phone number and intended to remind
+the owner to call a particular phone number at a particular time.
+BitPim also reads these alarms into the BitPim calendar.  On writing
+to the phone, calendar entries that "look like" a phone number are
+written to the call alarm entries on the phone.
+
+<p>At present, BitPim does not check if limits on the number of
+entries that can be held by the phone are exceeded.  The behavior of
+BitPim when writing more than 100 events or 15 call alarms is
+unpredictable.
+
+<h3>Call History</h3>
+
+<p>The phone maintains a call history for outgoing, incoming and
+missed calls.  The time, phone number, and name of the last 20 calls
+in each category are saved.  Support for reading these call logs into
+BitPim is planned for a future release.
+
+<h3><a name="media">Ringer/Wallpaper</a></h3>
+
+<p>BitPim will read ringer, wallpaper and camera images from the
+RL-4920, SCP-5400, SCP-5500, SCP-7300, SCP-8100, and PM-8200.
+
+<p>Wallpaper and ringers may be transferred to any supported Sanyo
+phone.  The upload capability is limited to PNG and MIDI files.  This
+is a limitation imposed by Sanyo phones.  The phone can hold
+approximately 6 ringers and 11 wallpaper images.  (These limits may
+vary by phone model.)  The uploaded media are visible on the phone
+through the "PC Sync" menu and will not appear in the "Downloads"
+menu.  The uploaded media can be assigned to names in the phonebook.
+
+<p>The media upload support on the Bell Mobility (Canada) version of
+the SCP-8100 is crippled.  Media may be transferred to the phone, but
+it is not clear if the wallpaper and ringers can be assigned to
+phonebook entries or viewed on the phone.
+
+<h5><a name="mediaerrors">Sanyo Error Codes</a></h5>
+
+<p>When trying to send media files to a Sanyo phone, the phone will
+sometimes reject the file and BitPim will report a numerical error
+code.  These errors codes will be displayed in the Log pane.  Some of
+the reasons for an error are:
+
+<ul>
+
+<li><p>Invalid file type: Sanyo phones only accept PNG wallpapers and
+MIDI ringers.  Other file types, such as QCP ringers, will not be
+accepted.  (This is a limitation of the phone, not BitPim.)
+
+<li><p>Too many files on phone: If too many wall paper or ringer files
+have been transferred, some will need to be deleted through the PC
+Sync menu on the phone.  BitPim does not have the capability to delete
+or overwrite media files on Sanyo phones.
+
+<li><p>File too large: Sanyo phones appear to have a image file size
+limit of 16K bytes.  Ringer files have a similar limitation, although
+it is reported that some phones allow one larger MIDI file.
+
+</ul>
+
+<p>BitPim does attempt to make image files meet the size limitations
+of the phone by reducing image quality in order to make the file fit
+on the phone.
+
+<p>The ability to write ringers and wallpapers to Sanyo phones has
+many limitations.  It is recommended to use the internet capabilities
+of the phone to load sounds and graphics.
+
+
+#include "pageend.h"

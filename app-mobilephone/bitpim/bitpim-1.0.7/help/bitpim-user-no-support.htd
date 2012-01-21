@@ -1,0 +1,34 @@
+#include "pagestart.h"
+
+<p>If you cannot get BitPim working with your phone, then <b>do
+not post to any of the BitPim mailing lists</b>.  You will be
+pointed at this page without any other answer.
+
+<p>Quite simply far too many people had driver issues (we didn't supply
+those), cable issues (we didn't supply those), operating system issues
+(we didn't supply that) or general computer issues (we didn't
+supply that either).  The BitPim developers and users
+have never provided support for those (we didn't supply them!)
+although we tried a bit (we can't see your computer from here).
+
+<p>Unfortunately several people felt that they were entitled to
+support, were under no obligation to follow any of the <a
+href="trouble-serial.htm">existing documentation</a>, and otherwise
+just ranted and raved.  This merely served to put useless messages on
+the list with a lot of inflammatory insulting language.
+
+<p>Ultimately we just got sick and tired of it.  So while you
+may be a nice person, actually follow instructions, and
+realise that no-one is under any obligation to you, it has all
+been ruined by those earlier people.  We are not interested
+in finding out if you are one of the exceptions.
+
+<p>You are welcome to cruise the archives to see how this
+situation arose.
+
+<p>And you will just have to go elsewhere to get your issue
+addressed.  Once you have BitPim talking to your phone, then
+we would love to hear from you.
+
+
+#include "pageend.h"

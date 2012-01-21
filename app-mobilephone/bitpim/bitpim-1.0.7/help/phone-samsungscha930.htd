@@ -1,0 +1,18 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+
+<p>Phonebook, calendar, ringtones, wallpapers, memo (notepad), call history, SMS, and phone detection.
+
+<h2>Contents</h2>
+
+<!-- CONTENTS BEGIN -->
+BEGIN_TOC
+    TOC_0
+    TOCITEM_0(Cables,phone-samsungscha930-cables.htm)
+    TOCITEM_0(Notes,phone-samsungscha930-notes.htm)
+    ENDTOC_0
+END_TOC
+<!-- CONTENTS END -->
+
+#include "pageend.h" 

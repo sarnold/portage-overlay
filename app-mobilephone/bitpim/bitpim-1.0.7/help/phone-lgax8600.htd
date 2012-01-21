@@ -1,0 +1,13 @@
+#include "pagestart.h"
+
+<h2>What works</h2>
+<P>Phonebook, Calendar, Wallpaper, Ringtones, Memos, Call History and file system.
+
+<H2>Notes</H2>
+<UL>
+<LI>When contact data is written to the phone, the group ringtone will be lost. The contacts will maintain their groups, the ringtone will be default.
+<LI>Although the development of the support for the AX8600 was done entirely via Bluetooth, users are reporting successful connections via a cable.
+<LI>If using a cable connection to the AX8600, you need to check the phone settings.  On the AX8600, Menu/Settings/System/PC Connection, Select RS-232C(Com port).  This will allow communication between Bitpim and the AX8600.
+</UL>
+
+#include "pageend.h"

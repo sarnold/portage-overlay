@@ -1,0 +1,50 @@
+--- build/Makefile.orig	2008-10-14 17:42:09.120424097 -0700
++++ build/Makefile	2008-10-14 17:49:11.247426545 -0700
+@@ -29,12 +29,14 @@
+ ##################################################
+ 
+ # define compile options for each build
+-CFLAGS   = -DNDEBUG -O3 $(CBASEFLAGS)
+-CFLAGSd  = -g $(CBASEFLAGS)
+-CFLAGSs  = -DNDEBUG -DASTYLE_LIB -O3 -fpic $(CBASEFLAGS)
+-CFLAGSsd = -DASTYLE_LIB -g -fpic $(CBASEFLAGS)
+-CFLAGSa  = -DNDEBUG -DASTYLE_LIB -O3 $(CBASEFLAGS)
+-CFLAGSad = -DASTYLE_LIB -g $(CBASEFLAGS)
++# Modified for Gentoo by replacing CBASEFLAGS with normal CFLAGS,
++# removing hard-coded -O3, and changing -fpic to -fPIC
++CFLAGSb   = -DNDEBUG $(CFLAGS)
++CFLAGSd  = -g $(CFLAGS)
++CFLAGSs  = -DNDEBUG -DASTYLE_LIB -fPIC $(CFLAGS)
++CFLAGSsd = -DASTYLE_LIB -g -fPIC $(CFLAGS)
++CFLAGSa  = -DNDEBUG -DASTYLE_LIB $(CFLAGS)
++CFLAGSad = -DASTYLE_LIB -g $(CFLAGS)
+ 
+ # object files are built from the source list $(SRC)
+ # a suffix is added for each build
+@@ -50,7 +52,7 @@
+ # OBJ
+ $(objdir)/%.o:  %.cpp  astyle.h
+ 	@ mkdir -p $(objdir)
+-	$(CXX) $(CFLAGS) -c -o $@ $<
++	$(CXX) $(CFLAGSb) -c -o $@ $<
+ 
+ # OBJd
+ $(objdir)/%_d.o:  %.cpp  astyle.h
+@@ -83,7 +85,7 @@
+ release:  astyle
+ astyle:  $(OBJ)
+ 	@ mkdir -p $(bindir)
+-	$(CXX) -s -o $(bindir)/$@ $^
++	$(CXX) -o $(bindir)/$@ $^
+ 	@ echo
+ 
+ debug:  astyled
+@@ -95,7 +97,7 @@
+ shared:  libastyle.so
+ libastyle.so:  $(OBJs)
+ 	@ mkdir -p $(bindir)
+-	$(CXX) -shared -s -o $(bindir)/$@ $^
++	$(CXX) -shared -o $(bindir)/$@ $^
+ 	@ echo
+ 
+ shareddebug:  libastyled.so

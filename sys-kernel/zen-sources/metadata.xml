@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<herd>no-herd</herd>
+<maintainer>
+  <email>nerdboy@gentoo.org</email>
+</maintainer>
+<longdescription>
+Zen-Sources is a collaborative effort of kernel hackers and enthusiasts to 
+include code that is not yet found in the mainline kernel in an attempt to 
+support the latest hardware, new features, security fixes, optimizations, etc.
+This ebuild includes a hardened option.  See http://www.zen-sources.org/
+and http://www.gentoo.org/proj/en/hardened/primer.xml for more info.
+</longdescription>
+<use>
+  <flag name='hardened'>Adds PAX and grsec (hardened) patches for zen-sources.
+  </flag>
+</use>
+</pkgmetadata>

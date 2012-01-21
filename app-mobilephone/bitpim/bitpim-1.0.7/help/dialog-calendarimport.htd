@@ -1,0 +1,57 @@
+#include "pagestart.h"
+
+SCREENSHOT(screen-import-calendar1.png,)
+
+<p>This dialog allows users to initiate the import of calendar data from external
+sources into BitPim, set filtering parameters, preview the data items being imported,
+and save the data into BitPim.  Currently, BitPim supports importing calendar events
+from either Outlook or vCalendar data source.
+
+#define DESC(title,desc) \
+   <p><b>title</b>: desc
+
+<h2>Buttons</h2>
+
+DESC(Browse,Select the data source from which to import calendar data.)
+DESC(Import,Import calendar data from the specified external source into the\
+preview dialog.)
+DESC(Replace All,Discard current BitPim calendar data and replace them with \
+the preview data.)
+DESC(Add,Add the preview data to existing BitPim calendar data.  This may cause \
+duplicate events.)
+DESC(Merge,Bring up the <a href="dialog-calendarmerge.htm">Calendar Merge</a> dialog.)
+DESC(Cancel,Discard the preview data and close this dialog.)
+DESC(Filter,Bring up the Filter Setting Dialog.)
+DESC(Help,Bring up this dialog.)
+
+<h2><a name="importfilter">Import Filter Parameters</a></h2>
+
+SCREENSHOT(screen-import-calendar2.png,)
+
+<p>This dialog allows users to set various filtering paramters to tailor/limit
+the amount of import data.  Individual parameters can be enabled or disabled by
+checking and unchecking their corresponding checkboxes.  Furthermore, those
+parameters must be enabled to adjust their values.
+
+DESC(Start Date,Inclusive starting date of the periodic during which active\
+calendar events would be imported.)
+DESC(End Date,Inclusive ending dat of the periodic during which active\
+calendar events would be imported.)
+<p><B>Preset Duration</B>: Select one of 3 preset durations: <B>This Week</B>,
+<B>This Month</B>, <B>This Year</B>, or <B>Next 7 Days</B>.  The <B>Preset Duration</B> starts from today
+and lasts through the end of the week, month, year, or the next 7 days.  This parameter takes precedence
+over the <B>Start Date</B> and <B>End Date</B> parameter.
+DESC(Repeat Events,Import/translate repeat events into multiple single events.\
+This feature is useful for phones that do not support repeat events natively.)
+DESC(Disable All Alarms,Turn off the alarms of all events being imported.)
+DESC(Use Alarm Settings From Calender, Import as-is settings from source data.)
+DESC(Set Alarm On All Events, Turn on the alarms of all events being imported.)
+<p><B>Alarm Vibrate</B>: Enable phone vibrate with alarm for all events.
+DESC(Alarm Ringtone, Select an alarm ringtone for all events.)
+DESC(Alert Before, Set alarm to go off X minutes before the event start time.)
+DESC(Categories,Define the categories against which calendar events must match\
+to be imported.)
+DESC(OK,Save the settings and close this dialog.)
+DESC(Cancel,Discard the settings and close this dialog.)
+
+#include "pageend.h"

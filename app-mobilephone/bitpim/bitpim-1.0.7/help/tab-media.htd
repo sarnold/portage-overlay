@@ -1,0 +1,31 @@
+#include "pagestart.h"
+
+<p>This page displays the media items that BitPim currently maintains and allows
+users to perform various actions on them.  The types of media items include pictures for wallpapers, sound clips for ringtones, etc.
+
+SCREENSHOT(screen-wallpapertab.jpg,)
+SCREENSHOT(screen-ringerstab.png,)
+
+<h2>Actions</h2>
+
+<p><b>Add</b>: To add new media items to BitPim, either click on the <B>+</B> button on the tool bar, or main menu <B>Edit</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>New...</B>, or context menu <B>Add ...</B>, or by pressing <B>Ctrl+N</B>.  Users can then select one or more media files to add.
+
+<p><b>Delete</b>: To delete the selected media items, either click on the <B>X</B> button on the tool bar, or main menu <B>Edit</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>Delete</B>, or context menu <B>Delete</B>, or pressing on the <B>Delete</B> or <B>Del</B> key.
+
+<p><b>Open</b>: To activate the application associated with this type of media item, either double-click on the item, or conext menu <B>Open</B>.
+
+<p><b>Save</b>: To save the selected media item into a file, go to context menu <B>Save ...</B>.
+
+<p><b>Copy</b>: To copy the selected media item into the clipboard, go to main menu <B>Edit</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>Copy</B>, or context menu <B>Copy</B>, or pressing <B>Ctrl+C</B>.
+
+<p><b>Paste</b>: To paste one or more media items from the clipboard, go to main menu <B>Edit</B>&nbsp;<IMG SRC="nextitem.png">&nbsp;<B>Paste</B>, or context menu <B>Paste</B>, or pressing <B>Ctrl+V</B>.
+
+<p><B>Replace</B>: To replace the content of the selected media item, go to context menu <B>Replace</B> and enter the file name of the new media content.
+
+<p><B>Refresh</B>: Refresh the list of media items on this page.
+
+<p><b>Drag and Drop</b>: On Windows, BitPim supports drag-and-drop media files from other applications into BitPim (which is equivalent to adding files); and drag-and-drop files from BitPim to other applications.
+
+<p><B>Move to</B>: Move the selected items to a different media page.
+
+#include "pageend.h"

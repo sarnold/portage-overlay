@@ -1,0 +1,983 @@
+Notes on the AT command phonebook protocol used by various Samsung Phones.
+Thanks to the following individuals for loans or information about these phones
+
+       John Sabato, Loan of SPH-8500
+       Vic Heintz, SPH-A670 information
+       Mike Young, SPH-A610 information
+       Jim Bailey, A700 information
+
+Some links to information about Samsung phones.
+
+http://navasgrp.home.att.net/tech/sch-8500/
+	Information on SCH-8500 with some AT commands
+
+http://lager.dyndns.org/sambru/allcommands.txt
+	Results of scanning through 500,000 AT commands to see what
+	works on the SCH-6100/SCH-8500
+
+http://www.howardforums.com/archive/topic/83000-1.html
+	Info about S105.  Note AT+MELW, AT+IMGW command for file and
+	image transfer.  Perhaps files can be transferred without going
+	into DM mode?
+
+http://webpages.charter.net/hideo_a310/downs/TechNotes/a310_atcommands.txt
+	Has commands for reading and writing group names and for reading
+	builtin animations and ringers.
+
+==========================================================================
+SCH-8500 Sprint, CDMA
+
+Serial connection 19200 BAUD
+
+Fields in phone book entry:
+       Name, ID Number, Home, Work, Mobile, Pager, Fax, No Label, Ringer,
+       which # is speed dial, secret
+       Name up to 12 characters
+       Numbers up to 32 characters
+
+Does not support QCDMG command
+
+AT+GMI
++GMI: SAMSUNG ELECTRONICS CO.,LTD.
+
+OK
+AT+GMM
++GMM: SCH8500
+
+OK
+AT+GMR
++GMR: S/W: VJ24, PRL 10019
+
+OK
+AT#PMODE=1
+OK
+AT#PCBIT?
+#PCBIT: 6,250,12,32,1
+OK
+AT#PBOKR=?
+#PBOKR: (1-229),12,32
+OK
+AT#PCMIT?
+#PCMIT: 0,0,1
+OK
+
+==========================================================================
+SCH-A605	 Marcelo <marcelozi@pop.com.br>
+
+Gentlemen,
+I verified codes AT as below: 
+at+gmiÊÊÊÊÊ
++GMI: SAMSUNG ELECTRONICS CO.,LTD.ÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊÊ
+Ê
+OK
+at+gmr
++GMR: S/W VER: A605ÊÊÊÊÊÊÊÊ SCH-A605 
+Ê
+OK
+at+gmm
++GMM: SCH-A605/165
+Ê
+OK
+at#pmode=1
+at#pcbit?
+#PCBIT: 1005,1,0,5,5,250,250,79,1,12,32,12,32,0
+Ê
+OK
+at#pbokr=?
+#PBOKR: (1-251),(0-4),12,32,32,0
+Ê
+
+at#pcmit?
+#PCMIT: 1004,1,0,0,0,0,0,0,4,12,1,128,80,0,12,1,0,0,0,0,12,0,0,0,0,0
+Ê
+OK
+Ê
+at#pbokr=25
+#PBOKR: 25,25,1,50,"Paula",2,0,2155586,0,,,81535896,0,,,,,,,,,"",20040625T1
+95530
+Ê
+==========================================================================
+SCH-A610 Verizon
+
+Photos in /digital_cam
+
+AT+GMI     
++GMI: SAMSUNG ELECTRONICS CO.,LTD.                                 
+
+OK
+AT+GMR
++GMR: S/W VER: S:A610.WL30     SCH-A610
+
+OK
+AT+GMM
++GMM: SCH-A610/156
+
+OK
+AT#PMODE=1
+OK
+AT#PCBIT?
+#PCBIT: 1005,1,0,8,5,500,500,87,1,13,48,22,32,0
+
+OK
+AT#PBOKR=?
+#PBOKR: (1-500),(0-4),22,32,48,0
+
+OK
+AT#PCMIT?
+#PCMIT: 1000,1,4,0,0,0,0,0,3,12,1,128,80,10,12,1,0,0,0,0,12,0,0,0,0,0
+
+OK
+
+AT#PBOKR=38
+#PBOKR: 38,40,2,1,"Looong contact name",0,0,12345678901234567890123456789012,
+0,10987654321098765432109876543210,0,13243546576879809102132435465768,0,
+11111222223333344444555556666677,0,88776655443322110099887766554433,0,
+Long alias goes here,0,,,"Long.email.address@foo.com",3,0,"digital_cam/Image001",20041008T110011
+
+Fields:
+
+38: 38th contact entered into phone
+40: speed dial location
+2: group index assigned (starting at zero; 0=friend, 1=family, etc.)
+1: ringtone index assigned (zero is unassigned?)
+"contact name"
+0: speed dial assignment (0=home, 1=office, etc)
+0
+home phone number
+0 if home number entered, blank otherwise
+office phone number
+0 if office number entered, blank otherwise
+mobile phone number
+0 if mobile number entered, blank otherwise
+pager number
+0 if pager number entered, blank otherwise
+fax number
+0 if fax number entered, blank otherwise
+alias (if entered, otherwise blank)
+0 if alias entered, otherwise blank
+two extra commas
+"email address" or "" if none entered          
+3 if picture assigned, 5 if no picture assigned
+0 usually, but not always (unknown numeric field)
+"location of picture" or "" if no picture assigned
+timestamp of last edit: yyyymmddThhmmss
+
+
+Since some of the strings above are double quote delimited, we see
+that an actual double quote within the string is encoded as
+two-characters, } followed by 0x02. An actual } character in the
+string is encoded as two-characters, } followed by ].
+
+==========================================================================
+SPH-A620/VGA1000 Sprint, CDMA
+
+USB Straight through cable
+
+Fields in phone book entry
+       Name, Location#, Home, Work, Mobile, Pager, No Label, Speed dial,
+       Email, URL, Group, Ringer, Birthday, Secret, Picture ID
+
+Photos in /digital_cam/jpeg
+
+
+AT#PCBIT?
+#PCBIT: 1008,1,0,5,5,300,300,21,1,12,32,20,32,3,"URL",32,"Birthday",10,"Avatar",2
+
+AT#PBOKR=?
+#PBOKR: (1-301),(0-4),20,32,32,32,10,0
+
+AT#PBOKR=2
+#PBOKR: 2,3,1,20,"Jones, Mike",0,0,5551112222,0,5552223333,0,9161111111,0,,,,,,,,,"bitpim@a.com","bitpim.sf.net",11/11/2000,20,20041105T005203
+
+OK
+
+Slot, Entry #, Group, Ringer, Name, ?, ?, 6x(Num, Secret)
+
+Ringers=20 = downloaded ringer, Single Tones, or 
+0-9: "Ring 1 - Ring 10"
+10: Fuer Elise
+11: Star Stripe
+12: Serenade
+13: Pop4
+14: Jazz_Full_Mel
+15: Rock
+16: Sunny day
+17: Rhythm & Blues
+18: Sax
+19: Boardwalk
+20: Default, Downloaded or single tone
+
+Wallpapers:
+0-21: Man 1 - Man 22
+10-24: Animal 1 - Animal 15
+20: Other 1 - Other 10
+20: Downloads, Picture wallet
+
+
+Scan through all comannds of for
+AT#PXXXY?
+AT#PXXXY=?
+Where X is A-Z
+and Y is A-Z except W
+
+#PBDYN?
+#PBDYN: 916-705-XXXX
+OK
+
+#PBGRR=?
+#PBGRR: (0-4),12
+OK
+
+#PBOKR=?
+#PBOKR: (1-301),(0-4),20,32,32,32,10,0
+OK
+
+#PBSEL?
+#PBSEL: 0,7,"1C2C3C4C8D18D19D"
+OK
+
+#PCBIT?
+#PCBIT: 1008,1,0,5,5,300,300,6,1,12,32,20,32,3,"URL",32,"Birthday",10,"Avatar",2
+OK
+
+#PCBND?
+#PCBND: 1
+OK
+
+#PCKEY?
+#PCKEY: 0
+OK
+
+#PCLNK?
+#PCLNK: 0
+OK
+
+#PCLNK=?
+#PCLNK: (0-1)
+OK
+
+#PCMIT?
+#PCMIT: 1001,1,4,0,0,0,0,0,4,12,1,128,80,0,12,1,0,0,0,0,12,0,0,0,0,0
+OK
+
+#PCOUT?
+#PCOUT: 1
+OK
+
+#PCOUT=?
+#PCOUT: (0-1)
+OK
+
+#PCPIT?
+#PCPIT: 1002,32,70,1,5,16,9,32,9
+OK
+
+#PCSIT?
+#PCSIT: 1001,0,0,0,0,255,94
+OK
+
+#PCUIT?
+#PCUIT: 1001,12,1000,0,10,0
+OK
+
+#PIDYR=?
+#PIDYR: (0-8),16
+OK
+
+#PIMMR=?
+#PIMMR: (0-8),64
+OK
+
+#PISHR=?
+#PISHR: (0-69),(0-4),32
+0
+1
+2
+3
+4
+OK
+
+#PITDR=?
+#PITDR: (0-8),32
+OK
+
+#PITIM?
+#PITIM: 19800106T000000
+OK
+
+#PIWTM?
+OK
+
+#PIWTM=?
+OK
+
+#PMODE?
+#PMODE: 1
+OK
+
+#PMODE=?
+#PMODE: (0-1)
+OK
+
+a
+#PMUNA: 20040922T003356,S,"BitPim J"
+OK
+
+#PMUNA=?
+#PMUNA: 14,1
+OK
+
+#PSRMR?
+#PSRMR: 5
+OK
+
+#PSRMR=?
+#PSRMR: (0-93)
+OK
+
+#PSSEL?
+#PSSEL: 0,0,5
+OK
+
+#PUGSN?
+#PUGSN: (0-20)
+0,0,Ring 1
+1,0,Ring 2
+2,0,Ring 3
+3,0,Ring 4
+4,0,Ring 5
+5,0,Ring 6
+6,0,Ring 7
+7,0,Ring 8
+8,0,Ring 9
+9,0,Ring 10
+10,1,Fuer Elise
+11,1,Star Stripe
+12,1,Serenade
+13,1,Pop4
+14,1,Jazz_Full_Mel
+15,1,Rock
+16,1,Sunny day
+17,1,Rhythm & Blues
+18,1,Sax
+19,1,Boardwalk
+20,255,Default Ringer
+OK
+
+==========================================================================
+SPH-A670 Verizon
+==========================================================================
+
+Fields in phonebook entry
+       Name, Location#, Home, Office, Mobile, Pager, Fax, Alias, E-Mail,
+       Speed-dial, Group, Ringer, Picture ID
+
+Photos in /digital_cam.  Have the names "Image001, Image002 ...).  Bytes
+47:61 contain a yyyymmddHHMMSS timestamp.  If the timestamp is
+19810104235959, the picture was taken while the phone was out of
+service (and thus didn't know the time.)  Picture is retrieved by
+removing the first 96 bytes of the file and saving it as a jpeg.
+
+Wallpapers (bmp or png) in /brew/shared
+Ringtones (mid or pmd) in brew/ringer
+
+Unlike most other phones we have looked at, there does not seem to be
+a file nvm/$SYS.ESN.
+
+AT+GMI
++GMI: SAMSUNG ELECTRONICS CO.,LTD.
+
+OK
+AT+GMR
++GMR: S/W VER: S:A670.XD19     SCH-A670
+
+OK
+AT+GMM
++GMM: SCH-A670/164
+
+OK
+AT#PMODE=1
+OK
+AT#PCBIT?
+#PCBIT: 1005,1,0,8,5,500,500,75,1,13,48,22,32,0
+
+OK
+AT#PBOKR=?
+#PBOKR: (1-500),(0-4),22,32,48,0
+
+OK
+AT#PCMIT?
+#PCMIT: 1000,1,4,0,0,0,0,0,3,12,1,128,80,10,12,1,0,0,0,0,12,0,0,0,0,0
+
+OK
+AT#PUGSN?
+#PUGSN: (0-15)
+0,255,Inactive
+1,0,Bell 1
+2,0,Bell 2
+3,0,Bell 3
+4,0,Bell 4
+5,0,Bell 5
+6,1,Melody 1
+7,1,Melody 2
+8,1,Melody 3
+9,1,Melody 4
+10,1,Melody 5
+11,1,Melody 6
+12,1,Melody 7
+13,1,Melody 8
+14,1,Melody 9
+15,1,Melody 10
+OK
+
+>
+> I played around with Kermit and got the following result for my A670  
+> phone on a dummy contact entry for testing:
+>
+
+at#pbokr=42
+#PBOKR: 42,10,3,18,"A test",2,0,5550000000,0,5551111111,0,5552222222,0,5553333333,0,5554444444,0,Alias  (48  chars),0,,,"Email (48 chars)",3,0,"digital_cam/Image034",20041115T105543
+
+OK
+
+Field	Value 
+01	42	Phonebook slot
+02	10	Speeddial assignment
+03	3	Group assignment (0-4, friend,family, etc)
+04	18	Ringtone id (0-15 built-in; 16-55 listed in nvm/nvm/brew_melody)
+05	"A..."	Name of contact (22 chars max) in double quotes
+06	2	Speed-dial selector (0=Home, 1=Work, 2=Mobile, 3=Pager, 4=Fax)
+07	0	Always?
+08	nnn	Home phone number (32 chars max)
+09	0	0 if home number exists, blank otherwise
+10	nnn	Work phone number (32 chars max)
+11	0	0 if work number exists, blank otherwise
+12	nnn	Mobile phone number (32 chars max)
+13	0	0 if mobile number exists, blank otherwise
+14	nnn	Pager phone number (32 chars max)
+15	0	0 if pager number exists, blank otherwise
+16	nnn	Fax phone number (32 chars max)
+17	0	0 if fax number exists, blank otherwise
+18	Alia...	Alias (48 chars max) (no quotes?!!!)
+19	0	0 if alias exists, blank otherwise
+20	empty	?
+21	empty	?
+22	"em"	E-mail address (48 char max) in double quotes or "" if none
+23	3	Caller-id image flag (3=photo gallery, 4=wallpaper, 5=none)
+24	empty	ID of caller-id wallpaper when flag above=4
+25	"di..."	Path to caller-id gallery image when flag above=3 or ""
+26	2004...	Timestamp
+
+Note on field #18: Purpose of this field is unknown. It could be for website URLs or instant messenger screen names. Is is not double-quoted like the name or email field. It CAN have commas in it which may cause problems.
+
+Note on field #24:  This id seems to be mapped to image file name and path in /nvm/nvm/brew_image. Mapping of the id to phonebook contact name appears to be in /nvm/nvm/dial_tbl
+
+Here is the same phonebook entry after changing the caller-id image from a "Gallery" (digital cam) selection to a "My Image" (wallpaper) selection:
+
+at#pbokr=42
+#PBOKR: 42,10,3,18,"A test",2,0,5550000000,0,5551111111,0,5552222222,0,5553333333,0,5554444444,0,Alias  (48  chars),0,,,"Email (48 chars)",4,3,"",20041115T124103
+
+Note the flag is now 4 and the wallpaper id is now 3.
+
+Commas can be put in text fields with uncertain impact on AT#PBOKR. Double quote chars in text fields get replaced with the "}" char in the PBOKR response.
+ 
+Vic Heintz
+
+==========================================================================
+SPH A-670 on Telus network (Canada)                    
+==========================================================================
+
+   Date: Mon, 06 Dec 2004 14:43:52 -0000
+   From: "Troy Strum" <tstrum@accesswave.ca>
+Subject: AT Codes... (Telus + a670)
+
+
+I ran all the possible "P" series AT codes against my phone (something
+like 500,000 of them) and I came up with about 31 of them. 
+
+Serial Settings: 115200, 8N1
+Turn on local echo: atz
+Turn on PCSync Mode: at#pmode=1
+If you screw up a command, just type "at" and hit enter.
+
+Interestingly, I noticed that when I tried to retrieve my phonebook, I
+at first had access to one contact (not the 17 I had). Then later, I
+had access to 2. This kept happening until I had 7 or so before I
+figured it out:
+
+at#pbsel responds with #PBSEL: 0,3,"1C2C3C"
+
+This is somehow an internal regiter that shows how many contacts are
+in the phonebook - and that started with 0,1,"1C" and worked up to
+0,17,"1C...17C". It's read-only. However, every time I did with
+"at#pmode=0" and then "at#pmode=1" it incremented. I ran that a few
+times and now I have access to all 17 - and it *seems* new contacts
+now show immediately without futzing, YMMV.
+
+Anyway, the codes:
+
+(where it's command:response_line1:response_line2:...)
+
+at#pbdyn?:#PBDYN: 555-555-5555::OK //My Cell Number
+at#pbgrr=?:#PBGRR: (0-4),10::OK
+at#pbokr=?:#PBOKR: (1-301),(0-4),20,32,32,0::OK //Read Contact
+at#pbokw=?:#PBOKW: (1-301),(0-4),20,32,32,0::OK //Write Contact (not
+tried)
+at#pbsel?:#PBSEL: 0,3,"1C2C3C"::OK //Documented above.
+at#pcbit?:#PCBIT: 1012,1,0,5,5,300,300,29,1,10,32,20,32,0::OK
+at#pcbnd?:#PCBND: 1::OK
+at#pckey?:#PCKEY: 0::OK
+at#pclnk?:#PCLNK: 0::OK
+at#pclnk=?:#PCLNK: (0-1)::OK
+at#pcmit?:#PCMIT:
+1001,1,4,0,0,0,0,0,4,12,1,128,80,0,12,1,0,0,0,0,12,0,0,0,0,0::OK
+at#pcout?:#PCOUT: 1::OK
+at#pcout=?:#PCOUT: (0-1)::OK
+at#pcpit?:#PCPIT: 1001,32,70,1,5,16,9,32,9::OK
+at#pcsit?:#PCSIT: 1001,0,0,0,0,255,94::OK
+at#pcuit?:#PCUIT: 1001,12,1000,0,10,0::OK
+at#pidyr=?:#PIDYR: (0-8),16::OK
+at#pidyw=?:#PIDYW: (0-8),16::OK
+at#pishr=?:#PISHR: (0-69),(0-4),32:100:0:10:30:60::OK
+at#pishw=?:#PISHW: (0-69),(0-4),32:100:0:10:30:60::OK
+at#pitdr=?:#PITDR: (0-8),32::OK
+at#pitdw=?:#PITDW: (0-8),32::OK
+at#pitim?:#PITIM: 19800106T000000::OK
+at#pmode?:#PMODE: 1::OK //Modem (0) or PCSync (1) Mode.
+at#pmode=?:#PMODE: (0-1)::OK 
+at#pmuna?:#PMUNA: 20041128T194340,S,"My Banner"::OK
+at#pmuna=?:#PMUNA: 30,1::OK
+at#psrmr?:#PSRMR: 4::OK
+at#psrmr=?:#PSRMR: (0-93)::OK
+at#pssel?:#PSSEL: 0,0,4::OK
+at#pugsn?:#PUGSN: (0-20):0,0,Ring 1:1,0,Ring 2:2,0,Ring 3:3,0,Ring
+4:4,0,Ring 5:5,0,Ring 6:6,0,Ring 7:7,0,Ring 8:8,0,Ring 9:9,0,Ring
+10:10,1,Fur Elise :11,1,Serenade:12,1,Rock:13,1,Too
+high:14,1,Carmen:15,1,Voice Volume:16,1,HFK Voice:17,1,Headset:18,1,HF
+
+Getting the phone book:
+
+Command: at#pbokr=18
+
+Response: #PBOKR:
+18,18,1,2,"DUMMY",1,0,9021111111,0,9022222222,0,9023333333,0,9024444444,
+0,9025555555,0,9026666666,0,,,"email1","email2",01/01/1976,20,20041205T233411
+
+Decyphered:
+
+memory_code (the 18 of at#pbokr=18)
+normal_code (the code which the phonebook displays)
+GROUP (See at#pbgrr=X (where X=0..4)
+RINGER (corresponds with at#pugsn? except downloads are always 20 too)
+"NAME"
+SPEED_DIAL_WHICH_# (0..6-home, business, cell, pager, fax, no label)
+0 (Seems always to be 0 in my phonebook?)
+HOME#
+is_secret (above # - 0 for not, 1 for secret)
+BUS#
+is_secret (above # - 0 for not, 1 for secret)
+CELL#
+is_secret (above # - 0 for not, 1 for secret)
+PAGER#
+is_secret (above # - 0 for not, 1 for secret)
+FAX#
+is_secret (above # - 0 for not, 1 for secret)
+NOLABEL#
+is_secret (above # - 0 for not, 1 for secret)
+? (Can't seem to set this anywhere)
+? (Can't seem to set this anywhere)
+"email1"
+"email2"
+birthday (mm/dd/yyyy)
+20 (Seems always to be 20 in my phonebook?)
+date (added or edited - YYYYMMDDTHHMMSS - where T is a literal T in
+the string)
+
+Setting the contact to secret seems to set all the is_secret fields to
+1, disabling sets them all to 0. 
+
+Before I added this entry, my previous entries were reverse order to
+memory_code and normal_code - I had 17 entries, and it was
+1..17,17..1. When I was finally able to access all my phone entries
+from AT commends, I added an 18th entry via the phone, and both codes
+matched. Strange. :)
+
+
+- Troy
+<<<<<<< samsungnotes.txt
+
+==========================================================================
+SCH-A460 Sprint
+
+Responds to AT$QCDMG, but does not seem to have a brew file system.
+Need to try qcplink protocol
+
+
+=======
+
+==========================================================================
+
+SCH-N392 - Pelephone (Israel)
+<nakeee@gmail.com>
+
+Phone model:
+
+AT+GMM
++GMM: SCH-N392/160
+
+OK
+
+Vendor:
+
+AT+GMI
++GMI: SAMSUNG ELECTRONICS CO.,LTD.
+
+OK
+
+Firmware version:
+
+AT+GMR
++GMR: S/W VER: N392         SCH-N392 
+
+OK
+
+Battary level:
+
+AT+CBC?
++CBC: 0,83
+
+OK
+
+Signal quality:
+
+AT+CSQ?
++CSQ: 27, 99
+
+OK
+
+Get phone number:
+
+AT#PBDYN?
+#PBDYN: <number>
+
+OK
+
+
+Phone reset:
+
+ATZ
+ok
+
+Toggle echo[off|on]:
+
+ATE[0|1]
+OK
+
+Toggle speaker?
+
+ATM[0|1]
+OK
+
+Toggle result code [on|off]
+
+ATQ[0|1]
+OK (only when ATQ0)
+
+
+Return ESN:
+
+AT+GSN
++GSN: XXXXXXXX
+
+OK
+
+Service type ?(1 is CDMA 0 analog?):
+
+AT+CAD?
++CAD: 1
+
+OK
+
+Some phone info smarter people might know what it means:
+
+AT+GCAP
++GCAP: +CIS707-A, +MS, +ES, +DS, +FCLASS
+
+OK
+
+Voice call a number:
+
+AT+CDV<phone number>
+OK
+
+Hang up a call:
+
+AT+CHV
+OK
+
+Add carrier? [off|on]
+ATV[0|1]
+OK (only when 1)
+
+Supported speeds:
+AT+IPR=?
++IPR: (0, 1200, 2400, 4800, 9600, 19200), (45, 50, 75, 110, 150, 300, 600, 38400, 57600, 115200)
+
+OK
+
+Current speed:
+
+AT+IPR?
++IPR: 115200
+
+OK
+
+Set speed:
+
+AT+IPR=115200
+OK
+
+Set timeout if not connected:
+
+ATS7=60
+OK
+
+Get timeout:
+
+ATS7?
+060
+
+OK
+
+
+Unknown: (guess timeouts for other things?)
+Note: set might be working as well.
+
+ATS3?
+013
+
+OK
+ATS4?
+010
+
+OK
+ATS5?
+008
+
+OK
+ATS6?
+002
+
+OK
+
+ATS8?
+002
+
+OK
+
+ATS9?
+006
+
+OK
+ATS10?
+014
+
+OK
+ATS11?
+095
+
+Set programing mode [off|on]
+
+AT#PMODE=[0|1]
+OK
+
+Get programing mode:
+
+AT#PMODE?
+#PMODE: 1
+
+OK
+
+#######################
+From here on all commands should be done in programing mode.
+
+Phone book info:
+range of phones allowed,group range,Name length,number length?,un,un
+
+AT#PBOKR=?
+#PBOKR: (1-900),(0-4),12,32,32,3
+
+Fields in phone book Entry as returned by AT#PBOKR=<phone num>:
+
+#PBOKR:
+
+Field num, Speed dial, Group ID, Ring id, Name (in ""), 
+Default number (speed dial), secret[0,1], Home, secret[0,1], Work,
+secret[0,1], Mobile, secret[0,1], Pager, secret[0,1],
+Fax, secret[0,1], No Label, secret[0,1],,,e-mail (in ""), 
+url (in ""), Bday (in ""), Image name (in "") ,
+time of last save? (changes every save only)
+
+Name is up to 12 chars
+Numbers are up to 32 chars
+Picture names,Email,URLs are up to 32 chars
+Groups are from 0-4
+
+Range of sms:
+
+AT#PSRMR=?
+#PSRMR: (0-97)
+
+OK
+
+Number of SMS:
+AT#PSRMR?
+#PSRMR: 2
+
+OK
+
+Read SMS:
+
+AT#PSRMR=<number>
+
+#PSRMR: 
+
+un,un,un,Time of arrival,message (in ""), Number it came from  
+(probebly new,protect,read need to check order)
+
+Get greeting format:(max number of chars,un)
+
+AT#PMUNA=?
+#PMUNA: 15,1
+
+OK
+
+Get current greeting:(time of last change,M first time S after,Text in "")
+
+AT#PMUNA?
+#PMUNA: 20050207T203049,S,"SAMSUNG"
+
+OK
+
+Get Rings:(ring ID,un,Name)
+
+AT#PUGSN?
+#PUGSN: (0-50)
+0,0,Ring 1
+1,0,Ring 2
+2,0,Ring 3
+3,0,Ring 4
+4,0,Wave1
+5,1,Wave2
+6,1,Bird
+7,1,Pure1
+8,1,Pure2
+9,1,Pure3
+10,1,Mystery1
+11,1,Mystery2
+12,1,Space
+13,1,The Trout
+14,1,Jesu joy of man's desiring
+15,1,Maiden's Prayer
+16,1,Triumphal March
+17,1,Cello Suit No.1
+18,1,Four Seasons - Winter
+19,1,A Little Night Music
+20,1,La Traviata
+21,1,Black Key Etude
+22,1,Minuet in G
+23,1,Ruslan and Lyudmila Overture
+24,1,In the Hall of the Mountain King
+25,1,Humoresque
+26,1,Violin Sonata No.12
+27,1,Arabesque
+28,1,Cancan
+29,1,C Minor Op.67
+30,1,Cat's Dance
+31,1,Wedding March
+32,1,Remembrance
+33,1,Walking the Street
+34,1,A Jazz Cat?
+35,1,Samba Party
+36,1,Musical
+37,1,Christmas Dance
+38,1,Cannon
+39,1,Drummer
+40,2,Empty
+41,2,Empty
+42,2,Empty
+43,2,Empty
+44,2,Empty
+45,2,Empty
+46,2,Empty
+47,2,Empty
+48,2,Empty
+49,2,Empty
+50,255,Inactive
+
+Get time zones:
+
+AT#PIWTM=?
+#PIWTM: (0-23),16
+San Francisco
+Denver,Arizona
+Chicago,Mexico
+NewYork,D.C.
+Caracas
+Buenos Aires
+Mid Atlantic
+Cape Verde
+London,Madrid
+Paris,Berlin
+Athens,Helsinki
+Moscow
+Abu Dabi
+Tashkent
+Alma-ata
+Bangkok,Jakarta
+Hongkong,Beijing
+Seoul,Tokyo
+Sydney,Guam
+Okhotsk
+Wellington
+Samoa,Midway
+Honolulu,Hawaii
+Alaska
+
+
+OK
+
+Planner: (range, Max name length)
+
+AT#PITDR = ?
+#PITDR: (0-8),32
+
+
+AT#PITDR = <number>
+
+#PITDR:
+
+ID,priority (0 low 1 high), End time, Timestamp,un (C), name (in "")
+
+==========================================================================
+SPH-A700 Sprint  (AKA MM-A700?)
+
+DO NOT USE THIS PHONE WITH BITPIM or any program which puts the phone into
+Brew/Diagnostic mode (done with AT$QCDMG).  It is reported that doing
+this puts the phone permanently into diagnostic mode at which point
+sync programs can no longer read and write the phonebook and the phone
+can not be used a modem.
+
+Jan 2005: One user reports that the new "Switch to modem" mode option in the
+filesystem viewer will take the A700 out of Brew/Diagnostic mode without
+needing to reboot or totally reset the phone.
+
+AT+GMI
+SAMSUNG ELECTRONICS CO.,  LTD.
+
+AT+GMR
+ES.A700       1  [Jun 01 2004 24:00:00]
+
+AT+GMM
+SPH-A700/141
+

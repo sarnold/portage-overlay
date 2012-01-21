@@ -1,0 +1,11 @@
+--- Makefile.in.orig	2009-05-10 18:25:12.214084110 -0700
++++ Makefile.in	2009-05-10 18:29:55.961332867 -0700
+@@ -204,7 +204,7 @@
+ EXEEXT = @EXEEXT@
+ F77 = @F77@
+ FC = @FC@
+-FFLAGS = @FFLAGS@
++FFLAGS = "$(CFLAGS) -Wp,-D_FORTIFY_SOURCE=2 -fexceptions"
+ FLIBS = @FLIBS@
+ FPP = @FPP@
+ FPPFLAGS = @FPPFLAGS@

@@ -1,0 +1,84 @@
+#include "pagestart.h"
+
+
+
+<p>DO NOT PULL THE CABLE OUT OF THE PHONE WHILE OPERATIONS ARE TAKING
+PLACE (even just reads).  If you do, you could end up with bad data
+when you read the phone book.  You can only fix that by writing good
+data back again.
+
+<p>The LG-VX3200 is a simpler (less featured) phone compared to the
+other LG phones supported by BitPim. The manufacturer has taken some
+shortcuts related to some of the inner workings of the phone that in
+turn make some of the BitPim media handling a little trickier. This is
+especially true for the Wallpaper handling. Please see the Howtos
+help section for this phone for important information.
+
+<p>Remember to examine the "Log" tab in BitPim for useful messages
+if an operation does not appear to have worked correctly.
+
+<p><b>PHONEBOOK NOTES</b>
+
+<p>The LG-VX3200 imposes some limitations on what can be written to
+the phone when updating the phone's Phonebook. Note that this is a
+limitation of the phone and not BitPim. 
+In addition there are other items of note related to
+Phonebook support. Here are the specifics:
+
+<ul>
+<li><p>Writing wallpaper selections to the phone for a phonebook entry is
+not supported. Wallpapers will be set to Default when a phonebook
+entry is written to the phone.</li>
+<li><p>Only a subset of the phone's builtin ringers can be assigned to
+a phonebook entry and written to the phone. The only ringers that can
+be assigned to a phonebook entry and successfully written to the phone are:
+<ul>
+<li><p>Ring 1</li>
+<li><p>Ring 2</li>
+<li><p>Ring 3</li>
+<li><p>Ring 4</li>
+<li><p>Ring 5</li>
+<li><p>Ring 6</li>
+<li><p>Ring 7</li>
+<li><p>Ring 8</li>
+<li><p>Annen Polka</li>
+<li><p>Pachelbel Canon</li>
+<li><p>Hallelujah</li>
+<li><p>La Traviata</li>
+<li><p>Leichte Kavallerie Overture</li>
+<li><p>Mozart Symphony No.40</li>
+<li><p>Bach Minuet</li>
+<li><p>Farewell</li>
+<li><p>Mozart Piano Sonata</li>
+<li><p>Sting</li>
+<li><p>O solemio</li>
+<li><p>Pizzicata Polka</li>
+<li><p>Stars and Stripes Forever</li>
+<li><p>Pineapple Rag</li>
+<li><p>When the Saints Go Marching In</li>
+<li><p>Latin</li>
+<li><p>Carol 1</li>
+<li><p>Carol 2</li>
+</ul>
+</li>
+<li><p>Only the phone's builtin groups can be assigned to
+a phonebook entry and written to the phone. Custom groups are 
+not supported. The supported groups that can
+be assigned to a phonebook entry and successfully written to the phone are:
+<ul>
+<li><p>Family</li>
+<li><p>Friends</li>
+<li><p>Colleagues</li>
+<li><p>Business</li>
+<li><p>School</li>
+</ul>
+</li>
+<li><p>VoiceDial assignments in the phone are handled correctly
+when you update the phonebook except for this situation:
+If you delete only the phone number within a phonebook entry that
+has a VoiceDial assignment then the phone will keep the phonenumber in
+the phonebook. You must delete the VoiceDial entry on the phone
+first.</li>
+
+
+#include "pageend.h"

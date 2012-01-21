@@ -1,0 +1,10 @@
+--- frmts/ilwis/ilwisdataset.cpp~       2007-04-18 05:20:14.000000000 +0000
++++ frmts/ilwis/ilwisdataset.cpp        2007-04-18 05:20:25.000000000 +0000
+@@ -29,6 +29,7 @@
+
+ #include "ilwisdataset.h"
+ #include <float.h>
++#include <climits>
+
+ // IniFile.cpp: implementation of the IniFile class.
+ //

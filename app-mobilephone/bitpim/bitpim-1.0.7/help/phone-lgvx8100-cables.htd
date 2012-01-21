@@ -1,0 +1,37 @@
+#include "pagestart.h"
+
+<p>This phone supports USB charging cables.
+
+<h3>RPI Wireless straight USB with charging</h3>
+
+<p>You can also buy from e-bay and Verizon stores (although they are a bit expensive)
+You can also try RS and other electronic stores. All testing done with USB cables.
+Note that the VX6100, VX7000, VX8000 and VX8100 all use exactly the
+same cable.
+This phone also has Bluetooth (BT). It is possible to use this to connect to BitPim.
+To use BT you need to confgure your phone.
+Go into the main menu, press OK, then go to Settings and Tools, press RIGHT ARROW
+twice. Select PC Connection, press <9>, and then choose BT, press <3>. The phone should
+now show up as a BT device on your Computer.
+Once you have enabled Bluetooth you will need to pair the phone with the PC. One way to 
+do this is to go to Settings and Tools on the phone (described above) and choose the Bluetooth
+menu, option <0>, select "My Visiblitiy", option <3>, then select "Shown To All". You should
+get a 3 minute warning message. In less than 3 minutes, go to the PC and in the bluetooth settings 
+you should be able to detect the phone. You will have to enter a passcode in the computer and
+then the same passcode in the phone (a screen will appear automatically when the PC tries to 
+connect). At this point the phone will be available on a COM port. You will have to manually
+set the phone settings in BitPim.
+I have tried this using XP SP2 and a USB Bluetooth Adapter made by TRENDnet, I was able to
+connect using the native Windows drivers that come with SP2 and the drivers that came with
+the adapter.
+You will see a bluetooth symbol on the phone's screen when it is enabled.
+
+Bluetooth is a slow way to communicate with the phone, using the USB cable is faster. It
+also runs down the battery, turning it off after use will preserve battery power.
+
+You can also get help on a phone forum like URL(www.howardforums.com,www.howardforums.com).
+Autodetect does not work with BT in tests so far, this is planned for a later release.
+IMAGE(vx7000-cable.jpg,)
+
+
+#include "pageend.h"

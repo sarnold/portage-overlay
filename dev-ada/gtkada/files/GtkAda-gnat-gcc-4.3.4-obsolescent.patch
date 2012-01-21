@@ -1,0 +1,1492 @@
+diff -Nrup a/src/gdk-cursor.ads b/src/gdk-cursor.ads
+--- a/src/gdk-cursor.ads	2007-02-15 12:10:01.000000000 +0000
++++ b/src/gdk-cursor.ads	2011-03-13 16:48:04.257840917 +0000
+@@ -159,7 +159,7 @@ package Gdk.Cursor is
+    --  Create a cursor from a name
+ 
+    procedure Destroy (Cursor : Gdk_Cursor);
+-   pragma Obsolescent;  --  Destroy
++   pragma Obsolescent (Entity => Destroy);
+    --  Destroy a cursor, freeing any resources allocated for it.
+    --  Deprecated, use Unref instead.
+ 
+diff -Nrup a/src/gtk-about_dialog.ads b/src/gtk-about_dialog.ads
+--- a/src/gtk-about_dialog.ads	2009-07-27 18:04:49.029394000 +0000
++++ b/src/gtk-about_dialog.ads	2011-03-13 16:48:04.258840864 +0000
+@@ -228,11 +228,11 @@ package Gtk.About_Dialog is
+    procedure Set_Name
+      (About : access Gtk_About_Dialog_Record; Name  : String)
+      renames Set_Program_Name;
+-   pragma Obsolescent; --  Set_Name
++   -- pragma Obsolescent; --  Set_Name
+    function Get_Name
+      (About : access Gtk_About_Dialog_Record) return String
+      renames Get_Program_Name;
+-   pragma Obsolescent; --  Get_Name
++   -- pragma Obsolescent; --  Get_Name
+    --  Returns the program name displayed in the about dialog.
+ 
+    ----------------
+diff -Nrup a/src/gtk-action.ads b/src/gtk-action.ads
+--- a/src/gtk-action.ads	2011-02-07 23:52:38.597507000 +0000
++++ b/src/gtk-action.ads	2011-03-13 16:48:04.258840864 +0000
+@@ -241,7 +241,7 @@ package Gtk.Action is
+ 
+    function Gtk_Widget_Get_Action
+      (Widget : access Gtk.Widget.Gtk_Widget_Record) return Gtk_Action;
+-   pragma Obsolescent (Gtk_Widget_Get_Action);
++   pragma Obsolescent (Entity => Gtk_Widget_Get_Action);
+    --  Returns the action that Widget is a proxy for.
+    --  See also Get_Proxies.
+    --  Since: 2.10
+@@ -249,11 +249,11 @@ package Gtk.Action is
+    procedure Connect_Proxy
+      (Action : access Gtk_Action_Record;
+       Proxy  : access Gtk.Widget.Gtk_Widget_Record'Class);
+-   pragma Obsolescent (Connect_Proxy);
++   pragma Obsolescent (Entity => Connect_Proxy);
+    procedure Disconnect_Proxy
+      (Action : access Gtk_Action_Record;
+       Proxy  : access Gtk.Widget.Gtk_Widget_Record'Class);
+-   pragma Obsolescent (Disconnect_Proxy);
++   pragma Obsolescent (Entity => Disconnect_Proxy);
+    --  Connects a widget to an action object as a proxy. Synchronises various
+    --  properties of the action with the widget (such as label text, icon,
+    --  tooltip, etc), and attaches a callback so that the action gets activated
+@@ -272,11 +272,11 @@ package Gtk.Action is
+    procedure Block_Activate_From
+      (Action : access Gtk_Action_Record;
+       Proxy  : access Gtk.Widget.Gtk_Widget_Record'Class);
+-   pragma Obsolescent (Block_Activate_From);
++   pragma Obsolescent (Entity => Block_Activate_From);
+    procedure Unblock_Activate_From
+      (Action : access Gtk_Action_Record;
+       Proxy  : access Gtk.Widget.Gtk_Widget_Record'Class);
+-   pragma Obsolescent (Unblock_Activate_From);
++   pragma Obsolescent (Entity => Unblock_Activate_From);
+    --  Disables calls to the Activate function by signals on the given proxy
+    --  widget. This is used to break notification loops for things like check
+    --  or radio actions.
+diff -Nrup a/src/gtk-box.ads b/src/gtk-box.ads
+--- a/src/gtk-box.ads	2009-07-27 18:04:49.029394000 +0000
++++ b/src/gtk-box.ads	2011-03-13 16:48:04.283839538 +0000
+@@ -216,14 +216,14 @@ package Gtk.Box is
+    procedure Pack_Start_Defaults
+      (In_Box  : access Gtk_Box_Record;
+       Child   : access Gtk.Widget.Gtk_Widget_Record'Class);
+-   pragma Obsolescent;  --  Pack_Start_Defaults
++   pragma Obsolescent (Entity => Pack_Start_Defaults);
+    --  This is the same as Pack_Start if you use the default parameter values.
+    --  It is provided for backward compatibility only.
+ 
+    procedure Pack_End_Defaults
+      (In_Box  : access Gtk_Box_Record;
+       Child   : access Gtk.Widget.Gtk_Widget_Record'Class);
+-   pragma Obsolescent;  --  Pack_End_Defaults
++   pragma Obsolescent (Entity => Pack_End_Defaults);
+    --  This is the same as Pack_End if you use the default parameter values.
+    --  It is provided for backward compatibility only.
+ 
+diff -Nrup a/src/gtk-button_box.ads b/src/gtk-button_box.ads
+--- a/src/gtk-button_box.ads	2006-06-08 12:35:40.000000000 +0000
++++ b/src/gtk-button_box.ads	2011-03-13 16:48:04.283839538 +0000
+@@ -112,7 +112,7 @@ package Gtk.Button_Box is
+      (Button_Box : access Gtk_Button_Box_Record;
+       Min_Width  : Gint;
+       Min_Height : Gint);
+-   pragma Obsolescent;  --  Set_Child_Size
++   pragma Obsolescent (Entity => Set_Child_Size);
+    --  Set the size to use for children of this specific box.
+    --  You can modify the size for all the boxes at once by using
+    --  Set_Child_Size_Default.
+@@ -121,7 +121,7 @@ package Gtk.Button_Box is
+      (Button_Box : access Gtk_Button_Box_Record;
+       Min_Width  : out Gint;
+       Min_Height : out Gint);
+-   pragma Obsolescent;  --  Get_Child_Size
++   pragma Obsolescent (Entity => Get_Child_Size);
+    --  Return the size to use for children of this specific box.
+    --  Min_Width and Min_Height are set to -1 if this widget uses the default
+    --  sizes that are set by Set_Child_Size_Default.
+@@ -130,7 +130,7 @@ package Gtk.Button_Box is
+      (Button_Box : access Gtk_Button_Box_Record;
+       Ipad_X     : Gint;
+       Ipad_Y     : Gint);
+-   pragma Obsolescent; --  Set_Child_Ipadding
++   pragma Obsolescent (Entity => Set_Child_Ipadding);
+    --  no-op procedure.
+ 
+    --  </doc_ignore>
+diff -Nrup a/src/gtk-calendar.ads b/src/gtk-calendar.ads
+--- a/src/gtk-calendar.ads	2009-07-27 18:04:49.029394000 +0000
++++ b/src/gtk-calendar.ads	2011-03-13 16:48:04.284839485 +0000
+@@ -190,16 +190,16 @@ package Gtk.Calendar is
+    procedure Display_Options
+      (Calendar : access Gtk_Calendar_Record;
+       Flags    : Gtk_Calendar_Display_Options);
+-   pragma Obsolescent;  --  Display_Options
++   pragma Obsolescent (Entity => Display_Options);
+    --  Change the display options.
+    --  See individual Display_Option flags for more details.
+ 
+    procedure Freeze (Calendar : access Gtk_Calendar_Record);
+-   pragma Obsolescent;  --  Freeze
++   pragma Obsolescent (Entity => Freeze);
+    --  Lock the display of the calendar until it is thawed.
+ 
+    procedure Thaw (Calendar : access Gtk_Calendar_Record);
+-   pragma Obsolescent;  --  Thaw
++   pragma Obsolescent (Entity => Thaw);
+    --  Defrost a calendar.
+    --  All the changes made since the last Freeze are displayed.
+ 
+diff -Nrup a/src/gtk-clist.ads b/src/gtk-clist.ads
+--- a/src/gtk-clist.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-clist.ads	2011-03-13 16:48:04.284839485 +0000
+@@ -65,7 +65,7 @@ with Gtkada.Types;
+ with Unchecked_Conversion;
+ 
+ package Gtk.Clist is
+-   pragma Obsolescent ("Use Gtk.Tree_View instead");
++   pragma Obsolescent (Entity => Clist, "Use Gtk.Tree_View instead");
+ 
+    type Gtk_Clist_Record is new Gtk.Container.Gtk_Container_Record
+      with private;
+diff -Nrup a/src/gtk-color_selection.ads b/src/gtk-color_selection.ads
+--- a/src/gtk-color_selection.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-color_selection.ads	2011-03-13 16:48:04.285839431 +0000
+@@ -190,7 +190,7 @@ package Gtk.Color_Selection is
+    procedure Set_Update_Policy
+      (Colorsel : access Gtk_Color_Selection_Record;
+       Policy   : Enums.Gtk_Update_Type);
+-   pragma Obsolescent;  --  Set_Update_Policy
++   pragma Obsolescent (Entity => Set_Update_Policy);
+    --  Set the behavior of the scales used to select a value (red, green,...)
+    --  Set Policy to Update_Continuous if you want to update the color
+    --  continuously as the slider is mode, Update_Discontinuous to update the
+@@ -200,7 +200,7 @@ package Gtk.Color_Selection is
+    procedure Set_Color
+      (Colorsel : access Gtk_Color_Selection_Record;
+       Color    : Color_Array);
+-   pragma Obsolescent ("Use Set_Current_Color");  --  Set_Color
++   pragma Obsolescent (Entity => Set_Color, "Use Set_Current_Color");
+    --  Modify the current color.
+    --  Note that Color is an array of percentages, between 0.0 and 1.0, not
+    --  absolute values.
+@@ -208,7 +208,7 @@ package Gtk.Color_Selection is
+    procedure Get_Color
+      (Colorsel : access Gtk_Color_Selection_Record;
+       Color    : out Color_Array);
+-   pragma Obsolescent ("Use Get_Current_Color");  --  Get_Color
++   pragma Obsolescent (Entity => Get_Color, "Use Get_Current_Color");
+    --  Get the current color.
+    --  Note that Color is an array of percentages, between 0.0 and 1.0, not
+    --  absolute values.
+diff -Nrup a/src/gtk-combo.ads b/src/gtk-combo.ads
+--- a/src/gtk-combo.ads	2006-06-08 16:17:54.000000000 +0000
++++ b/src/gtk-combo.ads	2011-03-13 16:48:04.285839431 +0000
+@@ -66,7 +66,7 @@ with Gtk.Window;
+ with Gtk.Enums; use Gtk.Enums;
+ 
+ package Gtk.Combo is
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Combo);
+ 
+    type Gtk_Combo_Record is new Gtk.Box.Gtk_Box_Record with private;
+    type Gtk_Combo is access all Gtk_Combo_Record'Class;
+diff -Nrup a/src/gtk-ctree.ads b/src/gtk-ctree.ads
+--- a/src/gtk-ctree.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-ctree.ads	2011-03-13 16:48:04.286839377 +0000
+@@ -65,7 +65,7 @@ with Gtk.Style;
+ with Gtkada.Types;         use Gtkada.Types;
+ 
+ package Gtk.Ctree is
+-   pragma Obsolescent ("use Gtk.Tree_View instead");
++   pragma Obsolescent (Entity => Ctree, "use Gtk.Tree_View instead");
+    pragma Elaborate_Body;
+ 
+    pragma Warnings (Off); --  Gtk.Clist is obsolescent;
+diff -Nrup a/src/gtk-dnd.ads b/src/gtk-dnd.ads
+--- a/src/gtk-dnd.ads	2010-06-07 16:48:20.602527000 +0000
++++ b/src/gtk-dnd.ads	2011-03-13 16:48:04.286839377 +0000
+@@ -437,7 +437,7 @@ package Gtk.Dnd is
+       Mask     : Gdk.Bitmap.Gdk_Bitmap;
+       Hot_X    : Gint;
+       Hot_Y    : Gint);
+-   pragma Obsolescent; --  Set_Default_Icon
++   pragma Obsolescent (Entity => Set_Default_Icon);
+    --  Change the default drag icon. GtkAda retains a reference count for the
+    --  arguments, and will release them when they are no longer needed.
+    --  This procedure is deprecated.
+diff -Nrup a/src/gtk-drawing_area.ads b/src/gtk-drawing_area.ads
+--- a/src/gtk-drawing_area.ads	2006-06-06 08:07:42.000000000 +0000
++++ b/src/gtk-drawing_area.ads	2011-03-13 16:48:04.287839325 +0000
+@@ -87,7 +87,7 @@ package Gtk.Drawing_Area is
+      (Darea  : access Gtk_Drawing_Area_Record;
+       Width  : Gint;
+       Height : Gint);
+-   pragma Obsolescent;  --  Size
++   pragma Obsolescent (Entity => Size);
+    --  Request a new size for the area.
+    --  This queues a resize request for the area.
+ 
+diff -Nrup a/src/gtk-file_chooser_button.ads b/src/gtk-file_chooser_button.ads
+--- a/src/gtk-file_chooser_button.ads	2010-06-07 16:48:20.602527000 +0000
++++ b/src/gtk-file_chooser_button.ads	2011-03-13 16:48:04.287839325 +0000
+@@ -78,7 +78,7 @@ package Gtk.File_Chooser_Button is
+       Title   : String;
+       Action  : Gtk.File_Chooser.File_Chooser_Action;
+       Backend : String);
+-   pragma Obsolescent; --  Gtk_New_With_Backend
++   pragma Obsolescent (Entity => Gtk_New_With_Backend);
+    procedure Initialize_With_Backend
+      (Button  : access Gtk_File_Chooser_Button_Record'Class;
+       Title   : String;
+diff -Nrup a/src/gtk-file_chooser_widget.ads b/src/gtk-file_chooser_widget.ads
+--- a/src/gtk-file_chooser_widget.ads	2011-02-07 23:52:38.597507000 +0000
++++ b/src/gtk-file_chooser_widget.ads	2011-03-13 16:48:04.288839273 +0000
+@@ -63,12 +63,12 @@ package Gtk.File_Chooser_Widget is
+      (Widget  : out Gtk_File_Chooser_Widget;
+       Action  : Gtk.File_Chooser.File_Chooser_Action;
+       Backend : String);
+-   pragma Obsolescent (Gtk_New_With_Backend);
++   pragma Obsolescent (Entity => Gtk_New_With_Backend);
+    procedure Initialize_With_Backend
+      (Widget  : access Gtk_File_Chooser_Widget_Record'Class;
+       Action  : Gtk.File_Chooser.File_Chooser_Action;
+       Backend : String);
+-   pragma Obsolescent (Initialize_With_Backend);
++   pragma Obsolescent (Entity => Initialize_With_Backend);
+    --  Creates a new file chooser with a specified backend.  This is
+    --  especially useful if you use Gtk.File_Chooser.Set_Local_Only to allow
+    --  non-local files.  This is a file chooser widget that can be embedded in
+diff -Nrup a/src/gtk-font_selection.ads b/src/gtk-font_selection.ads
+--- a/src/gtk-font_selection.ads	2006-06-07 07:32:59.000000000 +0000
++++ b/src/gtk-font_selection.ads	2011-03-13 16:48:04.288839273 +0000
+@@ -159,7 +159,7 @@ package Gtk.Font_Selection is
+ 
+    function Get_Font
+      (Fontsel : access Gtk_Font_Selection_Record) return Gdk.Font.Gdk_Font;
+-   pragma Obsolescent;  --  Get_Font
++   pragma Obsolescent (Entity => Get_Font);
+    --  Allocate and return the font selected by the user.
+    --  This newly created font can be used as is by all the drawing functions
+    --  in the Gdk.Drawable package.
+@@ -167,7 +167,7 @@ package Gtk.Font_Selection is
+ 
+    function Get_Font
+      (Fsd : access Gtk_Font_Selection_Dialog_Record) return Gdk.Font.Gdk_Font;
+-   pragma Obsolescent;  --  Dialog_Get_Font
++   pragma Obsolescent (Entity => Get_Font);  --  Dialog_Get_Font
+    --  Allocate and return the font selected by the user.
+    --  This newly created font can be used as is by all the drawing functions
+    --  in the Gdk.Drawable package.
+diff -Nrup a/src/gtk-gentry.ads b/src/gtk-gentry.ads
+--- a/src/gtk-gentry.ads	2010-07-28 20:51:24.949393000 +0000
++++ b/src/gtk-gentry.ads	2011-03-13 16:48:04.288839273 +0000
+@@ -452,29 +452,30 @@ package Gtk.GEntry is
+    --  <doc_ignore>
+ 
+    procedure Gtk_New (Widget : out Gtk_Entry; Max : Gint);
+-   pragma Obsolescent;  --  New_With_Max_Length
++   pragma Obsolescent (Entity => Gtk_New);  --  New_With_Max_Length
+    --  Create a new entry with a maximum length for the text.
+    --  The text can never be longer than Max characters.
+ 
+    procedure Initialize
+      (Widget : access Gtk_Entry_Record'Class; Max : Gint);
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Initialize);
+    --  Internal initialization function.
+    --  See the section "Creating your own widgets" in the documentation.
+ 
+    procedure Append_Text
+      (The_Entry : access Gtk_Entry_Record; Text : UTF8_String);
+-   pragma Obsolescent ("See Gtk.Editable.Insert_Text");  --  Append_Text
++   pragma Obsolescent (Entity => Append_Text, "See Gtk.Editable.Insert_Text");
+    --  Append a new string at the end of the existing one.
+ 
+    procedure Prepend_Text
+      (The_Entry : access Gtk_Entry_Record; Text : UTF8_String);
+-   pragma Obsolescent ("See Gtk.Editable.Insert_Text");  --  Prepend_Text
++   pragma Obsolescent (Entity => Prepend_Text,
++     "See Gtk.Editable.Insert_Text");
+    --  Insert some text at the beginning of the entry.
+ 
+    procedure Set_Editable
+      (The_Entry : access Gtk_Entry_Record; Editable : Boolean);
+-   pragma Obsolescent;  --  Set_Editable
++   pragma Obsolescent (Entity => Set_Editable);
+ 
+    function Get_Chars (The_Entry : access Gtk_Entry_Record) return UTF8_String
+                        renames Get_Text;
+diff -Nrup a/src/gtk-hbutton_box.ads b/src/gtk-hbutton_box.ads
+--- a/src/gtk-hbutton_box.ads	2006-06-05 15:34:59.000000000 +0000
++++ b/src/gtk-hbutton_box.ads	2011-03-13 16:48:04.289839220 +0000
+@@ -65,24 +65,24 @@ package Gtk.Hbutton_Box is
+    --  <doc_ignore>
+ 
+    procedure Set_Spacing_Default (Spacing : in Gint);
+-   pragma Obsolescent;  --  Set_Spacing_Default
++   pragma Obsolescent (Entity => Set_Spacing_Default);
+    --  Set the default spacing (space between two adjacent children).
+    --  This is done for all the Hbutton_Boxes in your application. This can be
+    --  overridden for a specific box by calling Gtk.Button_Box.Set_Spacing.
+ 
+    function Get_Spacing_Default return Gint;
+-   pragma Obsolescent;  --  Get_Spacing_Default
++   pragma Obsolescent (Entity => Get_Spacing_Default);
+    --  Return the default spacing to use for all Hbutton_Boxes in your
+    --  application that don't have a specific value.
+ 
+    procedure Set_Layout_Default (Layout : Gtk.Enums.Gtk_Button_Box_Style);
+-   pragma Obsolescent;  --  Set_Layout_Default
++   pragma Obsolescent (Entity => Set_Layout_Default);
+    --  Set the the default layout to use for all the hbutton_boxes in your
+    --  application that don't have a specific value set by
+    --  Gtk.Button_Box.Set_Layout. The default value is Buttonbox_Edge.
+ 
+    function Get_Layout_Default return Gtk.Enums.Gtk_Button_Box_Style;
+-   pragma Obsolescent;  --  Get_Layout_Default
++   pragma Obsolescent (Entity => Get_Layout_Default);
+    --  Return the default layout to use for all the hbutton_boxes.
+ 
+    --  </doc_ignore>
+diff -Nrup a/src/gtk-item_factory.ads b/src/gtk-item_factory.ads
+--- a/src/gtk-item_factory.ads	2008-02-11 16:47:37.111269000 +0000
++++ b/src/gtk-item_factory.ads	2011-03-13 16:48:04.289839220 +0000
+@@ -41,7 +41,7 @@ with Gtk.Object;
+ with Gtkada.Types;
+ 
+ package Gtk.Item_Factory is
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Item_Factory);
+ 
+    type Gtk_Item_Factory_Record is new Object.Gtk_Object_Record with private;
+    type Gtk_Item_Factory is access all Gtk_Item_Factory_Record'Class;
+diff -Nrup a/src/gtk-layout.ads b/src/gtk-layout.ads
+--- a/src/gtk-layout.ads	2010-06-29 17:26:00.583424000 +0000
++++ b/src/gtk-layout.ads	2011-03-13 16:48:04.290839166 +0000
+@@ -155,7 +155,7 @@ package Gtk.Layout is
+    --  <doc_ignore>
+ 
+    function Get_Width (Layout : access Gtk_Layout_Record) return Guint;
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Get_Width);
+    --  Deprecated, only provided for compatibility, see Get_Size
+ 
+    function Get_Height (Layout : access Gtk_Layout_Record) return Guint;
+@@ -163,11 +163,11 @@ package Gtk.Layout is
+    --  Deprecated, only provided for compatibility, see Get_Size
+ 
+    procedure Freeze (Layout : access Gtk_Layout_Record);
+-   pragma Obsolescent;  --  Freeze
++   pragma Obsolescent (Entity => Freeze);
+    --  Deprecated, only provided for compatibility.
+ 
+    procedure Thaw (Layout : access Gtk_Layout_Record);
+-   pragma Obsolescent;  --  Thaw
++   pragma Obsolescent (Entity => Thaw);
+    --  Deprecated, only provided for compatibility.
+ 
+    --  </doc_ignore>
+diff -Nrup a/src/gtk-list.ads b/src/gtk-list.ads
+--- a/src/gtk-list.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-list.ads	2011-03-13 16:48:04.290839166 +0000
+@@ -38,7 +38,7 @@ with Gtk.Enums;  use Gtk.Enums;
+ with Gtk.Widget; use Gtk.Widget;
+ 
+ package Gtk.List is
+-   pragma Obsolescent;  --  Gtk.List
++   pragma Obsolescent (Entity => List);
+ 
+    type Gtk_List_Record is new Gtk.Container.Gtk_Container_Record with private;
+    type Gtk_List is access all Gtk_List_Record'Class;
+diff -Nrup a/src/gtk-list_item.ads b/src/gtk-list_item.ads
+--- a/src/gtk-list_item.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-list_item.ads	2011-03-13 16:48:04.311838052 +0000
+@@ -33,7 +33,7 @@
+ with Gtk.Item;
+ 
+ package Gtk.List_Item is
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => List_Item);
+ 
+    type Gtk_List_Item_Record is new Gtk.Item.Gtk_Item_Record with private;
+    type Gtk_List_Item is access all Gtk_List_Item_Record'Class;
+diff -Nrup a/src/gtk-main.ads b/src/gtk-main.ads
+--- a/src/gtk-main.ads	2011-02-07 23:52:38.597507000 +0000
++++ b/src/gtk-main.ads	2011-03-13 16:48:48.223508867 +0000
+@@ -327,7 +327,7 @@ package Gtk.Main is
+    --  <doc_ignore>
+ 
+    procedure Gtk_Exit (Error_Code : Gint);
+-   pragma Obsolescent (Gtk_Exit);
++   pragma Obsolescent (Entity => Gtk_Exit);
+    --  Terminate GtkAda.
+    --  Deprecated, use Main_Quit instead.
+ 
+@@ -356,7 +356,8 @@ package Gtk.Main is
+      (Cb       : Idle_Callback;
+       Priority : Idle_Priority := Priority_Default_Idle)
+       return Idle_Handler_Id;
+-   pragma Obsolescent (Idle_Add, "Use Glib.Main.Idle_Add");  --  Idle_Add_Full
++   pragma Obsolescent (Entity => Idle_Add, "Use Glib.Main.Idle_Add");
++     -- Idle_Add_Full
+    --  Register an idle callback with no user data.
+ 
+    generic
+@@ -371,7 +372,7 @@ package Gtk.Main is
+          Priority : Idle_Priority := Priority_Default_Idle;
+          Destroy  : Destroy_Callback := null)
+          return Idle_Handler_Id;
+-      pragma Obsolescent (Add, "Use Glib.Main.Idle");
++      pragma Obsolescent (Entity => Add, "Use Glib.Main.Idle");
+ 
+    private
+       procedure Free_Data (D : System.Address);
+@@ -385,7 +386,7 @@ package Gtk.Main is
+    --  to Idle_Remove.
+ 
+    procedure Idle_Remove (Id : Idle_Handler_Id);
+-   pragma Obsolescent (Idle_Remove, "Use Glib.Main.Idle_Remove");
++   pragma Obsolescent (Entity => Idle_Remove, "Use Glib.Main.Idle_Remove");
+    --  Remove an idle callback, when its Id is known.
+ 
+    type Timeout_Handler_Id is new Guint;
+@@ -401,7 +402,7 @@ package Gtk.Main is
+    function Timeout_Add
+      (Interval : Guint32;
+       Func : Timeout_Callback) return Timeout_Handler_Id;
+-   pragma Obsolescent (Timeout_Add, "Use Glib.Main.Timeout_Add");
++   pragma Obsolescent (Entity => Timeout_Add, "Use Glib.Main.Timeout_Add");
+    --  Add a new timeout. Func will be called after Interval milliseconds.
+    --  The function will be called as long as it returns True.
+ 
+@@ -416,7 +417,7 @@ package Gtk.Main is
+          Func     : Callback;
+          D        : Data_Type;
+          Destroy  : Destroy_Callback := null) return Timeout_Handler_Id;
+-      pragma Obsolescent (Add, "Use Glib.Main.Timeout");
++      pragma Obsolescent (Entity => Add, "Use Glib.Main.Timeout");
+       --  Adds a new timeout. Func will be called after Interval milliseconds.
+ 
+    private
+@@ -428,28 +429,29 @@ package Gtk.Main is
+    end Timeout;
+ 
+    procedure Timeout_Remove (Id : Timeout_Handler_Id);
+-   pragma Obsolescent (Timeout_Remove, "Use Glib.Main.Timeout_Remove");
++   pragma Obsolescent (Entity => Timeout_Remove,
++     "Use Glib.Main.Timeout_Remove");
+    --  Unregister a timeout function.
+ 
+    function Set_Locale return String;
+-   pragma Obsolescent (Set_Locale);
++   pragma Obsolescent (Entity => Set_Locale);
+    --  Read and parse the local settings, such as time format, ...
+    --  Return the name of the local settings, which can also be set with
+    --  the environment variable LOCALE
+ 
+    procedure Set_Locale;
+-   pragma Obsolescent (Set_Locale);
++   pragma Obsolescent (Entity => Set_Locale);
+    --  Read and parse the local settings, such as time format, ...
+ 
+    procedure Init_Add (Func : Init_Function; Data : System.Address);
+-   pragma Obsolescent (Init_Add);
++   pragma Obsolescent (Entity => Init_Add);
+    --  Register a function to be called just before starting a main loop.
+    --  This function is called only once, even if a new main loop is started
+    --  recursively.
+ 
+    function Quit_Add
+      (Main_Level : Guint; Func : Quit_Function) return Quit_Handler_Id;
+-   pragma Obsolescent (Quit_Add);
++   pragma Obsolescent (Entity => Quit_Add);
+    --  Register a new function to be called when the current main loop exits.
+    --  The function will be called once when the current main loop exists.
+    --  If it returns False, it will then be deleted from the list of
+@@ -463,12 +465,12 @@ package Gtk.Main is
+      (Main_Level : Guint;
+       Object     : access Gtk.Object.Gtk_Object_Record'Class)
+       return Quit_Handler_Id;
+-   pragma Obsolescent (Quit_Add_Destroy);
++   pragma Obsolescent (Entity => Quit_Add_Destroy);
+    --  Ensure that Object is destroyed when exiting the main loop at Main_Level
+    --  (or the current main loop level is 0).
+ 
+    procedure Quit_Remove (Id : Quit_Handler_Id);
+-   pragma Obsolescent (Quit_Remove);
++   pragma Obsolescent (Entity => Quit_Remove);
+    --  Remove a Quit Handler, that has been previously set by Quit_Add.
+ 
+    --  </doc_ignore>
+diff -Nrup a/src/gtk-menu_item.ads b/src/gtk-menu_item.ads
+--- a/src/gtk-menu_item.ads	2010-06-08 21:12:12.304152000 +0000
++++ b/src/gtk-menu_item.ads	2011-03-13 16:48:04.317837734 +0000
+@@ -134,7 +134,7 @@ package Gtk.Menu_Item is
+    --  <doc_ignore>
+ 
+    procedure Remove_Submenu (Menu_Item : access Gtk_Menu_Item_Record);
+-   pragma Obsolescent; --  Remove_Submenu
++   pragma Obsolescent (Entity => Remove_Submenu);
+    --  Remove the menu_item's submenu
+    --
+    --  Deprecated: 2.12: Remove_Submenu deprecated and should not be used
+@@ -147,7 +147,7 @@ package Gtk.Menu_Item is
+    --  This procedure is needed by Gate to automate the code generation.
+ 
+    procedure Right_Justify (Menu_Item : access Gtk_Menu_Item_Record);
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Right_Justify);
+    --  Use Set_Right_Justified with Justify = True instead.
+ 
+    --  </doc_ignore>
+diff -Nrup a/src/gtk-menu_tool_button.ads b/src/gtk-menu_tool_button.ads
+--- a/src/gtk-menu_tool_button.ads	2010-06-07 20:15:49.610435000 +0000
++++ b/src/gtk-menu_tool_button.ads	2011-03-13 16:48:04.317837734 +0000
+@@ -85,7 +85,7 @@ package Gtk.Menu_Tool_Button is
+       Tooltips    : access Gtk.Tooltips.Gtk_Tooltips_Record'Class;
+       Tip_Text    : String;
+       Tip_Private : String := "");
+-   pragma Obsolescent; --  Set_Arrow_Tooltip
++   pragma Obsolescent (Entity => Set_Arrow_Tooltip);
+    --  Set the tooltip set on the arrow button that will display the menu when
+    --  clicked on.
+    --
+diff -Nrup a/src/gtk-notebook.ads b/src/gtk-notebook.ads
+--- a/src/gtk-notebook.ads	2011-02-07 23:52:38.597507000 +0000
++++ b/src/gtk-notebook.ads	2011-03-13 16:48:04.324837361 +0000
+@@ -183,7 +183,7 @@ package Gtk.Notebook is
+      (Func     : Gtk_Notebook_Window_Creation_Func;
+       Data     : System.Address;
+       Destroy  : Glib.G_Destroy_Notify_Address);
+-   pragma Obsolescent (Set_Window_Creation_Hook);
++   pragma Obsolescent (Entity => Set_Window_Creation_Hook);
+    --  Install a global function used to create a window when a detached tab
+    --  is dropped in an empty area.
+ 
+@@ -384,7 +384,7 @@ package Gtk.Notebook is
+       Expand     : out Boolean;
+       Fill       : out Boolean;
+       Pack_Type  : out Gtk.Enums.Gtk_Pack_Type);
+-   pragma Obsolescent (Query_Tab_Label_Packing);
++   pragma Obsolescent (Entity => Query_Tab_Label_Packing);
+    --  Return the packing used for the tab associated with the page
+    --  that contains Child.
+    --  See the Gtk.Box package for more information on the parameters.
+@@ -395,7 +395,7 @@ package Gtk.Notebook is
+       Expand    : Boolean;
+       Fill      : Boolean;
+       Pack_Type : Gtk.Enums.Gtk_Pack_Type);
+-   pragma Obsolescent (Set_Tab_Label_Packing);
++   pragma Obsolescent (Entity => Set_Tab_Label_Packing);
+    --  Modify the packing used for the tab associated with the page that
+    --  contains Child.
+ 
+@@ -446,11 +446,11 @@ package Gtk.Notebook is
+ 
+    function Get_Group (Notebook : access Gtk_Notebook_Record)
+       return Gtk_Notebook_Group;
+-   pragma Obsolescent (Get_Group);
++   pragma Obsolescent (Entity => Get_Group);
+    procedure Set_Group
+      (Notebook : access Gtk_Notebook_Record;
+       Group    : Gtk_Notebook_Group);
+-   pragma Obsolescent (Set_Group);
++   pragma Obsolescent (Entity => Set_Group);
+    --  Gets/Sets a group identificator pointer for Notebook, notebooks sharing
+    --  the same group identificator pointer will be able to exchange tabs
+    --  via drag and drop. A notebook with a null group identificator will
+@@ -481,45 +481,45 @@ package Gtk.Notebook is
+ 
+    function Get_Children
+      (Widget : access Gtk_Notebook_Record) return Page_List.Glist;
+-   pragma Obsolescent (Get_Children);
++   pragma Obsolescent (Entity => Get_Children);
+    --  Return the list of all pages in the notebook.
+ 
+    procedure Set_Homogeneous_Tabs
+      (Notebook    : access Gtk_Notebook_Record;
+       Homogeneous : Boolean := True);
+-   pragma Obsolescent (Set_Homogeneous_Tabs);
++   pragma Obsolescent (Entity => Set_Homogeneous_Tabs);
+    --  Indicate whether all the tabs should have the same size (width or
+    --  height, depending on which side they are displayed on).
+ 
+    procedure Set_Tab_Border
+      (Notebook     : access Gtk_Notebook_Record;
+       Border_Width : Gint);
+-   pragma Obsolescent (Set_Tab_Border);
++   pragma Obsolescent (Entity => Set_Tab_Border);
+    --  Change the width of the tabs' borders.
+    --  This modifies both the horizontal border and the vertical border.
+ 
+    procedure Set_Tab_Hborder
+      (Notebook     : access Gtk_Notebook_Record;
+       Border_Width : Gint);
+-   pragma Obsolescent (Set_Tab_Hborder);
++   pragma Obsolescent (Entity => Set_Tab_Hborder);
+    --  Modify the width of the horizontal borders of the tabs.
+ 
+    procedure Set_Tab_Vborder
+      (Notebook     : access Gtk_Notebook_Record;
+       Border_Width : Gint);
+-   pragma Obsolescent (Set_Tab_Vborder);
++   pragma Obsolescent (Entity => Set_Tab_Vborder);
+    --  Modify the height of the vertical borders of the tabs.
+ 
+    procedure Set_Group_Id
+      (Notebook : access Gtk_Notebook_Record; Group_Id : Gint);
+-   pragma Obsolescent (Set_Group_Id);
++   pragma Obsolescent (Entity => Set_Group_Id);
+    --  Set a group identificator for Notebook. Notebooks sharing
+    --  the same group identificator will be able to exchange tabs
+    --  via drag and drop. A notebook with group identificator -1 will
+    --  not be able to exchange tabs with any other notebook.
+ 
+    function Get_Group_Id (Notebook : access Gtk_Notebook_Record) return Gint;
+-   pragma Obsolescent (Get_Group_Id);
++   pragma Obsolescent (Entity => Get_Group_Id);
+    --  Gets the current group identificator for Notebook or -1 if not set.
+ 
+    --  </doc_ignore>
+diff -Nrup a/src/gtk-object.ads b/src/gtk-object.ads
+--- a/src/gtk-object.ads	2011-02-07 23:52:38.597507000 +0000
++++ b/src/gtk-object.ads	2011-03-13 16:48:04.324837361 +0000
+@@ -246,7 +246,7 @@ package Gtk.Object is
+    --  <doc_ignore>
+ 
+    procedure Sink (Object : access Gtk_Object_Record);
+-   pragma Obsolescent (Sink);
++   pragma Obsolescent (Entity => Sink);
+    --  Sink the object.
+    --  If the object is floating (does not have a parent yet), it is unref-ed
+    --  once and the floating flag is cleared.
+diff -Nrup a/src/gtk-object.ads.orig b/src/gtk-object.ads.orig
+--- a/src/gtk-object.ads.orig	1970-01-01 00:00:00.000000000 +0000
++++ b/src/gtk-object.ads.orig	2011-03-13 16:48:04.325837309 +0000
+@@ -0,0 +1,325 @@
++-----------------------------------------------------------------------
++--               GtkAda - Ada95 binding for Gtk+/Gnome               --
++--                                                                   --
++--   Copyright (C) 1998-2000 E. Briot, J. Brobecker and A. Charlet   --
++--                Copyright (C) 2000-2011, AdaCore                   --
++--                                                                   --
++-- This library is free software; you can redistribute it and/or     --
++-- modify it under the terms of the GNU General Public               --
++-- License as published by the Free Software Foundation; either      --
++-- version 2 of the License, or (at your option) any later version.  --
++--                                                                   --
++-- This library is distributed in the hope that it will be useful,   --
++-- but WITHOUT ANY WARRANTY; without even the implied warranty of    --
++-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU --
++-- General Public License for more details.                          --
++--                                                                   --
++-- You should have received a copy of the GNU General Public         --
++-- License along with this library; if not, write to the             --
++-- Free Software Foundation, Inc., 59 Temple Place - Suite 330,      --
++-- Boston, MA 02111-1307, USA.                                       --
++--                                                                   --
++-- As a special exception, if other files instantiate generics from  --
++-- this unit, or you link this unit with other files to produce an   --
++-- executable, this  unit  does not  by itself cause  the resulting  --
++-- executable to be covered by the GNU General Public License. This  --
++-- exception does not however invalidate any other reasons why the   --
++-- executable file  might be covered by the  GNU Public License.     --
++-----------------------------------------------------------------------
++
++--  <description>
++--  This is the base class of the widget hierarchy.
++--  Everything in GtkAda inherits from this class Gtk_Object, except for a few
++--  structures in the Gdk.* packages (low-level drawing routines).
++--
++--  This class provides a set of handful features that you can choose to reuse
++--  in your applications:
++--
++--  - Reference counting: an object is not deleted while there exists at least
++--    one reference to it. Although GtkAda mostly takes care of that aspect
++--    transparently, you might need in some obscure cases to increment or
++--    decrement the reference counting for a widget manually, so that it is not
++--    removed from memory while you still need it.
++--
++--  - User data: any number of data can be attached to a Gtk_Object or one of
++--    its children. Theses data are referenced by a String, in a hash-table.
++--    GtkAda itself uses this feature to provide an easy conversion between C
++--    and Ada widgets.
++--    Although you might prefer to have a completely object-oriented
++--    application (and thus associate data through class inheritance), it
++--    might be convenient to directly attach some data to your objects.
++--
++--  - It also contains the basic structures and subprograms required for signal
++--    emission. This is of course used to implement the signal mechanism in
++--    GtkAda itself, but can also be used to implement a Model/View/Controller
++--    framework.
++--
++--  Note that a lot of functions provided in the C interface are not provided
++--  here. They are used to emulate an object-oriented language in C, which can
++--  of course be done much more conveniently in Ada. Therefore most of these
++--  functions are not needed.
++--
++--  Here is a brief explanation on how the reference counting and destruction
++--  process work. You should not have to understand all this to use GtkAda, but
++--  it might help anyway.
++--
++--  When an object (descendant of Gtk.Object) is created, it has initially a
++--  ref_count of 1. A flag is set to say the object is "floating".  See the
++--  Flags functions in this package for how to retrieve the status of this
++--  flag.
++--
++--  When the object gets a parent (ie Gtk.Widget.Set_Parent is called, possibly
++--  from other subprograms like Gtk.Container.Add, Gtk.Box.Pack_Start, ...),
++--  the ref_count of the object is incremented to 2.
++--  If the object was still "floating", it is also "sinked", ie its ref_count
++--  is decremented to 1, and the "floating" flag is cleared.
++--
++--  The same behavior as above happens when the object is registered as a
++--  top-level widget (i.e. we know it won't have any parent).
++--
++--  Thus the normal life cycle of an object is to have a ref_count to 1, and
++--  not be a "floating" object.
++--
++--  When the object is destroyed, the following happens:
++--     A temporary reference to the object is created (call to Ref), and
++--        ref_count to 2.
++--     The object is shutdown:
++--        It is removed from its parent (if any), and its ref_count is
++--          decremented to 1.
++--        The "destroy" signal is emitted, the user's handlers are called,
++--          and then all the handlers connected to the object are destroyed.
++--     The object is unref-ed. If its ref_count goes down to 0 (normal case),
++--        the memory used by the object and its user_data is freed.
++--
++--  </description>
++--  <c_version>2.8.17</c_version>
++--  <group>Abstract base classes</group>
++
++with Glib.Object;
++with Glib.Properties;
++with Glib.GSlist;
++with Gtkada.Types;
++
++package Gtk.Object is
++
++   type Gtk_Object_Record is new Glib.Object.GObject_Record with private;
++   type Gtk_Object is access all Gtk_Object_Record'Class;
++
++   procedure Destroy (Object : access Gtk_Object_Record);
++   --  Destroy the object.
++   --  This emits a "destroy" signal, calls all your handlers, and then
++   --  unconnects them all. The object is then unref-ed, and if its reference
++   --  count goes down to 0, the memory associated with the object and its
++   --  user data is freed.
++   --  Note that when you destroy handlers are called, the user_data is still
++   --  available.
++   --
++   --  When a widget is destroyed, it will break any references it holds to
++   --  other objects. If the widget is inside a container, the widget will be
++   --  removed from the container. If the widget is a toplevel (derived from
++   --  Gtk_Window), it will be removed from the list of toplevels, and the
++   --  reference GTK+ holds to it will be removed. Removing widget from its
++   --  container or the list of toplevels results in the widget being
++   --  finalized, unless you've added additional references to the widget with
++   --  Ref.
++   --
++   --  In most cases, only toplevel widgets (windows) require explicit
++   --  destruction, because when you destroy a toplevel its children will be
++   --  destroyed as well.
++
++   function Get_Type return Gtk.Gtk_Type;
++   --  Return the internal value associated with a Gtk_Object internally.
++   pragma Import (C, Get_Type, "gtk_object_get_type");
++
++   function Get_Type (Object : access Gtk_Object_Record) return Gtk_Type;
++   --  This function is now obsolete, and is temporarily kept for backward
++   --  compatibility only. Use Glib.Object.Get_Type instead.
++   --  ???
++
++   -----------
++   -- Lists --
++   -----------
++
++   function Convert (W : Gtk_Object) return System.Address;
++   function Convert (W : System.Address) return Gtk_Object;
++
++   package Object_SList is new Glib.GSlist.Generic_SList (Gtk_Object);
++
++   -----------
++   -- Flags --
++   -----------
++   --  Each object is associated with a set of flags, that reports the state
++   --  of the object.
++   --  The following flags are known by all objects:
++   --
++   --  - "Destroyed":
++   --     Set if the object is marked as destroyed (if its reference count is
++   --     not yet 0, the memory has not been freed, but you should not use it
++   --     anyway).
++   --
++   --  - "Floating":
++   --     The object has no parent yet, since it was just created. Its
++   --     reference count is still 1 (as it was initially). This flag is
++   --     cleared as soon as Set_Parent is called on the widget or the widget
++   --     is qualified as a toplevel widget (see
++   --     Gtk.Container.Register_Toplevel).
++
++   In_Destruction : constant := 2 ** 0;
++   Floating       : constant := 2 ** 1;
++   Reserved_1     : constant := 2 ** 2;
++   Reserved_2     : constant := 2 ** 3;
++
++   function Flags (Object : access Gtk_Object_Record) return Guint32;
++   --  Return the flags that are set for the object, as a binary mask.
++
++   procedure Set_Flags (Object : access Gtk_Object_Record; Flags : Guint32);
++   --  Set some specific flags for the object.
++   --  Flags is a mask that will be added to the current flags of the object.
++
++   procedure Unset_Flags (Object : access Gtk_Object_Record; Flags : Guint32);
++   --  Unset some specific flags for the object.
++   --  Flags is a mask that will be deleted from the current flags of the
++   --  object.
++
++   function Flag_Is_Set
++     (Object : access Gtk_Object_Record; Flag : Guint32) return Boolean;
++   --  Return True if the specific flag Flag is set for the object.
++
++   function In_Destruction_Is_Set
++     (Object : access Gtk_Object_Record'Class) return Boolean;
++   --  Test if the Destroyed flag is set for the object.
++
++   --  <doc_ignore>
++   function Destroyed_Is_Set (Object : access Gtk_Object_Record'Class)
++      return Boolean renames In_Destruction_Is_Set;
++   --  backward compatibility only
++   --  </doc_ignore>
++
++   function Floating_Is_Set
++     (Object : access Gtk_Object_Record'Class) return Boolean;
++   --  Test if the Floating flag is set for the object.
++
++   --------------------------
++   -- Creating new widgets --
++   --------------------------
++
++   --  <doc_ignore>
++   --  The following definitions are only provided for better backward
++   --  compatibility. You should use Glib.Object directly.
++
++   subtype GObject_Class is Glib.Object.GObject_Class;
++   Uninitialized_Class : GObject_Class renames
++     Glib.Object.Uninitialized_Class;
++
++   subtype Signal_Parameter_Types is Glib.Object.Signal_Parameter_Types;
++
++   Null_Parameter_Types : Signal_Parameter_Types renames
++     Glib.Object.Null_Parameter_Types;
++
++   procedure Initialize_Class_Record
++     (Object       : access GObject_Record'Class;
++      Signals      : Gtkada.Types.Chars_Ptr_Array;
++      Class_Record : in out GObject_Class;
++      Type_Name    : String;
++      Parameters   : Signal_Parameter_Types := Null_Parameter_Types)
++      renames Glib.Object.Initialize_Class_Record;
++
++   --  </doc_ignore>
++
++   ---------------
++   -- User Data --
++   ---------------
++   --  It is possible to associate your own specific data with an existing
++   --  object. See the documentation in Glib.Object.
++   --  The declaration below has been kept for compatibility reasons.
++
++   generic
++   package User_Data renames Glib.Object.User_Data;
++
++   -----------------
++   -- Obsolescent --
++   -----------------
++   --  All subprograms below are now obsolescent in gtk+. They might be removed
++   --  from future versions of gtk+ (and therefore GtkAda).
++   --  To find out whether your code uses any of these, we recommend compiling
++   --  with the -gnatwj switch
++   --  <doc_ignore>
++
++   procedure Sink (Object : access Gtk_Object_Record);
++   pragma Obsolescent (Sink);
++   --  Sink the object.
++   --  If the object is floating (does not have a parent yet), it is unref-ed
++   --  once and the floating flag is cleared.
++
++   --  </doc_ignore>
++
++   ----------------
++   -- Properties --
++   ----------------
++
++   --  <properties>
++   --  The following properties are defined for this widget. See
++   --  Glib.Properties for more information on properties.
++   --
++   --  - Name:  User_Data_Property
++   --    Type:  Pointer
++   --    Flags: read-write
++   --    Descr: Anonymous User Data Pointer
++   --    See also: User_Data.Set, using the default Id "user_data"
++   --
++   --  </properties>
++
++   User_Data_Property : constant Glib.Properties.Property_Address;
++
++   -------------
++   -- Signals --
++   -------------
++
++   --  <signals>
++   --  The following new signals are defined for this widget:
++   --
++   --  - "destroy"
++   --    procedure Handler (Object : access Gtk_Object_Record'Class);
++   --
++   --    Raised when the object is about to be destroyed. The "destroyed"
++   --    flag has been set on the object first. Handlers should not keep
++   --    a reference on the object.
++   --    Note that when your destroy handlers are called, the user_data is
++   --    still available.
++   --    The default implementation destroys all the handlers.
++   --  </signals>
++
++   Signal_Destroy : constant Glib.Signal_Name := "destroy";
++
++private
++   type Gtk_Object_Record is new Glib.Object.GObject_Record with null record;
++
++   User_Data_Property : constant Glib.Properties.Property_Address :=
++     Glib.Properties.Build ("user_data");
++
++   pragma Inline (Floating_Is_Set);
++   pragma Inline (In_Destruction_Is_Set);
++
++end Gtk.Object;
++
++--  The following subprograms never had a binding, but are now obsolescent
++--  No binding: gtk_object_add_arg_type
++--  No binding: gtk_object_get
++--  No binding: gtk_object_get_data
++--  No binding: gtk_object_get_data_by_id
++--  No binding: gtk_object_get_user_data
++--  No binding: gtk_object_new
++--  No binding: gtk_object_ref
++--  No binding: gtk_object_unref
++--  No binding: gtk_object_remove_data
++--  No binding: gtk_object_remove_data_by_id
++--  No binding: gtk_object_remove_no_notify
++--  No binding: gtk_object_remove_no_notify_by_id
++--  No binding: gtk_object_set
++--  No binding: gtk_object_set_data
++--  No binding: gtk_object_set_data_by_id
++--  No binding: gtk_object_set_data_by_id_full
++--  No binding: gtk_object_set_data_full
++--  No binding: gtk_object_set_user_data
++--  No binding: gtk_object_weakref
++--  No binding: gtk_object_weakunref
+diff -Nrup a/src/gtk-old_editable.ads b/src/gtk-old_editable.ads
+--- a/src/gtk-old_editable.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-old_editable.ads	2011-03-13 16:48:04.335836779 +0000
+@@ -40,7 +40,7 @@
+ with Gtk.Widget;
+ 
+ package Gtk.Old_Editable is
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Old_Editable);
+ 
+    type Gtk_Old_Editable_Record is new
+      Gtk.Widget.Gtk_Widget_Record with private;
+diff -Nrup a/src/gtk-option_menu.ads b/src/gtk-option_menu.ads
+--- a/src/gtk-option_menu.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-option_menu.ads	2011-03-13 16:48:04.335836779 +0000
+@@ -42,7 +42,7 @@ with Gtk.Menu;
+ with Gtk.Widget;
+ 
+ package Gtk.Option_Menu is
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Option_Menu);
+ 
+    type Gtk_Option_Menu_Record is new Button.Gtk_Button_Record with private;
+    type Gtk_Option_Menu is access all Gtk_Option_Menu_Record'Class;
+diff -Nrup a/src/gtk-paned.ads b/src/gtk-paned.ads
+--- a/src/gtk-paned.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-paned.ads	2011-03-13 16:48:04.338836620 +0000
+@@ -177,22 +177,22 @@ package Gtk.Paned is
+    --  <doc_ignore>
+ 
+    procedure Set_Handle_Size (Paned : access Gtk_Paned_Record; Size : Guint16);
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Set_Handle_Size);
+    --  Do nothing.
+    --  Only provided for compatibility.
+ 
+    function Get_Handle_Size (Paned : access Gtk_Paned_Record) return Guint16;
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Get_Handle_Size);
+    --  Return 0.
+    --  Only provided for compatibility.
+ 
+    procedure Set_Gutter_Size (Paned : access Gtk_Paned_Record; Size : Guint16);
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Set_Gutter_Size);
+    --  Do nothing.
+    --  Only provided for compatibility.
+ 
+    function Get_Gutter_Size (Paned : access Gtk_Paned_Record) return Guint16;
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Get_Gutter_Size);
+    --  Return 0.
+    --  Only provided for compatibility.
+ 
+diff -Nrup a/src/gtk-pixmap.ads b/src/gtk-pixmap.ads
+--- a/src/gtk-pixmap.ads	2006-06-05 15:34:59.000000000 +0000
++++ b/src/gtk-pixmap.ads	2011-03-13 16:48:04.341836461 +0000
+@@ -37,7 +37,7 @@ with Gtk.Window;
+ with Gtkada.Types;
+ 
+ package Gtk.Pixmap is
+-   pragma Obsolescent ("Use Gtk.Image instead");
++   pragma Obsolescent (Entity => Pixmap, "Use Gtk.Image instead");
+ 
+    type Gtk_Pixmap_Record is new Gtk.Misc.Gtk_Misc_Record with private;
+    type Gtk_Pixmap is access all Gtk_Pixmap_Record'Class;
+diff -Nrup a/src/gtk-preview.ads b/src/gtk-preview.ads
+--- a/src/gtk-preview.ads	2006-06-06 08:07:42.000000000 +0000
++++ b/src/gtk-preview.ads	2011-03-13 16:48:04.341836461 +0000
+@@ -40,7 +40,7 @@ with Gtk.Enums; use Gtk.Enums;
+ with Gtk.Widget;
+ 
+ package Gtk.Preview is
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Preview);
+ 
+    type Gtk_Preview_Record is new Gtk.Widget.Gtk_Widget_Record with private;
+    type Gtk_Preview is access all Gtk_Preview_Record'Class;
+diff -Nrup a/src/gtk-progress.ads b/src/gtk-progress.ads
+--- a/src/gtk-progress.ads	2006-06-06 14:54:33.000000000 +0000
++++ b/src/gtk-progress.ads	2011-03-13 16:48:04.351835930 +0000
+@@ -39,7 +39,7 @@ with Gtk.Widget;
+ with Glib.Properties;
+ 
+ package Gtk.Progress is
+-   pragma Obsolescent; --  Gtk.Progress
++   pragma Obsolescent (Entity => Progress);
+ 
+    type Gtk_Progress_Record is new Gtk.Widget.Gtk_Widget_Record with private;
+    type Gtk_Progress is access all Gtk_Progress_Record'Class;
+diff -Nrup a/src/gtk-recent_chooser.ads b/src/gtk-recent_chooser.ads
+--- a/src/gtk-recent_chooser.ads	2010-08-03 19:13:30.856658000 +0000
++++ b/src/gtk-recent_chooser.ads	2011-03-13 16:48:04.352835877 +0000
+@@ -247,11 +247,11 @@ package Gtk.Recent_Chooser is
+    function Get_Show_Numbers
+      (Chooser : Gtk_Recent_Chooser)
+       return Boolean;
+-   pragma Obsolescent; --  Get_Show_Numbers
++   pragma Obsolescent (Entity => Get_Show_Numbers);
+    procedure Set_Show_Numbers
+      (Chooser      : Gtk_Recent_Chooser;
+       Show_Numbers : Boolean);
+-   pragma Obsolescent; --  Set_Show_Numbers
++   pragma Obsolescent (Entity => Set_Show_Numbers);
+    --  Whether to show recently used resources prepended by a unique number.
+    --
+    --  Deprecated: 2.12: Use Gtk.Recent_Chooser_Menu.Get_Show_Numbers and
+diff -Nrup a/src/gtk-recent_manager.ads b/src/gtk-recent_manager.ads
+--- a/src/gtk-recent_manager.ads	2010-08-03 19:13:30.856658000 +0000
++++ b/src/gtk-recent_manager.ads	2011-03-13 16:48:04.352835877 +0000
+@@ -384,7 +384,7 @@ package Gtk.Recent_Manager is
+ 
+    function Get_For_Screen
+      (Screen : access Gdk.Screen.Gdk_Screen_Record) return Gtk_Recent_Manager;
+-   pragma Obsolescent;  --  Get_For_Screen
++   pragma Obsolescent (Entity => Get_For_Screen);
+    --  Gets the recent manager object associated with Screen; if this
+    --  function has not previously been called for the given screen,
+    --  a new recent manager object will be created and associated with
+@@ -405,7 +405,7 @@ package Gtk.Recent_Manager is
+    procedure Set_Screen
+      (Manager : access Gtk_Recent_Manager_Record;
+       Screen  : access Gdk.Screen.Gdk_Screen_Record'Class);
+-   pragma Obsolescent;  --  Set_Screen
++   pragma Obsolescent (Entity => Set_Screen);
+    --  Sets the screen for a recent manager; the screen is used to
+    --  track the user's currently configured recently used documents
+    --  storage.
+diff -Nrup a/src/gtk-scale_button.ads b/src/gtk-scale_button.ads
+--- a/src/gtk-scale_button.ads	2010-08-02 18:37:23.136515000 +0000
++++ b/src/gtk-scale_button.ads	2011-03-13 16:48:04.425832005 +0000
+@@ -106,11 +106,11 @@ package Gtk.Scale_Button is
+    function Get_Orientation
+      (Button : access Gtk_Scale_Button_Record)
+       return Gtk.Enums.Gtk_Orientation;
+-   pragma Obsolescent; --  Get_Orientation
++   pragma Obsolescent (Entity => Get_Orientation);
+    procedure Set_Orientation
+      (Button      : access Gtk_Scale_Button_Record;
+       Orientation : Gtk.Enums.Gtk_Orientation);
+-   pragma Obsolescent; --  Set_Orientation
++   pragma Obsolescent (Entity => Set_Orientation);
+    --  Gets/Sets the orientation of the Gtk_Scale_Button's popup window.
+    --
+    --  Deprecated: 2.16: Use Gtk.Orientable.Get_Orientation and
+diff -Nrup a/src/gtk-socket.ads b/src/gtk-socket.ads
+--- a/src/gtk-socket.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-socket.ads	2011-03-13 16:48:04.426831952 +0000
+@@ -124,7 +124,7 @@ package Gtk.Socket is
+    --  <doc_ignore>
+ 
+    procedure Steal (Socket : access Gtk_Socket_Record; Wid : Guint32);
+-   pragma Obsolescent;  --  Steal
++   pragma Obsolescent (Entity => Steal);
+    --  Reparent a pre-existing toplevel window into a Gtk_Socket.
+    --  This is meant to embed clients that do not know about embedding into a
+    --  Gtk_Socket, however doing so is inherently unreliable, and using
+diff -Nrup a/src/gtk-status_icon.ads b/src/gtk-status_icon.ads
+--- a/src/gtk-status_icon.ads	2010-08-03 14:43:09.760903000 +0000
++++ b/src/gtk-status_icon.ads	2011-03-13 16:48:04.428831845 +0000
+@@ -357,7 +357,7 @@ package Gtk.Status_Icon is
+    procedure Set_Tooltip
+      (Status_Icon  : access Gtk_Status_Icon_Record;
+       Tooltip_Text : String);
+-   pragma Obsolescent; --  Set_Tooltip
++   pragma Obsolescent (Entity => Set_Tooltip);
+    --  Sets the tooltip of the status icon.
+    --
+    --  Deprecated: 2.16: Use Set_Tooltip_Text instead.
+diff -Nrup a/src/gtk-style.ads b/src/gtk-style.ads
+--- a/src/gtk-style.ads	2010-06-29 16:50:03.997586000 +0000
++++ b/src/gtk-style.ads	2011-03-13 16:48:04.429831791 +0000
+@@ -392,7 +392,7 @@ package Gtk.Style is
+ 
+    --  <doc_ignore>
+    function Get_Font (Style : Gtk_Style) return Gdk.Font.Gdk_Font;
+-   pragma Obsolescent ("Use Get_Font_Description");  --  Get_Font
++   pragma Obsolescent (Entity => Get_Font, "Use Get_Font_Description");
+    --  </doc_ignore>
+ 
+    procedure Set_Bg_Pixmap
+@@ -767,7 +767,7 @@ package Gtk.Style is
+       Shadow_Type : Enums.Gtk_Shadow_Type;
+       Points      : Gdk.Types.Gdk_Points_Array;
+       Fill        : Boolean);
+-   pragma Obsolescent ("Use Paint_Polygon");  --  Draw_Polygon
++   pragma Obsolescent (Entity => Draw_Polygon, "Use Paint_Polygon");
+    --  Draws a polygon in Window
+ 
+    procedure Draw_Arrow
+@@ -780,7 +780,7 @@ package Gtk.Style is
+       X, Y        : Gint;
+       Width       : Gint;
+       Height      : Gint);
+-   pragma Obsolescent ("Use Pain_Arrow");  --  Draw_Arrow
++   pragma Obsolescent (Entity => Draw_Arrow, "Use Pain_Arrow");
+    --  Draws an arrow in Window, within the given rectangle
+ 
+    procedure Draw_Shadow
+@@ -792,7 +792,7 @@ package Gtk.Style is
+       Y           : Gint;
+       Width       : Gint;
+       Height      : Gint);
+-   pragma Obsolescent;  --  Draw_Shadow
++   pragma Obsolescent (Entity => Draw_Shadow);
+    --  Draws a shadow around the given rectangle in @window
+    --  using the given style and state and shadow type.
+ 
+@@ -803,7 +803,7 @@ package Gtk.Style is
+       State_Type  : Enums.Gtk_State_Type;
+       X, Y        : Gint;
+       Str         : UTF8_String);
+-   pragma Obsolescent ("Use Paint_String");  --  Draw_String
++   pragma Obsolescent (Entity => Draw_String, "Use Paint_String");
+    --  Draws a text on Window
+ 
+    --  </doc_ignore>
+diff -Nrup a/src/gtk-text.ads b/src/gtk-text.ads
+--- a/src/gtk-text.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-text.ads	2011-03-13 16:48:04.429831791 +0000
+@@ -47,7 +47,7 @@ pragma Warnings (On);
+ with Gdk.Window;
+ 
+ package Gtk.Text is
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Text);
+ 
+    type Gtk_Text_Record is new
+      Gtk.Old_Editable.Gtk_Old_Editable_Record with private;
+diff -Nrup a/src/gtk-tips_query.ads b/src/gtk-tips_query.ads
+--- a/src/gtk-tips_query.ads	2007-04-19 17:10:14.000000000 +0000
++++ b/src/gtk-tips_query.ads	2011-03-13 16:48:04.430831739 +0000
+@@ -35,7 +35,7 @@ with Gtk.Label;
+ with Gtk.Widget;
+ 
+ package Gtk.Tips_Query is
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Tips_Query);
+ 
+    type Gtk_Tips_Query_Record is new Gtk.Label.Gtk_Label_Record with private;
+    type Gtk_Tips_Query is access all Gtk_Tips_Query_Record'Class;
+diff -Nrup a/src/gtk-toolbar.ads b/src/gtk-toolbar.ads
+--- a/src/gtk-toolbar.ads	2010-02-09 17:40:15.918665000 +0000
++++ b/src/gtk-toolbar.ads	2011-03-13 16:48:04.430831739 +0000
+@@ -179,13 +179,13 @@ package Gtk.Toolbar is
+      (Widget      : out Gtk_Toolbar;
+       Orientation : Gtk_Orientation;
+       Style       : Gtk_Toolbar_Style);
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Gtk_New);
+ 
+    procedure Initialize
+      (Widget      : access Gtk_Toolbar_Record'Class;
+       Orientation : Gtk_Orientation;
+       Style       : Gtk_Toolbar_Style);
+-   pragma Obsolescent;
++   pragma Obsolescent (Entity => Initialize);
+ 
+    type Gtk_Toolbar_Child_Type is
+      (Toolbar_Child_Space,
+@@ -208,7 +208,8 @@ package Gtk.Toolbar is
+       Tooltip_Private_Text : UTF8_String := "";
+       Icon                 : Gtk.Widget.Gtk_Widget := null)
+       return Gtk.Widget.Gtk_Widget;
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead"); --  Append_Element
++   pragma Obsolescent (Entity => Append_Element,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    function Prepend_Element
+      (Toolbar              : access Gtk_Toolbar_Record;
+@@ -219,7 +220,8 @@ package Gtk.Toolbar is
+       Tooltip_Private_Text : UTF8_String := "";
+       Icon                 : Gtk.Widget.Gtk_Widget := null)
+       return Gtk.Widget.Gtk_Widget;
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Prepend_Element
++   pragma Obsolescent (Entity => Prepend_Element,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    function Insert_Element
+      (Toolbar              : access Gtk_Toolbar_Record;
+@@ -231,7 +233,8 @@ package Gtk.Toolbar is
+       Icon                 : Gtk.Widget.Gtk_Widget := null;
+       Position             : Gint)
+       return Gtk.Widget.Gtk_Widget;
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Insert_Element
++   pragma Obsolescent (Entity => Insert_Element,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    function Append_Item
+      (Toolbar              : access Gtk_Toolbar_Record;
+@@ -240,7 +243,8 @@ package Gtk.Toolbar is
+       Tooltip_Private_Text : UTF8_String := "";
+       Icon                 : Gtk.Widget.Gtk_Widget := null)
+       return Gtk.Button.Gtk_Button;
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Append_Item
++   pragma Obsolescent (Entity => Append_Item,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    function Prepend_Item
+      (Toolbar              : access Gtk_Toolbar_Record;
+@@ -249,7 +253,8 @@ package Gtk.Toolbar is
+       Tooltip_Private_Text : UTF8_String := "";
+       Icon                 : Gtk.Widget.Gtk_Widget := null)
+       return Gtk.Button.Gtk_Button;
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Prepend_Item
++   pragma Obsolescent (Entity => Prepend_Item,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    function Insert_Item
+      (Toolbar              : access Gtk_Toolbar_Record;
+@@ -259,7 +264,8 @@ package Gtk.Toolbar is
+       Icon                 : Gtk.Widget.Gtk_Widget := null;
+       Position             : Gint)
+       return Gtk.Button.Gtk_Button;
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Insert_Item
++   pragma Obsolescent (Entity => Insert_Item,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    function Insert_Stock
+      (Toolbar              : access Gtk_Toolbar_Record;
+@@ -267,35 +273,42 @@ package Gtk.Toolbar is
+       Tooltip_Text         : UTF8_String := "";
+       Tooltip_Private_Text : UTF8_String := "";
+       Position             : Gint := -1) return Gtk.Button.Gtk_Button;
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Insert_Stock
++   pragma Obsolescent (Entity => Insert_Stock,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    procedure Append_Space (Toolbar : access Gtk_Toolbar_Record);
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Append_Space
++   pragma Obsolescent (Entity => Append_Space,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    procedure Prepend_Space (Toolbar : access Gtk_Toolbar_Record);
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Prepend_Space
++   pragma Obsolescent (Entity => Prepend_Space,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    procedure Insert_Space
+      (Toolbar : access Gtk_Toolbar_Record; Position : Gint);
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Insert_Space
++   pragma Obsolescent (Entity => Insert_Space,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    procedure Remove_Space
+      (Toolbar : access Gtk_Toolbar_Record; Position : Gint);
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Remove_Space
++   pragma Obsolescent (Entity => Remove_Space,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    procedure Append_Widget
+      (Toolbar              : access Gtk_Toolbar_Record;
+       Widget               : access Gtk.Widget.Gtk_Widget_Record'Class;
+       Tooltip_Text         : UTF8_String := "";
+       Tooltip_Private_Text : UTF8_String := "");
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Append_Widget
++   pragma Obsolescent (Entity => Append_Widget,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    procedure Prepend_Widget
+      (Toolbar              : access Gtk_Toolbar_Record;
+       Widget               : access Gtk.Widget.Gtk_Widget_Record'Class;
+       Tooltip_Text         : UTF8_String := "";
+       Tooltip_Private_Text : UTF8_String := "");
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Prepend_Widget
++   pragma Obsolescent (Entity => Prepend_Widget,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    procedure Insert_Widget
+      (Toolbar              : access Gtk_Toolbar_Record;
+@@ -303,16 +316,17 @@ package Gtk.Toolbar is
+       Tooltip_Text         : UTF8_String := "";
+       Tooltip_Private_Text : UTF8_String := "";
+       Position             : Gint);
+-   pragma Obsolescent ("Use Gtk.Toolbar.Insert instead");  --  Insert_Widget
++   pragma Obsolescent (Entity => Insert_Widget,
++     "Use Gtk.Toolbar.Insert instead");
+ 
+    procedure Set_Icon_Size
+      (Toolbar   : access Gtk_Toolbar_Record;
+       Icon_Size : Gtk_Icon_Size);
+-   pragma Obsolescent  --  Set_Icon_Size
+-     ("Applications should respect user preferences (gtk+ themes)");
++   pragma Obsolescent (Entity => Set_Icon_Size,
++     "Applications should respect user preferences (gtk+ themes)");
+ 
+    procedure Unset_Icon_Size (Toolbar : access Gtk_Toolbar_Record);
+-   pragma Obsolescent;  --  Unset_Icon_Size
++   pragma Obsolescent (Entity => Unset_Icon_Size);
+    --  Unsets icon sizes set through Set_Icon_Size, so that user preferences
+    --  set through the gtk+ theme are used
+ 
+diff -Nrup a/src/gtk-tooltips.ads b/src/gtk-tooltips.ads
+--- a/src/gtk-tooltips.ads	2009-03-31 09:47:11.336481000 +0000
++++ b/src/gtk-tooltips.ads	2011-03-13 16:48:04.430831739 +0000
+@@ -133,7 +133,7 @@ package Gtk.Tooltips is
+    procedure Set_Delay
+      (Tooltips : access Gtk_Tooltips_Record;
+       Duration : Guint := 500);
+-   pragma Obsolescent;  --  Set_Delay
++   pragma Obsolescent (Entity => Set_Delay);
+    --  Set the delay between the user moving the mouse over a widget and the
+    --  text appearing. Duration is in milli-seconds.
+ 
+diff -Nrup a/src/gtk-tree_view.ads b/src/gtk-tree_view.ads
+--- a/src/gtk-tree_view.ads	2010-08-03 21:38:42.613312000 +0000
++++ b/src/gtk-tree_view.ads	2011-03-13 16:48:04.431831687 +0000
+@@ -579,7 +579,7 @@ package Gtk.Tree_View is
+       Wy        : Gint;
+       Tx        : out Gint;
+       Ty        : out Gint);
+-   pragma Obsolescent; --  Widget_To_Tree_Coords
++   pragma Obsolescent (Entity => Widget_To_Tree_Coords);
+    --  Converts widget coordinates to coordinates for the
+    --  tree window (the full scrollable area of the tree).
+    --
+@@ -591,7 +591,7 @@ package Gtk.Tree_View is
+       Ty        : Gint;
+       Wx        : out Gint;
+       Wy        : out Gint);
+-   pragma Obsolescent; --  Tree_To_Widget_Coords
++   pragma Obsolescent (Entity => Tree_To_Widget_Coords);
+    --  Converts tree coordinates (coordinates in full scrollable area of
+    --  the tree) to widget coordinates.
+    --
+diff -Nrup a/src/gtk-tree_view_column.ads b/src/gtk-tree_view_column.ads
+--- a/src/gtk-tree_view_column.ads	2011-02-07 23:52:38.597507000 +0000
++++ b/src/gtk-tree_view_column.ads	2011-03-13 16:48:04.432831634 +0000
+@@ -145,7 +145,7 @@ package Gtk.Tree_View_Column is
+    function Get_Cell_Renderers
+      (Tree_Column : access Gtk_Tree_View_Column_Record)
+       return Gtk.Cell_Renderer.Cell_Renderer_List.Glist;
+-   pragma Obsolescent (Get_Cell_Renderers);
++   pragma Obsolescent (Entity => Get_Cell_Renderers);
+    --  Return the list of cell renderers set in the column. The returned list
+    --  must be freed by the caller.
+ 
+diff -Nrup a/src/gtk-widget.ads b/src/gtk-widget.ads
+--- a/src/gtk-widget.ads	2010-12-10 14:55:25.593031000 +0000
++++ b/src/gtk-widget.ads	2011-03-13 16:48:04.433831580 +0000
+@@ -1418,7 +1418,7 @@ package Gtk.Widget is
+    procedure Draw
+      (Widget : access Gtk_Widget_Record;
+       Area   : Gdk.Rectangle.Gdk_Rectangle := Gdk.Rectangle.Full_Area);
+-   pragma Obsolescent;  --  Draw
++   pragma Obsolescent (Entity => Draw);
+    --  Emit a "draw" signal for a specific area of the widget.
+    --  The visual aspect might be different whether the widget has the focus
+    --  or not.
+@@ -1426,7 +1426,7 @@ package Gtk.Widget is
+    procedure Set_UPosition
+      (Widget : access Gtk_Widget_Record;
+       X, Y   : Gint);
+-   pragma Obsolescent;  --  Set_Uposition
++   pragma Obsolescent (Entity => Set_Uposition);
+    --  Modify the position of the widget.
+    --  This should be used only for toplevel widgets (windows and dialogs),
+    --  since other widgets' positions are handled by their parent.
+@@ -1434,7 +1434,7 @@ package Gtk.Widget is
+    procedure Set_USize
+      (Widget        : access Gtk_Widget_Record;
+       Width, Height : Gint);
+-   pragma Obsolescent ("Use Set_Size_Request instead");  --  Set_Usize
++   pragma Obsolescent (Entity => Set_USize, "Use Set_Size_Request instead");
+    --  Modify the size of the widget.
+    --  This sets an absolute size for the widget, no matter what its requested
+    --  size would be. For Gtk_Windows, you should consider using
+@@ -1444,7 +1444,7 @@ package Gtk.Widget is
+    --  default width is kept.
+ 
+    procedure Queue_Clear (Widget : access Gtk_Widget_Record);
+-   pragma Obsolescent; --  Queue_Clear
++   pragma Obsolescent (Entity => Queue_Clear);
+    --  Add a clear request to the event queue for the whole widget.
+    --  This is added to the same list as for Queue_Draw, and thus is coalesced
+    --  as much as possible with other drawing requests.
+@@ -1455,7 +1455,7 @@ package Gtk.Widget is
+       Y      : Gint;
+       Width  : Gint;
+       Height : Gint);
+-   pragma Obsolescent; --  Queue_Clear_Area
++   pragma Obsolescent (Entity => Queue_Clear_Area);
+    --  Add a clear request to the event queue for part of the widget.
+    --  This is added to the same list as for Queue_Draw, and thus is coalesced
+    --  as much as possible with other drawing requests.
+diff -Nrup a/src/gtk-window.ads b/src/gtk-window.ads
+--- a/src/gtk-window.ads	2010-07-20 19:25:53.659040000 +0000
++++ b/src/gtk-window.ads	2011-03-13 16:48:04.436831422 +0000
+@@ -1007,7 +1007,7 @@ package Gtk.Window is
+       Allow_Shrink : Boolean;
+       Allow_Grow   : Boolean;
+       Auto_Shrink  : Boolean);
+-   pragma Obsolescent;  --  Set_Policy
++   pragma Obsolescent (Entity => Set_Policy);
+    --  Specify the behavior of the window with regards to size modifications.
+    --  Default values when the window is created are:
+    --    Allow_Shrink => False,

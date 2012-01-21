@@ -1,0 +1,78 @@
+#include "pagestart.h"
+
+<p>The phone has two internal interfaces available.  One is a serial connection
+and the other is a USB connection.  The cables you can get usually have USB on
+one end, and then connect to the serial or USB connection on the other end.
+USB to serial cables also typically have a plastic blob in the middle which
+contain the USB to serial conversion chip.
+
+<p><b><font size="+2" color="#ff0000">DO NOT PURCHASE A STRAIGHT USB CABLE</font></b>.
+The internal USB interface on the phone has issues that results in data stalls
+and other instabilities.  If you decide to use <b>any</b> form of straight USB 
+cable with the VX4400 then do not ask for support with BitPim or on any other 
+support forums.  The cable will initially appear to work, but you will eventually 
+have problems.  Many people seem to think that because it initially appears to 
+work, this issue does not apply to them.  When they hit the problems, they post 
+to the various forums.  Many members of the forums get very annoyed seeing the 
+same thing crop up over and over again.  You have been warned!
+
+<h3>FutureDial Straight USB <b><font color="#ff0000">DO NOT PURCHASE THIS CABLE</font></b></h3>
+
+<p>Available at RadioShack as catalog# 17-789 marked as for LG 5350 and VX4400.
+
+IMAGE(cable-vx4400-usb.jpg,)
+
+<p>This cable connects to the USB interface inside the phone.  The cable is
+marked as for the LG VX4400 and the LG 5350.
+
+<h3>FutureDial USB to serial</h3>
+
+<p>Available at RadioShack as catalog# 17-783 marked as for LG VX1/VX10.
+
+IMAGE(cable-vx4400-usb2serial.jpg,)
+
+<p>This cable has a blob half way along the cable that converts from USB to
+serial and then connects to the serial interface in the phone.  The chip inside
+the cable is a Prolific 2303 and this is how your operating system will report
+it. It is marked as for the LG VX1/10 but works fine on the VX4400. 
+
+<p>Sometimes the phone does not respond when using this cable, and has
+to be manually forced to talk.  Do this by Menu &nbsp;<img
+src="nextitem.png">&nbsp; 8-Settings &nbsp;<img
+src="nextitem.png">&nbsp; 6-Data&nbsp;Settings &nbsp;<img
+src="nextitem.png">&nbsp; 2-Select&nbsp;Port RS-232C(COM&nbsp;Port)
+
+<blockquote>
+<h4>Windows</h4>
+
+<p>This cable works well and is reliable.  You will need to obtain the drivers
+from FutureDial's website.  Note that you should select LG VX10 in their
+installer.
+
+<h4>Linux</h4>
+
+<p>Linux has drivers builtin.  <b>Note</b>:  There is a bug in the Linux 2.4
+kernel that causes many machines to crash when any program stops using the
+cable.  This has been fixed in the kernel versions 2.4.23 and 2.6.
+
+<h4>Mac</h4>
+
+<p>You will need to get drivers from the Prolific web site at
+URL(http://www.prolific.com.tw/eng/downloads.asp?ID=31,http://www.prolific.com.tw/eng/downloads.asp?ID=31)
+
+
+</blockquote>
+
+<h2>Speed</h2>
+
+<p>The default speed the diagnostics interface runs at is 38400.  You
+can increase this to 115200.  Do this by Menu &nbsp;<img
+src="nextitem.png">&nbsp; 0-Service Menu &nbsp;<img
+src="nextitem.png">&nbsp; (Service code, usually 000000) &nbsp;<img
+src="nextitem.png">&nbsp; 5-Data &nbsp;<img src="nextitem.png">&nbsp;
+4-Diag&nbsp;Baud.  You need to reboot the phone for the change to take
+effect.
+
+
+
+#include "pageend.h"

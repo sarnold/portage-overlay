@@ -1,0 +1,52 @@
+The Samsung SPH-A620, and some other Sprint Samsung phones have a file
+ams/amsRegistry that contains information about downloaded files.  The
+following are some notes about the format of this file by Todd Imboden.
+
+--
+
+Using 36 bytes/row 
+
+starting at an offset of 00000900 is where the first record is shown
+
+starting at offset 00014420 is where the descriptions are, these relate to the gcd files that are for each ringer/screensaver etc.
+each of the numbers given in the first set will relate to the decriptions by adding 14420 to it
+
+on the phone itself if you look at the info for a ringer it has
+[Name]
+[Version]
+[Vendor]
+[File Type]
+[Download Domain]
+[Size]
+
+going back to the first set of numbers (or records) I have labeled them as to what they are records for (ie ringer, game, app, screensaver)
+
+now we look at the columns
+offset 00-01 give the directory location
+offset 02-03 ?
+offset 04-05 give the name location
+offset 06-07 give the version location
+offset 08-09 give the vendor location
+offset 10-11 give the Download Domain location
+offset 12-13 ?
+offset 14-15 ?
+offset 16-19 Filesize (this is the size of the file and it's gcd descriptor)
+offset 20-21 ? (I think this may be some kind of file type as applications and games are 0f00, ringers are 0c00 and screensavers are 0d00)
+offset 22-23 gives the Mime Type location (for games and app this is just ff00 but for screensavers and ringers it gives a location which tells the phone if it is .mid or .qcp or .jpg etc)
+offset 24-25 gives the ID location/Net access 
+	(for screensavers and ringers this is a location/for games and apps this is a descriptor for net access) 
+	for apps 
+	0001 is prompt 
+	0201 is always allow
+	0301 is never allow. 
+	for games 
+	0300 is never allow 
+	0400 is prompt  
+	0500 is always allow
+offset 26-27 Ringer Numbering (for anything but ringers this is 0000 but for ringers its a number that increases sequentially, I assume for linking the pbook entries to the ringers)
+offset 28-29 ?
+offset 30-32 Association (for apps and games this is 0000, but for the screensavers and ringers it's a number if that file is associate with something (ie screensaver as the screensaver or the ringers associated with a pbook entry)
+	if a screensaver pic is the main image then this number is 0001
+	if a ringer is set as a pbook entry this number is 0002
+	(looking at the excel file records 19,22,and 25... those ringers are not associated with anything in my phone)
+offset 33-36 Always 6400 0000 for all records, even blank ones

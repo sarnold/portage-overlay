@@ -1,0 +1,103 @@
+#include "pagestart.h"
+
+<h2>USB drivers</h2>
+
+<p>Linux provides device drivers that can talk to the modem interface
+on phones.  This driver is named <code>acm</code> and is usually 
+autodetected and used.
+
+<p>Linux also provides device drivers for USB to serial converters.
+There is a builtin database of which vendor and product ids are
+applicable.  Since there is a wide variety of converter chips,
+there is also a wide variety of drivers.
+
+<h2>Direct USB access</h2>
+
+<p>BitPim can access USB devices directly.  This is done using
+<code>libusb</code> which accesses the usb filesystem.  You
+need to ensure the filesystem (usbdevfs) is mounted, usually
+below <code>/proc/bus/usb</code>.
+
+<p>By default Linux configures USB devices so that they are owned by
+root.  You should be running BitPim as yourself, not root.  Most recent
+Linux distributions use hotplug, and these instructions show you
+how to configure it.<br>&nbsp;</p>
+
+<ol>
+
+<li><p><b>Edit <code>/etc/hotplug/usb.usermap</code></b>
+
+<p>Add a line to the bottom.<br><br>
+<code>usbcell 0x0003 <i>VID</i> <i>PID</i> 0 0 0 0 0 0 0 0 0</code>
+
+<p>You need to replace <i>VID</i> and <i>PID</i> with the relevant
+<a href="ref-usbids.htm">vendor and product ids</a>.  The VID and PID can also be obtained from the <a href="ref-commsettingsdialog.htm">Comm Port Settings</a> dialog.
+
+<p><b>Note</b>  For more recent versions of hotplug, it is considered better form
+to create the file <code>/etc/hotplug/usb/usbcell.usermap</code>.
+
+<li><p><b>Create <code>/etc/hotplug/usb/usbcell</code></b>
+
+<p>This script is executed whenever the device is inserted.  Here
+is a simple example that makes the device be owned by root, group owned by
+<code>cellusers</code> and readable/writable by root and the members of <code>cellusers</code>.
+
+<pre>
+#!/bin/bash
+
+if [ "${ACTION}" = "add" ] && [ -f "${DEVICE}" ]
+then
+        chown root "${DEVICE}"
+        chgrp cellusers "${DEVICE}"
+        chmod 660 "${DEVICE}"
+fi
+</pre>
+
+<p>You can adjust that script as you see fit.  Don't forget to make it executable.  On many versions of Linux, there is a script named <code>usbcam</code> in the same directory that changes the device to be owned by the same person who is logged into the console.  If you prefer that behavior, then copy <code>usbcam</code> to <code>usbcell</code>
+
+</ol>
+
+<h3>Direct USB access - udev</h3>
+
+<p>Recent Linux distributions (based on 2.6 kernel) may use "udev" instead of
+hotplug.  With udev, the usb device ownership and permission can be set by a
+method that is similar in concept, but different in implementation.
+The following will work on Fedora Core 5.  A similar procedure should work on
+other distributions that use udev.</p>
+
+<ol>
+<li><p>As done with the hotplug method above, create a <code>cellusers</code>
+group and put the users that will use BitPim in that group.
+<li><p><b>Create <code>/etc/udev/rules.d/60-cell.rules</code></b>
+
+<pre>
+SUBSYSTEM!="usb_device", ACTION!="add", GOTO="cell_rules_end"
+# LG Phone
+SYSFS{idVendor}=="1004", SYSFS{idProduct}=="6000", GROUP="cellusers", MODE="0660"
+LABEL="cell_rules_end"
+</pre>
+
+<p>1004 and 6000 should of course be replaced with the relevant <i>VID</i>
+and <i>PID</i>.  (For the Sanyo SCP-3100 the VID/PID is 0474/071f).</p>
+<p>If you have a single user machine, you may find it easier to use a
+mode of 0666 and leave off the <code>GROUP</code> item.
+</ol>
+
+<H2>Auto Port and Phone Detection</H2>
+<P>BitPim can now auto-detect known USB devices (cell phones with USB cables) being connected to the computer (it is not aware if a device is disconnected from the computer).  This feature is only available on systems runing <code>udev</code> version 095 or later (<code>udevinfo -V</code>) when BitPim is installed.
+
+<P>In order to take advantage of this feature, make sure that the followings are in place:
+<UL>
+<LI>File <CODE>/etc/udev/rules.d/60-bitpim.rules</CODE> exists.
+<LI>File <CODE>/usr/bin/bpudev</CODE> exists.
+<LI>Group <CODE>cellusers</CODE> exists and you belong to that group.
+</UL>
+
+<P>When a known device is connected, this feature sets the the device group to <CODE>cellusers</CODE>, permission to <CODE>0664</CODE>, and initiates the BitPim phone detection process.  The end result is that BitPim will be able to:
+<OL>
+<LI>Detect that a known device is connected,
+<LI>Set the appropriate group and permission for that device,
+<LI>Try to detect the phone model of that device.
+</OL>
+
+#include "pageend.h"

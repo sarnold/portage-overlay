@@ -1,0 +1,42 @@
+#include "pagestart.h"
+
+<p>BitFling has not had a code audit/review.  It is written
+using a language that is resistant to attacks (Python) and
+uses existing protocols and toolkits.  However nothing is
+perfect and you get no warranty or guarantee of security.
+
+<p>BitFling has builtin firewalling and will immediately
+close all connections if there are no defined users for
+the source address.
+
+<p>There is currently no limiting to what ports can
+be opened via BitFling by an authenticated user.
+Unauthenticated users can't get that far.
+
+<p>If someone gets hold of your certificate file,
+they can pretend to be your machine and people
+on the other end will not be able to tell the 
+difference.  You should also ensure the fingerprint
+is securely transmitted, otherwise bad guys can
+pretend to be your machine and transmit the fingerprint
+for their certificate.
+
+<p>On the BitFling side, the password is stored as a
+secure hash.  It is not possible to recover the original
+password, although it is possible to check if a particular
+password is the original password.
+
+<p>On the BitPim side, the password is stored obfuscated
+and the full original password can be obtained.
+
+<p>If a bad guy can get access to your BitFling machine as your
+user, then they can reconfigure BitFling to allow anyone
+access.  If they can access your BitPim machine as you then they
+can recover the password you use for BitFling.  (Mind you that will
+be the least of your worries).
+
+<p>If you are experienced in security, we always appreciate more
+eyes looking at the design, documentation and implementation.
+
+
+#include "pageend.h"
