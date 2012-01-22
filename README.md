@@ -9,7 +9,7 @@ be useful during an upgrade).
 
 ## Current list of ebuilds: ##
 
-1. app-accessibility/orca/orca-2.32.1.ebuild
+> app-accessibility/orca/orca-2.32.1.ebuild
 app-accessibility/speech-dispatcher/speech-dispatcher-0.6.7-r1.ebuild
 app-admin/bleachbit/bleachbit-0.8.0.ebuild
 app-cdr/cdrtools/cdrtools-2.01.01_alpha40.ebuild
