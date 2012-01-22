@@ -1,4 +1,4 @@
-# Basic Info
+# Basic Info #
 
 This is both my personal overlay and where I work on package bugs, new 
 packages, works-in-progress,  etc.  Some of these will go straight in 
@@ -7,9 +7,9 @@ feel free to use them).  If the directory is empty, it means the packakge
 is already in the tree.  Older ones can safely be ignored (but may still 
 be useful during an upgrade).
 
-## Current list of ebuilds:
+## Current list of ebuilds: ##
 
-app-accessibility/orca/orca-2.32.1.ebuild
+1. app-accessibility/orca/orca-2.32.1.ebuild
 app-accessibility/speech-dispatcher/speech-dispatcher-0.6.7-r1.ebuild
 app-admin/bleachbit/bleachbit-0.8.0.ebuild
 app-cdr/cdrtools/cdrtools-2.01.01_alpha40.ebuild
