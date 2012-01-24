@@ -49,6 +49,3 @@ pkg_postinst() {
 	elog ""
 }
 
-pkg_postrm() {
-	python_mod_cleanup ${extensiondir}/python
-}
