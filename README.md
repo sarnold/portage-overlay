@@ -81,7 +81,7 @@ be useful during an upgrade).
 - dev-vcs/rapidsvn/rapidsvn-0.9.6-r1.ebuild
 - gnome-extra/gnome-user-docs/gnome-user-docs-2.24.2-r1.ebuild
 - gnome-extra/nautilus-renamer/nautilus-renamer-2.3.ebuild
-- gnome-extra/- app-runner/- app-runner-0.5.2.ebuild
+- gnome-extra/app-runner/app-runner-0.5.2.ebuild
 - gnome-extra/evolution-exchange/evolution-exchange-3.2.1.ebuild
 - gnome-extra/evolution-mapi/evolution-mapi-0.32.2.ebuild
 - media-fonts/dejavu/dejavu-2.27.ebuild
