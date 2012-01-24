@@ -194,5 +194,9 @@ be useful during an upgrade).
 - x11-drivers/xf86-input-joystick/xf86-input-joystick-9999.ebuild
 - x11-libs/gtk+/gtk+-2.24.5-r1.ebuild
 - x11-libs/gtk+/gtk+-3.0.11.ebuild
+- x11-misc/xorg-sgml-doctools/xorg-sgml-doctools-1.10.ebuild
+- x11-proto/xproto/xproto-7.0.20.ebuild
+- x11-proto/xproto/xproto-7.0.22.ebuild
 - x11-terms/xterm/xterm-266.ebuild
+
 
