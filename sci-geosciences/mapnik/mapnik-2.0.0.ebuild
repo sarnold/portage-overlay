@@ -1,4 +1,4 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -14,10 +14,9 @@ SRC_URI="mirror://berlios/${PN}/${P}.tar.bz2"
 LICENSE="LGPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
-IUSE="bidi cairo debug doc gdal nobfonts postgres python sqlite"
+IUSE="bidi cairo debug doc gdal geos nobfonts postgres python sqlite"
 
-DEPEND="dev-libs/boost
-	net-misc/curl
+RDEPEND="net-misc/curl
 	media-libs/libpng
 	media-libs/jpeg
 	media-libs/tiff
@@ -28,16 +27,12 @@ DEPEND="dev-libs/boost
 	dev-libs/libxml2
 	dev-libs/icu
 	x11-libs/agg[truetype]
-	postgres? ( 
-		>=dev-db/postgresql-base-8.3
-		>=dev-db/postgis-1.5.2
-		sci-libs/geos
-	)
-	python? ( dev-libs/boost[python] )
+	dev-libs/boost[python?]
+	postgres? ( >=dev-db/postgresql-base-8.3 )
 	gdal? ( sci-libs/gdal )
-	python? ( dev-lang/python )
+	geos? ( sci-libs/geos )
 	bidi? ( dev-libs/fribidi )
-	cairo? ( 
+	cairo? (
 		x11-libs/cairo
 		dev-cpp/cairomm
 		python? ( dev-python/pycairo )
@@ -56,7 +51,9 @@ src_prepare() {
 }
 
 src_configure() {
-	local PLUGINS=shape,raster,postgis,osm
+	local PLUGINS=shape,raster,osm
+	use geos && PLUGINS+=,geos
+	use postgres && PLUGINS+=,postgis
 	use sqlite && PLUGINS+=,sqlite
 
 	SCONOPTS="
@@ -108,15 +105,15 @@ src_install() {
 	if use doc; then
 		export PYTHONPATH="${D}$(python_get_sitedir):$(python_get_sitedir)"
 		pushd docs/epydoc_config > /dev/null
-		./build_epydoc.sh
+			./build_epydoc.sh
 		popd > /dev/null
 		dohtml -r docs/api_docs/python/* || die "API doc install failed"
 	fi
 }
 
 pkg_postinst() {
-        elog ""
-        elog "See the home page or wiki (http://trac.mapnik.org/) for more info"
-        elog "or the installed examples for the default mapnik ogcserver config."
-        elog ""
+	elog ""
+	elog "See the home page or wiki (http://trac.mapnik.org/) for more info"
+	elog "or the installed examples for the default mapnik ogcserver config."
+	elog ""
 }
