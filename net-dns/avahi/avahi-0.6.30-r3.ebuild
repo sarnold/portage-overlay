@@ -57,6 +57,7 @@ DEPEND="${COMMON_DEPEND}
 	)"
 RDEPEND="${COMMON_DEPEND}
 	howl-compat? ( !net-misc/howl )
+	android? ( dev-util/androgenizer )
 	mdnsresponder-compat? ( !net-misc/mDNSResponder )"
 
 AP_DIR=${WORKDIR}/avahi-on-android
@@ -112,11 +113,6 @@ src_prepare() {
 	>py-compile
 
 	epatch "${FILESDIR}"/${P}-automake-1.11.2.patch #397477
-
-	if use android; then
-		epatch ${AP_DIR}/0001-Add-Android-support.patch
-		epatch ${AP_DIR}/0002-Add-uninstalled.pc.in-files.patch
-	fi
 
 	eautoreconf
 }
@@ -195,7 +191,6 @@ src_install() {
 	fi
 
 	dodoc docs/{AUTHORS,NEWS,README,TODO} || die
-	use android && dodoc ${AP_DIR}/avahi.org-ticket354.txt
 
 	if use doc; then
 		dohtml -r doxygen/html/. || die
@@ -208,6 +203,12 @@ src_install() {
 	use dbus && use gtk && use python && python_convert_shebangs -r 2 "${ED}usr/bin"
 
 	find "${ED}" -name '*.la' -exec rm -f {} +
+
+	if use android; then
+		dodoc ${AP_DIR}/avahi.org-ticket354.txt
+		dodoc ${AP_DIR}/0001-Add-Android-support.patch
+		dodoc ${AP_DIR}/0002-Add-uninstalled.pc.in-files.patch
+	fi
 }
 
 pkg_postrm() {

@@ -30,3 +30,8 @@ src_install() {
 	dobin androgenizer
 	dodoc USAGE.txt
 }
+
+pkg_postinst() {
+	elog "See the USAGE.txt file for a brief usage description; for a more"
+	elog "detailed discussion, see http://blogs.igalia.com/eocanha/?p=242"
+}
