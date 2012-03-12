@@ -6,17 +6,14 @@ EAPI=4
 
 inherit autotools eutils base
 
-MY_PV="1.0-20120311"
-MY_P=${PN}-${MY_PV}
-
-DESCRIPTION="A modern set of CUPS PDDF filters."
+DESCRIPTION="A modern set of CUPS PDF filters."
 HOMEPAGE="http://www.linuxfoundation.org/collaborate/workgroups/openprinting/pdfasstandardprintjobformat"
-SRC_URI="mirrors://gentoo/${MY_P}.tar.gz"
+SRC_URI="http://www.openprinting.org/download/cups-filters/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~ppc ~ppc64 ~sparc ~x86"
-IUSE="+jpeg ppds"
+IUSE="+jpeg"
 
 RDEPEND=">=app-text/poppler-0.18.1[utils]
 	media-libs/lcms:2
@@ -33,9 +30,7 @@ DEPEND="${RDEPEND}"
 
 WANT_AUTOCONF=2.5
 
-S="${WORKDIR}/${MY_P}"
-
-RESTRICT="strip"
+RESTRICT="strip test"
 
 src_configure() {
 	local my_conf="--enable-zlib --with-php=no"
