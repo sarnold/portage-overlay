@@ -11,20 +11,22 @@ export PYTHONPATH=/usr/lib/edna
 EDNA=/usr/bin/edna
 EDNACONF=/etc/edna/edna.conf
 PIDFILE=/var/run/edna.pid
+USER=edna
 
 depend() {
-        need local
+	need local
 }
 
 start() {
-    ebegin "Starting ednad mp3 server"
-    start-stop-daemon -m -b --start --quiet --pidfile $PIDFILE \
-    --exec $EDNA -- $EDNACONF
-    eend $?
+	ebegin "Starting edna mp3 server"
+	start-stop-daemon --env PYTHONPATH=$PYTHONPATH \
+		-m -b --start --quiet --pidfile $PIDFILE \
+		--exec $EDNA -- $EDNACONF
+	eend $?
 }
 
 stop() {
-    ebegin "Stopping ednad"
-    start-stop-daemon -o --quiet --stop --pidfile $PIDFILE
-    eend $?
+	ebegin "Stopping ednad"
+	start-stop-daemon --quiet --stop --pidfile $PIDFILE
+	eend $?
 }

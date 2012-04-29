@@ -1,6 +1,6 @@
 # Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-apps/util-linux/util-linux-2.21.ebuild,v 1.1 2012/02/24 16:35:39 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-apps/util-linux/util-linux-2.21.1.ebuild,v 1.3 2012/03/30 20:31:38 vapier Exp $
 
 EAPI="3"
 
@@ -19,7 +19,7 @@ if [[ ${PV} == "9999" ]] ; then
 	#KEYWORDS=""
 else
 	SRC_URI="mirror://kernel/linux/utils/util-linux/v${PV:0:4}/${MY_P}.tar.xz
-		loop-aes? ( http://loop-aes.sourceforge.net/updates/${P}-20120228.diff.bz2 )"
+		loop-aes? ( http://loop-aes.sourceforge.net/updates/util-linux-2.21-20120228.diff.bz2 )"
 	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~x86-linux"
 fi
 
@@ -47,7 +47,9 @@ src_prepare() {
 		autopoint --force
 		eautoreconf
 	else
-		use loop-aes && epatch "${WORKDIR}"/util-linux-*.diff
+		#use loop-aes && epatch "${WORKDIR}"/util-linux-*.diff
+		ewarn "Latest loop-aes patch only works with util-linux-2.21."
+		ewarn "Please disable the loop-aes USE flag for ${P}."
 	fi
 	use uclibc && sed -i -e s/versionsort/alphasort/g -e s/strverscmp.h/dirent.h/g mount/lomount.c
 	elibtoolize
