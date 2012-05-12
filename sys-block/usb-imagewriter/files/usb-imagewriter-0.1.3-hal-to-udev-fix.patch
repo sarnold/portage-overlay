@@ -1,0 +1,37 @@
+--- lib/find_devices.sh.orig	2012-05-05 19:27:12.000000000 -0700
++++ lib/find_devices.sh	2012-05-05 21:21:55.000000000 -0700
+@@ -16,18 +16,25 @@
+ #  along with this program; if not, write to the Free Software Foundation,
+ #  Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301, USA
+ 
+-for device in $(hal-find-by-capability --capability storage); do
+-    VENDOR=$(hal-get-property --udi $device --key storage.vendor)
+-    NAME=$(hal-get-property --udi $device --key storage.model)
+-    PLUGGABLE=$(hal-get-property --udi $device --key storage.hotpluggable)
+-    TYPE=$(hal-get-property --udi $device --key storage.drive_type)
+-    DEVPATH=$(hal-get-property --udi $device --key block.device)
+-    AVAIL=$(hal-get-property --udi $device --key storage.removable.media_available)
++USB_NODES=$(ls -l /dev/disk/by-id/usb* | rev | cut -c 1-4 | rev)
+ 
+-    if [ "${AVAIL}" = true ] && [ "${PLUGGABLE}" = true ] && \
+-        ( [ "${TYPE}" = "disk" ] || [ "${TYPE}" = "sd_mmc" ] ); then
++for device in $USB_NODES
++    do
++    VENDOR=$(udevadm info --query=property -n /dev/${device} | grep VENDOR= | cut -d "=" -f 2)
++    NAME=$(udevadm info --query=property -n /dev/${device} | grep MODEL= | cut -d "=" -f 2)
++    TYPE=$(udevadm info --query=property -n /dev/${device} | grep DEVTYPE= | cut -d "=" -f 2)
++
++    if ( [ "${TYPE}" = "disk" ] || [ "${TYPE}" = "sd_mmc" ] ) ; then
++        DEVPATH=$(udevadm info --query=property -n /dev/${device} | grep DEVNAME= | cut -d "=" -f 2)
+         VENDOR=${VENDOR:-"Unknown"}
+         NAME=${NAME:-"Unknown"}
+         echo "$VENDOR $NAME, $DEVPATH"
++    elif [ "${TYPE}" = "partition" ] ; then
++        DEVPATH=$(udevadm info --query=property -n /dev/${device} | grep DEVNAME= | cut -d "=" -f 2)
++        FS_LABEL=$(udevadm info --query=property -n /dev/${device} | grep FS_LABEL= | cut -d "=" -f 2)
++        FS_TYPE=$(udevadm info --query=property -n /dev/${device} | grep FS_TYPE= | cut -d "=" -f 2)
++        VENDOR=${FS_LABEL:-"   None"}
++        NAME=${FS_TYPE:-"Unknown fs"}
++        echo "$VENDOR $NAME, $DEVPATH"
+     fi
+ done

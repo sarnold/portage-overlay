@@ -1,0 +1,34 @@
+--- install.sh.orig	2012-05-05 17:04:19.000000000 -0700
++++ install.sh	2012-05-05 17:11:29.000000000 -0700
+@@ -21,21 +21,21 @@
+ 
+ 
+ if [ "$1" = "uninstall" ]; then
+-    rm -rf /usr/lib/imagewriter
+-    rm -rf /usr/share/imagewriter
+-    rm -r /usr/share/applications/imagewriter.desktop
+-    rm -f /usr/bin/imagewriter
++    rm -rf ${DESTDIR}/usr/lib/imagewriter
++    rm -rf ${DESTDIR}/usr/share/imagewriter
++    rm -r ${DESTDIR}/usr/share/applications/imagewriter.desktop
++    rm -f ${DESTDIR}/usr/bin/imagewriter
+ else
+-    cp share/applications/imagewriter.desktop /usr/share/applications/
+-    cp imagewriter /usr/bin/
+-    mkdir -p /usr/lib/imagewriter
+-    mkdir -p /usr/share/imagewriter
++    cp share/applications/imagewriter.desktop ${DESTDIR}/usr/share/applications/
++    cp imagewriter ${DESTDIR}/usr/bin/
++    mkdir -p ${DESTDIR}/usr/lib/imagewriter
++    mkdir -p ${DESTDIR}/usr/share/imagewriter
+ 
+     for item in $LIBFILES; do
+-        cp lib/$item /usr/lib/imagewriter/
++        cp lib/$item ${DESTDIR}/usr/lib/imagewriter/
+     done
+ 
+     for item in $DATAFILES; do
+-        cp share/usb-imagewriter/$item /usr/share/imagewriter/
++        cp share/usb-imagewriter/$item ${DESTDIR}/usr/share/imagewriter/
+     done
+ fi

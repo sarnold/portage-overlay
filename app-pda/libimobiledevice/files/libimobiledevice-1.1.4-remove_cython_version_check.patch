@@ -1,0 +1,133 @@
+--- configure	2012-04-08 08:37:56.000000000 -0700
++++ configure.new	2012-05-01 21:21:12.000000000 -0700
+@@ -16686,68 +16686,9 @@
+                 { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: cannot find 'cython' program. You should look at http://www.cython.org or install your distribution specific cython package." >&5
+ $as_echo "$as_me: WARNING: cannot find 'cython' program. You should look at http://www.cython.org or install your distribution specific cython package." >&2;}
+                 CYTHON=false
+-        elif test -n "0.13.0" ; then
+-                { $as_echo "$as_me:${as_lineno-$LINENO}: checking for Cython version" >&5
+-$as_echo_n "checking for Cython version... " >&6; }
+-                cython_version=`$CYTHON --version 2>&1 | grep 'Cython version' | sed 's/.*\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\).*/\1/g'`
+-                { $as_echo "$as_me:${as_lineno-$LINENO}: result: $cython_version" >&5
+-$as_echo "$cython_version" >&6; }
+-                if test -n "$cython_version" ; then
+-                        # Calculate the required version number components
+-                        required=0.13.0
+-                        required_major=`echo $required | sed 's/[^0-9].*//'`
+-                        if test -z "$required_major" ; then
+-                                required_major=0
+-                        fi
+-                        required=`echo $required | sed 's/[0-9]*[^0-9]//'`
+-                        required_minor=`echo $required | sed 's/[^0-9].*//'`
+-                        if test -z "$required_minor" ; then
+-                                required_minor=0
+-                        fi
+-                        required=`echo $required | sed 's/[0-9]*[^0-9]//'`
+-                        required_patch=`echo $required | sed 's/[^0-9].*//'`
+-                        if test -z "$required_patch" ; then
+-                                required_patch=0
+-                        fi
+-                        # Calculate the available version number components
+-                        available=$cython_version
+-                        available_major=`echo $available | sed 's/[^0-9].*//'`
+-                        if test -z "$available_major" ; then
+-                                available_major=0
+-                        fi
+-                        available=`echo $available | sed 's/[0-9]*[^0-9]//'`
+-                        available_minor=`echo $available | sed 's/[^0-9].*//'`
+-                        if test -z "$available_minor" ; then
+-                                available_minor=0
+-                        fi
+-                        available=`echo $available | sed 's/[0-9]*[^0-9]//'`
+-                        available_patch=`echo $available | sed 's/[^0-9].*//'`
+-                        if test -z "$available_patch" ; then
+-                                available_patch=0
+-                        fi
+-                        if test $available_major -gt $required_major || \
+-                                ( test $available_major -eq $required_major && \
+-                                      test $available_minor -gt $required_minor ) || \
+-                                ( test $available_major -eq $required_major && \
+-                                        test $available_minor -eq $required_minor && \
+-                                        test $available_patch -ge $required_patch ) ; then
+-
+-                                { $as_echo "$as_me:${as_lineno-$LINENO}: Cython executable is '$CYTHON'" >&5
+-$as_echo "$as_me: Cython executable is '$CYTHON'" >&6;}
+-                        else
+-                                { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: Cython version >= 0.13.0 is required.  You have $cython_version.  You should look at http://www.cython.org" >&5
+-$as_echo "$as_me: WARNING: Cython version >= 0.13.0 is required.  You have $cython_version.  You should look at http://www.cython.org" >&2;}
+-                                CYTHON='echo "Error: Cython version >= 0.13.0 is required.  You have '"$cython_version"'.  You should look at http://www.cython.org" ; false'
+-                        fi
+-                else
+-                        { $as_echo "$as_me:${as_lineno-$LINENO}: WARNING: cannot determine Cython version" >&5
+-$as_echo "$as_me: WARNING: cannot determine Cython version" >&2;}
+-                        CYTHON=false
+-                fi
+         fi
+ 
+ 
+-
+ 	#
+ 	# Allow the use of a (user set) custom python version
+ 	#
+--- m4/ac_pkg_cython.m4.orig	2012-05-01 21:33:06.000000000 -0700
++++ m4/ac_pkg_cython.m4	2012-05-01 21:34:02.000000000 -0700
+@@ -4,59 +4,6 @@
+         if test -z "$CYTHON" ; then
+                 AC_MSG_WARN([cannot find 'cython' program. You should look at http://www.cython.org] or install your distribution specific cython package.)
+                 CYTHON=false
+-        elif test -n "$1" ; then
+-                AC_MSG_CHECKING([for Cython version])
+-                [cython_version=`$CYTHON --version 2>&1 | grep 'Cython version' | sed 's/.*\([0-9][0-9]*\.[0-9][0-9]*\.[0-9][0-9]*\).*/\1/g'`]
+-                AC_MSG_RESULT([$cython_version])
+-                if test -n "$cython_version" ; then
+-                        # Calculate the required version number components
+-                        [required=$1]
+-                        [required_major=`echo $required | sed 's/[^0-9].*//'`]
+-                        if test -z "$required_major" ; then
+-                                [required_major=0]
+-                        fi
+-                        [required=`echo $required | sed 's/[0-9]*[^0-9]//'`]
+-                        [required_minor=`echo $required | sed 's/[^0-9].*//'`]
+-                        if test -z "$required_minor" ; then
+-                                [required_minor=0]
+-                        fi
+-                        [required=`echo $required | sed 's/[0-9]*[^0-9]//'`]
+-                        [required_patch=`echo $required | sed 's/[^0-9].*//'`]
+-                        if test -z "$required_patch" ; then
+-                                [required_patch=0]
+-                        fi
+-                        # Calculate the available version number components
+-                        [available=$cython_version]
+-                        [available_major=`echo $available | sed 's/[^0-9].*//'`]
+-                        if test -z "$available_major" ; then
+-                                [available_major=0]
+-                        fi
+-                        [available=`echo $available | sed 's/[0-9]*[^0-9]//'`]
+-                        [available_minor=`echo $available | sed 's/[^0-9].*//'`]
+-                        if test -z "$available_minor" ; then
+-                                [available_minor=0]
+-                        fi
+-                        [available=`echo $available | sed 's/[0-9]*[^0-9]//'`]
+-                        [available_patch=`echo $available | sed 's/[^0-9].*//'`]
+-                        if test -z "$available_patch" ; then
+-                                [available_patch=0]
+-                        fi
+-                        if test $available_major -gt $required_major || \
+-                                ( test $available_major -eq $required_major && \
+-                                      test $available_minor -gt $required_minor ) || \
+-                                ( test $available_major -eq $required_major && \
+-                                        test $available_minor -eq $required_minor && \
+-                                        test $available_patch -ge $required_patch ) ; then
+-
+-                                AC_MSG_NOTICE([Cython executable is '$CYTHON'])
+-                        else
+-                                AC_MSG_WARN([Cython version >= $1 is required.  You have $cython_version.  You should look at http://www.cython.org])
+-                                CYTHON='echo "Error: Cython version >= $1 is required.  You have '"$cython_version"'.  You should look at http://www.cython.org" ; false'
+-                        fi
+-                else
+-                        AC_MSG_WARN([cannot determine Cython version])
+-                        CYTHON=false
+-                fi
+         fi
+         AC_SUBST([CYTHON_LIB])
+ ])
