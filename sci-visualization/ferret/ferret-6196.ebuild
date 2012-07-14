@@ -2,9 +2,10 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
+EAPI="2"
+
 inherit eutils flag-o-matic multilib toolchain-funcs
 
-EAPI="2"
 MY_PN="${PN}_source"
 MY_PV="v${PV}"
 MY_P="${MY_PN}_${MY_PV}"

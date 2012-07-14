@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-inherit eutils gnome2 python toolchain-funcs fdo-mime
-
 EAPI="2"
+
+inherit eutils gnome2 python toolchain-funcs fdo-mime
 
 DESCRIPTION="GTK+ and Python GUI app for cleaning junk off your hard disk."
 
