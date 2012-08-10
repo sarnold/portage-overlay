@@ -1,0 +1,38 @@
+--- a/js/ui/polkitAuthenticationAgent.js	2011-10-24 11:55:26.000000000 +0200
++++ b/js/ui/polkitAuthenticationAgent.js	2011-10-26 13:31:28.350313323 +0200
+@@ -24,6 +24,7 @@ const Lang = imports.lang;
+ const Signals = imports.signals;
+ const Shell = imports.gi.Shell;
+ const AccountsService = imports.gi.AccountsService;
++const GLib = imports.gi.GLib;
+ const Clutter = imports.gi.Clutter;
+ const St = imports.gi.St;
+ const Pango = imports.gi.Pango;
+@@ -85,13 +85,25 @@ AuthenticationDialog.prototype = {
+                        { y_fill:  true,
+                          y_align: St.Align.START });
+ 
++        let chosenIndex = 0;
++
+         if (userNames.length > 1) {
++            let thisUser = GLib.get_user_name();
++            for (let i = 0; i < userNames.length; i++) {
++                if (userNames[i] == thisUser) {
++                    chosenIndex = i;
++                    break;
++                }
++                else if (userNames[i] == 'root') {
++                    chosenIndex = i;
++                }
++            }
+             log('polkitAuthenticationAgent: Received ' + userNames.length +
+                 ' identities that can be used for authentication. Only ' +
+-                'considering the first one.');
++                'considering the ' + (1+chosenIndex) + ' one.');
+         }
+ 
+-        let userName = userNames[0];
++        let userName = userNames[chosenIndex];
+ 
+         this._user = AccountsService.UserManager.get_default().get_user(userName);
+         let userRealName = this._user.get_real_name()

@@ -1,0 +1,5 @@
+/* -*- mode: js; js-indent-level: 4; indent-tabs-mode: nil -*- */
+
+polkit.addAdminRule(function(action, subject) {
+    return ["unix-group:wheel"];
+});
