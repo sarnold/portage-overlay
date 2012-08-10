@@ -1,8 +1,8 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=2
+EAPI=3
 
 PYTHON_DEPEND="2:2.6"
 PYTHON_USE_WITH="berkdb sqlite"
@@ -64,13 +64,13 @@ src_install() {
 
 pkg_postinst() {
 	python_need_rebuild
-	python_mod_optimize /usr/$(get_libdir)/${PN}
+	python_mod_optimize -- /usr/$(get_libdir)/${PN}
 	fdo-mime_desktop_database_update
 	fdo-mime_mime_database_update
 }
 
 pkg_postrm() {
-	python_mod_cleanup /usr/$(get_libdir)/${PN}
+	python_mod_cleanup  -- /usr/$(get_libdir)/${PN}
 	fdo-mime_desktop_database_update
 	fdo-mime_mime_database_update
 }
