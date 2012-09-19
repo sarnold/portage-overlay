@@ -44,6 +44,11 @@ RDEPEND="media-libs/fidlib
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
+# need to set machine type explicitly for ppc
+EMACHINE_TYPE=""
+use ppc && export EMACHINE_TYPE="machine=powerpc"
+use ppc64 && export EMACHINE_TYPE="machine=powerpc64"
+
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-1.10.0-system-libs.patch
 	epatch "${FILESDIR}"/${PN}-1.10.0-cflags.patch
@@ -61,7 +66,7 @@ src_prepare() {
 
 src_compile() {
 	CC="$(tc-getCC)" CXX="$(tc-getCXX)" LINKFLAGS="${LDFLAGS}" \
-	LIBPATH="/usr/$(get_libdir)" escons \
+	LIBPATH="/usr/$(get_libdir)" escons $EMACHINE_TYPE \
 		prefix=/usr \
 		qtdir=/usr/$(get_libdir)/qt4 \
 		hifieq=1 \
@@ -76,7 +81,8 @@ src_compile() {
 
 src_install() {
 	CC="$(tc-getCC)" CXX="$(tc-getCXX)" LINKFLAGS="${LDFLAGS}" \
-	LIBPATH="/usr/$(get_libdir)" escons install \
+	LIBPATH="/usr/$(get_libdir)" escons $EMACHINE_TYPE \
+		install \
 		prefix=/usr \
 		qtdir=/usr/$(get_libdir)/qt4 \
 		install_root="${D}"/usr

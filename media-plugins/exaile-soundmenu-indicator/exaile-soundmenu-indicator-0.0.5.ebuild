@@ -9,7 +9,10 @@ PYTHON_DEPEND="2:2.6"
 inherit eutils python
 
 DESCRIPTION="Gnome 3 sound menu indicator plugin (adds MPRISv2 support)"
-HOMEPAGE="https://github.com/grawity/Exaile-Soundmenu-Indicator"
+HOMEPAGE="https://github.com/sunng87/Exaile-Soundmenu-Indicator"
+# this version is based on the following commit id for exaile 3.2.1-r1
+#   7ad3c04c3df92f310e1e0ff2e0d018378aa52840
+#   Merge pull request #9 from grawity/master
 SRC_URI="mirror://gentoo/${P}.tar.gz"
 
 LICENSE="GPL-2"
