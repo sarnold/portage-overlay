@@ -11,6 +11,13 @@ The master branch is intended to contain working (as in buildable)
 ebuilds, while unfinished or otherwise non-working ebuilds are now 
 on the wip branch (not shown below).
 
+## Latest ##
+
+Recent updates for the Gnome 3 desktop (x86 and x86_64) as well as other
+powerpc updates for the older Gnome desktop and misc packages (audio, etc). 
+The exaile sound menu indicator plugin is working with exaile 3.2.1, except 
+for the time elapesed calculation when paused.
+
 ## Current list of ebuilds: ##
 
 - app-accessibility/orca/orca-2.32.1.ebuild
@@ -97,6 +104,7 @@ on the wip branch (not shown below).
 - dev-util/vine/vine-1.0.ebuild
 - dev-vcs/rabbitvcs/rabbitvcs-0.15.0.5-r1.ebuild
 - dev-vcs/rapidsvn/rapidsvn-0.9.6-r1.ebuild
+- games-board/xgammon/xgammon-0.98.ebuild
 - gnome-base/gnome-shell/gnome-shell-3.2.2.1.ebuild
 - gnome-base/librsvg/librsvg-2.36.3.ebuild
 - gnome-extra/app-runner/app-runner-0.5.2.ebuild
