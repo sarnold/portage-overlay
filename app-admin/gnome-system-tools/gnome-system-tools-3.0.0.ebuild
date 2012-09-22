@@ -6,7 +6,7 @@ EAPI="3"
 GCONF_DEBUG="no"
 GNOME2_LA_PUNT="yes"
 
-inherit gnome2
+inherit autotools gnome2
 
 DESCRIPTION="Tools aimed to make easy the administration of UNIX systems"
 HOMEPAGE="http://www.gnome.org/projects/gst/"
@@ -47,3 +47,15 @@ pkg_setup() {
 		G2CONF="${G2CONF} --disable-shares"
 	fi
 }
+
+src_prepare() {
+	epatch ${FILESDIR}/${P}-configure.patch
+	eautoreconf
+	gnome2_src_prepare
+}
+
+src_compile() {
+#	LDFLAGS="${LDFLAGS} -lgthread-2.0"
+	gnome2_src_compile
+}
+
