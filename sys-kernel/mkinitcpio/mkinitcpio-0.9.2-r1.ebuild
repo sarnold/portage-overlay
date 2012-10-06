@@ -105,6 +105,10 @@ src_install() {
 pkg_postinst() {
 	einfo
 	elog "Set your hooks in /etc/mkinitcpio.conf accordingly!"
-	elog "Missing hooks can lead to an unbootanle system!"
+	elog "Missing hooks can lead to an unbootable system!"
+	elog "A missing module warning is okay if you have it"
+	elog "compiled into the kernel.  This port appears to"
+	elog "be incomplete wrt the latest udev so it may not"
+	elog "boot at all. This is apparently a work in progress..."
 	einfo
 }
