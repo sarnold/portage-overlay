@@ -44,5 +44,7 @@ src_install() {
 		ln -s libhiredis.so libhiredis.so.0
 		ln -s libhiredis.so libhiredis.so.0.10
 	popd > /dev/null
+
+	dodoc ${DOCS}
 }
 
