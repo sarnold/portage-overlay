@@ -7,7 +7,7 @@
 
 EAPI="3"
 
-inherit eutils
+inherit eutils multilib
 
 VERSION_BUSYBOX='1.20.2'
 VERSION_DMRAID='1.0.0.rc16-3'
@@ -182,11 +182,11 @@ gen_files() {
 	overlay="${D}usr/share/genkernel/overlay"
 	mkdir -p $overlay/etc
 	mkdir -p $overlay/sbin
-	mkdir -p $overlay/lib
+	mkdir -p $overlay/$(get_libdir)
 
 	pushd $overlay > /dev/null
 		cp ${FILESDIR}/initrd.fsck $overlay/etc
-		cat ${FILESDIR}/libs_list | xargs cp -t $overlay/lib
+		cat ${FILESDIR}/libs_list | xargs cp -t $overlay/$(get_libdir)
 		cat ${FILESDIR}/sbin_list | xargs cp -t $overlay/sbin
 	popd > /dev/null
 }
