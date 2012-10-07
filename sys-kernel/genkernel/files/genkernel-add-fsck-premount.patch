@@ -1,0 +1,18 @@
+--- defaults/linuxrc.orig	2012-10-06 14:42:04.000000000 -0700
++++ defaults/linuxrc	2012-10-06 14:43:01.000000000 -0700
+@@ -2,6 +2,7 @@
+ 
+ . /etc/initrd.defaults
+ . /etc/initrd.scripts
++. /etc/initrd.fsck
+ 
+ splash() {
+ 	return 0
+@@ -864,6 +865,7 @@
+ 	# In this case, it's probably part of the filesystem
+ 	# and not a mountpoint
+ 	[ -z "$dev" ] && continue
++	check_filesystem $dev
+ 	fstype=$(get_mount_fstype $fs)
+ 	if get_mount_options $fs | fgrep -q bind ; then
+ 		opts='bind'

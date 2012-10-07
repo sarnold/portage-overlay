@@ -1,0 +1,50 @@
+#!/bin/ash
+
+. /etc/initrd.defaults
+. /etc/initrd.scripts
+
+check_filesystem() {
+    # most of code coming from /etc/init.d/fsck
+
+    local fsck_opts= check_extra= RC_UNAME=$(uname -s)
+
+    # FIXME : get_bootparam forcefsck
+    if [ -e /forcefsck ]; then
+        fsck_opts="$fsck_opts -f"
+        check_extra="(check forced)"
+    fi
+
+    good_msg "Checking local filesystem $check_extra : $1"
+
+    if [ "$RC_UNAME" = Linux ]; then
+        fsck_opts="$fsck_opts -C0 -T"
+    fi
+
+    trap : INT QUIT
+
+    # using our own fsck, not the builtin one from busybox
+    /sbin/fsck -p $fsck_opts $1
+
+    case $? in
+        0)      return 0;;
+        1)      good_msg "Filesystem repaired"; return 0;;
+        2|3)    if [ "$RC_UNAME" = Linux ]; then
+                        good_msg "Filesystem repaired, but reboot needed"
+                        reboot -f
+                else
+                        bad_msg "Filesystem still has errors; manual fsck required"
+                fi;;
+        4)      if [ "$RC_UNAME" = Linux ]; then
+                        bad_msg "Fileystem errors left uncorrected, aborting"
+			do_rundebugshell
+                else
+                        good_msg "Filesystem repaired, but reboot needed"
+                        reboot
+                fi;;
+        8)      bad_msg "Operational error"; return 0;;
+        12)     bad_msg "fsck interrupted";;
+        *)      bad_msg "Filesystem couldn't be fixed";;
+    esac
+    do_rundebugshell
+}
+
