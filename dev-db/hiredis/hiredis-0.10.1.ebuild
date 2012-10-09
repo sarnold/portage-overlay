@@ -39,6 +39,9 @@ src_install() {
 	dobin hiredis-example hiredis-test
 	dolib.so libhiredis.so
 	dolib.a libhiredis.a
+	insinto /usr/include/${PN}
+	doins hiredis.h async.h 
+	doins -r adapters
 
 	pushd ${D}usr/$(get_libdir) > /dev/null
 		ln -s libhiredis.so libhiredis.so.0
