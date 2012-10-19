@@ -26,14 +26,16 @@ RDEPEND="${DEPEND}"
 DOCS="README.md CHANGELOG.md"
 
 src_prepare() {
-	sed -i \
-		-e "s|= \$(PREFIX)|= \$(DESTDIR)\$(PREFIX)|" Makefile
+	sed -i -e "s|= \$(PREFIX)|= \$(DESTDIR)\$(PREFIX)|" Makefile
+
+	if ! use debug ; then
+		DEBUG=""
+	fi
 }
 
 src_compile() {
-	emake CC="$(tc-getCC)" OPTIMIZATION="" DEBUG="" all \
+	emake CC="$(tc-getCC)" OPTIMIZATION="" all \
 		|| die "make failed"
-
 }
 
 src_test() {
@@ -47,8 +49,8 @@ src_test() {
 }
 
 src_install() {
-	make DESTDIR="${D}" PREFIX=${EPREFIX}/usr LIBRARY_PATH=$(get_libdir) \
-		install
+	make DESTDIR="${D}" PREFIX=${EPREFIX}/usr \
+		LIBRARY_PATH=$(get_libdir) install
 
 	dodoc ${DOCS}
 }
