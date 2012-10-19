@@ -12,8 +12,10 @@ SRC_URI="mirror://gentoo/${P}.tar.gz"
 #EGIT_REPO_URI="git://github.com/antirez/${PN}.git"
 
 LICENSE="BSD"
-KEYWORDS="amd64 arm ppc x86"
-IUSE=""
+KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86"
+
+IUSE="debug"
+
 SLOT="0"
 
 DEPEND="dev-libs/libevent
@@ -23,30 +25,30 @@ RDEPEND="${DEPEND}"
 
 DOCS="README.md CHANGELOG.md"
 
+src_prepare() {
+	sed -i \
+		-e "s|= \$(PREFIX)|= \$(DESTDIR)\$(PREFIX)|" Makefile
+}
+
 src_compile() {
-	emake CC="$(tc-getCC)" OPTIMIZATION="" all || die "make failed"
+	emake CC="$(tc-getCC)" OPTIMIZATION="" DEBUG="" all \
+		|| die "make failed"
+
 }
 
 src_test() {
 	cd ${S}
+
 	/usr/sbin/redis-server ${FILESDIR}/redis.conf
+
 	./hiredis-test -h 127.0.0.1 -p 56379 -s /tmp/hiredis-test-redis.sock \
 		|| ( kill `cat /tmp/hiredis-test-redis.pid` && false )
 	kill `cat /tmp/hiredis-test-redis.pid`
 }
 
 src_install() {
-	dobin hiredis-example hiredis-test
-	dolib.so libhiredis.so
-	dolib.a libhiredis.a
-	insinto /usr/include/${PN}
-	doins hiredis.h async.h 
-	doins -r adapters
-
-	pushd ${D}usr/$(get_libdir) > /dev/null
-		ln -s libhiredis.so libhiredis.so.0
-		ln -s libhiredis.so libhiredis.so.0.10
-	popd > /dev/null
+	make DESTDIR="${D}" PREFIX=${EPREFIX}/usr LIBRARY_PATH=$(get_libdir) \
+		install
 
 	dodoc ${DOCS}
 }
