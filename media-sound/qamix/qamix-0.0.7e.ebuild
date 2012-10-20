@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=1
+EAPI=2
 
-inherit eutils toolchain-funcs qt4
+inherit eutils toolchain-funcs qt4-r2
 
 DESCRIPTION="The QAMix utility from the alsamodular project."
 HOMEPAGE="http://alsamodular.sourceforge.net/"
