@@ -1,6 +1,20 @@
 # Copyright 1999-2012 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/profiles/arch/powerpc/package.use.mask,v 1.137 2012/08/22 12:16:48 xmw Exp $
+# $Header: /var/cvsroot/gentoo-x86/profiles/arch/powerpc/package.use.mask,v 1.143 2012/10/10 11:26:46 blueness Exp $
+
+# Anthony G. Basile <blueness@gentoo.org> (10 Oct 2012)
+# media-libs/libsbsms fails on ppc ppc64, bug #436020
+media-sound/audacity sbsms
+
+# Anthony G. Basile <blueness@gentoo.org> (29 Sep 2012)
+# dev-cpp/tbb does not build on ppc ppc64 so mask any
+# dependencies on it
+media-libs/openimageio tbb
+
+# Samuli Suominen <ssuominen@gentoo.org> (27 Sep 2012)
+# I don't want to open this can of worms yet. Feel free
+# to do so.
+dev-ruby/rack-test test
 
 # Michael Weber <xmw@gentoo.org> (22 Aug 2012)
 # missing stable on >=www-client/firefox-3
@@ -35,11 +49,6 @@ sci-chemistry/pymol apbs
 # Mask new useflag of opencv, as dependency dev-cpp/tbb is not keyworded on ppc
 media-libs/opencv tbb
 
-# Alexandre Rostovtsev <tetromino@gentoo.org> (25 May 2012)
-# Remove mask entry when app-misc/geoclue and app-accessibility/at-spi2-core
-# are keyworded here, bug #411761
-net-libs/webkit-gtk webkit2
-
 # Brent Baude <ranger@gentoo.org> (06 Mar 2012)
 # masking kde on gajim
 net-im/gajim kde
@@ -68,10 +77,10 @@ sys-cluster/openmpi psm knem open-mx openmpi_fabrics_psm openmpi_fabrics_knem op
 # bug #390345
 >=app-cdr/brasero-3 tracker
 app-text/evince xps
->=dev-libs/folks-0.6 eds socialweb tracker
+>=dev-libs/folks-0.6 tracker
 >=gnome-base/gnome-menus-3.2 test
->=gnome-base/gnome-panel-3 eds
->=gnome-base/nautilus-3 previewer sendto tracker
+#>=gnome-base/gnome-panel-3 eds
+>=gnome-base/nautilus-3 previewer tracker
 
 # Kacper Kowalik <xarthisius@gentoo.org> (20 Nov 2011)
 # Dropped dietlibc wrt #364103
@@ -84,10 +93,6 @@ net-im/empathy map
 # Pacho Ramos <pacho@gentoo.org> (26 Sep 2011)
 # Dependencies not keyworded yet, bug #372245
 media-video/miro xvid
-
-# Jeroen Roovers <jer@gentoo.org> (14 Sep 2011)
-# No Oracle support for PPC
-net-analyzer/hydra oracle
 
 # Patrick McLean <chutzpah@gentoo.org> (07 Sep 2011)
 # missing keywords on dependencies
@@ -151,10 +156,6 @@ app-text/asciidoc test
 sci-biology/fasta icc
 sci-chemistry/ccp4 arpwarp
 
-# Brent Baude <ranger@gentoo.org> (13 Jan 2011)
-# no oracle stuff for powerpc
-net-im/ekg2 oracle
-
 # Nirbheek Chauhan <nirbheek@gentoo.org> (10 Dec 2010)
 # net-misc/connman is not keyworded, bug 348308
 mail-client/evolution connman
@@ -205,10 +206,6 @@ dev-ruby/activerecord sqlite3
 # Brent Baude <ranger@gentoo.org>
 # Masking off video cards and input devices for xorg-1.5.3 stablization
 x11-base/xorg-server input_devices_spaceorb input_devices_mutouch input_devices_hyperpen input_devices_fpit input_devices_dynapro input_devices_calcomp input_devices_summa input_devices_elographics input_devices_citron input_devices_microtouch input_devices_jamstudio input_devices_elo2300 input_devices_penmount input_devices_tek4957 input_devices_dmc input_devices_digitaledge input_devices_palmax input_devices_magellan video_cards_v4l video_cards_cirrus video_cards_voodoo video_cards_sisusb video_cards_s3 video_cards_s3virge
-
-# Joseph Jezak <josejx@gentoo.org> (Mar 20 2009)
-# Mask Ruby -> Oracle bindings
-dev-ruby/ruby-dbi oracle
 
 # Brent Baude <ranger@gentoo.org>
 # masking zephyr USE on pidgin
