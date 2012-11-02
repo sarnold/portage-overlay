@@ -1,0 +1,58 @@
+diff --git a/src/mesa/main/compiler.h b/src/mesa/main/compiler.h
+index 25d9810..b17cedd 100644
+--- a/src/mesa/main/compiler.h
++++ b/src/mesa/main/compiler.h
+@@ -226,33 +226,45 @@ extern "C" {
+  * Try to use a runtime test instead.
+  * For now, only used by some DRI hardware drivers for color/texel packing.
+  */
+-#if defined(BYTE_ORDER) && defined(BIG_ENDIAN) && BYTE_ORDER == BIG_ENDIAN
+ #if defined(__linux__)
+ #include <byteswap.h>
+-#define CPU_TO_LE32( x )	bswap_32( x )
++#define BSWAP32( x )	bswap_32( x )
++#define BSWAP16( x )	bswap_16( x )
+ #elif defined(__APPLE__)
+ #include <CoreFoundation/CFByteOrder.h>
+-#define CPU_TO_LE32( x )	CFSwapInt32HostToLittle( x )
++#define BSWAP32( x )	CFSwapInt32HostToLittle( x )
++#define BSWAP16( x )	CFSwapInt16HostToLittle( x )
+ #elif (defined(_AIX) || defined(__blrts))
+-static INLINE GLuint CPU_TO_LE32(GLuint x)
++static INLINE GLuint BSWAP32(GLuint x)
+ {
+    return (((x & 0x000000ff) << 24) |
+            ((x & 0x0000ff00) <<  8) |
+            ((x & 0x00ff0000) >>  8) |
+            ((x & 0xff000000) >> 24));
+ }
++static INLINE GLushort BSWAP16(GLushort x)
++{
++   return (((x & 0x00ff) <<  8) |
++           ((x & 0xff00) >>  8));
++}
+ #else /*__linux__ */
+ #include <sys/endian.h>
+-#define CPU_TO_LE32( x )	bswap32( x )
++#define BSWAP32( x )	bswap32( x )
++#define BSWAP16( x )	bswap16( x )
+ #endif /*__linux__*/
++
++#if defined(BYTE_ORDER) && defined(BIG_ENDIAN) && BYTE_ORDER == BIG_ENDIAN
++#define CPU_TO_LE32( x )	BSWAP32( x )
++#define CPU_TO_LE16( x )	BSWAP16( x )
+ #define MESA_BIG_ENDIAN 1
+ #else
+ #define CPU_TO_LE32( x )	( x )
++#define CPU_TO_LE16( x )	( x )
+ #define MESA_LITTLE_ENDIAN 1
+ #endif
+-#define LE32_TO_CPU( x )	CPU_TO_LE32( x )
+-
+ 
++#define LE32_TO_CPU( x )	CPU_TO_LE32( x )
++#define LE16_TO_CPU( x )	CPU_TO_LE16( x )
+ 
+ #if !defined(CAPI) && defined(WIN32) && !defined(BUILD_FOR_SNAP)
+ #define CAPI _cdecl
+

@@ -1,0 +1,53 @@
+diff --git a/src/mesa/main/format_pack.c b/src/mesa/main/format_pack.c
+index 390b494..b04663f 100644
+--- a/src/mesa/main/format_pack.c
++++ b/src/mesa/main/format_pack.c
+@@ -1129,6 +1129,31 @@ pack_float_RGBA_FLOAT32(const GLfloat src[4], void *dst)
+ }
+ 
+ 
++/* MESA_FORMAT_RGBA_FLOAT32_REV */
++
++static void
++pack_ubyte_RGBA_FLOAT32_REV(const GLubyte src[4], void *dst)
++{
++   GLuint *d = ((GLuint *) dst);
++   union { GLfloat f; GLuint ui; } fui;
++   fui.f = UBYTE_TO_FLOAT(src[0]); d[0] = BSWAP32(fui.ui);
++   fui.f = UBYTE_TO_FLOAT(src[1]); d[1] = BSWAP32(fui.ui);
++   fui.f = UBYTE_TO_FLOAT(src[2]); d[2] = BSWAP32(fui.ui);
++   fui.f = UBYTE_TO_FLOAT(src[3]); d[3] = BSWAP32(fui.ui);
++}
++
++static void
++pack_float_RGBA_FLOAT32_REV(const GLfloat src[4], void *dst)
++{
++   GLuint *d = ((GLuint *) dst);
++   union { GLfloat f; GLuint ui; } fui;
++   fui.f = src[0]; d[0] = BSWAP32(fui.ui);
++   fui.f = src[1]; d[1] = BSWAP32(fui.ui);
++   fui.f = src[2]; d[2] = BSWAP32(fui.ui);
++   fui.f = src[3]; d[3] = BSWAP32(fui.ui);
++}
++
++
+ /* MESA_FORMAT_RGBA_FLOAT16 */
+ 
+ static void
+@@ -1719,6 +1744,7 @@ _mesa_get_pack_ubyte_rgba_function(gl_format format)
+       table[MESA_FORMAT_RGBA_DXT5] = NULL; /* pack_ubyte_RGBA_DXT5; */
+ 
+       table[MESA_FORMAT_RGBA_FLOAT32] = pack_ubyte_RGBA_FLOAT32;
++      table[MESA_FORMAT_RGBA_FLOAT32_REV] = pack_ubyte_RGBA_FLOAT32_REV;
+       table[MESA_FORMAT_RGBA_FLOAT16] = pack_ubyte_RGBA_FLOAT16;
+       table[MESA_FORMAT_RGB_FLOAT32] = pack_ubyte_RGB_FLOAT32;
+       table[MESA_FORMAT_RGB_FLOAT16] = pack_ubyte_RGB_FLOAT16;
+@@ -1863,6 +1889,7 @@ _mesa_get_pack_float_rgba_function(gl_format format)
+       table[MESA_FORMAT_RGBA_DXT5] = NULL;
+ 
+       table[MESA_FORMAT_RGBA_FLOAT32] = pack_float_RGBA_FLOAT32;
++      table[MESA_FORMAT_RGBA_FLOAT32_REV] = pack_float_RGBA_FLOAT32_REV;
+       table[MESA_FORMAT_RGBA_FLOAT16] = pack_float_RGBA_FLOAT16;
+       table[MESA_FORMAT_RGB_FLOAT32] = pack_float_RGB_FLOAT32;
+       table[MESA_FORMAT_RGB_FLOAT16] = pack_float_RGB_FLOAT16;
+

@@ -1,0 +1,54 @@
+diff --git a/src/mesa/main/formats.h b/src/mesa/main/formats.h
+index e6b429d..6cf703c 100644
+--- a/src/mesa/main/formats.h
++++ b/src/mesa/main/formats.h
+@@ -92,24 +92,32 @@ typedef enum
+    MESA_FORMAT_RGB332,		/*                               RRRG GGBB */
+    MESA_FORMAT_A8,		/*                               AAAA AAAA */
+    MESA_FORMAT_A16,             /*                     AAAA AAAA AAAA AAAA */
++   MESA_FORMAT_A16_REV,         /*                     AAAA AAAA AAAA AAAA */
+    MESA_FORMAT_L8,		/*                               LLLL LLLL */
+    MESA_FORMAT_L16,             /*                     LLLL LLLL LLLL LLLL */
++   MESA_FORMAT_L16_REV,         /*                     LLLL LLLL LLLL LLLL */
+    MESA_FORMAT_I8,		/*                               IIII IIII */
+    MESA_FORMAT_I16,             /*                     IIII IIII IIII IIII */
++   MESA_FORMAT_I16_REV,         /*                     IIII IIII IIII IIII */
+    MESA_FORMAT_YCBCR,		/*                     YYYY YYYY UorV UorV */
+    MESA_FORMAT_YCBCR_REV,	/*                     UorV UorV YYYY YYYY */
+    MESA_FORMAT_R8,		/*                               RRRR RRRR */
+    MESA_FORMAT_GR88,		/*                     GGGG GGGG RRRR RRRR */
+    MESA_FORMAT_RG88,    	/*                     RRRR RRRR GGGG GGGG */
+    MESA_FORMAT_R16,		/*                     RRRR RRRR RRRR RRRR */
++   MESA_FORMAT_R16_REV,		/*                     RRRR RRRR RRRR RRRR */
+    MESA_FORMAT_RG1616,		/* GGGG GGGG GGGG GGGG RRRR RRRR RRRR RRRR */
+    MESA_FORMAT_RG1616_REV,	/* RRRR RRRR RRRR RRRR GGGG GGGG GGGG GGGG */
+    MESA_FORMAT_ARGB2101010,     /* AARR RRRR RRRR GGGG GGGG GGBB BBBB BBBB */
++   MESA_FORMAT_ARGB2101010_REV, /* BBBB BBBB GGGG GGBB RRRR GGGG AARR RRRR */
+    MESA_FORMAT_Z24_S8,          /* ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ SSSS SSSS */
++   MESA_FORMAT_Z24_S8_REV,      /* SSSS SSSS ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ */
+    MESA_FORMAT_S8_Z24,          /* SSSS SSSS ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ */
+    MESA_FORMAT_Z16,             /*                     ZZZZ ZZZZ ZZZZ ZZZZ */
++   MESA_FORMAT_Z16_REV,         /*                     ZZZZ ZZZZ ZZZZ ZZZZ */
+    MESA_FORMAT_X8_Z24,          /* xxxx xxxx ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ */
+    MESA_FORMAT_Z24_X8,          /* ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ xxxx xxxx */
++   MESA_FORMAT_Z24_X8_REV,      /* xxxx xxxx ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ */
+    MESA_FORMAT_Z32,             /* ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ ZZZZ */
+    MESA_FORMAT_S8,              /*                               SSSS SSSS */
+    /*@}*/
+@@ -146,6 +154,7 @@ typedef enum
+     */
+    /*@{*/
+    MESA_FORMAT_RGBA_FLOAT32,
++   MESA_FORMAT_RGBA_FLOAT32_REV,
+    MESA_FORMAT_RGBA_FLOAT16,
+    MESA_FORMAT_RGB_FLOAT32,
+    MESA_FORMAT_RGB_FLOAT16,
+@@ -242,6 +251,7 @@ typedef enum
+    MESA_FORMAT_SIGNED_RGB_16,     /* ushort[0]=R, ushort[1]=G, ushort[2]=B */
+    MESA_FORMAT_SIGNED_RGBA_16,    /* ... */
+    MESA_FORMAT_RGBA_16,           /* ... */
++   MESA_FORMAT_RGBA_16_REV,       /* ... */
+    /*@}*/
+ 
+    /*@{*/
+

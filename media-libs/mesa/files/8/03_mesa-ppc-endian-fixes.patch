@@ -1,0 +1,29 @@
+diff --git a/src/mesa/main/colormac.h b/src/mesa/main/colormac.h
+index 4294f32..2c553fe 100644
+--- a/src/mesa/main/colormac.h
++++ b/src/mesa/main/colormac.h
+@@ -92,6 +92,14 @@ _mesa_unclamped_float_rgba_to_ubyte(GLubyte dst[4], const GLfloat src[4])
+    ((((B) >> 6) << 20) | (((G) >> 6) << 10) | ((R) >> 6) |	\
+     (((A) >> 14) << 30))
+ 
++#define PACK_COLOR_2101010_REV_UB( A, B, G, R )					\
++   BSWAP32(((B) << 22) | ((G) << 12) | ((R) << 2) |	\
++    (((A) & 0xc0) << 24))
++
++#define PACK_COLOR_2101010_REV_US( A, B, G, R )					\
++   BSWAP32((((B) >> 6) << 20) | (((G) >> 6) << 10) | ((R) >> 6) |	\
++    (((A) >> 14) << 30))
++
+ #define PACK_COLOR_4444( R, G, B, A )					\
+    ((((R) & 0xf0) << 8) | (((G) & 0xf0) << 4) | ((B) & 0xf0) | ((A) >> 4))
+ 
+@@ -111,7 +119,7 @@ _mesa_unclamped_float_rgba_to_ubyte(GLubyte dst[4], const GLfloat src[4])
+    (((L) << 16) | (A))
+ 
+ #define PACK_COLOR_1616_REV( L, A )					\
+-   (((A) << 16) | (L))
++   BSWAP32(PACK_COLOR_1616( L, A ))
+ 
+ #define PACK_COLOR_332( R, G, B )					\
+    (((R) & 0xe0) | (((G) & 0xe0) >> 3) | (((B) & 0xc0) >> 6))
+

@@ -1,0 +1,21 @@
+diff --git a/src/mesa/state_tracker/st_cb_clear.c b/src/mesa/state_tracker/st_cb_clear.c
+index 61d98ae..895cb3a 100644
+--- a/src/mesa/state_tracker/st_cb_clear.c
++++ b/src/mesa/state_tracker/st_cb_clear.c
+@@ -389,6 +389,7 @@ check_clear_depth_stencil_with_quad(struct gl_context *ctx, struct gl_renderbuff
+ 
+    assert(rb->Format == MESA_FORMAT_S8 ||
+           rb->Format == MESA_FORMAT_Z24_S8 ||
++          rb->Format == MESA_FORMAT_Z24_S8_REV ||
+           rb->Format == MESA_FORMAT_S8_Z24 ||
+           rb->Format == MESA_FORMAT_Z32_FLOAT_X24S8);
+ 
+@@ -445,6 +446,7 @@ check_clear_stencil_with_quad(struct gl_context *ctx, struct gl_renderbuffer *rb
+ 
+    assert(rb->Format == MESA_FORMAT_S8 ||
+           rb->Format == MESA_FORMAT_Z24_S8 ||
++          rb->Format == MESA_FORMAT_Z24_S8_REV ||
+           rb->Format == MESA_FORMAT_S8_Z24 ||
+           rb->Format == MESA_FORMAT_Z32_FLOAT_X24S8);
+ 
+

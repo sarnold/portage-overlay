@@ -1,0 +1,17 @@
+diff --git a/src/gallium/drivers/r300/r300_render_translate.c b/src/gallium/drivers/r300/r300_render_translate.c
+index f8c7558..fd22779 100644
+--- a/src/gallium/drivers/r300/r300_render_translate.c
++++ b/src/gallium/drivers/r300/r300_render_translate.c
+@@ -51,7 +51,10 @@ void r300_translate_index_buffer(struct r300_context *r300,
+         break;
+ 
+     case 2:
+-        if (index_offset) {
++#ifdef PIPE_ARCH_LITTLE_ENDIAN
++        if (index_offset)
++#endif
++	{
+             u_upload_alloc(r300->vbuf_mgr->uploader, 0, count * 2,
+                            &out_offset, &out_buffer, &flushed, &ptr);
+ 
+

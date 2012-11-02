@@ -1,0 +1,31 @@
+diff --git a/src/gallium/drivers/r300/r300_state_inlines.h b/src/gallium/drivers/r300/r300_state_inlines.h
+index 62c03b3..fa2e458 100644
+--- a/src/gallium/drivers/r300/r300_state_inlines.h
++++ b/src/gallium/drivers/r300/r300_state_inlines.h
+@@ -422,8 +422,24 @@ r300_translate_vertex_data_swizzle(enum pipe_format format) {
+     }
+ 
+     for (i = 0; i < desc->nr_channels; i++) {
+-        swizzle |=
+-            MIN2(desc->swizzle[i], R300_SWIZZLE_SELECT_FP_ONE) << (3*i);
++        unsigned channel_swizzle = MIN2(desc->swizzle[i], R300_SWIZZLE_SELECT_FP_ONE);
++
++#ifdef PIPE_ARCH_BIG_ENDIAN
++	if (channel_swizzle < R300_SWIZZLE_SELECT_FP_ZERO) {
++            /* Compensate for the vertex fetcher byte-swap */
++            switch (desc->channel[i].size) {
++                case 8:
++                    assert(desc->nr_channels > 2);
++                    channel_swizzle = R300_SWIZZLE_SELECT_W - channel_swizzle;
++                    break;
++                case 16:
++                    channel_swizzle ^= 0x1;
++                    break;
++            }
++        }
++#endif
++
++        swizzle |= channel_swizzle << (3*i);
+     }
+     /* Set (0,0,0,1) in unused components. */
+     for (; i < 3; i++) {
