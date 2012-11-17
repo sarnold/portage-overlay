@@ -13,15 +13,18 @@ on the wip branch (not shown below).
 
 ## Latest ##
 
-Recent updates for the Gnome 3 desktop (x86 and x86_64) as well as other
+Recent updates for the Gnome 3 desktop (x86, x86_64, and ppc) as well as other 
 powerpc updates for the older Gnome desktop and misc packages (audio, etc). 
 The exaile sound menu indicator plugin is working with exaile 3.2.1, except 
-for the time elapesed calculation when paused.
+for the time elapesed calculation when paused.  There's also a patched genkernel 
+that provides initramfs fsck support for premounted volumes, and an updated 
+dcmtk package.
 
 ## Current list of ebuilds: ##
 
 - app-accessibility/orca/orca-2.32.1.ebuild
 - app-accessibility/speech-dispatcher/speech-dispatcher-0.6.7-r1.ebuild
+- app-admin/gnome-system-tools/gnome-system-tools-2.32.0-r3.ebuild
 - app-admin/gnome-system-tools/gnome-system-tools-3.0.0.ebuild
 - app-admin/system-config-printer-common/system-config-printer-common-1.3.11-r1.ebuild
 - app-cdr/cdrtools/cdrtools-2.01.01_alpha40.ebuild
@@ -32,12 +35,13 @@ for the time elapesed calculation when paused.
 - app-doc/doxygen/doxygen-1.8.0.ebuild
 - app-doc/ebookmerge/ebookmerge-0.9.3.ebuild
 - app-emulation/crossover-office-bin/crossover-office-bin-10.2.0.ebuild
-- app-emulation/qemuctl/qemuctl-0.2.1.ebuild
-- app-emulation/qemuctl/qemuctl-0.3.0.ebuild
 - app-emulation/qemu-kvm/qemu-kvm-1.1.0.ebuild
 - app-emulation/qemu-kvm/qemu-kvm-1.1.1-r1.ebuild
-- app-emulation/qemu-launcher/qemu-launcher-1.7.4.ebuild
 - app-emulation/qemu-launcher/qemu-launcher-1.7.4-r1.ebuild
+- app-emulation/qemu-launcher/qemu-launcher-1.7.4.ebuild
+- app-emulation/qemu/qemu-1.1.2.ebuild
+- app-emulation/qemuctl/qemuctl-0.2.1.ebuild
+- app-emulation/qemuctl/qemuctl-0.3.0.ebuild
 - app-emulation/wine/wine-1.3.24.ebuild
 - app-laptop/tlp/tlp-0.3.3-r0.ebuild
 - app-laptop/tlp/tlp-0.3.3-r1.ebuild
@@ -50,8 +54,8 @@ for the time elapesed calculation when paused.
 - app-misc/pyPomodoro/pyPomodoro-2.3.ebuild
 - app-misc/screen/screen-4.0.3.ebuild
 - app-mobilephone/bitpim/bitpim-1.0.6.ebuild
-- app-mobilephone/bitpim/bitpim-1.0.7/buildrelease/unixpkg/bitpim.ebuild
 - app-mobilephone/bitpim/bitpim-1.0.7.ebuild
+- app-mobilephone/bitpim/bitpim-1.0.7/buildrelease/unixpkg/bitpim.ebuild
 - app-mobilephone/bitpim/bitpim-1.0.7/packaging/gentoo/bitpim.ebuild
 - app-mobilephone/bitpim/bitpim-1.0.7_pre4736.ebuild
 - app-mobilephone/bitpim/bitpim-1.0.8_pre4835.ebuild
@@ -59,14 +63,15 @@ for the time elapesed calculation when paused.
 - app-office/dia/dia-0.97.ebuild
 - app-pda/libimobiledevice/libimobiledevice-1.1.4.ebuild
 - app-pda/libsyncml/libsyncml-9999.ebuild
-- app-pda/qtopia-desktop-bin/qtopia-desktop-bin-2.2.0.ebuild
 - app-pda/qtopia-desktop-bin/qtopia-desktop-bin-2.2.0-r1.ebuild
 - app-pda/qtopia-desktop-bin/qtopia-desktop-bin-2.2.0-r2.ebuild
+- app-pda/qtopia-desktop-bin/qtopia-desktop-bin-2.2.0.ebuild
 - app-text/dvisvgm/dvisvgm-1.0.9-r1.ebuild
 - dev-ada/gps-bin/gps-bin-2.1.0.ebuild
 - dev-ada/gtkada/gtkada-2.22.0_p168071.ebuild
 - dev-ada/polyorb/polyorb-2.1.0.ebuild
 - dev-cpp/gtkmm/gtkmm-2.16.0.ebuild
+- dev-db/hiredis/hiredis-0.10.1.ebuild
 - dev-embedded/palm-novacom/palm-novacom-1.0.80.ebuild
 - dev-java/bcel/bcel-5.2-r1.ebuild
 - dev-java/ibm-jdk-bin/ibm-jdk-bin-1.5.0.12_p1.ebuild
@@ -85,6 +90,7 @@ for the time elapesed calculation when paused.
 - dev-libs/libusb/libusb-1.0.8-r1.ebuild
 - dev-python/pyatspi/pyatspi-2.0.2.ebuild
 - dev-python/pysvn/pysvn-1.7.5.ebuild
+- dev-python/pythonmagick/pythonmagick-0.9.8.ebuild
 - dev-python/scientificpython/scientificpython-2.9-r1.ebuild
 - dev-python/sip/sip-4.12.3.ebuild
 - dev-python/stdeb/stdeb-0.4.1.ebuild
@@ -98,25 +104,29 @@ for the time elapesed calculation when paused.
 - dev-util/insight/insight-6.8.ebuild
 - dev-util/oink-stack/oink-stack-9999.ebuild
 - dev-util/qfsm/qfsm-0.52.ebuild
-- dev-util/sourcenavigator-ng/sourcenavigator-ng-4.2.ebuild
 - dev-util/sourcenav/sourcenav-5.2_beta2.ebuild
+- dev-util/sourcenavigator-ng/sourcenavigator-ng-4.2.ebuild
 - dev-util/tcl-dox/tcl-dox-0.8.3.ebuild
 - dev-util/vine/vine-1.0.ebuild
 - dev-vcs/rabbitvcs/rabbitvcs-0.15.0.5-r1.ebuild
 - dev-vcs/rapidsvn/rapidsvn-0.9.6-r1.ebuild
 - games-board/xgammon/xgammon-0.98.ebuild
+- gnome-base/gdm/gdm-3.4.1-r3.ebuild
 - gnome-base/gnome-shell/gnome-shell-3.2.2.1.ebuild
 - gnome-base/librsvg/librsvg-2.36.3.ebuild
 - gnome-extra/app-runner/app-runner-0.5.2.ebuild
+- gnome-extra/evolution-data-server/evolution-data-server-3.4.4.ebuild
 - gnome-extra/evolution-ews/evolution-ews-3.2.3.ebuild
 - gnome-extra/evolution-mapi/evolution-mapi-0.32.2.ebuild
 - gnome-extra/evolution-mapi/evolution-mapi-3.2.3.ebuild
+- gnome-extra/evolution-mapi/evolution-mapi-3.4.4.ebuild
 - gnome-extra/gnome-shell-extensions-mediaplayer/gnome-shell-extensions-mediaplayer-20120805.ebuild
 - gnome-extra/gnome-shell-extensions-mediaplayer/gnome-shell-extensions-mediaplayer-20120814.ebuild
 - gnome-extra/gnome-shell-extensions-weather/gnome-shell-extensions-weather-20120804.ebuild
 - gnome-extra/gnome-user-docs/gnome-user-docs-2.24.2-r1.ebuild
 - gnome-extra/nautilus-renamer/nautilus-renamer-2.3.ebuild
 - media-fonts/dejavu/dejavu-2.27.ebuild
+- media-gfx/eog/eog-3.4.3-r1.ebuild
 - media-gfx/f-spot/f-spot-0.5.0.3.ebuild
 - media-gfx/f-spot/f-spot-0.8.0.ebuild
 - media-gfx/inkscape/inkscape-0.48.0.ebuild
@@ -124,6 +134,7 @@ for the time elapesed calculation when paused.
 - media-gfx/lightscribe/lightscribe-1.14.32.1.ebuild
 - media-gfx/sane-backends/sane-backends-1.0.22-r1.ebuild
 - media-gfx/splashutils/splashutils-1.5.4.4.ebuild
+- media-libs/clutter-gst/clutter-gst-1.6.0.ebuild
 - media-libs/faac/faac-1.28-r1.ebuild
 - media-libs/freetype/freetype-2.4.4.ebuild
 - media-libs/freetype/freetype-2.4.5.ebuild
@@ -133,6 +144,9 @@ for the time elapesed calculation when paused.
 - media-libs/libgphoto2/libgphoto2-2.4.7-r1.ebuild
 - media-libs/libjpeg-turbo/libjpeg-turbo-1.0.0.ebuild
 - media-libs/libsidplay/libsidplay-2.1.1.ebuild
+- media-libs/mesa/mesa-7.11.2.ebuild
+- media-libs/mesa/mesa-8.0.4-r1.ebuild
+- media-libs/mesa/mesa-8.1_rc1_pre20120814.ebuild
 - media-plugins/alsa-plugins/alsa-plugins-1.0.19.ebuild
 - media-plugins/exaile-soundmenu-indicator/exaile-soundmenu-indicator-0.0.5.ebuild
 - media-sound/ats2wav/ats2wav-0.1.ebuild
@@ -151,15 +165,17 @@ for the time elapesed calculation when paused.
 - media-sound/pavumeter/pavumeter-0.9.3-r1.ebuild
 - media-sound/pulseaudio/pulseaudio-0.9.21.2-r1.ebuild
 - media-sound/pulseaudio/pulseaudio-0.9.21.2-r2.ebuild
-- media-sound/pulseaudio/pulseaudio-0.9.22.ebuild
 - media-sound/pulseaudio/pulseaudio-0.9.22-r1.ebuild
+- media-sound/pulseaudio/pulseaudio-0.9.22.ebuild
 - media-sound/qamix/qamix-0.0.7e.ebuild
 - media-sound/qtractor/qtractor-0.4.7.ebuild
 - media-sound/rhythmbox/rhythmbox-0.12.6-r1.ebuild
 - media-sound/sound-juicer/sound-juicer-2.26.1.ebuild
+- media-sound/sound-juicer/sound-juicer-3.4.0.ebuild
 - media-sound/terminatorx/terminatorx-3.82.ebuild
 - media-video/dvd-slideshow/dvd-slideshow-0.8.0-r1.ebuild
 - media-video/makemkv/makemkv-1.6.5.ebuild
+- media-video/totem/totem-3.4.3.ebuild
 - media-video/x264-encoder/x264-encoder-0.0.20091021.ebuild
 - net-fs/davfs2/davfs2-1.4.6.ebuild
 - net-fs/samba/samba-4.0.0_alpha11.ebuild
@@ -167,8 +183,9 @@ for the time elapesed calculation when paused.
 - net-libs/openslp/openslp-1.2.1-r1.ebuild
 - net-libs/webkit-gtk/webkit-gtk-1.6.1-r201.ebuild
 - net-misc/stunnel/stunnel-4.36.ebuild
-- net-print/cups/cups-1.5.2-r2.ebuild
+- net-misc/vinagre/vinagre-3.4.2.ebuild
 - net-print/cups-filters/cups-filters-1.0.4.ebuild
+- net-print/cups/cups-1.5.2-r2.ebuild
 - net-print/gnome-cups-manager/gnome-cups-manager-0.33.ebuild
 - net-print/hplip/hplip-3.10.9-r1.ebuild
 - net-zope/squishdot/squishdot-1.5.0-r1.ebuild
@@ -179,6 +196,7 @@ for the time elapesed calculation when paused.
 - sci-geosciences/mapnik/mapnik-2.0.0.ebuild
 - sci-geosciences/osm2pgsql/osm2pgsql-9999.ebuild
 - sci-libs/cfitsio/cfitsio-3.300-r1.ebuild
+- sci-libs/dcmtk/dcmtk-3.6.0-r4.ebuild
 - sci-libs/gdal/gdal-1.8.1-r1.ebuild
 - sci-libs/hdf5/hdf5-1.8.3-r1.ebuild
 - sci-libs/libbufr/libbufr-000387.ebuild
@@ -198,12 +216,12 @@ for the time elapesed calculation when paused.
 - sys-apps/pcsc-tools/pcsc-tools-1.4.17-r2.ebuild
 - sys-apps/util-linux/util-linux-2.21.1.ebuild
 - sys-apps/util-linux/util-linux-2.21.ebuild
-- sys-auth/polkit/polkit-0.107.ebuild
+- sys-auth/polkit/polkit-0.107-r1.ebuild
 - sys-block/gparted/gparted-0.8.1.ebuild
 - sys-block/gparted/gparted-0.9.0.ebuild
 - sys-block/usb-imagewriter/usb-imagewriter-0.1.3.ebuild
-- sys-cluster/pvfs2/pvfs2-2.7.1.ebuild
 - sys-cluster/pvfs2/pvfs2-2.7.1-r1.ebuild
+- sys-cluster/pvfs2/pvfs2-2.7.1.ebuild
 - sys-cluster/pvfs2/pvfs2-2.8.2.ebuild
 - sys-devel/gdb/gdb-6.8-r1.ebuild
 - sys-fs/mp3fs/mp3fs-0.31.ebuild
@@ -214,16 +232,20 @@ for the time elapesed calculation when paused.
 - sys-kernel/aspm-sources/aspm-sources-3.1.6.ebuild
 - sys-kernel/aspm-sources/aspm-sources-3.2.2.ebuild
 - sys-kernel/ck-sources/ck-sources-3.1.4.ebuild
+- sys-kernel/genkernel/genkernel-3.4.43.ebuild
+- sys-kernel/genkernel/genkernel-3.4.44.2.ebuild
+- sys-kernel/genkernel/genkernel-3.4.45.ebuild
 - sys-kernel/gentoo-sources/gentoo-sources-2.6.32.ebuild
-- sys-kernel/hardened-sources/hardened-sources-3.1.6.ebuild
 - sys-kernel/hard-gentoo-sources/hard-gentoo-sources-2.6.29-r6.ebuild
+- sys-kernel/hardened-sources/hardened-sources-3.1.6.ebuild
+- sys-kernel/mkinitcpio/mkinitcpio-0.9.2-r1.ebuild
 - sys-kernel/rt-sources/rt-sources-2.6.28.2.ebuild
 - sys-kernel/rt-sources/rt-sources-2.6.29.2.ebuild
 - sys-kernel/rt-sources/rt-sources-2.6.29.6.ebuild
 - sys-kernel/rt-sources/rt-sources-2.6.31.12.ebuild
 - sys-kernel/rt-sources/rt-sources-2.6.33.4.ebuild
-- sys-kernel/rt-sources/rt-sources-2.6.33.7.ebuild
 - sys-kernel/rt-sources/rt-sources-2.6.33.7-r2.ebuild
+- sys-kernel/rt-sources/rt-sources-2.6.33.7.ebuild
 - sys-kernel/via-sources/via-sources-2.6.30.1.ebuild
 - sys-kernel/zen-sources/zen-sources-2.6.30-r5.ebuild
 - sys-libs/ncurses/ncurses-5.7-r4.ebuild
