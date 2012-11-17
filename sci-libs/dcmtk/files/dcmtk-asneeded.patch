@@ -13,7 +13,7 @@
  # create library from source files
  ADD_LIBRARY(dcmpstat dcmpstat dviface dvpsab dvpsabl dvpsal dvpsall dvpscf dvpscu dvpscul dvpsda dvpsdal dvpsfs dvpsga dvpsgal dvpsgl dvpsgll dvpsgr dvpsgrl dvpshlp dvpsib dvpsibl dvpsmsg dvpsov dvpsovl dvpspl dvpspl2 dvpspll dvpspr dvpsprt dvpsri dvpsril dvpsrs dvpsrsl dvpssp dvpsspl dvpssv dvpssvl dvpstat dvpstx dvpstxl dvpsvl dvpsvll dvpsvw dvpsvwl dvsighdl)
 -
-+TARGET_LINK_LIBRARIES(dcmpstat dcmdsig dcmtls)
++TARGET_LINK_LIBRARIES(dcmpstat dcmdsig dcmtls dcmsr)
  # declare installation files
  INSTALL_TARGETS(${INSTALL_LIBDIR} dcmpstat)
 --- dcmsign/libsrc/CMakeLists.txt.orig	2010-10-14 12:37:02.149984538 +0200
@@ -52,3 +52,12 @@
 +TARGET_LINK_LIBRARIES(dcmsr ${LIBXML_LIBS})
  # declare installation files
  INSTALL_TARGETS(${INSTALL_LIBDIR} dcmsr)
+--- dcmtls/libsrc/CMakeLists.txt.orig	2012-11-11 19:19:00.832767189 -0800
++++ dcmtls/libsrc/CMakeLists.txt	2012-11-11 19:29:43.887972426 -0800
+@@ -1,5 +1,6 @@
+ # create library from source files
+ ADD_LIBRARY(dcmtls tlslayer tlstrans tlsscu)
+ 
++TARGET_LINK_LIBRARIES(dcmtls ${OPENSSL_LIBS})
+ # declare installation files
+ INSTALL_TARGETS(${INSTALL_LIBDIR} dcmtls)
