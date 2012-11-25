@@ -1,0 +1,30 @@
+diff -Naur openldap-2.4.33-1/libraries/libldap/tls_g.c openldap-2.4.33/libraries/libldap/tls_g.c
+--- openldap-2.4.33-1/libraries/libldap/tls_g.c	2012-10-10 12:18:49.000000000 +0000
++++ openldap-2.4.33/libraries/libldap/tls_g.c	2012-11-18 00:23:20.000000000 +0000
+@@ -369,6 +369,7 @@
+ 		 */
+ 		if ( max == 1 && !gnutls_x509_crt_check_issuer( certs[0], certs[0] )) {
+ 			gnutls_x509_crt_t *cas;
++#if GNUTLS_VERSION_MAJOR == 2
+ 			unsigned int i, j, ncas;
+ 
+ 			gnutls_certificate_get_x509_cas( ctx->cred, &cas, &ncas );
+@@ -387,6 +388,18 @@
+ 				if ( j == ncas )
+ 					break;
+ 			}
++#elif GNUTLS_VERSION_MAJOR == 3
++			gnutls_x509_crt_t ca;
++			unsigned int i;
++			for ( i = 1; i<VERIFY_DEPTH; i++ ) {
++				rc= gnutls_certificate_get_issuer( ctx->cred, certs[i-1], &ca,  0 );
++				if ( rc ) return -1;
++				certs[i] = ca;
++				/* If this CA is self-signed, we're done */
++				if ( gnutls_x509_crt_check_issuer( ca, ca ))
++					break;
++			}
++#endif
+ 		}
+ 		rc = gnutls_certificate_set_x509_key( ctx->cred, certs, max, key );
+ 		if ( rc ) return -1;
