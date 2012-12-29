@@ -26,9 +26,7 @@ DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )
 	media-gfx/graphviz"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
+src_prepare() {
 
 	epatch \
 		"${FILESDIR}"/01_fix_perl_script_path.patch \

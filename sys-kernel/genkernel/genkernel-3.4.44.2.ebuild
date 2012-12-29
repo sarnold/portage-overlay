@@ -98,6 +98,8 @@ src_prepare() {
 
 	if use premount ; then
 		epatch ${FILESDIR}/${PN}-add-fsck-premount.patch
+		install ${FILESDIR}/libs_list ${WORKDIR}
+		sed -i -e "s|lib64|$(get_libdir)|" ${WORKDIR}/libs_list
 	fi
 }
 
@@ -186,7 +188,7 @@ gen_files() {
 
 	pushd $overlay > /dev/null
 		cp ${FILESDIR}/initrd.fsck $overlay/etc
-		cat ${FILESDIR}/libs_list | xargs cp -t $overlay/$(get_libdir)
+		cat ${WORKDIR}/libs_list | xargs cp -t $overlay/$(get_libdir)
 		cat ${FILESDIR}/sbin_list | xargs cp -t $overlay/sbin
 	popd > /dev/null
 }
