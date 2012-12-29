@@ -56,7 +56,7 @@ RDEPEND="
 	>=media-libs/mesa-7.10
 	>=media-libs/libpng-1.5.11[apng]
 	virtual/libffi
-	gstreamer? ( media-plugins/gst-plugins-meta:0.10[ffmpeg] )
+	gstreamer? ( media-plugins/gst-plugins-meta:0.10[ffmpeg,ogg,vorbis] )
 	system-sqlite? ( >=dev-db/sqlite-3.7.13[fts3,secure-delete,threadsafe,unlock-notify,debug=] )
 	>=media-libs/libvpx-1.0.0
 	kernel_linux? ( media-libs/alsa-lib )
@@ -210,7 +210,9 @@ src_configure() {
 	# It doesn't compile on alpha without this LDFLAGS
 	use alpha && append-ldflags "-Wl,--no-relax"
 
-	use ppc && append-ldflags "-logg -lvorbis"
+	if use ppc && use webrtc ; then
+		append-ldflags "-logg -lvorbis"
+	fi
 
 	# We must force enable jemalloc 3 threw .mozconfig
 	echo "export MOZ_JEMALLOC=1" >> ${S}/.mozconfig
