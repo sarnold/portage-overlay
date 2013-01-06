@@ -1,0 +1,10 @@
+--- hw/mips/Makefile.objs.orig	2012-12-29 18:06:27.000000000 -0800
++++ hw/mips/Makefile.objs	2012-12-29 18:07:05.000000000 -0800
+@@ -1,6 +1,7 @@
+ obj-y = mips_r4k.o mips_jazz.o mips_malta.o mips_mipssim.o
+ obj-y += mips_addr.o mips_timer.o mips_int.o
+ obj-y += gt64xxx.o mc146818rtc.o
++obj-y += acpi.o acpi_piix4.o
+ obj-$(CONFIG_FULONG) += bonito.o vt82c686.o mips_fulong2e.o
+ 
+ obj-y := $(addprefix ../,$(obj-y))

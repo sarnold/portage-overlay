@@ -62,8 +62,8 @@ RDEPEND="
 	>=dev-libs/glib-2.0
 	media-libs/libpng
 	sys-apps/pciutils
-	>=sys-apps/seabios-1.7.0
-	sys-apps/vgabios
+	>=sys-firmware/seabios-1.7.0
+	sys-firmware/vgabios
 	virtual/jpeg
 	aio? ( dev-libs/libaio )
 	alsa? ( >=media-libs/alsa-lib-1.0.13 )

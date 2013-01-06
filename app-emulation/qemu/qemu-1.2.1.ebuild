@@ -5,11 +5,11 @@
 EAPI="4"
 
 MY_PN="qemu-kvm"
-MY_P=${MY_PN}-${PV}
+MY_P=${MY_PN}-1.2.0
 
 PYTHON_DEPEND="2"
-inherit eutils flag-o-matic linux-info toolchain-funcs multilib python user
-#BACKPORTS=2
+inherit eutils flag-o-matic linux-info toolchain-funcs multilib python user udev
+BACKPORTS=3a5940fb
 
 if [[ ${PV} = *9999* ]]; then
 	EGIT_REPO_URI="git://git.kernel.org/pub/scm/virt/kvm/qemu-kvm.git"
@@ -19,7 +19,7 @@ if [[ ${PV} = *9999* ]]; then
 else
 	SRC_URI="mirror://sourceforge/kvm/${MY_PN}/${MY_P}.tar.gz
 	${BACKPORTS:+
-		http://dev.gentoo.org/~cardoe/distfiles/${MY_P}-bp-${BACKPORTS}.tar.xz}"
+		http://dev.gentoo.org/~cardoe/distfiles/${MY_P}-${BACKPORTS}.tar.xz}"
 	KEYWORDS="~amd64 ~ppc ~ppc64 ~x86 ~x86-fbsd"
 fi
 
@@ -29,9 +29,9 @@ HOMEPAGE="http://www.linux-kvm.org"
 LICENSE="GPL-2 LGPL-2 BSD-2"
 SLOT="0"
 IUSE="+aio alsa bluetooth brltty +caps +curl debug doc fdt +jpeg kernel_linux \
-kernel_FreeBSD mixemu ncurses opengl +png pulseaudio python rbd sasl sdl \
-smartcard spice static systemtap tci +threads tls usbredir +uuid vde +vhost-net \
-virtfs +vnc xattr xen xfs"
+kernel_FreeBSD mixemu ncurses opengl +png pulseaudio python rbd sasl +seccomp \
+sdl smartcard spice static systemtap tci +threads tls usbredir +uuid vde \
++vhost-net virtfs +vnc xattr xen xfs"
 
 COMMON_TARGETS="i386 x86_64 alpha arm cris m68k microblaze microblazeel mips mipsel ppc ppc64 sh4 sh4eb sparc sparc64 s390x"
 IUSE_SOFTMMU_TARGETS="${COMMON_TARGETS} lm32 mips64 mips64el ppcemb xtensa xtensaeb"
@@ -39,7 +39,6 @@ IUSE_USER_TARGETS="${COMMON_TARGETS} armeb ppc64abi32 sparc32plus unicore32"
 
 # Setup the default SoftMMU targets, while using the loops
 # below to setup the other targets.
-IUSE="${IUSE}"
 REQUIRED_USE="|| ("
 
 for target in ${IUSE_SOFTMMU_TARGETS}; do
@@ -52,8 +51,9 @@ for target in ${IUSE_USER_TARGETS}; do
 	IUSE="${IUSE} qemu_user_targets_${target}"
 done
 
+# Block USE flag configurations known to not work
 REQUIRED_USE="${REQUIRED_USE}
-	static? ( !alsa !pulseaudio )
+	static? ( !alsa !pulseaudio !bluetooth )
 	virtfs? ( xattr )"
 
 # Yep, you need both libcap and libcap-ng since virtfs only uses libcap.
@@ -70,6 +70,7 @@ LIB_DEPEND=">=dev-libs/glib-2.0[static-libs(+)]
 	rbd? ( sys-cluster/ceph[static-libs(+)] )
 	sasl? ( dev-libs/cyrus-sasl[static-libs(+)] )
 	sdl? ( >=media-libs/libsdl-1.2.11[static-libs(+)] )
+	seccomp? ( >=sys-libs/libseccomp-1.0.0[static-libs(+)] )
 	spice? ( >=app-emulation/spice-0.9.0[static-libs(+)] )
 	tls? ( net-libs/gnutls[static-libs(+)] )
 	uuid? ( >=sys-apps/util-linux-2.16.0[static-libs(+)] )
@@ -78,8 +79,7 @@ LIB_DEPEND=">=dev-libs/glib-2.0[static-libs(+)]
 	xfs? ( sys-fs/xfsprogs[static-libs(+)] )"
 RDEPEND="!static? ( ${LIB_DEPEND//\[static-libs(+)]} )
 	!app-emulation/kqemu
-	!app-emulation/qemu
-	!<app-emulation/qemu-1.0
+	sys-firmware/ipxe
 	>=sys-firmware/seabios-1.7.0
 	sys-firmware/sgabios
 	sys-firmware/vgabios
@@ -91,9 +91,12 @@ RDEPEND="!static? ( ${LIB_DEPEND//\[static-libs(+)]} )
 	python? ( =dev-lang/python-2*[ncurses] )
 	sdl? ( media-libs/libsdl[X] )
 	smartcard? ( dev-libs/nss )
-	spice? ( >=app-emulation/spice-protocol-0.8.1 )
+	spice? ( >=app-emulation/spice-protocol-0.12.0 )
 	systemtap? ( dev-util/systemtap )
-	usbredir? ( sys-apps/usbredir )
+	usbredir? (
+		>=sys-apps/usbredir-0.3.4
+		x86? ( <sys-apps/usbredir-0.5 )
+		)
 	virtfs? ( sys-libs/libcap )
 	xen? ( app-emulation/xen-tools )"
 
@@ -151,7 +154,7 @@ pkg_pretend() {
 			ERROR_TUN+=" virtual network device if using -net tap."
 			ERROR_BRIDGE="You will also need support for 802.1d"
 			ERROR_BRIDGE+=" Ethernet Bridging for some network configurations."
-			use vhost-net && CHECK_CHECK+=" ~VHOST_NET"
+			use vhost-net && CONFIG_CHECK+=" ~VHOST_NET"
 			ERROR_VHOST_NET="You must enable VHOST_NET to have vhost-net"
 			ERROR_VHOST_NET+=" support"
 
@@ -190,13 +193,15 @@ src_prepare() {
 
 	python_convert_shebangs -r 2 "${S}/scripts/kvm/kvm_stat"
 
+	epatch "${FILESDIR}"/${PN}-1.2.0-cflags.patch
+	# add fix for link error with piix4_pm_init (again)
+	epatch "${FILESDIR}"/${P}-link.patch
+
 	[[ -n ${BACKPORTS} ]] && \
 		EPATCH_FORCE=yes EPATCH_SUFFIX="patch" EPATCH_SOURCE="${S}/patches" \
 			epatch
 
 	epatch_user
-
-	epatch ${FILESDIR}/${P}-kvm_kernel_irqchip.patch
 }
 
 src_configure() {
@@ -244,8 +249,6 @@ src_configure() {
 	use pulseaudio && audio_opts="pa,${audio_opts}"
 	use mixemu && conf_opts="${conf_opts} --enable-mixemu"
 
-	# --enable-vnc-thread will go away in 1.2
-	# $(use_enable xen xen-pci-passthrough) for 1.2
 	./configure --prefix=/usr \
 		--sysconfdir=/etc \
 		--disable-bsd-user \
@@ -260,13 +263,11 @@ src_configure() {
 		$(use_enable caps cap-ng) \
 		$(use_enable curl) \
 		$(use_enable debug debug-info) \
-		$(use_enable debug debug-mon) \
 		$(use_enable debug debug-tcg) \
 		$(use_enable doc docs) \
 		$(use_enable fdt) \
 		$(use_enable jpeg vnc-jpeg) \
 		$(use_enable kernel_linux kvm) \
-		$(use_enable kernel_linux kvm-device-assignment) \
 		$(use_enable kernel_linux nptl) \
 		$(use_enable ncurses curses) \
 		$(use_enable opengl) \
@@ -274,11 +275,11 @@ src_configure() {
 		$(use_enable rbd) \
 		$(use_enable sasl vnc-sasl) \
 		$(use_enable sdl) \
+		$(use_enable seccomp) \
 		$(use_enable smartcard smartcard) \
 		$(use_enable smartcard smartcard-nss) \
 		$(use_enable spice) \
 		$(use_enable tci tcg-interpreter) \
-		$(use_enable threads vnc-thread) \
 		$(use_enable tls vnc-tls) \
 		$(use_enable usbredir usb-redir) \
 		$(use_enable uuid) \
@@ -288,6 +289,7 @@ src_configure() {
 		$(use_enable vnc) \
 		$(use_enable xattr attr) \
 		$(use_enable xen) \
+		$(use_enable xen xen-pci-passthrough) \
 		$(use_enable xfs xfsctl) \
 		--audio-drv-list=${audio_opts} \
 		--target-list="${softmmu_targets} ${user_targets}" \
@@ -307,18 +309,17 @@ src_install() {
 
 	if [[ -n ${softmmu_targets} ]]; then
 		if use kernel_linux; then
-			insinto /lib/udev/rules.d/
-			doins "${FILESDIR}"/65-kvm.rules
+			udev_dorules "${FILESDIR}"/65-kvm.rules
 		fi
 
 		if use qemu_softmmu_targets_x86_64 ; then
-			dobin "${FILESDIR}"/qemu-kvm
-			ewarn "The depreciated '/usr/bin/kvm' symlink is no longer installed"
+			dosym /usr/bin/qemu-system-x86_64 /usr/bin/qemu-kvm
+			ewarn "The deprecated '/usr/bin/kvm' symlink is no longer installed"
 			ewarn "You should use '/usr/bin/qemu-kvm', you may need to edit"
 			ewarn "your libvirt configs or other wrappers for ${PN}"
 		else
 			elog "You disabled QEMU_SOFTMMU_TARGETS=x86_64, this disables install"
-			elog "of /usr/bin/qemu-kvm"
+			elog "of the /usr/bin/qemu-kvm symlink."
 		fi
 	fi
 
@@ -330,6 +331,9 @@ src_install() {
 	fi
 
 	use python & dobin scripts/kvm/kvm_stat
+
+	# Avoid collision with app-emulation/libcacard
+	use smartcard && mv "${ED}/usr/bin/vscclient" "${ED}/usr/bin/qemu-vscclient"
 
 	# Remove SeaBIOS since we're using the SeaBIOS packaged one
 	rm "${ED}/usr/share/qemu/bios.bin"
@@ -350,6 +354,15 @@ src_install() {
 	# Remove sgabios since we're using the sgabios packaged one
 	rm "${ED}/usr/share/qemu/sgabios.bin"
 	dosym ../sgabios/sgabios.bin /usr/share/qemu/sgabios.bin
+
+	# Remove iPXE since we're using the iPXE packaged one
+	rm "${ED}"/usr/share/qemu/pxe-*.rom
+	dosym ../ipxe/808610de.rom /usr/share/qemu/pxe-e1000.rom
+	dosym ../ipxe/80861209.rom /usr/share/qemu/pxe-eepro100.rom
+	dosym ../ipxe/10500940.rom /usr/share/qemu/pxe-ne2k_pci.rom
+	dosym ../ipxe/10222000.rom /usr/share/qemu/pxe-pcnet.rom
+	dosym ../ipxe/10ec8139.rom /usr/share/qemu/pxe-rtl8139.rom
+	dosym ../ipxe/1af41000.rom /usr/share/qemu/pxe-virtio.rom
 }
 
 pkg_postinst() {
