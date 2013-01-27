@@ -1,0 +1,10 @@
+--- config.h.in.orig	2013-01-20 22:10:26.000000000 -0800
++++ config.h.in	2013-01-20 22:12:05.000000000 -0800
+@@ -1,5 +1,7 @@
+ /* config.h.in.  Generated from configure.in by autoheader.  */
+ 
++#define USE_INTERP_RESULT 1
++
+ /* Define if building universal (internal helper macro) */
+ #undef AC_APPLE_UNIVERSAL_BUILD
+ 

@@ -1,0 +1,9 @@
+--- config.h.in.orig    2013-01-11 12:43:59.748000001 +0000
++++ config.h.in 2013-01-11 12:44:29.988000001 +0000
+@@ -91,3 +91,5 @@
+ # ifndef HAVE_STRTOL
+ long strtol(const char *, char **, int);
+ # endif
++
++#define USE_INTERP_RESULT 1
+
