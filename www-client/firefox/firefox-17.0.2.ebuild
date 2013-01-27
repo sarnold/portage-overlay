@@ -1,11 +1,11 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI="3"
 VIRTUALX_REQUIRED="pgo"
 WANT_AUTOCONF="2.1"
-MOZ_ESR=""
+MOZ_ESR="1"
 
 # This list can be updated with scripts/get_langs.sh from the mozilla overlay
 MOZ_LANGS=(af ak ar as ast be bg bn-BD bn-IN br bs ca cs csb cy da de
@@ -25,7 +25,7 @@ if [[ ${MOZ_ESR} == 1 ]]; then
 fi
 
 # Patch version
-PATCH="${PN}-17.0-patches-0.3"
+PATCH="${PN}-17.0-patches-0.4"
 # Upstream ftp release URI that's used by mozlinguas.eclass
 # We don't use the http mirror because it deletes old tarballs.
 MOZ_FTP_URI="ftp://ftp.mozilla.org/pub/${PN}/releases/"
@@ -50,8 +50,8 @@ ASM_DEPEND=">=dev-lang/yasm-1.1"
 # Mesa 7.10 needed for WebGL + bugfixes
 RDEPEND="
 	>=sys-devel/binutils-2.16.1
-	>=dev-libs/nss-3.13.6
-	>=dev-libs/nspr-4.9.2
+	>=dev-libs/nss-3.14.1
+	>=dev-libs/nspr-4.9.4
 	>=dev-libs/glib-2.26:2
 	>=media-libs/mesa-7.10
 	>=media-libs/libpng-1.5.11[apng]
@@ -61,12 +61,9 @@ RDEPEND="
 	>=media-libs/libvpx-1.0.0
 	kernel_linux? ( media-libs/alsa-lib )
 	selinux? ( sec-policy/selinux-mozilla )"
-# We don't use PYTHON_DEPEND/PYTHON_USE_WITH for some silly reason
 DEPEND="${RDEPEND}
-	dev-python/pysqlite
 	virtual/pkgconfig
 	pgo? (
-		=dev-lang/python-2*[sqlite]
 		>=sys-devel/gcc-4.5 )
 	amd64? ( ${ASM_DEPEND}
 		virtual/opengl )
@@ -145,9 +142,7 @@ src_prepare() {
 
 	# add some big endian fixes for ppc, etc
 	if use webrtc ; then
-		epatch "${FILESDIR}"/${P}-pcm16b_include.patch \
-			"${FILESDIR}"/${P}-webrtc-typedefs.patch \
-			"${FILESDIR}"/${P}-webrtc-sse2.patch
+		epatch "${FILESDIR}"/${PN}-17.0.1-pcm16b_include.patch
 	fi
 
 	# Allow user to apply any additional patches without modifing ebuild
@@ -210,6 +205,7 @@ src_configure() {
 	# It doesn't compile on alpha without this LDFLAGS
 	use alpha && append-ldflags "-Wl,--no-relax"
 
+	# hack around build failure somewhere above webrtc
 	if use ppc && use webrtc ; then
 		append-ldflags "-logg -lvorbis"
 	fi
@@ -235,9 +231,6 @@ src_configure() {
 	# Both methodjit and tracejit conflict with PaX
 	mozconfig_use_enable jit methodjit
 	mozconfig_use_enable jit tracejit
-	# webrtc is slightly broken on big endian arches (eg, ppc)
-	# need to file some bugs...
-	mozconfig_use_enable webrtc
 
 	# Allow for a proper pgo build
 	if use pgo; then
@@ -257,6 +250,10 @@ src_configure() {
 }
 
 src_compile() {
+	# webrtc build is broken on big endian arches (eg, ppc) see upstream
+	# bug: https://bugzilla.mozilla.org/show_bug.cgi?id=814693
+	mozconfig_use_enable webrtc
+
 	if use pgo; then
 		addpredict /root
 		addpredict /etc/gconf

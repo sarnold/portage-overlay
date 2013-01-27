@@ -6,7 +6,7 @@ EAPI="3"
 VIRTUALX_REQUIRED="pgo"
 WANT_AUTOCONF="2.1"
 
-inherit check-reqs flag-o-matic toolchain-funcs eutils gnome2-utils mozconfig-3 multilib pax-utils fdo-mime autotools mozextension versionator python virtualx nsplugins
+inherit check-reqs flag-o-matic toolchain-funcs eutils gnome2-utils mozconfig-3 multilib pax-utils fdo-mime autotools mozextension versionator virtualx nsplugins
 
 MAJ_FF_PV="$(get_version_component_range 1-2)" # 3.5, 3.6, 4.0, etc.
 FF_PV="${PV/_alpha/a}" # Handle alpha for SRC_URI
