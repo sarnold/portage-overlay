@@ -4,7 +4,7 @@
 
 EAPI=2
 
-inherit qt4 flag-o-matic
+inherit qt4-r2 flag-o-matic
 
 DESCRIPTION="Qtractor is an Audio/MIDI multi-track sequencer."
 HOMEPAGE="http://qtractor.sourceforge.net/"
