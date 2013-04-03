@@ -10,7 +10,7 @@ inherit eutils python unpacker
 
 DESCRIPTION="Commercial version of app-emulation/wine with paid support."
 HOMEPAGE="http://www.codeweavers.com/products/crossover/"
-SRC_URI="install-crossover-standard-demo-${PV}.bin"
+SRC_URI="install-crossover-${PV}.bin"
 
 LICENSE="CROSSOVER"
 SLOT="0"
