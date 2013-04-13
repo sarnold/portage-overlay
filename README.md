@@ -13,14 +13,20 @@ on the wip branch (not shown below).
 
 ## Latest ##
 
-Recent updates for the Gnome 3 desktop (x86, x86_64, and ppc) as well as other 
-powerpc updates for the older Gnome desktop and misc packages (audio, etc). 
-The exaile sound menu indicator plugin is working with exaile 3.2.1, except 
-for the time elapesed calculation when paused.  There's also a patched genkernel 
-that provides initramfs fsck support for premounted volumes, and an updated 
-dcmtk package.
+Most recent updates are for the efikamx Smartbook and other ARM devices such as
+the Raspberry Pi (armv6) and MK-802 (armv7).  Anything non-iMX specific should 
+work on all of the above.
+
+Other recent updates for the Gnome 3 desktop (x86, x86_64, and ppc) as well 
+as more powerpc updates for the older Gnome desktop and misc packages (audio, 
+etc). The exaile sound menu indicator plugin is working with exaile 3.2.1, and 
+all seems to be working fine in Gnome 3.6 (as far as the plugin).  The one bit 
+that doesn't work is "minimize to tray" using the Exaile window minimize button. 
+There's also a patched genkernel that provides initramfs fsck support if you have 
+a separate /usr volume, and last but not least, an updated dcmtk package.
 
 ## Current list of ebuilds: ##
+
 
 - app-accessibility/orca/orca-2.32.1.ebuild
 - app-accessibility/speech-dispatcher/speech-dispatcher-0.6.7-r1.ebuild
@@ -35,11 +41,12 @@ dcmtk package.
 - app-doc/doxygen/doxygen-1.8.0.ebuild
 - app-doc/ebookmerge/ebookmerge-0.9.3.ebuild
 - app-emulation/crossover-office-bin/crossover-office-bin-10.2.0.ebuild
+- app-emulation/crossover-office-bin/crossover-office-bin-12.1.2.ebuild
 - app-emulation/qemu-kvm/qemu-kvm-1.1.0.ebuild
 - app-emulation/qemu-kvm/qemu-kvm-1.1.1-r1.ebuild
 - app-emulation/qemu-launcher/qemu-launcher-1.7.4-r1.ebuild
 - app-emulation/qemu-launcher/qemu-launcher-1.7.4.ebuild
-- app-emulation/qemu/qemu-1.1.2.ebuild
+- app-emulation/qemu/qemu-1.2.1.ebuild
 - app-emulation/qemuctl/qemuctl-0.2.1.ebuild
 - app-emulation/qemuctl/qemuctl-0.3.0.ebuild
 - app-emulation/wine/wine-1.3.24.ebuild
@@ -76,6 +83,7 @@ dcmtk package.
 - dev-java/bcel/bcel-5.2-r1.ebuild
 - dev-java/ibm-jdk-bin/ibm-jdk-bin-1.5.0.12_p1.ebuild
 - dev-java/ibm-jdk-bin/ibm-jdk-bin-1.6.0.8_p1.ebuild
+- dev-java/icedtea/icedtea-7.2.3.4.ebuild
 - dev-lang/gnat-gcc/gnat-gcc-4.3.6.ebuild
 - dev-lang/mmix/mmix-20100311.ebuild
 - dev-lang/openwatcom/openwatcom-1.7.1.ebuild
@@ -88,12 +96,14 @@ dcmtk package.
 - dev-libs/libindicate/libindicate-12.10.0.ebuild
 - dev-libs/libmusclecard/libmusclecard-1.3.6.ebuild
 - dev-libs/libusb/libusb-1.0.8-r1.ebuild
+- dev-python/distutilscross/distutilscross-0.1.ebuild
 - dev-python/pyatspi/pyatspi-2.0.2.ebuild
 - dev-python/pysvn/pysvn-1.7.5.ebuild
-- dev-python/pythonmagick/pythonmagick-0.9.8.ebuild
+- dev-python/pythonmagick/pythonmagick-0.9.8-r1.ebuild
 - dev-python/scientificpython/scientificpython-2.9-r1.ebuild
 - dev-python/sip/sip-4.12.3.ebuild
 - dev-python/stdeb/stdeb-0.4.1.ebuild
+- dev-python/tagpy/tagpy-0.94.8-r1.ebuild
 - dev-util/androgenizer/androgenizer-20120208.ebuild
 - dev-util/astyle/astyle-1.21.ebuild
 - dev-util/cbmc/cbmc-3.7.ebuild
@@ -123,9 +133,12 @@ dcmtk package.
 - gnome-extra/gnome-shell-extensions-mediaplayer/gnome-shell-extensions-mediaplayer-20120805.ebuild
 - gnome-extra/gnome-shell-extensions-mediaplayer/gnome-shell-extensions-mediaplayer-20120814.ebuild
 - gnome-extra/gnome-shell-extensions-weather/gnome-shell-extensions-weather-20120804.ebuild
+- gnome-extra/gnome-shell-extensions/gnome-shell-extensions-3.4.0-r1.ebuild
+- gnome-extra/gnome-shell-extensions/gnome-shell-extensions-3.6.2.ebuild
 - gnome-extra/gnome-user-docs/gnome-user-docs-2.24.2-r1.ebuild
 - gnome-extra/nautilus-renamer/nautilus-renamer-2.3.ebuild
 - media-fonts/dejavu/dejavu-2.27.ebuild
+- media-gfx/aeskulap/aeskulap-0.2.1.ebuild
 - media-gfx/eog/eog-3.4.3-r1.ebuild
 - media-gfx/f-spot/f-spot-0.5.0.3.ebuild
 - media-gfx/f-spot/f-spot-0.8.0.ebuild
@@ -134,6 +147,8 @@ dcmtk package.
 - media-gfx/lightscribe/lightscribe-1.14.32.1.ebuild
 - media-gfx/sane-backends/sane-backends-1.0.22-r1.ebuild
 - media-gfx/splashutils/splashutils-1.5.4.4.ebuild
+- media-libs/amd-gpu-bin-mx51/amd-gpu-bin-mx51-11.09.01.ebuild
+- media-libs/amd-gpu-x11-bin-mx51/amd-gpu-x11-bin-mx51-11.09.01.ebuild
 - media-libs/clutter-gst/clutter-gst-1.6.0.ebuild
 - media-libs/faac/faac-1.28-r1.ebuild
 - media-libs/freetype/freetype-2.4.4.ebuild
@@ -145,8 +160,9 @@ dcmtk package.
 - media-libs/libjpeg-turbo/libjpeg-turbo-1.0.0.ebuild
 - media-libs/libsidplay/libsidplay-2.1.1.ebuild
 - media-libs/mesa/mesa-7.11.2.ebuild
-- media-libs/mesa/mesa-8.0.4-r1.ebuild
 - media-libs/mesa/mesa-8.1_rc1_pre20120814.ebuild
+- media-libs/portmidi/portmidi-217.ebuild
+- media-libs/xine-lib/xine-lib-1.2.2.ebuild
 - media-plugins/alsa-plugins/alsa-plugins-1.0.19.ebuild
 - media-plugins/exaile-soundmenu-indicator/exaile-soundmenu-indicator-0.0.5.ebuild
 - media-sound/ats2wav/ats2wav-0.1.ebuild
@@ -173,6 +189,7 @@ dcmtk package.
 - media-sound/sound-juicer/sound-juicer-2.26.1.ebuild
 - media-sound/sound-juicer/sound-juicer-3.4.0.ebuild
 - media-sound/terminatorx/terminatorx-3.82.ebuild
+- media-sound/timidity++/timidity++-2.14.0.ebuild
 - media-video/dvd-slideshow/dvd-slideshow-0.8.0-r1.ebuild
 - media-video/makemkv/makemkv-1.6.5.ebuild
 - media-video/totem/totem-3.4.3.ebuild
@@ -184,6 +201,8 @@ dcmtk package.
 - net-libs/webkit-gtk/webkit-gtk-1.6.1-r201.ebuild
 - net-misc/stunnel/stunnel-4.36.ebuild
 - net-misc/vinagre/vinagre-3.4.2.ebuild
+- net-nds/openldap/openldap-2.4.33-r1.ebuild
+- net-nds/openldap/openldap-2.4.33.ebuild
 - net-print/cups-filters/cups-filters-1.0.4.ebuild
 - net-print/cups/cups-1.5.2-r2.ebuild
 - net-print/gnome-cups-manager/gnome-cups-manager-0.33.ebuild
@@ -211,20 +230,29 @@ dcmtk package.
 - sys-apps/bleachbit/bleachbit-0.8.0.ebuild
 - sys-apps/diffutils/diffutils-2.8.7-r2.ebuild
 - sys-apps/dmtcp/dmtcp-1.2.1-r1.ebuild
+- sys-apps/dtc/dtc-1.3.0-r1.ebuild
 - sys-apps/hal/hal-0.5.14-r1.ebuild
+- sys-apps/module-init-tools/module-init-tools-3.16-r2.ebuild
 - sys-apps/openrc/openrc-0.6.8.ebuild
 - sys-apps/pcsc-tools/pcsc-tools-1.4.17-r2.ebuild
 - sys-apps/util-linux/util-linux-2.21.1.ebuild
 - sys-apps/util-linux/util-linux-2.21.ebuild
 - sys-auth/polkit/polkit-0.107-r1.ebuild
+- sys-auth/polkit/polkit-0.108.ebuild
+- sys-auth/polkit/polkit-0.109-r1.ebuild
+- sys-auth/polkit/polkit-0.110.ebuild
 - sys-block/gparted/gparted-0.8.1.ebuild
 - sys-block/gparted/gparted-0.9.0.ebuild
 - sys-block/usb-imagewriter/usb-imagewriter-0.1.3.ebuild
 - sys-cluster/pvfs2/pvfs2-2.7.1-r1.ebuild
 - sys-cluster/pvfs2/pvfs2-2.7.1.ebuild
 - sys-cluster/pvfs2/pvfs2-2.8.2.ebuild
+- sys-devel/binutils/binutils-2.23.1.ebuild
 - sys-devel/gdb/gdb-6.8-r1.ebuild
+- sys-fs/hfsutils/hfsutils-3.2.6-r5.ebuild
 - sys-fs/mp3fs/mp3fs-0.31.ebuild
+- sys-fs/udev/udev-171-r10.ebuild
+- sys-fs/udisks/udisks-1.0.4-r2.ebuild
 - sys-kernel/acpi-sources/acpi-sources-2.6.28.ebuild
 - sys-kernel/acpi-sources/acpi-sources-2.6.29.ebuild
 - sys-kernel/acpi-sources/acpi-sources-2.6.31.ebuild
@@ -232,12 +260,14 @@ dcmtk package.
 - sys-kernel/aspm-sources/aspm-sources-3.1.6.ebuild
 - sys-kernel/aspm-sources/aspm-sources-3.2.2.ebuild
 - sys-kernel/ck-sources/ck-sources-3.1.4.ebuild
+- sys-kernel/firmware-imx/firmware-imx-10.11.01.ebuild
 - sys-kernel/genkernel/genkernel-3.4.43.ebuild
 - sys-kernel/genkernel/genkernel-3.4.44.2.ebuild
 - sys-kernel/genkernel/genkernel-3.4.45.ebuild
-- sys-kernel/gentoo-sources/gentoo-sources-2.6.32.ebuild
+- sys-kernel/gentoo-sources/gentoo-sources-3.5.7.ebuild
 - sys-kernel/hard-gentoo-sources/hard-gentoo-sources-2.6.29-r6.ebuild
 - sys-kernel/hardened-sources/hardened-sources-3.1.6.ebuild
+- sys-kernel/linux-headers/linux-headers-3.1.ebuild
 - sys-kernel/mkinitcpio/mkinitcpio-0.9.2-r1.ebuild
 - sys-kernel/rt-sources/rt-sources-2.6.28.2.ebuild
 - sys-kernel/rt-sources/rt-sources-2.6.29.2.ebuild
@@ -248,19 +278,31 @@ dcmtk package.
 - sys-kernel/rt-sources/rt-sources-2.6.33.7.ebuild
 - sys-kernel/via-sources/via-sources-2.6.30.1.ebuild
 - sys-kernel/zen-sources/zen-sources-2.6.30-r5.ebuild
+- sys-libs/imx-lib/imx-lib-11.09.01.ebuild
+- sys-libs/libselinux/libselinux-2.1.12-r2.ebuild
 - sys-libs/ncurses/ncurses-5.7-r4.ebuild
 - sys-power/nut/nut-2.4.1-r1.ebuild
 - sys-process/procps/procps-3.2.8-r2.ebuild
 - virtual/gnat/gnat-4.4.ebuild
+- virtual/udev/udev-171.ebuild
 - www-apps/viewvc/viewvc-1.1.4-r1.ebuild
+- www-client/firefox/firefox-17.0.1-r1.ebuild
+- www-client/firefox/firefox-17.0.2.ebuild
 - www-client/firefox/firefox-9.0.ebuild
 - x11-base/xorg-drivers/xorg-drivers-1.10.ebuild
+- x11-base/xorg-server/xorg-server-1.12.4.ebuild
 - x11-base/xorg-server/xorg-server-1.8.1-r1.ebuild
 - x11-base/xorg-server/xorg-server-1.8.2.ebuild
+- x11-drivers/imageon-drivers-bin/imageon-drivers-bin-2012.1.ebuild
 - x11-drivers/xf86-input-joystick/xf86-input-joystick-1.5.9.ebuild
 - x11-drivers/xf86-input-joystick/xf86-input-joystick-9999.ebuild
+- x11-drivers/xf86-video-imx/xf86-video-imx-0.2.0.ebuild
+- x11-libs/cairo/cairo-1.12.12-r1.ebuild
 - x11-libs/gtk+/gtk+-2.24.5-r1.ebuild
 - x11-libs/gtk+/gtk+-3.0.11.ebuild
+- x11-libs/libdrm/libdrm-2.4.40.ebuild
+- x11-libs/libz160-bin/libz160-bin-11.09.01.ebuild
+- x11-misc/xlockmore/xlockmore-5.41.ebuild
 - x11-misc/xorg-sgml-doctools/xorg-sgml-doctools-1.10.ebuild
 - x11-proto/xproto/xproto-7.0.20.ebuild
 - x11-proto/xproto/xproto-7.0.22.ebuild
