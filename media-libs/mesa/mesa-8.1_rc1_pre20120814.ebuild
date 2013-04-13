@@ -46,7 +46,7 @@ for card in ${VIDEO_CARDS}; do
 done
 
 IUSE="${IUSE_VIDEO_CARDS}
-	bindist +classic debug +egl exp-ppc-opengl-fixes g3dvl +gallium gbm 
+	bindist +classic debug +egl endian-fixes g3dvl +gallium gbm 
 	gles1 gles2 +llvm +nptl openvg osmesa pax_kernel pic r600-llvm-compiler
 	selinux +shared-glapi vdpau wayland xvmc xa xorg kernel_FreeBSD"
 
@@ -179,7 +179,7 @@ src_prepare() {
 	EPATCH_EXCLUDE+=" 05_mesa-ppc-endian-fixes.patch \
 		11_mesa-ppc-endian-fixes.patch \
 		12_mesa-ppc-endian-fixes.patch"
-	use exp-ppc-opengl-fixes && \
+	use endian-fixes && \
 		EPATCH_MULTI_MSG="Applying experimental ppc endian fixes ..." \
 		EPATCH_FORCE=yes \
 		EPATCH_SUFFIX="patch" \
