@@ -1,0 +1,30 @@
+diff -Naur amd-gpu-x11-bin-mx51-11.05.01.orig/Makefile amd-gpu-x11-bin-mx51-11.05.01/Makefile
+--- amd-gpu-x11-bin-mx51-11.05.01.orig/Makefile	1969-12-31 19:00:00.000000000 -0500
++++ amd-gpu-x11-bin-mx51-11.05.01/Makefile	2011-07-18 17:05:24.000000000 -0400
+@@ -0,0 +1,26 @@
++# Makefile for amd-gpu-bin-mx51
++#
++# This makefile is just a dummy until the full sources are available.
++# Using this will allow us to more easily transition between the binary
++# and source versions
++#
++# Timesys Corporation 2010
++
++USRDIR=usr
++
++TARGETS=
++
++all: $(TARGETS)
++
++$(TARGETS):
++
++install: $(TARGETS)
++	mkdir -p $(DESTDIR)/usr
++	cp -r $(USRDIR)/* $(DESTDIR)/usr/
++	if [ ! -e $(DESTDIR)/usr/include/vg ]; then ln -sf VG $(DESTDIR)/usr/include/vg;fi
++
++clean:
++
++distclean: clean
++        
++.PHONY: clean distclean install

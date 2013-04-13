@@ -1,0 +1,42 @@
+diff -Naur amd-gpu-bin-mx51-11.05.01.orig/usr/include/EGL/eglext.h amd-gpu-bin-mx51-11.05.01/usr/include/EGL/eglext.h
+--- amd-gpu-bin-mx51-11.05.01.orig/usr/include/EGL/eglext.h	2011-07-18 16:54:30.000000000 -0400
++++ amd-gpu-bin-mx51-11.05.01/usr/include/EGL/eglext.h	2011-07-18 16:56:33.000000000 -0400
+@@ -164,11 +164,11 @@
+  * nanoseconds (unadjusted standard time).  Here, it is defined as
+  * appropriate for an ISO C compiler.
+  */
+-#ifndef _LINUX
++#ifndef __linux__
+ typedef uint64_t EGLTimeKHR;
+-#else   // _LINUX
++#else   // __linux__
+ typedef unsigned long long EGLTimeKHR;
+-#endif  // _LINUX
++#endif  // __linux__
+ 
+ #define EGL_SYNC_PRIOR_COMMANDS_COMPLETE_KHR            0xFFF8
+ #define EGL_SYNC_STATUS_KHR                             0xFFF7                                  
+diff -Naur amd-gpu-bin-mx51-11.05.01.orig/usr/include/VG/ext.h amd-gpu-bin-mx51-11.05.01/usr/include/VG/ext.h
+--- amd-gpu-bin-mx51-11.05.01.orig/usr/include/VG/ext.h	2011-07-18 16:54:30.000000000 -0400
++++ amd-gpu-bin-mx51-11.05.01/usr/include/VG/ext.h	2011-07-18 16:56:33.000000000 -0400
+@@ -15,7 +15,7 @@
+ extern "C" {
+ #endif
+ 
+-#ifndef _LINUX
++#ifndef __linux__
+ #include <VG/openvg.h>
+ #else
+ #include "openvg.h"
+diff -Naur amd-gpu-bin-mx51-11.05.01.orig/usr/include/VG/openvg.h amd-gpu-bin-mx51-11.05.01/usr/include/VG/openvg.h
+--- amd-gpu-bin-mx51-11.05.01.orig/usr/include/VG/openvg.h	2011-07-18 16:54:30.000000000 -0400
++++ amd-gpu-bin-mx51-11.05.01/usr/include/VG/openvg.h	2011-07-18 16:56:33.000000000 -0400
+@@ -449,7 +449,7 @@
+ #       endif
+ #   elif defined(__APPLE__)
+ #       define VG_API_CALL extern
+-#   elif defined(_LINUX)
++#   elif defined(__linux__)
+ #       if defined (OPENVG_DLL_EXPORTS)
+ #           define VG_API_CALL extern
+ #       else

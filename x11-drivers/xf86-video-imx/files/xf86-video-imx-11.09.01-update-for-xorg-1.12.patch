@@ -1,0 +1,46 @@
+diff -Naurp xserver-xorg-video-imx-11.09.01-orig/src/imx_ext.c xserver-xorg-video-imx-11.09.01/src/imx_ext.c
+--- xserver-xorg-video-imx-11.09.01-orig/src/imx_ext.c	2011-07-26 17:22:47.000000000 -0400
++++ xserver-xorg-video-imx-11.09.01/src/imx_ext.c	2012-12-11 17:12:01.065022703 -0500
+@@ -57,8 +57,6 @@ void imxExtInit()
+ static int
+ Proc_IMX_EXT_GetPixmapPhysAddr(ClientPtr client)
+ {
+-	int n;
+-
+ 	REQUEST(xIMX_EXT_GetPixmapPhysAddrReq);
+ 	REQUEST_SIZE_MATCH(xIMX_EXT_GetPixmapPhysAddrReq);
+ 
+@@ -96,10 +94,10 @@ Proc_IMX_EXT_GetPixmapPhysAddr(ClientPtr
+ 	/* Check if any reply values need byte swapping */
+ 	if (client->swapped) {
+ 
+-		swaps(&rep.sequenceNumber, n);
+-		swapl(&rep.length, n);
+-		swapl(&rep.pixmapPhysAddr, n);
+-		swapl(&rep.pixmapPitch, n);
++		swaps(&rep.sequenceNumber);
++		swapl(&rep.length);
++		swapl(&rep.pixmapPhysAddr);
++		swapl(&rep.pixmapPitch);
+ 	}
+ 
+ 	/* Reply to client */
+@@ -123,16 +121,14 @@ Proc_IMX_EXT_Dispatch(ClientPtr client)
+ static int
+ SProc_IMX_EXT_GetPixmapPhysAddr(ClientPtr client)
+ {
+-	int n;
+-
+ 	REQUEST(xIMX_EXT_GetPixmapPhysAddrReq);
+ 
+ 	/* Swap request message length and verify it is correct. */
+-	swaps(&stuff->length, n);
++	swaps(&stuff->length);
+ 	REQUEST_SIZE_MATCH(xIMX_EXT_GetPixmapPhysAddrReq);
+ 
+ 	/* Swap remaining request message parameters. */
+-	swapl(&stuff->pixmap, n);
++	swapl(&stuff->pixmap);
+ 
+ 	return Proc_IMX_EXT_GetPixmapPhysAddr(client);
+ }
