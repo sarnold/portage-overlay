@@ -35,7 +35,8 @@ src_prepare() {
 		"${FILESDIR}"/dcmtk_version_number.patch \
 		"${FILESDIR}"/png_tiff.patch \
 		"${FILESDIR}"/regression_stacksequenceisodd.patch \
-		"${FILESDIR}"/${PN}-asneeded.patch
+		"${FILESDIR}"/${PN}-asneeded.patch \
+		"${FILESDIR}"/${PN}-gcc472-error.patch
 
 	sed -e "s:share/doc/dcmtk:&-${PV}:" \
 		-e "s:DIR \"/:DIR \"/usr/:" \
