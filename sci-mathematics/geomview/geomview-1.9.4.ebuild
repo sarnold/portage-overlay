@@ -17,7 +17,7 @@ IUSE="-avg +bzip2 debug emacs +firefox netpbm pdf +zlib"
 
 DEPEND="zlib? ( sys-libs/zlib )
 	emacs? ( virtual/emacs )
-	>=x11-libs/openmotif-2.3:0
+	>=x11-libs/motif-2.3:0
 	virtual/opengl"
 
 RDEPEND="${DEPEND}
