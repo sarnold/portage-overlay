@@ -1,0 +1,36 @@
+--- /usr/sbin/zram-init.orig	2013-07-20 11:26:17.760879640 -0700
++++ /usr/sbin/zram-init	2013-07-20 13:36:34.275883367 -0700
+@@ -1,4 +1,4 @@
+-#! /bin/sh
++#! /bin/bash
+ # (C) Martin V\"ath <vaeth@mathematik.uni-wuerzburg.de>"
+ 
+ Echo() {
+@@ -69,8 +69,14 @@
+ if [ ${#} -eq 1 ]
+ then	mkswap "${devnode}" >/dev/null || Fatal "mkswap ${devnode} failed"
+ 	if [ "${prio}" = '-' ]
+-	then	swapon -- "${devnode}"
+-	else	swapon -p "${prio}" -- "${devnode}"
++	then
++		sleep 1
++		echo "Running: swapon -- ${devnode} ..."
++		swapon -- "${devnode}"
++	else
++		sleep 1
++		echo "Running: swapon -p ${prio} -- ${devnode} ..."
++		swapon -p "${prio}" -- "${devnode}"
+ 	fi || Fatal "swapon failed"
+ 	exit 0
+ fi
+@@ -93,3 +99,10 @@
+ 	Fatal "unsupported filesystem ${fstype}"
+ ;;
+ esac
++
++TEMP=$(echo -n "${2}" | grep -z tmp)
++#echo $TEMP
++if [ -n "$TEMP"  ] ; then
++	chmod 1777 ${2}
++fi
++
