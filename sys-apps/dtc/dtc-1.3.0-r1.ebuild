@@ -29,7 +29,7 @@ S=${WORKDIR}/${MY_P}
 
 src_prepare() {
 	epatch "${FILESDIR}"/${P}-fdtdump.patch #372895
-	# patch cleanu? weird...
+	# patch cleanup? weird...
 	sed -i -e 's|FTDUMP|FDTDUMP|g' Makefile.ftdump
 
 	sed -i \

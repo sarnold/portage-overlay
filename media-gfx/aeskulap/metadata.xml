@@ -1,0 +1,7 @@
+<pkgmetadata>
+  <herd>sci-biology</herd>
+  <maintainer>
+    <email>sci-biology@gentoo.org</email>
+  </maintainer>
+  <longdescription>A DICOM medical image viewer</longdescription>
+</pkgmetadata>

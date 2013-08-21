@@ -12,7 +12,7 @@ SRC_URI="https://github.com/downloads/dywisor/tlp-gentoo/${P}-${PR}-gentoo.tar.b
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~x86 ~amd64"
+KEYWORDS="~amd64 ~arm ~ppc ~x86"
 IUSE="+X +thinkpad rdw bash-completion smartmontools ethtool lsb-release laptop-mode-tools"
 
 DEPEND=""

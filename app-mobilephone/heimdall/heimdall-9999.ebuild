@@ -1,80 +1,62 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Header: /var/cvsroot/gentoo-x86/app-mobilephone/heimdall/heimdall-9999.ebuild,v 1.1 2013/08/18 20:56:03 floppym Exp $
 
-EAPI="2"
+EAPI=5
 
-inherit autotools eutils qt4-r2 git-2
+inherit autotools eutils qt4-r2 udev
 
-DESCRIPTION="Heimdall is a cross-platform open-source tool suite used to flash firmware (aka ROMs) onto Samsung Galaxy S devices."
+if [[ ${PV} != 9999 ]]; then
+	SRC_URI="https://github.com/Benjamin-Dobell/Heimdall/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64"
+	S="${WORKDIR}/Heimdall-${PV}"
+else
+	inherit git-2
+	EGIT_REPO_URI="git://github.com/Benjamin-Dobell/Heimdall.git
+		https://github.com/Benjamin-Dobell/Heimdall.git"
+fi
+
+DESCRIPTION="Tool suite used to flash firmware onto Samsung Galaxy S devices"
 HOMEPAGE="http://www.glassechidna.com.au/products/heimdall/"
-
-EGIT_REPO_URI="git://github.com/Benjamin-Dobell/Heimdall.git
-               https://github.com/Benjamin-Dobell/Heimdall.git"
-EGIT_TREE="master"
-EGIT_PROJECT="Heimdall"
 
 LICENSE="MIT"
 SLOT="0"
-KEYWORDS="~x86 ~amd64"
-
 IUSE="qt4"
 
-RDEPEND="qt4? ( x11-libs/qt-core x11-libs/qt-gui )
-         >dev-libs/libusb-1.0"
-
-DEPEND="$RDEPEND
-        dev-util/pkgconfig"
+RDEPEND="dev-libs/libusbx:1=
+	qt4? ( dev-qt/qtcore:4= dev-qt/qtgui:4= )"
+DEPEND="${RDEPEND}
+	virtual/pkgconfig"
 
 src_prepare() {
-    rm -r libusb-1.0 || die "Can't delete libusb sources"
-    edos2unix "${S}"/${PN}-frontend/${PN}-frontend.pro
-    edos2unix "${S}"/${PN}/Makefile.am
-    sed -e 's:/usr/local:/usr:g' -i "${S}"/${PN}-frontend/${PN}-frontend.pro \
-              || die
-#    sed 's:SYSFS:ATTRS:g' -i "${S}"/${PN}/60-${PN}-galaxy-s.rules || die
-    sed -i -e '/sudo service udev restart/d' "${S}"/heimdall/Makefile.am
-    cd "${S}/${PN}"
-    eautoreconf
-    cd ..
+	rm -r libusbx-1.0 || die
+	cd "${S}/heimdall" || die
+	edos2unix configure.ac Makefile.am || die
+	sed -i -e /sudo/d Makefile.am || die
+	eautoreconf
 }
 
 src_configure() {
-    cd "${S}"/libpit
-    econf --prefix=/usr/ --libdir=/usr/$(get_libdir) || die "econf failed"
-    cd "${S}"/${PN}
-    econf --prefix=/usr/ --libdir=/usr/$(get_libdir) || die "econf failed"
-    if use qt4; then
-        cd "${S}"/${PN}-frontend
-        eqmake4 heimdall-frontend.pro OUTPUTDIR="${D}/usr/bin/" || die "eqmake failed"
-    fi
+	cd "${S}/libpit" || die
+	econf
+
+	cd "${S}/heimdall" || die
+	econf
+
+	if use qt4; then
+		cd "${S}/heimdall-frontend" || die
+		eqmake4 heimdall-frontend.pro OUTPUTDIR=/usr/bin || die
+	fi
 }
 
 src_compile() {
-    cd "${S}"/libpit
-    emake DESTDIR="${D}"|| die "compile failed"
-    cd "${S}"/${PN}
-    emake DESTDIR="${D}"|| die "compile failed"
-    if use qt4; then
-        cd "${S}"/${PN}-frontend
-        emake OUTPUTDIR="${D}"|| die "compile failed"
-    fi
+	emake -C libpit
+	emake -C heimdall
+	use qt4 && emake -C heimdall-frontend
 }
 
 src_install() {
-    cd "${S}"/libpit
-    emake DESTDIR="${D}" install || die "install failed"
-    cd "${S}"/${PN}
-    sed '/sudo service udev restart/d' Makefile > Makefile.new ||die "Couldn't patch Makefile"
-    mv Makefile.new Makefile
-    emake DESTDIR="${D}" install || die "install failed"
-    if use qt4; then
-        cd "${S}"/${PN}-frontend
-        emake OUTPUTDIR="${D}" install|| die "install failed"
-    fi
+	emake -C heimdall DESTDIR="${D}" udevrulesdir="$(get_udevdir)/rules.d" install
+	dodoc Linux/README
+	use qt4 && emake -C heimdall-frontend INSTALL_ROOT="${D}" install
 }
-
-pkg_postinst() {
-    udevadm control --reload-rules && udevadm trigger --subsystem-match=usb
-}
-

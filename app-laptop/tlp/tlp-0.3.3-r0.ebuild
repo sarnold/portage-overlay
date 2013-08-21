@@ -13,7 +13,7 @@ HOMEPAGE="https://github.com/linrunner/TLP"
 SRC_URI="https://github.com/downloads/dywisor/tlp-gentoo/${PF}-gentoo.tgz"
 LICENSE="GPL-2"
 
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~arm ~ppc ~x86"
 SLOT="0"
 IUSE="+X +thinkpad -acpi-hook -bash-completion -smartmontools -ethtool -laptop-mode-tools -networkmanager"
 
