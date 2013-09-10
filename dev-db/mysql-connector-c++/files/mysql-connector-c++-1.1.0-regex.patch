@@ -1,0 +1,18 @@
+--- FindMySQL.cm.orig	2013-08-31 10:47:18.000000000 -0700
++++ FindMySQL.cm	2013-08-31 10:48:50.000000000 -0700
+@@ -57,10 +57,12 @@
+ 	MESSAGE(STATUS "mysql_config was found ${MYSQL_CONFIG_EXECUTABLE}")
+ 	EXECUTE_PROCESS(COMMAND ${MYSQL_CONFIG_EXECUTABLE} "--cflags"
+ 					OUTPUT_VARIABLE _mysql_config_output
+-					)
+-	STRING(REGEX MATCHALL "-m([^\r\n]+)" MYSQL_LINK_FLAGS "${_mysql_config_output}")
+-	STRING(REGEX REPLACE "[\r\n]$" "" MYSQL_CXXFLAGS "${_mysql_config_output}")
++					OUTPUT_STRIP_TRAILING_WHITESPACE)
++#	STRING(REGEX MATCHALL "-m([^\r\n]+)" MYSQL_LINK_FLAGS "${_mysql_config_output}")
++#	STRING(REGEX REPLACE "[\r\n]$" "" MYSQL_CXXFLAGS "${_mysql_config_output}")
+ #	ADD_DEFINITIONS("${MYSQL_CXXFLAGS}")
++	SET(MYSQL_CXXFLAGS "${_mysql_config_output}")
++	SET(MYSQL_LINK_FLAGS "")
+ ELSE (MYSQL_CONFIG_EXECUTABLE AND NOT WIN32)
+ 	MESSAGE(STATUS "ENV{MYSQL_DIR} = $ENV{MYSQL_DIR}")
+ 	FIND_PATH(MYSQL_INCLUDE_DIR mysql.h
