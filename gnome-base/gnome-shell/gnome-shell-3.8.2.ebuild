@@ -14,7 +14,7 @@ HOMEPAGE="http://live.gnome.org/GnomeShell"
 
 LICENSE="GPL-2+ LGPL-2+"
 SLOT="0"
-IUSE="+bluetooth +i18n +networkmanager"
+IUSE="+bluetooth +i18n +networkmanager +wheel"
 KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~ppc ~ppc64 ~sparc ~x86"
 
 # libXfixes-5.0 needed for pointer barriers
@@ -123,6 +123,10 @@ src_prepare() {
 
 	# Revert suspend break, upstream bug #693162 (from Debian)
 	epatch "${FILESDIR}/${PN}-3.8.0-suspend.patch"
+
+	# Make user auth work with wheel group (ala debian/ubuntu)
+# needs more backporting/patches
+#	use wheel && epatch "${FILESDIR}/${PN}-find-best-user.patch"
 
 	eautoreconf
 	gnome2_src_prepare
