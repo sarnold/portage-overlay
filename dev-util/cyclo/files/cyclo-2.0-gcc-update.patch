@@ -260,3 +260,13 @@ index 7e3ab4c..7d94a44 100644
  
          static char errmsg[32];
  
+--- a/main.C	2013-09-14 16:11:32.000000000 -0700
++++ b/main.C	2013-09-14 16:11:53.000000000 -0700
+@@ -20,6 +20,7 @@
+ #include <iomanip>
+ #include <stdlib.h>
+ #include <string.h>
++#include <getopt.h>
+ 
+ using namespace std;
+ 
