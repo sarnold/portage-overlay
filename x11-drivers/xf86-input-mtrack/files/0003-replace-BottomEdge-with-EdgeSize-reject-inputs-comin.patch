@@ -1,0 +1,187 @@
+From 7289d7b7b16a0a046d6fd8b8fc31c569c79fdcb0 Mon Sep 17 00:00:00 2001
+From: Greg Alexander <gitgreg@galexander.org>
+Date: Thu, 28 Feb 2013 09:07:58 -0500
+Subject: [PATCH 3/3] replace BottomEdge with EdgeSize, reject inputs coming
+ in from any edge
+
+---
+ driver/mprops.c   |   12 ++++++------
+ include/mconfig.h |    4 ++--
+ include/mprops.h  |    4 ++--
+ include/mtstate.h |    2 +-
+ src/mconfig.c     |    4 ++--
+ src/mtstate.c     |   20 +++++++++++++++-----
+ 6 files changed, 28 insertions(+), 18 deletions(-)
+
+diff --git a/driver/mprops.c b/driver/mprops.c
+index 2592835..ff0f805 100644
+--- a/driver/mprops.c
++++ b/driver/mprops.c
+@@ -193,8 +193,8 @@ void mprops_init(struct MConfig* cfg, InputInfoPtr local) {
+ 	ivals[1] = cfg->axis_y_invert;
+ 	mprops.axis_invert = atom_init_integer(local->dev, MTRACK_PROP_AXIS_INVERT, 2, ivals, 8);
+ 
+-	ivals[0] = cfg->bottom_edge;
+-	mprops.bottom_edge = atom_init_integer(local->dev, MTRACK_PROP_BOTTOM_EDGE, 1, ivals, 8);
++	ivals[0] = cfg->edge_size;
++	mprops.edge_size = atom_init_integer(local->dev, MTRACK_PROP_EDGE_SIZE, 1, ivals, 8);
+ }
+ 
+ int mprops_set_property(DeviceIntPtr dev, Atom property, XIPropertyValuePtr prop, BOOL checkonly) {
+@@ -637,7 +637,7 @@ int mprops_set_property(DeviceIntPtr dev, Atom property, XIPropertyValuePtr prop
+ #endif
+ 		}
+ 	}
+-	else if (property == mprops.bottom_edge) {
++	else if (property == mprops.edge_size) {
+ 		if (prop->size != 1 || prop->format != 8 || prop->type != XA_INTEGER)
+ 			return BadMatch;
+ 
+@@ -646,10 +646,10 @@ int mprops_set_property(DeviceIntPtr dev, Atom property, XIPropertyValuePtr prop
+ 			return BadMatch;
+ 
+ 		if (!checkonly) {
+-			cfg->bottom_edge = ivals8[0];
++			cfg->edge_size = ivals8[0];
+ #ifdef DEBUG_PROPS
+-			xf86Msg(X_INFO, "mtrack: set bottom edge to %d\n",
+-				cfg->bottom_edge);
++			xf86Msg(X_INFO, "mtrack: set edge size to %d\n",
++				cfg->edge_size);
+ #endif
+ 		}
+ 	}
+diff --git a/include/mconfig.h b/include/mconfig.h
+index 6cead2a..b22e8d8 100644
+--- a/include/mconfig.h
++++ b/include/mconfig.h
+@@ -34,7 +34,7 @@
+ #define DEFAULT_THUMB_RATIO 70
+ #define DEFAULT_THUMB_SIZE 25
+ #define DEFAULT_PALM_SIZE 40
+-#define DEFAULT_BOTTOM_EDGE 10
++#define DEFAULT_EDGE_SIZE 10
+ #define DEFAULT_BUTTON_ENABLE 1
+ #define DEFAULT_BUTTON_INTEGRATED 1
+ #define DEFAULT_BUTTON_ZONES 0
+@@ -107,7 +107,7 @@ struct MConfig {
+ 	int thumb_ratio;	// Ratio of width to length that makes a touch a thumb. 0 - 100
+ 	int thumb_size;		// Minimum touch size for a thumb. 0 - 100
+ 	int palm_size;		// Minimum touch size for a palm. 0 - 100
+-	int bottom_edge;		// Percent of bottom of trackpad to ignore for new touches. 0 - 100
++	int edge_size;		// Percent of edge of trackpad to ignore for new touches. 0 - 100
+ 	int axis_x_invert;	// Whether or not to invert the x axis. 0 or 1.
+ 	int axis_y_invert;	// Whether or not to invert the y axis. 0 or 1.
+ 
+diff --git a/include/mprops.h b/include/mprops.h
+index 587b220..862a329 100644
+--- a/include/mprops.h
++++ b/include/mprops.h
+@@ -87,7 +87,7 @@
+ // int, 2 values - invert x axis, invert y axis
+ #define MTRACK_PROP_AXIS_INVERT "Trackpad Axis Inversion"
+ // int, 1 value - size of edge region that is ignored
+-#define MTRACK_PROP_BOTTOM_EDGE "Bottom Edge"
++#define MTRACK_PROP_EDGE_SIZE "Edge Size"
+ 
+ struct MProps {
+ 	// Properties Config
+@@ -120,7 +120,7 @@ struct MProps {
+ 	Atom rotate_buttons;
+ 	Atom drag_settings;
+ 	Atom axis_invert;
+-	Atom bottom_edge;
++	Atom edge_size;
+ };
+ 
+ void mprops_init(struct MConfig* cfg, InputInfoPtr local);
+diff --git a/include/mtstate.h b/include/mtstate.h
+index 6232361..9a526e8 100644
+--- a/include/mtstate.h
++++ b/include/mtstate.h
+@@ -33,7 +33,7 @@
+ #define MT_INVALID 2
+ #define MT_THUMB 3
+ #define MT_PALM 4
+-#define MT_BOTTOM_EDGE 5
++#define MT_EDGE 5
+ 
+ struct Touch {
+ 	bitmask_t state;
+diff --git a/src/mconfig.c b/src/mconfig.c
+index 4ecbd87..5ebf357 100644
+--- a/src/mconfig.c
++++ b/src/mconfig.c
+@@ -33,7 +33,7 @@ void mconfig_defaults(struct MConfig* cfg)
+ 	cfg->thumb_ratio = DEFAULT_THUMB_RATIO;
+ 	cfg->thumb_size = DEFAULT_THUMB_SIZE;
+ 	cfg->palm_size = DEFAULT_PALM_SIZE;
+-	cfg->bottom_edge = DEFAULT_BOTTOM_EDGE;
++	cfg->edge_size = DEFAULT_EDGE_SIZE;
+ 
+ 	// Configure Gestures
+ 	cfg->trackpad_disable = DEFAULT_TRACKPAD_DISABLE;
+@@ -129,7 +129,7 @@ void mconfig_configure(struct MConfig* cfg,
+ 	cfg->thumb_ratio = CLAMPVAL(xf86SetIntOption(opts, "ThumbRatio", DEFAULT_THUMB_RATIO), 0, 100);
+ 	cfg->thumb_size = CLAMPVAL(xf86SetIntOption(opts, "ThumbSize", DEFAULT_THUMB_SIZE), 0, 100);
+ 	cfg->palm_size = CLAMPVAL(xf86SetIntOption(opts, "PalmSize", DEFAULT_PALM_SIZE), 0, 100);
+-	cfg->bottom_edge = CLAMPVAL(xf86SetIntOption(opts, "BottomEdge", DEFAULT_BOTTOM_EDGE), 0, 100);
++	cfg->edge_size = CLAMPVAL(xf86SetIntOption(opts, "EdgeSize", DEFAULT_EDGE_SIZE), 0, 100);
+ 
+ 	// Configure Gestures
+ 	cfg->trackpad_disable = CLAMPVAL(xf86SetIntOption(opts, "TrackpadDisable", DEFAULT_TRACKPAD_DISABLE), 0, 3);
+diff --git a/src/mtstate.c b/src/mtstate.c
+index 553795a..f9ea11e 100644
+--- a/src/mtstate.c
++++ b/src/mtstate.c
+@@ -117,6 +117,16 @@ static int is_palm(const struct MConfig* cfg,
+ 	}
+ }
+ 
++static int is_edge(const struct MConfig* cfg, const struct FingerState* hw)
++{
++	int edge_width = (cfg->edge_size * cfg->pad_width) / 100;
++	int edge_height = (cfg->edge_size * cfg->pad_height) / 100;
++	return ((hw->position_x < edge_width) ||
++		(hw->position_x >= (cfg->pad_width-edge_width)) ||
++		(hw->position_y < edge_height) ||
++		(hw->position_y >= (cfg->pad_height-edge_height)));
++}
++
+ /* Find a touch by its tracking ID.  Return -1 if not found.
+  */
+ static int find_touch(struct MTState* ms,
+@@ -232,7 +242,7 @@ static void touches_update(struct MTState* ms,
+ 			n = touch_append(ms, cfg, caps, hs, i);
+ 
+ 		if (n >= 0) {
+-			// Track and invalidate thumb, palm, and bottom edge touches.
++			// Track and invalidate thumb, palm, and edge touches.
+ 			if (is_thumb(cfg, &hs->data[i]))
+ 				SETBIT(ms->touch[n].state, MT_THUMB);
+ 			else
+@@ -243,17 +253,17 @@ static void touches_update(struct MTState* ms,
+ 			else
+ 				CLEARBIT(ms->touch[n].state, MT_PALM);
+ 			
+-			if (ms->touch[n].y > (100 - cfg->bottom_edge)*cfg->pad_height/100) {
++			if (is_edge(cfg, &hs->data[i])) {
+ 				if (GETBIT(ms->touch[n].state, MT_NEW))
+-					SETBIT(ms->touch[n].state, MT_BOTTOM_EDGE);
++					SETBIT(ms->touch[n].state, MT_EDGE);
+ 			}
+ 			else
+-				CLEARBIT(ms->touch[n].state, MT_BOTTOM_EDGE);
++				CLEARBIT(ms->touch[n].state, MT_EDGE);
+ 			
+ 			MODBIT(ms->touch[n].state, MT_INVALID,
+ 				GETBIT(ms->touch[n].state, MT_THUMB) && cfg->ignore_thumb ||
+ 				GETBIT(ms->touch[n].state, MT_PALM) && cfg->ignore_palm ||
+-				GETBIT(ms->touch[n].state, MT_BOTTOM_EDGE));
++				GETBIT(ms->touch[n].state, MT_EDGE));
+ 			
+ 			disable |= cfg->disable_on_thumb && GETBIT(ms->touch[n].state, MT_THUMB);
+ 			disable |= cfg->disable_on_palm && GETBIT(ms->touch[n].state, MT_PALM);
+-- 
+1.7.10.4
+
