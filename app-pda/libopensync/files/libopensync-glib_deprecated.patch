@@ -1,0 +1,30 @@
+--- tools/osyncplugin.c.orig	2013-09-14 21:53:44.000000000 -0700
++++ tools/osyncplugin.c	2013-09-14 21:59:57.000000000 -0700
+@@ -1300,7 +1300,13 @@
+ 	OSyncError *error = NULL;
+ 
+ 	if (!g_thread_supported())
+-		g_thread_init(NULL);
++
++#if !GLIB_CHECK_VERSION(2, 31, 0)
++        g_thread_init(NULL);
++#else
++        fprintf(stderr, "glib threading failed to initialize.\n");
++        exit(1);
++#endif
+ 
+ 	parse_args(argc, argv);
+ 	/* Set defaults if not set on the command line */
+--- tools/osyncplugin.c.orig	2013-09-14 23:12:49.000000000 -0700
++++ tools/osyncplugin.c	2013-09-14 23:32:17.000000000 -0700
+@@ -104,8 +104,10 @@
+ 	if (arg)
+ 		newcommand->arg = strdup(arg);
+ 
++#if !GLIB_CHECK_VERSION(2, 31, 0)
+ 	newcommand->mutex = g_mutex_new();
+ 	newcommand->cond = g_cond_new();
++#endif
+ 
+ 	cmdlist = g_list_append(cmdlist, newcommand);
+ 

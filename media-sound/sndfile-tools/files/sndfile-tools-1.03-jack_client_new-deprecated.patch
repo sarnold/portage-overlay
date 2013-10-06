@@ -1,0 +1,19 @@
+--- src/sndfile-jackplay.c.orig	2013-09-14 20:19:30.000000000 -0700
++++ src/sndfile-jackplay.c	2013-09-14 20:25:51.000000000 -0700
+@@ -161,6 +161,7 @@
+ 	SNDFILE *sndfile ;
+ 	SF_INFO sndfileinfo ;
+ 	jack_client_t *client ;
++	char jack_client_name[32] = "jackplay" ;
+ 	thread_info_t info ;
+ 	int i, jack_sr ;
+ 
+@@ -170,7 +171,7 @@
+ 		} ;
+ 
+ 	// create jack client
+-	if ((client = jack_client_new ("jackplay")) == 0)
++	if ((client = jack_client_open(jack_client_name, (jack_options_t)0, NULL)) == 0)
+ 	{
+ 		fprintf (stderr, "Jack server not running?\n") ;
+ 		return 1 ;
