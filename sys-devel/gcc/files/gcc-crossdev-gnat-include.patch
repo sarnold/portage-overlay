@@ -1,0 +1,25 @@
+--- gcc/ada/gcc-interface/Makefile.in.orig	2013-11-03 17:11:37.000000000 -0800
++++ gcc/ada/gcc-interface/Makefile.in	2013-11-03 17:17:25.000000000 -0800
+@@ -2320,17 +2320,17 @@
+ 	$(GNATLINK) -v vxaddr2line -o $@ --GCC="$(GCC_LINK)" targext.o $(CLIB)
+ 
+ gnatmake-re:  link.o targext.o
+-	$(GNATMAKE) $(ADA_INCLUDES) -u sdefault --GCC="$(CC) $(MOST_ADA_FLAGS)"
+-	$(GNATMAKE) -c $(ADA_INCLUDES) gnatmake --GCC="$(CC) $(ALL_ADAFLAGS)"
+-	$(GNATBIND) $(ADA_INCLUDES) $(GNATBIND_FLAGS) gnatmake
++	$(GNATMAKE) -u sdefault -I$(GNATROOT)/adainclude -I$(GNATROOT)/adalib -I$(fsrcdir)/ada --GCC="$(CC) $(MOST_ADA_FLAGS)"
++	$(GNATMAKE) -c gnatmake -I$(GNATROOT)/adainclude -I$(GNATROOT)/adalib -I$(srcdir)/ada --GCC="$(CC) $(ALL_ADAFLAGS)"
++	$(GNATBIND) -I$(GNATROOT)/adainclude -I$(GNATROOT)/adalib -I. -I$(srcdir)/ada $(GNATBIND_FLAGS) -ws gnatmake
+ 	$(GNATLINK) -v gnatmake -o ../../gnatmake$(exeext) \
+ 		--GCC="$(GCC_LINK)" $(TOOLS_LIBS)
+ 
+ # Note the use of the "mv" command in order to allow gnatlink to be linked with
+ # with the former version of gnatlink itself which cannot override itself.
+ gnatlink-re:  link.o targext.o
+-	$(GNATMAKE) -c $(ADA_INCLUDES) gnatlink --GCC="$(CC) $(ALL_ADAFLAGS)"
+-	$(GNATBIND) $(ADA_INCLUDES) $(GNATBIND_FLAGS) gnatlink
++	$(GNATMAKE) -c gnatlink -I$(GNATROOT)/adainclude -I$(GNATROOT)/adalib -I$(srcdir)/ada --GCC="$(CC) $(ALL_ADAFLAGS)"
++	$(GNATBIND) -I$(GNATROOT)/adainclude -I$(GNATROOT)/adalib -I. -I$(srcdir)/ada $(GNATBIND_FLAGS) -ws gnatlink
+ 	$(GNATLINK) -v gnatlink -o ../../gnatlinknew$(exeext) \
+ 		    --GCC="$(GCC_LINK)" $(TOOLS_LIBS)
+ 	$(MV)  ../../gnatlinknew$(exeext)  ../../gnatlink$(exeext)
