@@ -1,0 +1,12 @@
+--- gcc/tsystem.h.orig	2013-10-21 22:20:18.174369648 -0700
++++ gcc/tsystem.h	2013-10-21 22:23:51.214594585 -0700
+@@ -40,6 +40,9 @@
+ /* We want everything from the glibc headers.  */
+ #define _GNU_SOURCE 1
+ 
++/* Need to set this by hand - don't know why... */
++#define __ARM_PCS_VFP 1
++
+ /* GCC supplies these headers.  */
+ #include <stddef.h>
+ #include <float.h>

@@ -1,0 +1,100 @@
+--- gcc/ada/gcc-interface/Makefile.in.orig	2013-11-06 19:50:05.303358361 -0800
++++ gcc/ada/gcc-interface/Makefile.in	2013-11-06 19:54:47.400041853 -0800
+@@ -670,7 +670,6 @@
+   a-elchha.adb<a-elchha-vxworks-ppc-full.adb \
+   a-intnam.ads<a-intnam-vxworks.ads \
+   a-numaux.ads<a-numaux-x86.ads \
+-  a-numaux.adb<a-numaux-x86.adb \
+   a-sytaco.ads<1asytaco.ads \
+   a-sytaco.adb<1asytaco.adb \
+   g-bytswa.adb<g-bytswa-x86.adb \
+@@ -774,7 +773,6 @@
+   s-inmaop.adb<s-inmaop-posix.adb \
+   s-intman.ads<s-intman-vxworks.ads \
+   s-intman.adb<s-intman-vxworks.adb \
+-  a-numaux.adb<a-numaux-x86.adb \
+   a-numaux.ads<a-numaux-x86.ads \
+   s-osprim.adb<s-osprim-vxworks.adb \
+   s-parame.ads<s-parame-vxworks.ads \
+@@ -1007,7 +1005,6 @@
+ 
+ ifeq ($(strip $(filter-out %86 solaris2%,$(arch) $(osys))),)
+   LIBGNAT_TARGET_PAIRS = \
+-  a-numaux.adb<a-numaux-x86.adb \
+   a-numaux.ads<a-numaux-x86.ads \
+   a-intnam.ads<a-intnam-solaris.ads \
+   s-inmaop.adb<s-inmaop-posix.adb \
+@@ -1045,7 +1042,6 @@
+ ifeq ($(strip $(filter-out %86 linux%,$(arch) $(osys))),)
+   LIBGNAT_TARGET_PAIRS = \
+   a-intnam.ads<a-intnam-linux.ads \
+-  a-numaux.adb<a-numaux-x86.adb \
+   a-numaux.ads<a-numaux-x86.ads \
+   g-bytswa.adb<g-bytswa-x86.adb \
+   s-inmaop.adb<s-inmaop-posix.adb \
+@@ -1118,7 +1114,6 @@
+ ifeq ($(strip $(filter-out %86 kfreebsd%,$(arch) $(osys))),)
+   LIBGNAT_TARGET_PAIRS = \
+   a-intnam.ads<a-intnam-freebsd.ads \
+-  a-numaux.adb<a-numaux-x86.adb \
+   a-numaux.ads<a-numaux-x86.ads \
+   s-inmaop.adb<s-inmaop-posix.adb \
+   s-intman.adb<s-intman-posix.adb \
+@@ -1146,7 +1141,6 @@
+ ifeq ($(strip $(filter-out x86_64 kfreebsd%,$(arch) $(osys))),)
+   LIBGNAT_TARGET_PAIRS = \
+   a-intnam.ads<a-intnam-freebsd.ads \
+-  a-numaux.adb<a-numaux-x86.adb \
+   a-numaux.ads<a-numaux-x86.ads \
+   s-inmaop.adb<s-inmaop-posix.adb \
+   s-intman.adb<s-intman-posix.adb \
+@@ -1174,7 +1168,6 @@
+ ifeq ($(strip $(filter-out %86 freebsd%,$(arch) $(osys))),)
+   LIBGNAT_TARGET_PAIRS = \
+   a-intnam.ads<a-intnam-freebsd.ads \
+-  a-numaux.adb<a-numaux-x86.adb \
+   a-numaux.ads<a-numaux-x86.ads \
+   g-bytswa.adb<g-bytswa-x86.adb \
+   s-inmaop.adb<s-inmaop-posix.adb \
+@@ -1376,7 +1369,6 @@
+ 
+   ifeq ($(strip $(filter-out %86 lynxos,$(arch) $(osys))),)
+     LIBGNAT_TARGET_PAIRS = \
+-    a-numaux.adb<a-numaux-x86.adb \
+     a-numaux.ads<a-numaux-x86.ads \
+     a-intnam.ads<a-intnam-lynxos.ads \
+     g-bytswa.adb<g-bytswa-x86.adb \
+@@ -1587,7 +1579,6 @@
+   LIBGNAT_TARGET_PAIRS = \
+   a-dirval.adb<a-dirval-mingw.adb \
+   a-excpol.adb<a-excpol-abort.adb \
+-  a-numaux.adb<a-numaux-x86.adb \
+   a-numaux.ads<a-numaux-x86.ads \
+   s-gloloc.adb<s-gloloc-mingw.adb \
+   s-inmaop.adb<s-inmaop-dummy.adb \
+@@ -2073,7 +2064,6 @@
+   a-exetim.adb<a-exetim-posix.adb \
+   a-exetim.ads<a-exetim-default.ads \
+   a-intnam.ads<a-intnam-linux.ads \
+-  a-numaux.adb<a-numaux-x86.adb \
+   a-numaux.ads<a-numaux-x86.ads \
+   s-inmaop.adb<s-inmaop-posix.adb \
+   s-intman.adb<s-intman-posix.adb \
+@@ -2119,8 +2109,7 @@
+     s-tpopsp.adb<s-tpopsp-posix-foreign.adb \
+     g-trasym.ads<g-trasym-unimplemented.ads \
+     g-trasym.adb<g-trasym-unimplemented.adb \
+-    a-numaux.ads<a-numaux-x86.ads \
+-    a-numaux.adb<a-numaux-x86.adb
++    a-numaux.ads<a-numaux-x86.ads
+     ifeq ($(strip $(MULTISUBDIR)),/x86_64)
+       LIBGNAT_TARGET_PAIRS += \
+       system.ads<system-darwin-x86_64.ads
+@@ -2146,7 +2135,6 @@
+     g-trasym.ads<g-trasym-unimplemented.ads \
+     g-trasym.adb<g-trasym-unimplemented.adb \
+     a-numaux.ads<a-numaux-x86.ads \
+-    a-numaux.adb<a-numaux-x86.adb \
+     $(ATOMICS_TARGET_PAIRS)
+     ifeq ($(strip $(MULTISUBDIR)),/i386)
+       LIBGNAT_TARGET_PAIRS += \
