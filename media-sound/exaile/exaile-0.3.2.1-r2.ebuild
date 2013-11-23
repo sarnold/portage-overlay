@@ -16,7 +16,7 @@ SRC_URI="http://launchpad.net/${PN}/0.3.2/${PV}/+download/${P}.tar.gz"
 LICENSE="GPL-2 GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~sparc ~x86"
-IUSE="cddb ffmpeg libnotify mtp nls"
+IUSE="cddb context-info ffmpeg gnome libnotify mtp nls"
 
 RDEPEND="dev-python/dbus-python
 	>=media-libs/mutagen-1.10
@@ -29,7 +29,11 @@ RDEPEND="dev-python/dbus-python
 	libnotify? ( dev-python/notify-python )
 	cddb? ( dev-python/cddb-py )
 	ffmpeg? ( media-plugins/gst-plugins-ffmpeg )
-	mtp? ( dev-python/pymtp )"
+	mtp? ( dev-python/pymtp )
+	gnome? ( media-plugins/exaile-soundmenu-indicator )
+	context-info? ( dev-python/imaging
+			dev-python/pywebkitgtk )"
+
 DEPEND="nls? ( dev-util/intltool
 	sys-devel/gettext )"
 
@@ -44,6 +48,10 @@ src_prepare() {
 	sed -i \
 		-e "s:exec python:exec $(PYTHON):" \
 		exaile tools/generate-launcher || die
+
+	# fix import of python imaging
+	sed -i -e "s|import Image|import PIL|" \
+		plugins/contextinfo/__init__.py || die
 }
 
 src_compile() {
