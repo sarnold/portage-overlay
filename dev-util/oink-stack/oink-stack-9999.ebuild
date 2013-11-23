@@ -1,10 +1,10 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI="4"
 
-inherit eutils git toolchain-funcs
+inherit eutils git-2 toolchain-funcs
 
 DESCRIPTION="Oink: a Collaboration of C/C++ Tools for Static Analysis and Source-to-Source Transformation"
 HOMEPAGE="http://daniel-wilkerson.appspot.com/oink/index.html"
