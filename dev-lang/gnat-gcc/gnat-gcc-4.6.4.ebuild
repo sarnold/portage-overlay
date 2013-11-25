@@ -8,7 +8,7 @@ DESCRIPTION="GNAT Ada Compiler - gcc version"
 HOMEPAGE="http://gcc.gnu.org/"
 LICENSE="GMGPL"
 
-IUSE="crossdev lto openmp"
+IUSE="crossdev doc lto openmp"
 
 BOOT_SLOT="4.4"
 
@@ -32,7 +32,7 @@ RDEPEND=">=dev-libs/mpfr-3.1.2
 	>=sys-libs/ncurses-5.7"
 
 DEPEND="${RDEPEND}
-	<sys-apps/texinfo-5.1
+	doc? ( >=sys-apps/texinfo-5 )
 	>=sys-devel/bison-1.875
 	>=sys-libs/glibc-2.8
 	>=sys-devel/binutils-2.20"
@@ -81,3 +81,4 @@ src_compile() {
 
 	gnatbuild_src_compile bootstrap
 }
+
