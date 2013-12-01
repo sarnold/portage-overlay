@@ -697,7 +697,7 @@ gnatbuild_src_install() {
 		make DESTDIR="${D}" install || die
 
 		if use doc ; then
-			if (( $(bc <<< "${GNATBRANCH} > 4.5") )) ; then
+			if (( $(bc <<< "${GNATBRANCH} > 4.3") )) ; then
 				#make a convenience info link
 				ewarn "Yay!  Math works."
 				dosym gnat_ugn.info ${DATAPATH}/info/gnat.info
