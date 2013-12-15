@@ -294,4 +294,3 @@ diff -uNr libgdiplus-2.10.9/src/gifcodec.c libgdiplus-2.10.9-funtoo/src/gifcodec
 +
  /* giflib declares this incorrectly as EgifOpen */
  extern GifFileType *EGifOpen(void *userData, OutputFunc writeFunc);
-
