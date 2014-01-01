@@ -12,25 +12,30 @@
 			<name>Thomas Koch</name>
 		</maintainer>
 		<changelog>https://raw.github.com/linrunner/TLP/master/debian/changelog</changelog>
-		<doc lang="de">http://thinkpad-wiki.org/TLP_-_Stromspareinstellungen_fuer_Ubuntu</doc>
-		<doc lang="en">https://github.com/linrunner/TLP/wiki/TLP-Linux-Advanced-Power-Management</doc>
+		<doc lang="de">http://thinkwiki.de/TLP_-_Linux_Stromsparen</doc>
+		<doc lang="en">http://linrunner.de/en/tlp/docs/tlp-linux-advanced-power-management.html</doc>
+		<bugs-to>https://github.com/linrunner/TLP/issues</bugs-to>
 	</upstream>
 	<longdescription>
 		TLP is a collection of scripts enabling laptop-mode and implementing power save features for laptop hardware.
-		See the upstream docs and https://github.com/dywisor/tlp-gentoo.
+		See the upstream docs and https://github.com/dywisor/tlp-gentoo-additions.
 	</longdescription>
 	<use lang="en">
-		<flag name='thinkpad'>Use <pkg>app-laptop/tp_smapi</pkg> for setting/getting battery thresholds on Thinkpads.</flag>
-		<flag name='smartmontools'>Get SMART information from drives that support it.</flag>
-		<flag name='ethtool'>Use <pkg>sys-apps/ethtool</pkg> to control(=disable) Wake on LAN.</flag>
-		<flag name='lsb-release'>Include <pkg>sys-apps/lsb-release</pkg> for tlp-stat.</flag>
+		<flag name='pm-utils'>
+			Rely on <pkg>sys-power/pm-utils</pkg> for handling system
+			suspend/hibernate/resume. Only users of <pkg>sys-apps/systemd</pkg>
+			may disable this flag.
+		</flag>
+		<flag name='tlp_suggests'>Pull in all optional dependencies</flag>
+		<flag name='rdw'>Radio device wizard: switch radios upon network connect/disconnect and dock/undock</flag>
+		<flag name='tpacpi-bundled'>Use the bundled tpacpi-bat script instead of <pkg>app-laptop/tpacpi-bat</pkg>.</flag>
 		<flag name='laptop-mode-tools'>Allow parallel installation of <pkg>app-laptop/laptop-mode-tools</pkg>
 		and <pkg>app-laptop/tlp</pkg>. NOT RECOMMENDED</flag>
-		<flag name='X'>If unset, skip installation of X-specific files.</flag>
-		<flag name='rdw'>Radio device wizard: switch radios upon network connect/disconnect and dock/undock</flag>
-		<flag name='acpi-hook'>Install an acpid event handler running tlp on power state change, thus eliminating
-		the dependency on upower/dbus. Only the upower method is supported by upstream.</flag>
-		<flag name='bash-completion'>TLP has bash-completion.</flag>
-		<flag name='networkmanager'>Install a NetworkManager dispatcher.</flag>
+		<!-- flags no longer present since tlp-0.4.ebuild -->
+		<flag name='openrc'>Install an openrc init script. Recommended</flag>
+		<flag name='systemd'>Install a systemd service file. EXPERIMENTAL</flag>
+		<flag name='bash-completion'>Install bash-completion files for TLP.</flag>
+		<!-- 0.3.7.1 -->
+		<flag name='perl'>Depend on <pkg>dev-lang/perl</pkg>. Enables tlp-usblist and allows to use the bundled tpacpi-bat script.</flag>
 	</use>
 </pkgmetadata>
