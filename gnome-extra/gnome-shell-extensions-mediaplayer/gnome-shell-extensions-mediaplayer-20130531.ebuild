@@ -1,4 +1,4 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2013 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -9,11 +9,11 @@ inherit autotools gnome2-utils git-2
 DESCRIPTION="Media player extension for GNOME Shell"
 HOMEPAGE="https://github.com/eonpatapon/gnome-shell-extensions-mediaplayer"
 EGIT_REPO_URI="git://github.com/eonpatapon/gnome-shell-extensions-mediaplayer.git"
-EGIT_BRANCH="master"
+EGIT_BRANCH="gnome-shell-3.8"
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~ppc ~x86"
 
 COMMON_DEPEND="
 	>=dev-libs/glib-2.26
@@ -38,7 +38,6 @@ src_configure() {
 src_compile()   {
 	emake
 }
-
 
 src_install()   {
 	einstall
