@@ -15,7 +15,7 @@ SRC_URI=""
 
 LICENSE="MIT"
 SLOT="1.0"
-KEYWORDS=""
+KEYWORDS="~amd64 ~arm ~ppc ~x86"
 IUSE="doc static-libs"
 
 RDEPEND="
