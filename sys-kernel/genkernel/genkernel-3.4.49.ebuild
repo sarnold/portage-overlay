@@ -109,8 +109,6 @@ src_compile() {
 	if [[ ${PV} == 9999* ]]; then
 		emake || die
 	fi
-
-	use premount && gen_files
 }
 
 src_install() {
@@ -146,6 +144,8 @@ src_install() {
 	newbashcomp "${FILESDIR}"/genkernel.bash "${PN}"
 	insinto /etc
 	doins "${FILESDIR}"/initramfs.mounts
+
+	use premount && gen_files
 }
 
 pkg_postinst() {
