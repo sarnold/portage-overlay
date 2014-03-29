@@ -16,7 +16,7 @@ SRC_URI="mirror://sourceforge/timidity/${MY_P}.tar.xz"
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="amd64 arm hppa ppc ppc64 ~sparc x86 ~x86-fbsd"
-IUSE="motif oss nas X gtk vorbis tk slang alsa jack emacs ao speex flac ncurses"
+IUSE="motif oss nas X gtk vorbis tk slang alsa jack emacs ao speex flac ncurses systemd"
 
 DEPEND="ncurses? ( >=sys-libs/ncurses-5 )
 	emacs? ( virtual/emacs )
@@ -118,10 +118,12 @@ src_install() {
 
 	# these are only for the ALSA sequencer mode
 	if use alsa; then
-		newconfd "${FILESDIR}"/conf.d.timidity.2 timidity
-		newinitd "${FILESDIR}"/init.d.timidity.4 timidity
-
-		systemd_dounit "${FILESDIR}"/timidity.service
+		if ! use systemd ; then
+			newconfd "${FILESDIR}"/conf.d.timidity.2 timidity
+			newinitd "${FILESDIR}"/init.d.timidity.4 timidity
+		else
+			systemd_dounit "${FILESDIR}"/timidity.service
+		fi
 	fi
 
 	insinto /etc

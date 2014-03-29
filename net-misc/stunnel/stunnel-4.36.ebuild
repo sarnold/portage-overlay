@@ -1,10 +1,10 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI="2"
 
-inherit autotools ssl-cert eutils
+inherit autotools ssl-cert eutils user
 
 DESCRIPTION="TLS/SSL - Port Wrapper"
 HOMEPAGE="http://stunnel.mirt.net/"

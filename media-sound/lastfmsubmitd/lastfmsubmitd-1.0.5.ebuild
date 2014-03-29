@@ -1,4 +1,4 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -7,7 +7,7 @@ EAPI="2"
 SUPPORT_PYTHON_ABIS="1"
 PYTHON_DEPEND="2:2.5:2.7"
 
-inherit distutils eutils
+inherit distutils eutils user
 
 DESCRIPTION="lastfmsubmitd is a daemon meant to be used by Last.fm player plugins."
 HOMEPAGE="http://www.red-bean.com/decklin/${P}"
