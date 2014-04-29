@@ -1,15 +1,15 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
 EAPI=5
 AUTOTOOLS_AUTORECONF=yes
 
-EGIT_REPO_URI="https://chemoelectric@bitbucket.org/chemoelectric/${PN}.git"
+EGIT_REPO_URI="https://github.com/sarnold/fontconfig.git"
 
 inherit autotools-multilib eutils libtool toolchain-funcs flag-o-matic git-2
 
-DESCRIPTION="Crud Factory fontconfig: a fork of fontconfig"
+DESCRIPTION="nerdboy fork of Crud Factory fontconfig: a fork of fontconfig"
 HOMEPAGE="https://bitbucket.org/chemoelectric/fontconfig"
 SRC_URI=""
 
