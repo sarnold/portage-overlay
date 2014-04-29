@@ -1,0 +1,38 @@
+--- Modules/FindCurses.cmake.orig	2014-04-20 17:16:53.030000000 -0700
++++ Modules/FindCurses.cmake	2014-04-20 17:29:09.010000000 -0700
+@@ -133,11 +133,16 @@
+ find_library(CURSES_FORM_LIBRARY form HINTS "${_cursesLibDir}")
+ find_library(CURSES_FORM_LIBRARY form )
+ 
++find_library(CURSES_TERM_LIBRARY tinfo HINTS "${_cursesLibDir}")
++find_library(CURSES_TERM_LIBRARY tinfo )
++
+ # for compatibility with older FindCurses.cmake this has to be in the cache
+ # FORCE must not be used since this would break builds which preload a cache
+ # qith these variables set
+ set(FORM_LIBRARY "${CURSES_FORM_LIBRARY}"
+   CACHE FILEPATH "The curses form library")
++set(TERM_LIBRARY "${CURSES_TERM_LIBRARY}"
++  CACHE FILEPATH "The curses terminal library")
+ 
+ # Need to provide the *_LIBRARIES
+ set(CURSES_LIBRARIES ${CURSES_LIBRARY})
+@@ -150,6 +155,10 @@
+   set(CURSES_LIBRARIES ${CURSES_LIBRARIES} ${CURSES_FORM_LIBRARY})
+ endif()
+ 
++if(CURSES_TERM_LIBRARY)
++  set(CURSES_LIBRARIES ${CURSES_LIBRARIES} ${CURSES_TERM_LIBRARY})
++endif()
++
+ # Proper name is *_INCLUDE_DIR
+ set(CURSES_INCLUDE_DIR ${CURSES_INCLUDE_PATH})
+ 
+@@ -168,6 +177,7 @@
+   CURSES_NCURSES_LIBRARY
+   CURSES_EXTRA_LIBRARY
+   FORM_LIBRARY
++  TERM_LIBRARY
+   CURSES_LIBRARIES
+   CURSES_INCLUDE_DIR
+   CURSES_CURSES_HAS_WSYNCUP
