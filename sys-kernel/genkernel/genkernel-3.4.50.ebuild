@@ -1,4 +1,4 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -6,8 +6,6 @@
 # genkernel-VERSION     -> normal genkernel release
 
 EAPI="3"
-
-inherit eutils multilib
 
 VERSION_BUSYBOX='1.20.2'
 VERSION_DMRAID='1.0.0.rc16-3'
@@ -54,7 +52,7 @@ HOMEPAGE="http://www.gentoo.org"
 LICENSE="GPL-2"
 SLOT="0"
 RESTRICT=""
-IUSE="crypt cryptsetup ibm selinux premount"  # Keep 'crypt' in to keep 'use crypt' below working!
+IUSE="crypt cryptsetup ibm premount selinux"  # Keep 'crypt' in to keep 'use crypt' below working!
 
 DEPEND="sys-fs/e2fsprogs
 	premount? ( sys-fs/jfsutils )
@@ -70,8 +68,6 @@ if [[ ${PV} == 9999* ]]; then
 	DEPEND="${DEPEND} app-text/asciidoc"
 fi
 
-RESTRICT="strip"
-
 src_unpack() {
 	if [[ ${PV} == 9999* ]] ; then
 		git-2_src_unpack
@@ -81,6 +77,12 @@ src_unpack() {
 }
 
 src_prepare() {
+	if [[ ${PV} == 9999* ]] ; then
+		einfo "Producing ChangeLog from Git history..."
+		pushd "${S}/.git" >/dev/null || die
+		git log > "${S}"/ChangeLog || die
+		popd >/dev/null || die
+	fi
 	use selinux && sed -i 's/###//g' "${S}"/gen_compile.sh
 
 	# Update software.sh
@@ -101,6 +103,8 @@ src_prepare() {
 		install ${FILESDIR}/libs_list ${WORKDIR}
 		sed -i -e "s|lib64|$(get_libdir)|" ${WORKDIR}/libs_list
 	fi
+
+	epatch_user
 }
 
 src_compile() {
@@ -126,18 +130,17 @@ src_install() {
 		cp "${S}"/arch/ppc64/kernel-2.6.g5 "${S}"/arch/ppc64/kernel-2.6
 
 	# Copy files to /var/cache/genkernel/src
-	elog "Copying files to /var/cache/genkernel/src..."
-	mkdir -p "${D}"/var/cache/genkernel/src
-	cp -f \
-		"${DISTDIR}"/mdadm-${VERSION_MDADM}.tar.bz2 \
-		"${DISTDIR}"/dmraid-${VERSION_DMRAID}.tar.bz2 \
-		"${DISTDIR}"/LVM2.${VERSION_LVM}.tgz \
-		"${DISTDIR}"/busybox-${VERSION_BUSYBOX}.tar.bz2 \
-		"${DISTDIR}"/fuse-${VERSION_FUSE}.tar.gz \
-		"${DISTDIR}"/unionfs-fuse-${VERSION_UNIONFS_FUSE}.tar.bz2 \
-		"${DISTDIR}"/gnupg-${VERSION_GPG}.tar.bz2 \
-		"${DISTDIR}"/open-iscsi-${VERSION_ISCSI}.tar.gz \
-		"${D}"/var/cache/genkernel/src || die "Copying distfiles..."
+	GKDISTDIR=/usr/share/genkernel/distfiles/
+	elog "Copying files to ${GKDISTDIR}..."
+	insinto $GKDISTDIR
+	doins "${DISTDIR}"/mdadm-${VERSION_MDADM}.tar.bz2
+	doins "${DISTDIR}"/dmraid-${VERSION_DMRAID}.tar.bz2
+	doins "${DISTDIR}"/LVM2.${VERSION_LVM}.tgz
+	doins "${DISTDIR}"/busybox-${VERSION_BUSYBOX}.tar.bz2
+	doins "${DISTDIR}"/fuse-${VERSION_FUSE}.tar.gz
+	doins "${DISTDIR}"/unionfs-fuse-${VERSION_UNIONFS_FUSE}.tar.bz2
+	doins "${DISTDIR}"/gnupg-${VERSION_GPG}.tar.bz2
+	doins "${DISTDIR}"/open-iscsi-${VERSION_ISCSI}.tar.gz
 
 	newbashcomp "${FILESDIR}"/genkernel.bash "${PN}"
 	insinto /etc
@@ -147,30 +150,31 @@ src_install() {
 }
 
 pkg_postinst() {
-	elog ""
+	echo
 	elog 'Documentation is available in the genkernel manual page'
 	elog 'as well as the following URL:'
-	elog ""
+	echo
 	elog 'http://www.gentoo.org/doc/en/genkernel.xml'
-	elog ""
+	echo
 	ewarn "This package is known to not work with reiser4.  If you are running"
 	ewarn "reiser4 and have a problem, do not file a bug.  We know it does not"
 	ewarn "work and we don't plan on fixing it since reiser4 is the one that is"
 	ewarn "broken in this regard.  Try using a sane filesystem like ext3 or"
 	ewarn "even reiser3."
-	elog ""
+	echo
 	ewarn "The LUKS support has changed from versions prior to 3.4.4.  Now,"
 	ewarn "you use crypt_root=/dev/blah instead of real_root=luks:/dev/blah."
-	elog ""
+	echo
 	if use crypt && ! use cryptsetup ; then
 		ewarn "Local use flag 'crypt' has been renamed to 'cryptsetup' (bug #414523)."
 		ewarn "Please set flag 'cryptsetup' for this very package if you would like"
 		ewarn "to have genkernel create an initramfs with LUKS support."
 		ewarn "Sorry for the inconvenience."
-		elog ""
+		echo
 	fi
-	elog ""
+
 	if use premount ; then
+		elog ""
 		ewarn "Don't forget to enable the overlay in genkernel.conf."
 		ewarn "An initial overlay with ext and jfs support has been"
 		ewarn "created for you in /usr/share/genkernel/overlay."
