@@ -1,0 +1,26 @@
+commit 7c4e5e4db829e1e2d22f2ff5fa04518ad1eb1787
+Author: Łukasz Stelmach <l.stelmach@samsung.com>
+Date:   Mon Apr 14 15:14:14 2014 +0200
+
+    build-sys: add libkmod flags for test_rtnl_manual
+
+diff --git a/Makefile.am b/Makefile.am
+index 0ad1729..6767a76 100644
+--- a/Makefile.am
++++ b/Makefile.am
+@@ -1402,10 +1402,14 @@ test_ipcrm_LDADD = \
+ test_rtnl_manual_SOURCES = \
+ 	src/test/test-rtnl-manual.c
+ 
++test_rtnl_manual_CFLAGS = \
++	$(AM_CFLAGS) \
++	$(KMOD_CFLAGS)
++
+ test_rtnl_manual_LDADD = \
+ 	libsystemd-internal.la \
+ 	libsystemd-shared.la \
+-	-lkmod
++	$(KMOD_LIBS)
+ 
+ test_ellipsize_SOURCES = \
+ 	src/test/test-ellipsize.c
