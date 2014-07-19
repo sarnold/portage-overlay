@@ -1,4 +1,4 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/eclass/gnatbuild.eclass,v 1.56 2013/08/02 17:38:57 george Exp $
 #
@@ -546,8 +546,11 @@ gnatbuild_src_compile() {
 				fi
 
 				# set some specifics available in later versions
-				if version_is_at_least 4.3 ; then
+				if version_is_at_least 4.7 ; then
 					einfo "setting gnat thread model"
+					confgcc="${confgcc} --enable-threads=posix"
+					confgcc="${confgcc} --enable-shared=boehm-gc,ada,libada"
+				elif version_is_at_least 4.3 ; then
 					confgcc="${confgcc} --enable-threads=gnat"
 					confgcc="${confgcc} --enable-shared=boehm-gc,ada,libada"
 				else
