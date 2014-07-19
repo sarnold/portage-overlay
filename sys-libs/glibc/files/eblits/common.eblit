@@ -1,6 +1,6 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/common.eblit,v 1.31 2013/10/30 17:04:33 vapier Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/common.eblit,v 1.35 2014/06/14 08:07:10 rhill Exp $
 
 alt_prefix() {
 	is_crosscompile && echo /usr/${CTARGET}
@@ -156,6 +156,9 @@ setup_flags() {
 	strip-unsupported-flags
 	filter-flags -m32 -m64 -mabi=*
 
+	# Bug 492892.
+	filter-flags -frecord-gcc-switches
+
 	unset CBUILD_OPT CTARGET_OPT
 	if has_multilib_profile ; then
 		CTARGET_OPT=$(get_abi_CTARGET)
@@ -180,7 +183,12 @@ setup_flags() {
 	# building glibc with SSP is fraught with difficulty, especially
 	# due to __stack_chk_fail_local which would mean significant changes
 	# to the glibc build process. See bug #94325 #293721
-	use hardened && gcc-specs-ssp && append-cflags $(test-flags-CC -fno-stack-protector)
+	# Note we have to handle both user-given CFLAGS and gcc defaults via
+	# spec rules here.  We can't simply add -fno-stack-protector as it gets
+	# added before user flags, and we can't just filter-flags because
+	# _filter_hardened doesn't support globs.
+	filter-flags -fstack-protector*
+	gcc-specs-ssp && append-flags $(test-flags -fno-stack-protector)
 
 	if use hardened && gcc-specs-pie ; then
 		# Force PIC macro definition for all compilations since they're all
@@ -253,7 +261,8 @@ use_multiarch() {
 	arm)       nver="2.22" ;;
 	hppa)      nver="2.23" ;;
 	ppc|ppc64) nver="2.20" ;;
-	s390)      nver="2.23" ;;
+	# ifunc was added in 2.23, but glibc also needs machinemode which is in 2.24.
+	s390)      nver="2.24" ;;
 	sparc)     nver="2.21" ;;
 	*)         return 1 ;;
 	esac

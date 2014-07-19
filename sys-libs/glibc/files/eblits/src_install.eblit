@@ -1,6 +1,6 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2014 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/src_install.eblit,v 1.32 2013/10/06 08:51:11 pacho Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/src_install.eblit,v 1.35 2014/03/25 00:34:56 vapier Exp $
 
 toolchain-glibc_src_install() {
 	local GBUILDDIR
@@ -92,6 +92,20 @@ toolchain-glibc_src_install() {
 		sparc32 /lib/ld-linux.so.2
 		sparc64 /lib64/ld-linux.so.2
 	)
+	case $(tc-endian) in
+	little)
+		ldso_abi_list+=(
+			# arm
+			arm64   /lib/ld-linux-aarch64.so.1
+		)
+		;;
+	big)
+		ldso_abi_list+=(
+			# arm
+			arm64   /lib/ld-linux-aarch64_be.so.1
+		)
+		;;
+	esac
 	if [[ ${SYMLINK_LIB} == "yes" ]] && [[ ! -e ${ED}/$(alt_prefix)/lib ]] ; then
 		dosym $(get_abi_LIBDIR ${DEFAULT_ABI}) $(alt_prefix)/lib
 	fi
@@ -171,7 +185,12 @@ toolchain-glibc_src_install() {
 		version_is_at_least 2.16 || nscd_args+=( -e 's: --foreground : :' )
 		sed -i "${nscd_args[@]}" "${ED}"/etc/init.d/nscd
 
-		if [[ $(type -t systemd_dounit) == "function" ]] ; then
+		# Newer versions of glibc include the nscd.service themselves.
+		# TODO: Drop the $FILESDIR copy once 2.19 goes stable.
+		if version_is_at_least 2.19 ; then
+			systemd_dounit nscd/nscd.service || die
+			systemd_newtmpfilesd nscd/nscd.tmpfiles nscd.conf || die
+		else
 			systemd_dounit "${FILESDIR}"/nscd.service || die
 			systemd_newtmpfilesd "${FILESDIR}"/nscd.tmpfilesd nscd.conf || die
 		fi
