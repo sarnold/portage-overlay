@@ -1,0 +1,24 @@
+--- src/config.inc.orig	2014-08-11 18:50:54.000000000 -0700
++++ src/config.inc	2014-08-11 18:54:03.000000000 -0700
+@@ -11,7 +11,9 @@
+ #CHAFF = ../../zChaff
+ #BOOLEFORCE = ../../booleforce-0.4
+ #MINISAT = ../../MiniSat-p_v1.14
+-MINISAT2 = ../../minisat-2.2.0
++# for gentoo packaging
++MINISAT2 = /usr/include/minisat2
++MINISAT2_LIBDIR = /usr/lib
+ #GLUCOSE = ../../glucose2.2
+ #SMVSAT =
+ 
+--- src/solvers/Makefile.orig	2014-08-11 18:58:42.000000000 -0700
++++ src/solvers/Makefile	2014-08-11 18:55:36.000000000 -0700
+@@ -17,7 +17,7 @@
+ ifneq ($(MINISAT2),)
+   MINISAT2_SRC=sat/satcheck_minisat2.cpp
+   MINISAT2_INCLUDE=-I $(MINISAT2)
+-  MINISAT2_LIB=$(MINISAT2)/simp/SimpSolver$(OBJEXT) $(MINISAT2)/core/Solver$(OBJEXT)
++  MINISAT2_LIB=$(MINISAT2_LIBDIR)/libminisat$(LIBEXT)
+   CP_CXXFLAGS += -DHAVE_MINISAT2 -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
+   override CXXFLAGS := $(filter-out -pedantic, $(CXXFLAGS))
+ endif

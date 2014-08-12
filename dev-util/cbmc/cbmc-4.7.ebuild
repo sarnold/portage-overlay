@@ -12,7 +12,7 @@ SRC_URI="mirror://gentoo/${P}.tar.bz2
 	doc? ( http://www.cprover.org/cbmc/doc/cbmc-slides.pdf )"
 
 SLOT="0"
-KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~amd64 ~arm ~x86 ~amd64-linux ~arm-linux ~x86-linux"
 LICENSE="ETH"
 
 IUSE="debug doc"
@@ -63,11 +63,9 @@ src_configure() {
 	sed -i \
 		-e "s|-MMD|-MMD ${myconf}|" \
 		"${S}"/src/config.inc
-#		-e "s/#MODULE_BV_REFINEMENT/MODULE_BV_REFINEMENT/" \
 }
 
 src_compile() {
-#	export LIBS="-L /usr/$(get_libdir) -lminisat"
 	make -j1 -C src || die "make failed"
 }
 
