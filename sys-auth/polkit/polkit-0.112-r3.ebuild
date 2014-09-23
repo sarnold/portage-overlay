@@ -11,12 +11,14 @@ SRC_URI="http://www.freedesktop.org/software/${PN}/releases/${P}.tar.gz"
 
 LICENSE="LGPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
 IUSE="examples gtk +introspection jit kde nls pam selinux systemd wheel"
 
-RDEPEND="ia64? ( =dev-lang/spidermonkey-1.8.5*[-debug] )
+RDEPEND="
+	ia64? ( =dev-lang/spidermonkey-1.8.5*[-debug] )
+	hppa? ( =dev-lang/spidermonkey-1.8.5*[-debug] )
 	mips? ( =dev-lang/spidermonkey-1.8.5*[-debug] )
-	!ia64? ( !mips? ( dev-lang/spidermonkey:17[-debug,jit=] ) )
+	!hppa? ( !ia64? ( !mips? ( dev-lang/spidermonkey:17[-debug,jit=] ) ) )
 	>=dev-libs/glib-2.32
 	>=dev-libs/expat-2:=
 	introspection? ( >=dev-libs/gobject-introspection-1 )
@@ -26,12 +28,14 @@ RDEPEND="ia64? ( =dev-lang/spidermonkey-1.8.5*[-debug] )
 		)
 	selinux? ( sec-policy/selinux-policykit )
 	systemd? ( sys-apps/systemd:0= )"
+
 DEPEND="${RDEPEND}
 	app-text/docbook-xml-dtd:4.1.2
 	app-text/docbook-xsl-stylesheets
 	dev-libs/libxslt
 	dev-util/intltool
 	virtual/pkgconfig"
+
 PDEPEND="
 	gtk? ( || (
 		>=gnome-extra/polkit-gnome-0.105
@@ -72,7 +76,7 @@ src_configure() {
 		$(use_enable introspection) \
 		--disable-examples \
 		$(use_enable nls) \
-		$(if use ia64 || use mips; then echo --with-mozjs=mozjs185; else echo --with-mozjs=mozjs-17.0; fi) \
+		$(if use hppa || use ia64 || use mips; then echo --with-mozjs=mozjs185; else echo --with-mozjs=mozjs-17.0; fi) \
 		"$(systemd_with_unitdir)" \
 		--with-authfw=$(usex pam pam shadow) \
 		$(use pam && echo --with-pam-module-dir="$(getpam_mod_dir)") \
@@ -87,7 +91,8 @@ src_compile() {
 	local m=''
 	# Only used when USE="jit" is enabled for 'dev-lang/spidermonkey:17' wrt #485910
 	has_version 'dev-lang/spidermonkey:17[jit]' && m='m'
-	# ia64 and mips uses spidermonkey-1.8.5 which requires different pax-mark flags
+	# hppa, ia64 and mips uses spidermonkey-1.8.5 which requires different pax-mark flags
+	use hppa && m='mr'
 	use ia64 && m='mr'
 	use mips && m='mr'
 	pax-mark ${m} ${f}
@@ -103,17 +108,20 @@ src_install() {
 	diropts -m0700 -o polkitd -g polkitd
 	keepdir /var/lib/polkit-1
 
-	if use wheel ; then
-		insinto /etc/polkit-1/rules.d/
-		doins ${FILESDIR}/40-localauthority.rules
-	fi
-
 	if use examples; then
 		insinto /usr/share/doc/${PF}/examples
 		doins src/examples/{*.c,*.policy*}
 	fi
 
 	prune_libtool_files
+
+	if use wheel ; then
+	#	insopts -m0700
+	#	insinto /etc/polkit-1/rules.d
+	#	doins "${FILESDIR}"/40-localauthority.rules
+	install -m 0700 "${FILESDIR}"/40-localauthority.rules \
+		"${D}"/etc/polkit-1/rules.d
+	fi
 }
 
 pkg_postinst() {
