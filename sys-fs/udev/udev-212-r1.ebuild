@@ -26,7 +26,7 @@ HOMEPAGE="http://www.freedesktop.org/wiki/Software/systemd"
 
 LICENSE="LGPL-2.1 MIT GPL-2"
 SLOT="0"
-IUSE="acl doc +firmware-loader gudev introspection +kmod pam polkit selinux static-libs xattr"
+IUSE="acl doc +firmware-loader gudev introspection +kmod pam policykit selinux static-libs xattr"
 
 RESTRICT="test"
 
@@ -36,7 +36,7 @@ COMMON_DEPEND=">=sys-apps/util-linux-2.20
 	introspection? ( >=dev-libs/gobject-introspection-1.31.1 )
 	kmod? ( >=sys-apps/kmod-16 )
 	pam? ( sys-libs/pam )
-	polkit? ( sys-auth/polkit )
+	policykit? ( sys-auth/polkit )
 	selinux? ( >=sys-libs/libselinux-2.1.9 )
 	!<sys-libs/glibc-2.11
 	!sys-apps/gentoo-systemd-integration
@@ -201,7 +201,7 @@ multilib_src_configure() {
 		--disable-quotacheck
 		--disable-logind
 		--disable-networkd
-		$(use_enable polkit)
+		$(use_enable policykit polkit)
 		--disable-myhostname
 		$(use_enable gudev)
 		--enable-split-usr
