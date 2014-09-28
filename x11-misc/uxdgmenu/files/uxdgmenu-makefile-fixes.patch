@@ -1,0 +1,28 @@
+--- Makefile.orig	2014-09-22 21:21:00.000000000 -0700
++++ Makefile	2014-09-22 21:22:57.000000000 -0700
+@@ -1,12 +1,12 @@
+ package="uxdgmenu"
+ version="0.2"
+ 
+-export prefix=/usr/local
++export prefix=/usr
+ export sysconfdir=/etc
+ 
+-CC      := gcc
+-CFLAGS  := `pkg-config --cflags glib-2.0 gthread-2.0 gio-2.0` -W -Wall -pedantic
+-LDFLAGS := `pkg-config --libs glib-2.0 gthread-2.0 gio-2.0` -linotifytools
++#MYCC      := gcc
++MYCFLAGS  := `pkg-config --cflags glib-2.0 gthread-2.0 gio-2.0` -W -Wall -pedantic
++MYLDFLAGS := `pkg-config --libs glib-2.0 gthread-2.0 gio-2.0` -linotifytools
+ EXEC    := usr/bin/uxdgmenud
+ SRC     := src/uxdgmenud.c
+ 
+@@ -16,7 +16,7 @@
+ 	mkdir -p usr/bin
+ 	# add -g -O0 flags for debugging,
+ 	# along with "ulimit -c unlimited" in the debugging console session
+-	$(CC) $(SRC) -o $(EXEC) $(LDFLAGS) $(CFLAGS)
++	$(CC) $(SRC) -o $(EXEC) $(MYLDFLAGS) $(LDFLAGS) $(CFLAGS) $(MYCFLAGS)
+ 
+ locale:
+ 	./scripts/make-locale.sh
