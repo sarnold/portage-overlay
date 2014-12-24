@@ -15,7 +15,7 @@ SRC_URI="http://launchpad.net/${PN}/0.3.2/${PV}/+download/${P}.tar.gz"
 
 LICENSE="GPL-2 GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~sparc ~x86"
+KEYWORDS="~amd64 ~arm ~ppc ~sparc ~x86"
 IUSE="cddb context-info ffmpeg gnome libnotify mtp nls"
 
 RDEPEND="dev-python/dbus-python
