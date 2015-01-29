@@ -1,2 +1,4 @@
 cross-armv7a-hardfloat-linux-gnueabi
 cross-arm-none-eabi
+cross-avr
+cross-armv7l-hardfloat-linux-gnueabi
