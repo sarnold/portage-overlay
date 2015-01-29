@@ -22,7 +22,7 @@ KEYWORDS="~x86 ~amd64"
 IUSE="tlp_suggests rdw laptop-mode-tools +tpacpi-bundled +pm-utils"
 
 _OPTIONAL_RDEPEND="
-	sys-power/cpufrequtils
+	sys-power/cpupower
 	sys-apps/smartmontools
 	sys-apps/ethtool
 	sys-apps/lsb-release
