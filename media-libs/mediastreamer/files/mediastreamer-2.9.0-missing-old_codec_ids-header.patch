@@ -1,0 +1,12 @@
+--- src/utils/ffmpeg-priv.h.orig	2015-02-14 19:22:51.000000000 -0800
++++ src/utils/ffmpeg-priv.h	2015-02-14 19:23:18.000000000 -0800
+@@ -69,9 +69,6 @@
+ 	return avcodec_decode_video(avctx,picture, got_picture_ptr,avpkt->data,avpkt->size);
+ }
+ #endif
+-#if (LIBAVCODEC_VERSION_MAJOR >= 56)
+-#include <libavcodec/old_codec_ids.h>
+-#endif
+ #if LIBAVCODEC_VERSION_INT >= AV_VERSION_INT(54,25,0)
+ #define CodecID AVCodecID
+ #endif
