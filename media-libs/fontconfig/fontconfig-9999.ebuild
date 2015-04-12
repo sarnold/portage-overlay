@@ -32,7 +32,7 @@ DEPEND="
 	)
 "
 PDEPEND="
-	app-admin/eselect-fontconfig
+	app-eselect/eselect-fontconfig
 	virtual/ttf-fonts
 "
 
