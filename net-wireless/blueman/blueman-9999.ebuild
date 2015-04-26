@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -16,12 +16,12 @@ if [[ ${PV} == "9999" ]] ; then
 	KEYWORDS=""
 else
 	SRC_URI="http://download.tuxfamily.org/${PN}/${P}.tar.gz"
-	KEYWORDS="~amd64 ~ppc ~x86"
+	KEYWORDS="~amd64 ~arm ~ppc ~x86"
 fi
 
 LICENSE="GPL-3"
 SLOT="0"
-IUSE="gconf sendto network nls policykit pulseaudio"
+IUSE="gconf network nls pic policykit pulseaudio sendto"
 
 CDEPEND="dev-libs/glib:2=
 	x11-libs/gtk+:3=
@@ -42,12 +42,12 @@ RDEPEND="${CDEPEND}
 	sys-apps/dbus
 	x11-themes/hicolor-icon-theme
 	gconf? ( dev-python/gconf-python[${PYTHON_USEDEP}] )
-	sendto? ( gnome-base/nautilus )
 	network? ( || ( net-dns/dnsmasq
 		=net-misc/dhcp-3*
 		>=net-misc/networkmanager-0.8 ) )
 	policykit? ( sys-auth/polkit )
-	pulseaudio? ( media-sound/pulseaudio )"
+	pulseaudio? ( media-sound/pulseaudio )
+	sendto? ( xfce-base/thunar )"
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
@@ -59,18 +59,25 @@ src_prepare() {
 		data/blueman-manager.desktop.in || die "sed failed"
 
 	epatch \
-		"${FILESDIR}/${PN}-9999-plugins-conf-file.patch" \
-		"${FILESDIR}/${PN}-9999-set-codeset-for-gettext-to-UTF-8-always.patch"
+		"${FILESDIR}/${PN}-9999-set-codeset-for-gettext-to-UTF-8-always-2015.patch"
+
 	eautoreconf
 }
 
 src_configure() {
+	myconf="--disable-static"
+	if use gconf ; then
+		myconf="${myconf} --enable-settings-integration"
+	else
+		myconf="${myconf} --disable-schemas-compile"
+	fi
+
 	econf \
-		--disable-static \
+		${myconf} \
+		$(use_enable sendto thunar-sendto) \
 		$(use_enable policykit polkit) \
-		$(use_enable sendto) \
-		--disable-hal \
-		$(use_enable nls)
+		$(use_enable nls) \
+		$(use_with pic)
 }
 
 src_install() {
@@ -79,10 +86,8 @@ src_install() {
 	python_fix_shebang "${D}"
 
 	rm "${D}"/$(python_get_sitedir)/*.la || die
-	use sendto && { rm "${D}"/usr/lib*/nautilus-sendto/plugins/*.la || die; }
 
 	# Note: Python 3 support would need __pycache__ file removal too
-	use gconf || { rm "${D}"/$(python_get_sitedir)/${PN}/plugins/config/Gconf.py* || die; }
 	use policykit || { rm -rf "${D}"/usr/share/polkit-1 || die; }
 	use pulseaudio || { rm "${D}"/$(python_get_sitedir)/${PN}/{main/Pulse*.py*,plugins/manager/Pulse*.py*} || die; }
 }
