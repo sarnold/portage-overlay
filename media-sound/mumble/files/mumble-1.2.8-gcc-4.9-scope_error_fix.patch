@@ -1,0 +1,14 @@
+--- ./src/mumble/OSS.cpp.orig	2015-05-22 12:17:26.000000000 -0700
++++ ./src/mumble/OSS.cpp	2015-05-22 12:29:54.000000000 -0700
+@@ -243,9 +243,9 @@
+ 	eMicFormat = SampleShort;
+ 	initializeMixer();
+ 
+-	short buffer[iMicLength];
+-
+ 	while (bRunning) {
++		short buffer[iMicLength];
++
+ 		int len = static_cast<int>(iMicLength * iMicChannels * sizeof(short));
+ 		ssize_t l = read(fd, buffer, len);
+ 		if (l != len) {
