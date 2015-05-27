@@ -1,17 +1,19 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/dev-qt/qtgui/qtgui-4.8.5.ebuild,v 1.1 2013/07/09 10:40:41 pesa Exp $
+# $Header: $
 
 EAPI=5
 
 inherit eutils qt4-build
 
 DESCRIPTION="The GUI module for the Qt toolkit"
+SRC_URI+=" http://dev.gentoo.org/~pesa/patches/${PN}-systemtrayicon-plugin-system.patch"
+
 SLOT="4"
 if [[ ${QT4_BUILD_TYPE} == live ]]; then
-	KEYWORDS=""
+	KEYWORDS="alpha arm hppa ia64 ppc ppc64 sparc"
 else
-	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~x64-solaris ~x86-solaris"
+	KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 sparc x86 ~amd64-fbsd ~x86-fbsd ~x86-freebsd ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~x64-solaris ~x86-solaris"
 fi
 
 IUSE="+accessibility cups egl +glib gtkstyle mng nas nis qt3support tiff trace xinerama +xv"
@@ -22,20 +24,21 @@ REQUIRED_USE="
 
 # cairo[-qt4] is needed because of bug 454066
 RDEPEND="
-	app-admin/eselect-qtgraphicssystem
+	app-eselect/eselect-qtgraphicssystem
 	~dev-qt/qtcore-${PV}[aqua=,debug=,glib=,qt3support=]
 	~dev-qt/qtscript-${PV}[aqua=,debug=]
 	media-libs/fontconfig
 	media-libs/freetype:2
 	media-libs/libpng:0=
 	sys-libs/zlib
-	virtual/jpeg
+	virtual/jpeg:0
 	!aqua? (
 		x11-libs/libICE
 		x11-libs/libSM
 		x11-libs/libX11
 		x11-libs/libXcursor
 		x11-libs/libXext
+		x11-libs/libXfixes
 		x11-libs/libXi
 		x11-libs/libXrandr
 		x11-libs/libXrender
@@ -44,13 +47,15 @@ RDEPEND="
 	)
 	cups? ( net-print/cups )
 	egl? ( media-libs/mesa[egl] )
+	glib? ( dev-libs/glib:2 )
 	gtkstyle? (
-		x11-libs/cairo[-qt4]
+		x11-libs/cairo[-qt4(-)]
 		x11-libs/gtk+:2[aqua=]
 	)
-	mng? ( >=media-libs/libmng-1.0.9 )
+	mng? ( >=media-libs/libmng-1.0.9:= )
 	nas? ( >=media-libs/nas-1.5 )
 	tiff? ( media-libs/tiff:0 )
+	!<dev-qt/qthelp-4.8.5:4
 "
 DEPEND="${RDEPEND}
 	!aqua? (
@@ -63,7 +68,15 @@ DEPEND="${RDEPEND}
 PDEPEND="qt3support? ( ~dev-qt/qt3support-${PV}[aqua=,debug=] )"
 
 PATCHES=(
-	"${FILESDIR}/${PN}-4.7.3-cups.patch"
+	"${DISTDIR}/${PN}-systemtrayicon-plugin-system.patch" # bug 503880
+	"${FILESDIR}/${PN}-4.7.3-cups.patch" # bug 323257
+	"${FILESDIR}/${PN}-4.8.5-cleanlooks-floating-point-exception.patch" # bug 507124
+	"${FILESDIR}/${PN}-4.8.5-disable-gtk-theme-check.patch" # bug 491226
+	"${FILESDIR}/${PN}-4.8.5-dont-crash-on-broken-GIF-images.patch" # bug 508984
+	"${FILESDIR}/${PN}-4.8.5-keyboard-shortcuts.patch" # bug 477796
+	"${FILESDIR}/${PN}-4.8.5-libjpeg-9.patch" # bug 480182
+	"${FILESDIR}/${PN}-4.8.5-qclipboard-delay.patch" # bug 514968
+	"${FILESDIR}/${PN}-4.8.5-CVE-2015-0295.patch" # bug 541972
 )
 
 pkg_setup() {
@@ -77,6 +90,7 @@ pkg_setup() {
 		src/plugins/inputmethods"
 
 	QT4_EXTRACT_DIRECTORIES="
+		examples/desktop/systray
 		include
 		src"
 
@@ -86,7 +100,7 @@ pkg_setup() {
 	use trace && QT4_TARGET_DIRECTORIES+=" src/plugins/graphicssystems/trace tools/qttracereplay"
 
 	# mac version does not contain qtconfig?
-	[[ ${CHOST} == *-darwin* ]] || QT4_TARGET_DIRECTORIES+=" tools/qtconfig"
+	[[ ${CHOST} != *-darwin* ]] && QT4_TARGET_DIRECTORIES+=" tools/qtconfig"
 
 	QT4_EXTRACT_DIRECTORIES="${QT4_TARGET_DIRECTORIES} ${QT4_EXTRACT_DIRECTORIES}"
 
@@ -99,7 +113,7 @@ src_prepare() {
 	qt4-build_src_prepare
 
 	# Add -xvideo to the list of accepted configure options
-	sed -i -e 's:|-xinerama|:&-xvideo|:' configure
+	sed -i -e 's:|-xinerama|:&-xvideo|:' configure || die
 }
 
 src_configure() {
@@ -122,7 +136,8 @@ src_configure() {
 		-sm -xshape -xsync -xcursor -xfixes -xrandr -xrender -mitshm -xinput -xkb
 		-fontconfig -no-svg -no-webkit -no-phonon -no-opengl"
 
-	[[ ${CHOST} == *86*-apple-darwin* ]] && myconf+=" -no-ssse3" #367045
+	# bug 367045
+	[[ ${CHOST} == *86*-apple-darwin* ]] && myconf+=" -no-ssse3"
 
 	qt4-build_src_configure
 
@@ -179,7 +194,7 @@ src_install() {
 	# touch the available graphics systems
 	dodir /usr/share/qt4/graphicssystems
 	echo "default" > "${ED}"/usr/share/qt4/graphicssystems/raster || die
-	touch "${ED}"/usr/share/qt4/graphicssystems/native || die
+	echo "" > "${ED}"/usr/share/qt4/graphicssystems/native || die
 
 	newicon tools/qtconfig/images/appicon.png qtconfig.png
 	make_desktop_entry qtconfig 'Qt Configuration Tool' qtconfig 'Qt;Settings;DesktopSettings'
