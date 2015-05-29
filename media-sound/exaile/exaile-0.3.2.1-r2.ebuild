@@ -5,7 +5,7 @@
 EAPI=3
 
 PYTHON_DEPEND="2:2.6"
-PYTHON_USE_WITH="berkdb sqlite"
+PYTHON_USE_WITH="sqlite"
 
 inherit eutils fdo-mime multilib python
 
@@ -35,7 +35,8 @@ RDEPEND="dev-python/dbus-python
 			dev-python/pywebkitgtk )"
 
 DEPEND="nls? ( dev-util/intltool
-	sys-devel/gettext )"
+	sys-devel/gettext )
+	dev-python/bsddb3"
 
 RESTRICT="test" #315589
 
