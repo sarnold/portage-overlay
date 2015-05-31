@@ -1,13 +1,15 @@
-# Copyright 1999-2008 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/net-print/gnome-cups-manager/gnome-cups-manager-0.33.ebuild,v 1.10 2008/11/13 19:44:22 ranger Exp $
+# $Header: $
+
+EAPI="4"
 
 inherit eutils gnome2 flag-o-matic
 
 DESCRIPTION="GNOME CUPS Printer Management Interface"
 HOMEPAGE="http://www.gnome.org/"
 
-SRC_URI="${SRC_URI}
+SRC_URI="http://ftp.gnome.org/pub/GNOME/sources/${PN}/${PV}/${P}.tar.bz2
 	mirror://gentoo/${PN}-patches-${PV}.tar.bz2"
 LICENSE="GPL-2"
 SLOT="0"
