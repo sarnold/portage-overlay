@@ -2,12 +2,12 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=3
+EAPI=5
 
-PYTHON_DEPEND="2:2.6"
-PYTHON_USE_WITH="sqlite"
+PYTHON_COMPAT=( python2_7 )
+PYTHON_REQ_USE="sqlite"
 
-inherit eutils fdo-mime multilib python
+inherit eutils fdo-mime multilib python-single-r1
 
 DESCRIPTION="A media player aiming to be similar to AmaroK, but for GTK+"
 HOMEPAGE="http://www.exaile.org/"
@@ -16,9 +16,10 @@ SRC_URI="http://launchpad.net/${PN}/0.3.2/${PV}/+download/${P}.tar.gz"
 LICENSE="GPL-2 GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~ppc ~sparc ~x86"
-IUSE="cddb context-info ffmpeg gnome libnotify mtp nls"
+IUSE="-aws cddb context-info -ffmpeg gnome libnotify mtp nls"
 
-RDEPEND="dev-python/dbus-python
+RDEPEND=${PYTHON_DEPS}"
+	dev-python/dbus-python
 	>=media-libs/mutagen-1.10
 	>=dev-python/pygtk-2.17
 	>=dev-python/pygobject-2.18
@@ -26,33 +27,38 @@ RDEPEND="dev-python/dbus-python
 	media-libs/gst-plugins-good:0.10
 	media-plugins/gst-plugins-meta:0.10
 	dev-python/beautifulsoup
+	aws? ( dev-python/lxml )
 	libnotify? ( dev-python/notify-python )
 	cddb? ( dev-python/cddb-py )
-	ffmpeg? ( media-plugins/gst-plugins-ffmpeg )
+	ffmpeg? ( || (
+		media-plugins/gst-plugins-ffmpeg:0.10
+		media-plugins/gst-plugins-libav:0.10 )
+	)
 	mtp? ( dev-python/pymtp )
 	gnome? ( media-plugins/exaile-soundmenu-indicator )
 	context-info? ( dev-python/imaging
 			dev-python/pywebkitgtk )"
 
-DEPEND="nls? ( dev-util/intltool
-	sys-devel/gettext )
-	dev-python/bsddb3"
+DEPEND="${RDEPEND}
+	nls? ( dev-util/intltool
+	sys-devel/gettext )"
+
+REQUIRED_USE="${PYTHON_REQUIRED_USE}"
 
 RESTRICT="test" #315589
 
-pkg_setup() {
-	python_set_active_version 2
-	python_pkg_setup
-}
-
 src_prepare() {
+	python_setup
+
 	sed -i \
-		-e "s:exec python:exec $(PYTHON):" \
+		-e "s:exec python:exec ${EPYTHON}:" \
 		exaile tools/generate-launcher || die
 
 	# fix import of python imaging
 	sed -i -e "s|import Image|import PIL|" \
 		plugins/contextinfo/__init__.py || die
+
+	epatch "${FILESDIR}"/${P}-amazoncover-lxml.patch
 }
 
 src_compile() {
@@ -72,14 +78,9 @@ src_install() {
 }
 
 pkg_postinst() {
-	python_need_rebuild
-	python_mod_optimize -- /usr/$(get_libdir)/${PN}
 	fdo-mime_desktop_database_update
-	fdo-mime_mime_database_update
 }
 
 pkg_postrm() {
-	python_mod_cleanup  -- /usr/$(get_libdir)/${PN}
 	fdo-mime_desktop_database_update
-	fdo-mime_mime_database_update
 }

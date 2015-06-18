@@ -1,0 +1,10 @@
+--- ./plugins/amazoncovers/__init__.py.orig	2015-06-06 19:52:19.000000000 -0700
++++ ./plugins/amazoncovers/__init__.py	2015-06-06 19:52:36.000000000 -0700
+@@ -15,6 +15,7 @@
+ # Foundation, Inc., 675 Mass Ave, Cambridge, MA 02139, USA.
+ 
+ import _ecs as ecs
++import lxml
+ import amazonprefs
+ import urllib, hashlib, time
+ from xl import common, event, metadata, providers
