@@ -5,9 +5,17 @@
 EAPI=5
 AUTOTOOLS_AUTORECONF=yes
 
-EGIT_REPO_URI="https://github.com/sarnold/fontconfig.git"
+inherit autotools-multilib eutils libtool toolchain-funcs flag-o-matic
 
-inherit autotools-multilib eutils libtool toolchain-funcs flag-o-matic git-2
+if [[ ${PV} == *9999* ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/sarnold/fontconfig.git"
+	SRC_URI=""
+else
+	# last release is 10.0.1
+	SRC_URI="https://bitbucket.org/chemoelectric/${PN}/get/release-${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~arm ~ppc ~x86"
+fi
 
 DESCRIPTION="nerdboy fork of Crud Factory fontconfig: a fork of fontconfig"
 HOMEPAGE="https://bitbucket.org/chemoelectric/fontconfig"
@@ -15,7 +23,7 @@ SRC_URI=""
 
 LICENSE="MIT"
 SLOT="1.0"
-KEYWORDS="~amd64 ~arm ~ppc ~x86"
+
 IUSE="doc static-libs"
 
 RDEPEND="
