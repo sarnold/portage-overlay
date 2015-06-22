@@ -1,0 +1,11 @@
+--- ./bindings/python/Makefile.in.orig	2015-06-20 20:42:11.000000000 -0700
++++ ./bindings/python/Makefile.in	2015-06-20 20:46:34.000000000 -0700
+@@ -1008,7 +1008,7 @@
+ @HAVE_PYTHON_TRUE@gpod_doc.i: $(srcdir)/gpod_doc.i.in $(srcdir)/gtkdoc-to-swig.xsl
+ @HAVE_PYTHON_TRUE@	cat $< > $@
+ @HAVE_PYTHON_TRUE@	-if test -x "`which xsltproc 2>/dev/null`"; then \
+-@HAVE_PYTHON_TRUE@	    for xml in $(top_srcdir)/docs/reference/xml/*.xml; do \
++@HAVE_PYTHON_TRUE@	    for xml in $(top_srcdir)/docs/reference/*.xml; do \
+ @HAVE_PYTHON_TRUE@		xsltproc $(srcdir)/gtkdoc-to-swig.xsl $$xml; \
+ @HAVE_PYTHON_TRUE@	    done >> $@; \
+ @HAVE_PYTHON_TRUE@	fi
