@@ -53,6 +53,7 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 DEPEND="${RDEPEND}
 	dev-util/intltool
 	virtual/pkgconfig
+	app-editors/vim-core
 	doc? ( app-doc/doxygen )
 	opengl? ( dev-util/xxdi )
 	test? ( >=dev-util/cunit-2.1_p2[ncurses] )
