@@ -211,7 +211,7 @@ should_we_eselect_gnat() {
 	# if the current config is invalid, we definitely want a new one
 	# Note: due to bash quirkiness, the following must not be 1 line
 	local curr_config
-	curr_config=$(eselect --no-color gnat show | grep ${CTARGET} | awk '{ print $1 }') || return 0
+	curr_config=$(eselect --colour=no gnat show | grep ${CTARGET} | awk '{ print $1 }') || return 0
 	[[ -z ${curr_config} ]] && return 0
 
 	# The logic is basically "try to keep the same profile if possible"
