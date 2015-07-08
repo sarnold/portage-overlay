@@ -1,12 +1,14 @@
-# Copyright 1999-2013 Gentoo Technologies, Inc, and Douglas Russell
+# Copyright 1999-2015 Gentoo Technologies, Inc, and Douglas Russell
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
+
+EAPI="4"
 
 inherit eutils
 
 DESCRIPTION="Small set of GKrellm Themes"
 HOMEPAGE="http://www.gentoogeek.org/"
-SRC_URI="http://www.gentoogeek.org/files/${PN}.tar.gz"
+SRC_URI="http://www.gentoogeek.org/files/${PN}-pack.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -15,12 +17,12 @@ IUSE=""
 
 DEPEND=">=app-admin/gkrellm-2.0"
 
-S=${WORKDIR}/themes
+S=${WORKDIR}
 
 src_install() {
 	cd "${WORKDIR}"
-	insinto /usr/share/gkrellm2
-	doins -r themes
+	insinto /usr/share/gkrellm2/themes
+	doins -r .
 }
 
 pkg_postinst() {
