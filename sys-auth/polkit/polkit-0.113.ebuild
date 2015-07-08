@@ -1,6 +1,6 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-auth/polkit/polkit-0.110.ebuild,v 1.1 2013/01/11 03:06:13 ssuominen Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-auth/polkit/polkit-0.113.ebuild,v 1.1 2015/07/04 13:26:52 pacho Exp $
 
 EAPI=5
 inherit eutils multilib pam pax-utils systemd user
@@ -11,36 +11,46 @@ SRC_URI="http://www.freedesktop.org/software/${PN}/releases/${P}.tar.gz"
 
 LICENSE="LGPL-2"
 SLOT="0"
-KEYWORDS="~alpha ~amd64 ~arm ~ia64 ~mips ~ppc ~ppc64 ~sh ~sparc ~x86"
-IUSE="examples gtk +introspection kde nls pam selinux systemd wheel"
+KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
+IUSE="examples gtk +introspection jit kde nls pam selinux systemd test wheel"
 
-RDEPEND=">=dev-lang/spidermonkey-1.8.5-r2
-	>=dev-libs/glib-2.32
-	>=dev-libs/expat-2
-	introspection? ( >=dev-libs/gobject-introspection-1 )
+CDEPEND="
+	dev-lang/spidermonkey:0/mozjs185[-debug]
+	>=dev-libs/glib-2.32:2
+	>=dev-libs/expat-2:=
+	introspection? ( >=dev-libs/gobject-introspection-1:= )
 	pam? (
 		sys-auth/pambase
 		virtual/pam
 		)
-	selinux? ( sec-policy/selinux-policykit )
-	systemd? ( sys-apps/systemd )"
-DEPEND="${RDEPEND}
+	systemd? ( sys-apps/systemd:0= )
+"
+DEPEND="${CDEPEND}
 	app-text/docbook-xml-dtd:4.1.2
 	app-text/docbook-xsl-stylesheets
 	dev-libs/libxslt
+	dev-util/gtk-doc-am
 	dev-util/intltool
-	virtual/pkgconfig"
+	virtual/pkgconfig
+"
+RDEPEND="${CDEPEND}
+	selinux? ( sec-policy/selinux-policykit )
+"
 PDEPEND="
 	gtk? ( || (
 		>=gnome-extra/polkit-gnome-0.105
 		lxde-base/lxpolkit
 		) )
-	kde? ( sys-auth/polkit-kde-agent )
+	kde? ( || (
+		kde-plasma/polkit-kde-agent
+		sys-auth/polkit-kde-agent
+		) )
 	pam? (
 		systemd? ( sys-auth/pambase[systemd] )
 		!systemd? ( sys-auth/pambase[consolekit] )
 		)
-	!systemd? ( >=sys-auth/consolekit-0.4.5_p2012[policykit] )"
+	!systemd? ( sys-auth/consolekit[policykit] )
+"
 
 QA_MULTILIB_PATHS="
 	usr/lib/polkit-1/polkit-agent-helper-1
@@ -57,12 +67,8 @@ pkg_setup() {
 }
 
 src_prepare() {
-	sed -i -e 's|unix-group:wheel|unix-user:0|' src/polkitbackend/*-default.rules || die #401513
-
-	if has_version '>=dev-lang/spidermonkey-1.8.7'; then
-		sed -i \
-			-e '/mozjs/s:185:187:g' \
-			configure src/polkitbackend/polkitbackendjsauthority.c || die
+	if ! use wheel ; then
+		sed -i -e 's|unix-group:wheel|unix-user:0|' src/polkitbackend/*-default.rules || die #401513
 	fi
 }
 
@@ -76,9 +82,11 @@ src_configure() {
 		$(use_enable introspection) \
 		--disable-examples \
 		$(use_enable nls) \
+		--with-mozjs=mozjs185 \
 		"$(systemd_with_unitdir)" \
 		--with-authfw=$(usex pam pam shadow) \
 		$(use pam && echo --with-pam-module-dir="$(getpam_mod_dir)") \
+		$(use_enable test) \
 		--with-os-type=gentoo
 }
 
@@ -86,23 +94,13 @@ src_compile() {
 	default
 
 	# Required for polkitd on hardened/PaX due to spidermonkey's JIT
-	local f='src/polkitbackend/.libs/polkitd test/polkitbackend/.libs/polkitbackendjsauthoritytest'
-	if has_version '>=dev-lang/spidermonkey-1.8.7[jit]'; then
-		pax-mark m ${f}
-	elif has_version '<dev-lang/spidermonkey-1.8.7'; then
-		pax-mark mr ${f}
-	fi
+	pax-mark mr src/polkitbackend/.libs/polkitd test/polkitbackend/.libs/polkitbackendjsauthoritytest
 }
 
 src_install() {
 	emake DESTDIR="${D}" install
 
 	dodoc docs/TODO HACKING NEWS README
-
-	if use wheel ; then
-		insinto /etc/polkit-1/rules.d/
-		doins ${FILESDIR}/40-localauthority.rules
-	fi
 
 	fowners -R polkitd:root /{etc,usr/share}/polkit-1/rules.d
 
@@ -115,6 +113,12 @@ src_install() {
 	fi
 
 	prune_libtool_files
+
+	# try reversing sed above instead of local rules
+#	if use wheel ; then
+#		install -m 0700 "${FILESDIR}"/40-localauthority.rules \
+#			"${D}"/etc/polkit-1/rules.d
+#	fi
 }
 
 pkg_postinst() {
