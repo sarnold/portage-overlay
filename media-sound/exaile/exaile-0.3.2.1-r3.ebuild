@@ -36,7 +36,7 @@ RDEPEND=${PYTHON_DEPS}"
 	)
 	mtp? ( dev-python/pymtp )
 	gnome? ( media-plugins/exaile-soundmenu-indicator )
-	context-info? ( dev-python/imaging
+	context-info? ( virtual/python-imaging
 			dev-python/pywebkitgtk )"
 
 DEPEND="${RDEPEND}
