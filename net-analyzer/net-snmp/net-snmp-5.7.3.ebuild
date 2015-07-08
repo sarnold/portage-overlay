@@ -45,7 +45,10 @@ COMMON_DEPEND="
 	lm_sensors? ( sys-apps/lm_sensors )
 	netlink? ( dev-libs/libnl:3 )
 	mysql? ( virtual/mysql )
-	perl? ( dev-lang/perl )
+	perl? (
+		dev-lang/perl:=
+		dev-perl/libintl-perl
+	)
 "
 DEPEND="
 	${COMMON_DEPEND}
@@ -54,7 +57,6 @@ DEPEND="
 RDEPEND="
 	${COMMON_DEPEND}
 	perl? (
-		dev-perl/libintl-perl
 		X? ( dev-perl/perl-tk )
 		!minimal? ( dev-perl/TermReadKey )
 	)
