@@ -39,7 +39,8 @@ src_prepare() {
 }
 
 src_compile() {
-	make CCC=$(tc-getCC) CC=$(tc-getCC) LD=$(tc-getCC) pccts
+	# mini is minimal dep target for cccc (antlr plus dlg)
+	make CCC=$(tc-getCC) CC=$(tc-getCC) LD=$(tc-getCC) mini
 
 	make CCC=$(tc-getCXX) LD=$(tc-getCXX) cccc
 }
