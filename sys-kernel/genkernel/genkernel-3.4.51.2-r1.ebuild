@@ -1,4 +1,4 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -57,7 +57,9 @@ RESTRICT="binchecks" # quiet QA warnings about prestripped files in overlay
 IUSE="crypt cryptsetup ibm premount selinux"  # Keep 'crypt' in to keep 'use crypt' below working!
 
 DEPEND="sys-fs/e2fsprogs
-	premount? ( sys-fs/jfsutils )
+	premount? ( sys-fs/jfsutils
+		sys-apps/coreutils
+		)
 	selinux? ( sys-libs/libselinux )"
 RDEPEND="${DEPEND}
 		cryptsetup? ( sys-fs/cryptsetup )
@@ -103,7 +105,8 @@ src_prepare() {
 	if use premount ; then
 		epatch ${FILESDIR}/${PN}-add-fsck-premount.patch
 		install ${FILESDIR}/libs_list ${WORKDIR}
-		sed -i -e "s|lib64|$(get_libdir)|" ${WORKDIR}/libs_list
+		sed -i -e "s|lib64|$(get_libdir)|" \
+			${WORKDIR}/libs_list
 	fi
 
 	epatch_user
@@ -180,7 +183,10 @@ pkg_postinst() {
 	fi
 	if use premount ; then
 		elog ""
-		ewarn "Don't forget to enable the overlay in genkernel.conf."
+		ewarn "For USE=premount to run fsck early on separate /usr:"
+		ewarn "Please add awk to the list of BUSYBOX_APPLETS in genkernel.conf."
+		ewarn ""
+		ewarn "And don't forget to enable the overlay in genkernel.conf."
 		ewarn "An initial overlay with ext and jfs support has been"
 		ewarn "created for you in /usr/share/genkernel/overlay."
 		elog ""
@@ -194,10 +200,12 @@ gen_files() {
 	mkdir -p $overlay/etc
 	mkdir -p $overlay/sbin
 	mkdir -p $overlay/$(get_libdir)
+	mkdir -p $overlay/usr/bin
 
 	pushd $overlay > /dev/null
 		cp ${FILESDIR}/initrd.fsck $overlay/etc
 		cat ${WORKDIR}/libs_list | xargs cp -t $overlay/$(get_libdir)
 		cat ${FILESDIR}/sbin_list | xargs cp -t $overlay/sbin
+		cat ${FILESDIR}/bin_list | xargs cp -t $overlay/usr/bin
 	popd > /dev/null
 }
