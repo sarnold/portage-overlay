@@ -16,7 +16,7 @@ SRC_URI="http://launchpad.net/${PN}/0.3.2/${PV}/+download/${P}.tar.gz"
 LICENSE="GPL-2 GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~ppc ~sparc ~x86"
-IUSE="-aws cddb context-info -ffmpeg gnome libnotify mtp nls"
+IUSE="-aws cddb context-info droptray -ffmpeg libnotify mpris2 mtp nls"
 
 RDEPEND=${PYTHON_DEPS}"
 	dev-python/dbus-python
@@ -30,12 +30,10 @@ RDEPEND=${PYTHON_DEPS}"
 	aws? ( dev-python/lxml )
 	libnotify? ( dev-python/notify-python )
 	cddb? ( dev-python/cddb-py )
-	ffmpeg? ( || (
-		media-plugins/gst-plugins-ffmpeg:0.10
-		media-plugins/gst-plugins-libav:0.10 )
-	)
+	droptray? ( dev-python/egg-python )
+	ffmpeg? ( media-plugins/gst-plugins-ffmpeg:0.10 )
+	mpris2? ( media-plugins/exaile-soundmenu-indicator )
 	mtp? ( dev-python/pymtp )
-	gnome? ( media-plugins/exaile-soundmenu-indicator )
 	context-info? ( virtual/python-imaging
 			dev-python/pywebkitgtk )"
 
