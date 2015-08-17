@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit autotools eutils multilib pax-utils versionator
+inherit autotools eutils flag-o-matic multilib pax-utils versionator
 
 DESCRIPTION="Video softphone based on the SIP protocol"
 HOMEPAGE="http://www.linphone.org/"
@@ -80,6 +80,8 @@ src_prepare() {
 }
 
 src_configure() {
+	replace-flags "-O3" "-O2"
+
 	local myeconfargs=(
 		$(use_enable doc manual)
 		$(use_enable nls)
