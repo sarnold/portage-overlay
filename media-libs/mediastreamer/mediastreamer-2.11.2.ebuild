@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit autotools eutils
+inherit autotools eutils flag-o-matic
 
 DESCRIPTION="Mediastreaming library for telephony application"
 HOMEPAGE="http://www.linphone.org/"
@@ -97,17 +97,12 @@ src_prepare() {
 		-e 's:linux/videodev.h ::' \
 		configure.ac || die
 
-#	epatch "${FILESDIR}/${P}-v4l-automagic.patch" \
-#		"${FILESDIR}/${P}-libav9.patch" \
-#		"${FILESDIR}/${P}-underlinking.patch" \
-#		"${FILESDIR}/${P}-tests.patch" \
-#		"${FILESDIR}/${P}-xxd.patch" \
-#		"${FILESDIR}"/${P}-missing-old_codec_ids-header.patch
-
 	eautoreconf
 }
 
 src_configure() {
+	replace-flags "-O3" "-O2"
+
 	local myeconfargs=(
 		--htmldir="${EPREFIX}"/usr/share/doc/${PF}/html
 		--datadir="${EPREFIX}"/usr/share/${PN}
