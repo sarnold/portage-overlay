@@ -1,6 +1,11 @@
 [main]
+dhcp=internal
 plugins=ifnet,keyfile
+dhcp=internal
 
 [ifnet]
+dhcp=internal
 managed=true
+dhcp=internal
 auto_refresh=false
+dhcp=internal

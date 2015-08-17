@@ -1,0 +1,35 @@
+    From: Petr Vorel <petr vorel gmail com>
+    To: networkmanager-list gnome org
+    Subject: [PATCH] Fix build error for kernels headers < 3.17
+    Date: Mon, 20 Jul 2015 01:54:59 +0200
+
+platform/nm-platform.c:974:71: error: 'IN6_ADDR_GEN_MODE_NONE' undeclared (first use in this function)
+    return _nm_platform_uint8_inv (pllink->inet6_addr_gen_mode_inv) == IN6_ADDR_GEN_MODE_NONE;
+
+Based on logic from 37f11fbd
+
+Signed-off-by: Petr Vorel <petr vorel gmail com>
+---
+ src/platform/nm-platform.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/src/platform/nm-platform.c b/src/platform/nm-platform.c
+index 8803377..14e5726 100644
+--- a/src/platform/nm-platform.c
++++ b/src/platform/nm-platform.c
+@@ -39,6 +39,12 @@
+ #include "nm-enum-types.h"
+ #include "nm-core-internal.h"
+ 
++#if HAVE_LIBNL_INET6_ADDR_GEN_MODE && HAVE_KERNEL_INET6_ADDR_GEN_MODE
++#include <linux/if_link.h>
++#else
++#define IN6_ADDR_GEN_MODE_NONE  1
++#endif
++
+ #define ADDRESS_LIFETIME_PADDING 5
+ 
+ G_STATIC_ASSERT (sizeof ( ((NMPlatformLink *) NULL)->addr.data ) == NM_UTILS_HWADDR_LEN_MAX);
+-- 
+1.8.0
+
