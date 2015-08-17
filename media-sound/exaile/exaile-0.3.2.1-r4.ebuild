@@ -31,7 +31,7 @@ RDEPEND=${PYTHON_DEPS}"
 	libnotify? ( dev-python/notify-python )
 	cddb? ( dev-python/cddb-py )
 	droptray? ( dev-python/egg-python )
-	ffmpeg? ( media-plugins/gst-plugins-ffmpeg:0.10 )
+	ffmpeg? ( media-plugins/gst-plugins-ffmpeg:0.10[libav] )
 	mpris2? ( media-plugins/exaile-soundmenu-indicator )
 	mtp? ( dev-python/pymtp )
 	context-info? ( virtual/python-imaging
