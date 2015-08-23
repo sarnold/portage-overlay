@@ -1,4 +1,4 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -8,23 +8,27 @@ inherit eutils git-2 toolchain-funcs
 
 DESCRIPTION="Oink: a Collaboration of C/C++ Tools for Static Analysis and Source-to-Source Transformation"
 HOMEPAGE="http://daniel-wilkerson.appspot.com/oink/index.html"
-EGIT_REPO_URI="http://github.com/dsw/${PN}.git"
-SRC_URI=""
+
+EGIT_REPO_URI="http://github.com/sarnold/${PN}.git"
+EGET_COMMIT="e864115312364a874a6dc1b075b80111b236ac34"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~ppc ~x86"
-IUSE="doc examples platform -zlib1g"
+KEYWORDS="~amd64 ~arm ~ppc ~x86"
+IUSE="doc examples platform zipios"
 
 RDEPEND="${DEPEND}"
 
-DEPEND="sys-devel/bison
-	sys-devel/flex
+DEPEND="sys-devel/flex
+	<sys-devel/bison-3.0.3
 	dev-lang/perl
 	media-gfx/graphviz
 	media-gfx/imagemagick
-	platform? ( =sys-devel/gcc-3.4.6* )"
-#	zlib1g? ( dev-libs/foo )"
+	platform? ( =sys-devel/gcc-3.4.6* )
+	zipios? ( >=devlibs/zipios-2.1.0 )"
+
+# this is barely safe for serial compilation...
+#MAKEOPTS+=" -j1" #nowarn
 
 pkg_setup() {
 	if [ -n "${OINK_CONFIGURE_OPTS}" ]; then
@@ -40,8 +44,25 @@ pkg_setup() {
 	fi
 }
 
-src_unpack() {
-	git_src_unpack
+src_prepare() {
+	if has_version '>=dev-lang/perl-5.20.2' ; then
+		epatch "${FILESDIR}"/${PN}-fix_perl_array_error.patch
+	fi
+
+	elog 'Please ignore the "obsolete option -I- used" warnings'
+	elog 'as these tools will not build without abusing -I-.'
+
+	# I tried a few other cleanups here to replace obsolete -I- but
+	# this wonky source will not build correctly without major cleanup
+	# because it depends on an old side-effect of -I-:
+	# "In addition, the -I- option inhibits the use of the current
+	# directory (where the current input file came from) as the first
+	# search directory for #include "file"." (not the same -I.)
+	# Without this option there are conflicts up the wazoo...
+
+	sed -i -e "s|pure_parser|pure-parser|" \
+		"${S}"/elkhound/grampar.y \
+		"${S}"/ast/agrampar.y || die
 }
 
 src_configure() {
@@ -55,8 +76,12 @@ src_configure() {
 			platform-model/Makefile.src.incl
 		sed -i -e "s|gcc-3.4 -v|/usr/bin/gcc-3.4.6 -v|" \
 			platform-model/configure
-#		use zlib1g && \
-#			pkg_conf="${pkg_conf} +oink:--enable-archive-srz-zip=yes"
+	fi
+
+	if use zipios ; then
+		pkg_conf="${pkg_conf} +oink:--enable-archive-srz-zip=yes"
+	else
+		pkg_conf="${pkg_conf} +oink:--enable-archive-srz-zip=no"
 	fi
 
 	./configure ${pkg_conf} || die
@@ -72,7 +97,7 @@ src_configure() {
 
 src_compile() {
 	# only a static build setup right now (please enhance :)
-	emake CC=$(tc-getCC) CXX=$(tc-getCXX) all || die "make failed"
+	make CC=$(tc-getCC) CXX=$(tc-getCXX) -j1 all
 
 	if use doc ; then
 		for dir in {ast,elkhound,elsa,smbase} ; do
@@ -95,24 +120,27 @@ src_install() {
 		oink/{cfgprint,dfgprint,oink,qual,staticprint,xform} \
 		|| die "dobin failed"
 
-	into /usr/$(get_libdir)/${PN}
-	dolib.a smbase/libsmbase.a \
+	insinto /usr/$(get_libdir)/${PN}
+	doins smbase/libsmbase.a \
 		elkhound/libelkhound.a \
 		oink/libelsa.a \
 		libqual/libqual.a \
 		libregion/libregion.a \
-		ast/libast.a || die "dolib.a failed"
+		ast/libast.a || die "doins lib.a failed"
 
-	insinto /usr/$(get_libdir)/${PN}/config
+	insinto /usr/share/${PN}/config
 	doins libqual/config/* || die "doins config failed"
 
-	insinto /usr/$(get_libdir)/${PN}/include
+	insinto /usr/include/${PN}/libqual
 	doins libqual/{libqual.h,hash.h,bool.h,hash-serialize.h,typed_set.h} \
 		libqual/{typed_bag.h,typed_ddlist.h,typed_hashset.h,typed_map.h} \
-		libregion/{cqual-stdint.h,mempool.h,miniregion.h,profile.h,regions.h} \
-		|| die "doins hdrs failed"
+		|| die "doins libqual hdrs failed"
 
-	insinto /usr/$(get_libdir)/elsa/include
+	insinto /usr/include/${PN}/libregion
+	doins libregion/{cqual-stdint.h,mempool.h,miniregion.h,profile.h,regions.h} \
+		|| die "doins libregion hdrs failed"
+
+	insinto /usr/include/${PN}/elsa
 	doins elsa/include/* || die "doins elsa hdrs failed"
 
 	dodoc README && newdoc elsa/toplevel/readme.txt elsa_readme.txt
@@ -125,7 +153,7 @@ src_install() {
 		rm elsa/doc/index.html
 		docinto elsa && dohtml elsa/doc/*
 		insinto /usr/share/doc/${PF}/elsa \
-			&& doins elsa/*.{txt,ps,dot,fig}
+			&& doins elsa/doc/*.{txt,dot}
 		docinto oink && dohtml oink/Doc/*
 
 		for dir in {ast,elkhound,elsa,smbase}/gendoc ; do

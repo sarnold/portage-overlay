@@ -1,0 +1,13 @@
+diff --git a/configure.pl b/configure.pl
+index 005ecd3..c7313a7 100755
+--- a/configure.pl
++++ b/configure.pl
+@@ -106,7 +106,7 @@ sub translate_modes_to_flags {
+ sub configure_dir {
+     my ($repo, $flags_list_ref) = @_;
+     my @flags = @{$flags_list_ref};
+-    if (defined @{$subdir2extraargs{$repo}}) {
++    if ($subdir2extraargs{$repo}) {
+         @flags = (@flags, @{$subdir2extraargs{$repo}});
+     }
+     my $fulldir = "$stackdir/$repo";
