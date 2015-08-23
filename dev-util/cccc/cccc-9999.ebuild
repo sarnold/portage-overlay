@@ -50,7 +50,7 @@ src_test() {
 }
 
 src_install() {
-	dodoc readme.txt changes.txt
+	dodoc README.rst changes.txt
 	dohtml cccc/*.html
 	dobin cccc/cccc
 }
