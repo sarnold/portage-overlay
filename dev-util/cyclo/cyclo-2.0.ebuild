@@ -1,6 +1,8 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
+
+EAPI="2"
 
 inherit eutils toolchain-funcs
 
@@ -19,7 +21,8 @@ src_unpack() {
 	unpack ${A}
 	cd "${S}"
 
-	epatch "${FILESDIR}"/${P}-gcc-update.patch
+	epatch "${FILESDIR}"/${P}-gcc-update.patch \
+		"${FILESDIR}"/${P}-add_flex_noyywrap_option.patch
 
 	sed -i -e "s|= gcc|= $(tc-getCC)|" \
 		-i -e "s|= g++|= $(tc-getCXX)|" \
@@ -35,7 +38,7 @@ src_unpack() {
 }
 
 src_compile() {
-		make all || die "make failed"
+	make all || die "make failed"
 }
 
 src_install() {
