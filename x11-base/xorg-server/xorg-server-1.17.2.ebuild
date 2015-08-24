@@ -145,6 +145,8 @@ PATCHES=(
 	"${FILESDIR}"/${PN}-1.12-unloadsubmodule.patch
 	# needed for new eselect-opengl, bug #541232
 	"${FILESDIR}"/${PN}-1.17-support-multiple-Files-sections.patch
+	"${FILESDIR}"/${PN}-fix_stupid_array_bounds_warning.patch
+	"${FILESDIR}"/${PN}-fix_declaration_mismatch.patch
 )
 
 pkg_pretend() {
