@@ -13,12 +13,13 @@ SRC_URI="http://download.savannah.gnu.org/releases/linphone/${PN}/${P}.tar.gz"
 LICENSE="GPL-2"
 KEYWORDS="~amd64 ~arm ~ppc ~sparc ~x86"
 
-IUSE="+antlr pic -polarssl -server -static tls -tunnel"
+IUSE="pic -polarssl -server -static tls -tunnel"
 SLOT="0"
 
-RDEPEND="antlr? ( >=dev-libs/antlr-c-3.2 )
-	=dev-java/antlr-3*
-	!polarssl? ( >=dev-libs/openssl-0.9.7 ) polarssl? ( >=net-libs/polarssl-1.2.10 )
+RDEPEND=">=dev-libs/antlr-c-3.2
+	dev-java/antlr:3
+	!polarssl? ( >=dev-libs/openssl-0.9.7 )
+	polarssl? ( >=net-libs/polarssl-1.2.10 )
 "
 
 DEPEND="${RDEPEND}
@@ -33,13 +34,12 @@ src_prepare() {
 src_configure() {
 	local my_conf="--disable-tests"
 	econf ${my_conf} \
-		--disable-strict \
+		--disable-strict --with-antlr=${EPREFIX}/usr \
 		$(use_enable server server-sockets) \
 		$(use_enable static) \
 		$(use_enable tls) \
 		$(use_enable tunnel) \
 		$(use_with pic) \
-		$(use_with antlr antlr=${EPREFIX}/usr) \
 		$(use_with polarssl)
 }
 
