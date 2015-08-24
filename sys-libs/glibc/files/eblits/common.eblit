@@ -1,13 +1,21 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/common.eblit,v 1.35 2014/06/14 08:07:10 rhill Exp $
+# $Header: /var/cvsroot/gentoo-x86/sys-libs/glibc/files/eblits/common.eblit,v 1.47 2015/05/30 05:28:41 vapier Exp $
 
 alt_prefix() {
 	is_crosscompile && echo /usr/${CTARGET}
 }
 
-: ${ED:=${D}}
-: ${EROOT:=${ROOT}}
+if [[ ${EAPI:-0} == [012] ]] ; then
+	: ${ED:=${D}}
+	: ${EROOT:=${ROOT}}
+fi
+# This indirection is for binpkgs. #523332
+_nonfatal() { nonfatal "$@" ; }
+if [[ ${EAPI:-0} == [0123] ]] ; then
+	nonfatal() { "$@" ; }
+	_nonfatal() { "$@" ; }
+fi
 
 # We need to be able to set alternative headers for
 # compiling for non-native platform
@@ -21,7 +29,7 @@ alt_build_headers() {
 	if [[ -z ${ALT_BUILD_HEADERS} ]] ; then
 		ALT_BUILD_HEADERS=$(alt_headers)
 		if tc-is-cross-compiler ; then
-			ALT_BUILD_HEADERS=${ROOT}$(alt_headers)
+			ALT_BUILD_HEADERS=${SYSROOT}$(alt_headers)
 			if [[ ! -e ${ALT_BUILD_HEADERS}/linux/version.h ]] ; then
 				local header_path=$(echo '#include <linux/version.h>' | $(tc-getCPP ${CTARGET}) ${CFLAGS} 2>&1 | grep -o '[^"]*linux/version.h')
 				ALT_BUILD_HEADERS=${header_path%/linux/version.h}
@@ -38,6 +46,10 @@ alt_usrlibdir() {
 	echo $(alt_prefix)/usr/$(get_libdir)
 }
 
+builddir() {
+	echo "${WORKDIR}/build-${ABI}-${CTARGET}-$1"
+}
+
 setup_target_flags() {
 	# This largely mucks with compiler flags.  None of which should matter
 	# when building up just the headers.
@@ -46,6 +58,13 @@ setup_target_flags() {
 	case $(tc-arch) in
 		x86)
 			# -march needed for #185404 #199334
+			# TODO: When creating the first glibc cross-compile, this test will
+			# always fail as it does a full link which in turn requires glibc.
+			# Probably also applies when changing multilib profile settings (e.g.
+			# enabling x86 when the profile was amd64-only previously).
+			# We could change main to _start and pass -nostdlib here so that we
+			# only test the gcc code compilation.  Or we could do a compile and
+			# then look for the symbol via scanelf.
 			if ! glibc_compile_test "" 'void f(int i, void *p) {if (__sync_fetch_and_add(&i, 1)) f(i, p);}\nint main(){return 0;}\n' 2>/dev/null ; then
 				local t=${CTARGET_OPT:-${CTARGET}}
 				t=${t%%-*}
@@ -56,15 +75,25 @@ setup_target_flags() {
 		;;
 		amd64)
 			# -march needed for #185404 #199334
+			# Note: This test only matters when the x86 ABI is enabled, so we could
+			# optimize a bit and elide it.
+			# TODO: See cross-compile issues listed above for x86.
 			if ! glibc_compile_test "${CFLAGS_x86}" 'void f(int i, void *p) {if (__sync_fetch_and_add(&i, 1)) f(i, p);}\nint main(){return 0;}\n' 2>/dev/null ; then
 				local t=${CTARGET_OPT:-${CTARGET}}
 				t=${t%%-*}
+				# Normally the target is x86_64-xxx, so turn that into the -march that
+				# gcc actually accepts. #528708
+				[[ ${t} == "x86_64" ]] && t="x86-64"
 				filter-flags '-march=*'
 				# ugly, ugly, ugly.  ugly.
 				CFLAGS_x86=$(CFLAGS=${CFLAGS_x86} filter-flags '-march=*'; echo "${CFLAGS}")
 				export CFLAGS_x86="${CFLAGS_x86} -march=${t}"
 				einfo "Auto adding -march=${t} to CFLAGS_x86 #185404"
 			fi
+		;;
+		mips)
+			# The mips abi cannot support the GNU style hashes. #233233
+			filter-ldflags -Wl,--hash-style=gnu -Wl,--hash-style=both
 		;;
 		ppc)
 			append-flags "-freorder-blocks"
@@ -160,7 +189,7 @@ setup_flags() {
 	filter-flags -frecord-gcc-switches
 
 	unset CBUILD_OPT CTARGET_OPT
-	if has_multilib_profile ; then
+	if use multilib ; then
 		CTARGET_OPT=$(get_abi_CTARGET)
 		[[ -z ${CTARGET_OPT} ]] && CTARGET_OPT=$(get_abi_CHOST)
 	fi
@@ -206,15 +235,8 @@ want_nptl() {
 	want_tls || return 1
 	use nptl || return 1
 
-	# Only list the arches that cannot do NPTL
-	case $(tc-arch) in
-		m68k) return 1;;
-		sparc)
-			# >= v9 is needed for nptl.
-			[[ ${PROFILE_ARCH} == "sparc" ]] && return 1
-		;;
-	esac
-
+	# Older versions of glibc had incomplete arch support for nptl.
+	# But if you're building those now, you can handle USE=nptl yourself.
 	return 0
 }
 
@@ -274,6 +296,7 @@ use_multiarch() {
 setup_env() {
 	# silly users
 	unset LD_RUN_PATH
+	unset LD_ASSUME_KERNEL
 
 	multilib_env ${CTARGET_OPT:-${CTARGET}}
 	if is_crosscompile || tc-is-cross-compiler ; then
@@ -300,6 +323,28 @@ setup_env() {
 	# top of each other.
 	: ${__GLIBC_CC:=$(tc-getCC ${CTARGET_OPT:-${CTARGET}})}
 	export __GLIBC_CC CC="${__GLIBC_CC} ${!VAR}"
+}
+
+foreach_abi() {
+	setup_env
+
+	local ret=0
+	local abilist=""
+	if use multilib ; then
+		abilist=$(get_install_abis)
+	else
+		abilist=${DEFAULT_ABI}
+	fi
+	evar_push ABI
+	export ABI
+	for ABI in ${abilist:-default} ; do
+		setup_env
+		einfo "Running $1 for ABI ${ABI}"
+		$1
+		: $(( ret |= $? ))
+	done
+	evar_pop
+	return ${ret}
 }
 
 just_headers() {

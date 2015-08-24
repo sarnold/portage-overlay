@@ -1,0 +1,27 @@
+diff --git a/sysdeps/x86/elide.h b/sysdeps/x86/elide.h
+index 5befa53..5abb952 100644
+--- a/sysdeps/x86/elide.h
++++ b/sysdeps/x86/elide.h
+@@ -18,6 +18,8 @@
+ #ifndef ELIDE_H
+ #define ELIDE_H 1
+ 
++#ifdef ENABLE_LOCK_ELISION
++
+ #include <hle.h>
+ #include <elision-conf.h>
+ 
+@@ -106,4 +108,11 @@ elision_adapt(signed char *adapt_count, unsigned int status)
+   ret;						\
+   })
+ 
++#else
++
++#define ELIDE_LOCK(adapt_count, is_lock_free) 0
++#define ELIDE_TRYLOCK(adapt_count, is_lock_free, write) 0
++#define ELIDE_UNLOCK(is_lock_free) 0
++
++#endif
+ #endif
+ 
+ 
