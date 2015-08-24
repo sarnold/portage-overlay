@@ -67,9 +67,7 @@ pkg_setup() {
 }
 
 src_prepare() {
-	if ! use wheel ; then
-		sed -i -e 's|unix-group:wheel|unix-user:0|' src/polkitbackend/*-default.rules || die #401513
-	fi
+	sed -i -e 's|unix-group:wheel|unix-user:0|' src/polkitbackend/*-default.rules || die #401513
 }
 
 src_configure() {
@@ -115,10 +113,10 @@ src_install() {
 	prune_libtool_files
 
 	# try reversing sed above instead of local rules
-#	if use wheel ; then
-#		install -m 0700 "${FILESDIR}"/40-localauthority.rules \
-#			"${D}"/etc/polkit-1/rules.d
-#	fi
+	if use wheel ; then
+		install -m 0700 "${FILESDIR}"/40-localauthority.rules \
+			"${D}"/etc/polkit-1/rules.d
+	fi
 }
 
 pkg_postinst() {

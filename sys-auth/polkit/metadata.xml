@@ -7,6 +7,6 @@
 	</maintainer>
 	<use>
 		<flag name='systemd'>Use <pkg>sys-apps/systemd</pkg> instead of <pkg>sys-auth/consolekit</pkg> for session tracking</flag>
-		<flag name='wheel'>Add local ruke to re-enable old wheel group behavior</flag>
+		<flag name='wheel'>Add local rule to re-enable old wheel group behavior</flag>
 	</use>
 </pkgmetadata>
