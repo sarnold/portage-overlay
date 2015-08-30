@@ -20,12 +20,12 @@ IUSE="doc examples platform zipios"
 RDEPEND="${DEPEND}"
 
 DEPEND="sys-devel/flex
-	<sys-devel/bison-3.0.3
+	<sys-devel/bison-3.0.2
 	dev-lang/perl
 	media-gfx/graphviz
 	media-gfx/imagemagick
 	platform? ( =sys-devel/gcc-3.4.6* )
-	zipios? ( >=devlibs/zipios-2.1.0 )"
+	zipios? ( >=dev-libs/zipios-2.1.0 )"
 
 # this is barely safe for serial compilation...
 #MAKEOPTS+=" -j1" #nowarn
@@ -57,7 +57,7 @@ src_prepare() {
 	# because it depends on an old side-effect of -I-:
 	# "In addition, the -I- option inhibits the use of the current
 	# directory (where the current input file came from) as the first
-	# search directory for #include "file"." (not the same -I.)
+	# search directory for #include "file"." (not the same as -I.)
 	# Without this option there are conflicts up the wazoo...
 
 	sed -i -e "s|pure_parser|pure-parser|" \
@@ -97,7 +97,7 @@ src_configure() {
 
 src_compile() {
 	# only a static build setup right now (please enhance :)
-	make CC=$(tc-getCC) CXX=$(tc-getCXX) -j1 all
+	emake CC=$(tc-getCC) CXX=$(tc-getCXX) -j1 all
 
 	if use doc ; then
 		for dir in {ast,elkhound,elsa,smbase} ; do
@@ -143,7 +143,7 @@ src_install() {
 	insinto /usr/include/${PN}/elsa
 	doins elsa/include/* || die "doins elsa hdrs failed"
 
-	dodoc README && newdoc elsa/toplevel/readme.txt elsa_readme.txt
+	dodoc README.rst && newdoc elsa/toplevel/readme.txt elsa_readme.txt
 
 	if use doc ; then
 		newdoc elsa/index.html elsa-index.html
