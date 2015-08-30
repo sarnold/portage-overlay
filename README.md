@@ -17,7 +17,8 @@ on the wip branch (not shown below).
 Most recent updates are for the Tegra Trimslice and other ARM devices such as
 the Raspberry Pi (armv6), chromebooks (armv7), and i.MX6.  Mali support is good, and
 the RPi vc4 video driver is still bleeding edge (support has been enabled in mesa-9999
-and there is an experimental drm-kernel-sources to go with it).  See gentoo-arm repo.
+and there is an experimental drm-kernel-sources to go with it).  See
+gentoo-arm repo: https://github.com/gentoo/arm
 
 The XFCE sound menu plugin works with updated exaile 0.3.2.1-r4 and also has some new
 plugins now. Depends have been updated, USE flags adjusted and the MPRIS2 plugin was renamed.
