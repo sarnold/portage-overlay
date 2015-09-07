@@ -1,0 +1,54 @@
+diff -cw cccc.orig/cccc/cccc.g cccc-kosaki/cccc/cccc.g
+*** cccc.orig/cccc/cccc.g	Wed Apr 24 00:44:27 2002
+--- cccc-kosaki/cccc/cccc.g	Mon Sep  2 03:00:35 2002
+***************
+*** 543,551 ****
+  // and the start of the definition block, but there are a list of instances
+  // of the anonymous class declared between the end of the definition block
+  // and the semicolon.
+  class_suffix_trailer :
+! 	   opt_instance_list SEMICOLON
+  	 ;
+  
+  opt_instance_list :
+  		  IDENTIFIER ( COMMA IDENTIFIER )*
+--- 543,560 ----
+  // and the start of the definition block, but there are a list of instances
+  // of the anonymous class declared between the end of the definition block
+  // and the semicolon.
++ 
++ // support array variable, value initialize.
+  class_suffix_trailer :
+! << string indir, varName; >>
+! 	   instance_item[indir, varName]
+!      | /* empty */
+  	 ;
++ // << orignal >>
++ //class_suffix_trailer :
++ //	   opt_instance_list SEMICOLON
++ //	 ;
++ 
+  
+  opt_instance_list :
+  		  IDENTIFIER ( COMMA IDENTIFIER )*
+
+diff -cw cccc.orig/cccc/rules.mak cccc-kosaki/cccc/rules.mak
+*** cccc.orig/cccc/rules.mak	Wed May  1 22:50:09 2002
+--- cccc-kosaki/cccc/rules.mak	Mon Sep  2 02:48:39 2002
+***************
+*** 62,68 ****
+  # source which do not correspond with lines in the .g file.  On balance,
+  # if I am debugging it is better to leave -gl off, while for onward
+  # development it is better to turn it on and enable the IDE features.
+! AFLAGS =        -CC -k 2 -gd -ge -rl 5000 -w1 -e3 
+  #AFLAGS =        -CC -k 2 -gd -ge -rl 5000 -w1 -e3
+  
+  # Flags for DLG
+--- 62,68 ----
+  # source which do not correspond with lines in the .g file.  On balance,
+  # if I am debugging it is better to leave -gl off, while for onward
+  # development it is better to turn it on and enable the IDE features.
+! AFLAGS =        -CC -k 2 -gd -ge -rl 10000 -w1 -e3 
+  #AFLAGS =        -CC -k 2 -gd -ge -rl 5000 -w1 -e3
+  
+  # Flags for DLG
