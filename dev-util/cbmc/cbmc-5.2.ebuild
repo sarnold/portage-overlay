@@ -17,12 +17,14 @@ LICENSE="ETH"
 
 IUSE="debug doc"
 
-RDEPEND="sys-devel/bison
-	sys-devel/flex
-	sys-libs/zlib
-	>=sci-mathematics/minisat-2.2[extended-solver]"
+RDEPEND=">=sci-mathematics/minisat-2.2.0:=[extended-solver]
+"
 
-DEPEND="${RDEPEND}"
+DEPEND="${RDEPEND}
+	sys-devel/bison
+	sys-devel/flex
+	dev-libs/libzip
+"
 
 pkg_setup() {
 	if version_is_at_least "4.4" "$(gcc-version)"; then
@@ -33,6 +35,11 @@ pkg_setup() {
 src_prepare() {
 	epatch "${FILESDIR}"/${P}-make_fixes.patch
 
+	# append-flags doesn't make it through to the static makefiles
+	sed -i -e "s|LINKBIN = \$(CXX)|LINKBIN = \$(CXX) -fuse-ld=bfd -fno-use-linker-plugin|g" \
+		src/common
+
+	# this is here because upstream specified -O2
 	if is-flagq "-O3" ; then
 		echo
 		ewarn "Compiling with -O3 is known to produce incorrectly"
@@ -57,7 +64,7 @@ src_configure() {
 }
 
 src_compile() {
-	CXX="$(tc-getCXX)" AR="$(tc-getAR)" emake -j1 -C src
+	CXX="$(tc-getCXX)" AR="$(tc-getAR)" emake -C src
 }
 
 src_install() {

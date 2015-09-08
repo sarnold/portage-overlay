@@ -1,0 +1,30 @@
+--- src/config.inc.orig	2015-09-05 20:17:47.669419743 -0700
++++ src/config.inc	2015-09-05 20:22:02.704121816 -0700
+@@ -15,11 +15,13 @@
+ #CHAFF = ../../zChaff
+ #BOOLEFORCE = ../../booleforce-0.4
+ #MINISAT = ../../MiniSat-p_v1.14
+-MINISAT2 = ../../minisat-2.2.0
++# for gentoo packaging
++MINISAT2 = /usr/include/minisat2
++MINISAT2_LIBDIR = /usr/lib
+ #GLUCOSE = ../../glucose-syrup
+ #SMVSAT =
+-#LIBZIPLIB = /opt/local/lib/libzip
+-#LIBZIPINC = /opt/local/lib/libzip
++LIBZIPLIB = /usr/lib
++LIBZIPINC = /usr/include
+ 
+ # Signing identity for MacOS Gatekeeper
+ 
+--- src/solvers/Makefile.orig	2015-09-05 20:42:13.708835209 -0700
++++ src/solvers/Makefile	2015-09-05 20:45:26.684899019 -0700
+@@ -17,7 +17,7 @@
+ ifneq ($(MINISAT2),)
+   MINISAT2_SRC=sat/satcheck_minisat2.cpp
+   MINISAT2_INCLUDE=-I $(MINISAT2)
+-  MINISAT2_LIB=$(MINISAT2)/simp/SimpSolver$(OBJEXT) $(MINISAT2)/core/Solver$(OBJEXT)
++  MINISAT2_LIB=$(MINISAT2_LIBDIR)/libminisat$(LIBEXT)
+   CP_CXXFLAGS += -DHAVE_MINISAT2 -D__STDC_FORMAT_MACROS -D__STDC_LIMIT_MACROS
+   override CXXFLAGS := $(filter-out -pedantic, $(CXXFLAGS))
+ endif
