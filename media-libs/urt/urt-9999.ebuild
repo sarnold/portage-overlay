@@ -35,13 +35,13 @@ urt_config() {
 src_prepare() {
 	rm -f bin/README
 
-	epatch "${FILESDIR}"/${P}-shared-lib-build.patch
-	epatch "${FILESDIR}"/${P}-rle-fixes.patch
-	epatch "${FILESDIR}"/${P}-compile-updates.patch
-	epatch "${FILESDIR}"/${P}-tempfile.patch
-	epatch "${FILESDIR}"/${P}-build-fixes.patch
-	epatch "${FILESDIR}"/${P}-make.patch
-	epatch "${FILESDIR}"/${P}-solaris.patch
+	epatch "${FILESDIR}"/${PN}-3.1b-shared-lib-build.patch
+	epatch "${FILESDIR}"/${PN}-3.1b-rle-fixes.patch
+	epatch "${FILESDIR}"/${PN}-3.1b-compile-updates.patch
+	epatch "${FILESDIR}"/${PN}-3.1b-tempfile.patch
+	epatch "${FILESDIR}"/${PN}-3.1b-build-fixes.patch
+	epatch "${FILESDIR}"/${PN}-3.1b-make.patch
+	epatch "${FILESDIR}"/${PN}-3.1b-solaris.patch
 
 	# punt bogus manpage #109511
 	rm -f man/man1/template.1
