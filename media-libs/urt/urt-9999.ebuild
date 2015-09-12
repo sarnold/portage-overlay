@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI="5"
 
@@ -10,6 +10,7 @@ DESCRIPTION="the Utah Raster Toolkit is a library for dealing with raster images
 HOMEPAGE="http://www.cs.utah.edu/gdc/projects/urt/"
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="git://github.com/sarnold/urt.git"
+	EGIT_BRANCH="3.2rc_qa-fixes"
 	inherit git-2
 else
 	SRC_URI="mirror://gentoo/${P}.tar.bz2"
@@ -18,7 +19,7 @@ fi
 LICENSE="URT gif? ( free-noncomm )"
 SLOT="0"
 KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~x64-solaris ~x86-solaris"
-IUSE="-gif postscript static-libs tiff X"
+IUSE="+cproto -gif postscript static-libs tiff X"
 
 RDEPEND="X? ( x11-libs/libXext )
 	gif? ( media-libs/giflib )
@@ -26,7 +27,8 @@ RDEPEND="X? ( x11-libs/libXext )
 	postscript? ( app-text/ghostscript-gpl )"
 
 DEPEND="${RDEPEND}
-	X? ( x11-proto/xextproto )"
+	cproto? ( dev-util/cproto )
+	X? ( x11-proto/xproto )"
 
 urt_config() {
 	use $1 && echo "#define $2" || echo "##define $2"
@@ -35,31 +37,24 @@ urt_config() {
 src_prepare() {
 	rm -f bin/README
 
-	epatch "${FILESDIR}"/${PN}-3.1b-shared-lib-build.patch
-	epatch "${FILESDIR}"/${PN}-3.1b-rle-fixes.patch
-	epatch "${FILESDIR}"/${PN}-3.1b-compile-updates.patch
-	epatch "${FILESDIR}"/${PN}-3.1b-tempfile.patch
-	epatch "${FILESDIR}"/${PN}-3.1b-build-fixes.patch
-	epatch "${FILESDIR}"/${PN}-3.1b-make.patch
-	epatch "${FILESDIR}"/${PN}-3.1b-solaris.patch
+#	epatch "${FILESDIR}"/${PN}-qa-x11.patch
 
-	# punt bogus manpage #109511
-	rm -f man/man1/template.1
-
-	# stupid OS X declares a stack_t type already #107428
-	sed -i -e 's:stack_t:_urt_stack:g' tools/clock/rleClock.c || die
-
-	sed -i \
-		-e '/^CFLAGS/s: -O : :' \
-		-e 's|CC=gcc|CC ?= gcc|' \
-		makefile.hdr
+	# These are QA flags needed to address QA runtime warnings
+	# -DXLIBINT_H_NOT_AVAILABLE workaround for missing XAllocColors function
+	# -DNO_ITIMER workaround for deprecated BSD form of sigpause
+	QAFLAGS="-DXLIBINT_H_NOT_AVAILABLE -DNO_ITIMER"
+	# These are enabled by default in Gentoo config
+	# -DX_SHARED_MEMORY enable X shm
+	# -DUSE_PROTOTYPES generate prototypes.h and fn_decls.h with cproto
+	OPTFLAGS="-D_DEFAULT_SOURCE"
 
 	cp "${FILESDIR}"/gentoo-config config/gentoo
 	cat >> config/gentoo <<-EOF
+	$(urt_config cproto HAVE_CPROTO)
 	$(urt_config X X11)
 	$(urt_config postscript POSTSCRIPT)
 	$(urt_config tiff TIFF)
-	ExtraCFLAGS = ${CFLAGS} -fPIC
+	ExtraCFLAGS = ${CFLAGS} ${QAFLAGS} ${OPTFLAGS}
 	MFLAGS = ${MAKEOPTS}
 	# prevent circular depend #111455
 	$(has_version media-libs/giflib && urt_config gif GIF)
@@ -93,5 +88,5 @@ src_install() {
 	doins include/rle*.h || die "doins include failed"
 
 	doman man-dest/man?/*.[135]
-	dodoc *-changes CHANGES* README blurb
+	dodoc *-changes CHANGES* README.rst blurb
 }
