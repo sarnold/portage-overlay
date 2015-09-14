@@ -8,21 +8,17 @@ inherit eutils toolchain-funcs flag-o-matic
 
 DESCRIPTION="Source metrics (line counts, complexity, etc) for Java and C++"
 HOMEPAGE="http://cccc.sourceforge.net/"
-if [[ ${PV} = 9999* ]]; then
-	EGIT_REPO_URI="https://github.com/sarnold/cccc.git"
-	inherit git-r3
-else
-	SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
-	MAKEOPTS="-j1"
-fi
+SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="amd64 ~arm ~ppc x86 ~amd64-linux ~x86-linux ~ppc-macos"
-IUSE=""
+IUSE="doc"
 
 RDEPEND=""
 DEPEND="${RDEPEND}"
+
+MAKEOPTS="-j1"
 
 src_prepare() {
 	sed -i -e "/^CFLAGS/s|=|+=|" pccts/antlr/makefile
@@ -44,7 +40,7 @@ src_compile() {
 
 src_install() {
 	dodoc readme.txt changes.txt
-	dohtml cccc/*.html
+	use doc && dohtml cccc/*.html
 	cd install || die
 	dodir /usr
 	emake -f install.mak INSTDIR="${ED}"/usr/bin
