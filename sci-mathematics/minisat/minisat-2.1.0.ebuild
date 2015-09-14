@@ -14,7 +14,7 @@ SRC_URI="http://minisat.se/downloads/${MY_P}.zip
 	doc? ( http://minisat.se/downloads/MiniSat.pdf )"
 
 SLOT="0"
-KEYWORDS="amd64 ~arm ~x86 ~amd64-linux ~x86-linux"
+KEYWORDS="~amd64 ~x86 ~amd64-linux ~x86-linux"
 LICENSE="MIT"
 
 IUSE="debug doc extended-solver"
@@ -92,4 +92,3 @@ src_install() {
 		dodoc "${DISTDIR}"/MiniSat.pdf || die
 	fi
 }
-
