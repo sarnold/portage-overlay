@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI="4"
 
@@ -42,14 +42,15 @@ pkg_setup() {
 		ewarn ""
 		ewarn "The minisat2 2.1 and 2.2 ABIs are not compatible and there"
 		ewarn "is currently no slotting.  Please mask it yourself (eg, in"
-		ewarn "packages.mask) if you still need the older version."
+		ewarn "package.mask) if you still need the older version."
 		ewarn ""
 	fi
 }
 
 src_prepare() {
-	sed -e "s/\$(CXX) \$^/\$(CXX) \$(LDFLAGS) \$^/" \
-		-i -e "s|-O3|${CFLAGS}|" mtl/template.mk || die
+	sed -i -e "s/\$(CXX) \$^/\$(CXX) \$(LDFLAGS) \$^/" \
+		-e "s|-O3|${CFLAGS}|" \
+		mtl/template.mk || die
 }
 
 src_compile() {
@@ -76,6 +77,7 @@ src_install() {
 
 	newbin ${mydir}/${PN}_${myext} ${PN} || die
 	# Doh! Main.o causes symbol conflicts in clients using libminisat.a
+	elog "Fixing static library..."
 	${AR} -dv ${mydir}/lib${PN}_${myext}.a Main.o${myconf}
 	newlib.a ${mydir}/lib${PN}_${myext}.a lib${PN}.a || die
 
