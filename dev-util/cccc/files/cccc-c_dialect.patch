@@ -1,12 +1,10 @@
 diff --git a/cccc/cccc.g b/cccc/cccc.g
-index bdb6805..b592cdc 100644
+index bdb6805..fd7b504 100644
 --- a/cccc/cccc.g
 +++ b/cccc/cccc.g
-@@ -83,7 +83,32 @@ inline void endOfLine(CLexer &lexer)
- #token DOS_NL		"\r\n"  << endOfLine(*this); >>
+@@ -84,6 +84,30 @@ inline void endOfLine(CLexer &lexer)
  #token MAC_NL		"\r"	<< endOfLine(*this); >>
  #token UNIX_NL		"\n"    << endOfLine(*this); >>
-+>>
  
 +/* augment dialect policies -- M.H added */
 +#lexclass SKIP_STMT
@@ -35,7 +33,7 @@ index bdb6805..b592cdc 100644
  
  /* preprocessor constructs - comments, #defines etc */
  
-@@ -343,17 +368,29 @@ inline void endOfLine(CLexer &lexer)
+@@ -343,17 +367,29 @@ inline void endOfLine(CLexer &lexer)
          if( treatment == "ignore" )
  	{
  	    skip();
@@ -67,7 +65,7 @@ index bdb6805..b592cdc 100644
  	}
  >>
  
-@@ -426,8 +463,10 @@ void init(const string& filename, const string& language)
+@@ -426,8 +462,10 @@ void init(const string& filename, const string& language)
  	pu=ParseUtility::currentInstance();
  	ps=ParseStore::currentInstance();
  

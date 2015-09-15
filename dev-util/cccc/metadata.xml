@@ -9,4 +9,6 @@
 <upstream>
 	<remote-id type="github">sarnold/cccc</remote-id>
 </upstream>
+<flag name="apidoc">Build software docs with doxygen/graphviz and metrics with cccc</flag>
+<flag name="mfc">Add patch for MFC dialect options</flag>
 </pkgmetadata>

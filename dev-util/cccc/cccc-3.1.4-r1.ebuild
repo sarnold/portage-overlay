@@ -21,20 +21,21 @@ DEPEND="${RDEPEND}"
 MAKEOPTS="-j1"
 
 src_prepare() {
+	# fix new C++ syntax error
+	epatch "${FILESDIR}"/${P}-gcc-4.7.patch
+
 	sed -i -e "/^CFLAGS/s|=|+=|" pccts/antlr/makefile
 	sed -i -e "/^CFLAGS/s|=|+=|" pccts/dlg/makefile
 	sed -i -e "/^CFLAGS/s|=|+=|" \
 			-e "/^LD_OFLAG/s|-o|-o |" \
 			-e "/^LDFLAGS/s|=|+=|" cccc/posixgcc.mak
 	#LD_OFLAG: ld on Darwin needs a space after -o
-
-	epatch "${FILESDIR}"/${P}-whitespace-and-unqualified-lookup.patch
 }
 
 src_compile() {
 	emake CCC=$(tc-getCXX) LD=$(tc-getCXX) pccts
 
-	append-flags "-std=gnu++11"
+	append-cflags "-std=gnu++11"
 	emake CCC=$(tc-getCXX) LD=$(tc-getCXX) cccc
 }
 

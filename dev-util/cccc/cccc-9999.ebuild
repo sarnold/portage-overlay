@@ -19,7 +19,7 @@ fi
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~ppc ~x86 ~amd64-linux ~x86-linux ~ppc-macos"
-IUSE="doc apidoc"
+IUSE="apidoc doc mfc"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
@@ -29,23 +29,23 @@ DEPEND="${RDEPEND}
 MAKEOPTS="-j1"
 
 src_prepare() {
+	if ! [[ ${PV} = 9999* ]]; then
+		epatch "${FILESDIR}"/${P}-whitespace-and-unqualified-lookup.patch
+	fi
+
+#	epatch "${FILESDIR}"/${PN}-bug602904.patch
+	use mfc && epatch "${FILESDIR}"/${PN}-c_dialect.patch
+
 	sed -i -e "/^CFLAGS/s|=|+=|" pccts/antlr/makefile
 	sed -i -e "/^CFLAGS/s|=|+=|" pccts/dlg/makefile
 	sed -i -e "/^CFLAGS/s|=|+=|" \
 			-e "/^LD_OFLAG/s|-o|-o |" \
 			-e "/^LDFLAGS/s|=|+=|" cccc/posixgcc.mak
 	#LD_OFLAG: ld on Darwin needs a space after -o
-
-	if ! [[ ${PV} = 9999* ]]; then
-		epatch "${FILESDIR}"/${P}-whitespace-and-unqualified-lookup.patch
-	fi
-
-	epatch "${FILESDIR}"/${PN}-bug602904.patch \
-		"${FILESDIR}"/${PN}-c_dialect.patch
 }
 
 src_compile() {
-	emake CCC=$(tc-getCXX) LD=$(tc-getCXX) cccc
+	emake CCC=$(tc-getCXX) CC=$(tc-getCC) LD=$(tc-getCXX) cccc
 
 	use apidoc && emake CCC=$(tc-getCXX) LD=$(tc-getCXX) metrics docs
 }
@@ -57,8 +57,10 @@ src_test() {
 src_install() {
 	dobin cccc/cccc
 	dodoc README.rst changes.txt
-	dodoc "${FILESDIR}"/cccc-dialect.opt
-	docompress -x "/usr/share/doc/${PF}/cccc-dialect.opt"
+	if use mfc ; then
+		dodoc "${FILESDIR}"/cccc-MFC-dialect.opt
+		docompress -x "/usr/share/doc/${PF}/cccc-MFC-dialect.opt"
+	fi
 	if use doc ; then
 		dohtml cccc/*.html || die "html docs failed"
 		if use apidoc ; then
