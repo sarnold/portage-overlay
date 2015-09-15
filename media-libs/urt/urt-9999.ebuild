@@ -10,7 +10,7 @@ DESCRIPTION="the Utah Raster Toolkit is a library for dealing with raster images
 HOMEPAGE="http://www.cs.utah.edu/gdc/projects/urt/"
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="git://github.com/sarnold/urt.git"
-	EGIT_BRANCH="3.2rc_qa-fixes"
+	EGIT_BRANCH="master"
 	inherit git-2
 else
 	SRC_URI="mirror://gentoo/${P}.tar.bz2"
@@ -21,7 +21,8 @@ SLOT="0"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~ppc-macos ~x86-macos ~x64-solaris ~x86-solaris"
 IUSE="-cproto gif postscript static-libs tiff X"
 
-RDEPEND="X? ( x11-libs/libXext )
+RDEPEND="X? ( x11-libs/libXext
+		x11-libs/libX11 )
 	gif? ( media-libs/giflib )
 	tiff? ( media-libs/tiff )
 	postscript? ( app-text/ghostscript-gpl )"
@@ -39,11 +40,10 @@ src_prepare() {
 
 #	epatch "${FILESDIR}"/${PN}-qa-x11.patch
 
-	# These are QA flags needed to address QA runtime warnings
-	# -DXLIBINT_H_NOT_AVAILABLE workaround for missing XAllocColors function
+	# These are QA flags needed to address QA runtime warnings:
 	# -DNO_ITIMER workaround for deprecated BSD form of sigpause
 	QAFLAGS="-DNO_ITIMER"
-	# These are enabled by default in Gentoo config
+	# These are enabled by default in Gentoo config:
 	# -DX_SHARED_MEMORY enable X shm
 	# -DUSE_PROTOTYPES generate prototypes.h and fn_decls.h with cproto
 	OPTFLAGS="-D_DEFAULT_SOURCE"
