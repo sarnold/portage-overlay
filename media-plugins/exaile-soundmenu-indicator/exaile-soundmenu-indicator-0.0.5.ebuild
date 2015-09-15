@@ -25,13 +25,14 @@ fi
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86"
-IUSE=""
+IUSE="gnome xfce"
 
 RESTRICT="test"
 
 RDEPEND="${PYTHON_DEPS}
-	|| ( xfce-extra/xfce4-soundmenu-plugin
-		gnome-base/gnome-shell )"
+	=media-sound/exaile-0.3*
+	xfce? ( xfce-extra/xfce4-soundmenu-plugin )
+	gnome? ( gnome-base/gnome-shell )"
 DEPEND="${RDEPEND}"
 
 S="${WORKDIR}/${PN}"
