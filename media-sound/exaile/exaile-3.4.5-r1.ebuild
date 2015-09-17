@@ -28,11 +28,10 @@ RDEPEND="dev-python/dbus-python
 	virtual/python-imaging
 	cddb? ( dev-python/cddb-py )
 	libnotify? ( dev-python/notify-python )
-	extra-plugins? ( dev-python/egg-python
-        	media-plugins/gst-plugins-libav:1.0
-		dev-python/pymtp
-		dev-python/pywebkitgtk
-	)
+	dev-python/egg-python
+        media-plugins/gst-plugins-libav:1.0
+	dev-python/pymtp
+	dev-python/pywebkitgtk
         mpris2? ( media-plugins/exaile-soundmenu-indicator )"
 
 DEPEND="nls? ( dev-util/intltool
