@@ -1,0 +1,16 @@
+--- src/ptp.c.orig	2015-09-16 18:18:21.501428425 -0700
++++ src/ptp.c	2015-09-16 21:33:31.308506617 -0700
+@@ -2611,9 +2611,11 @@
+ 	ptp_pack_string(params, "19990909T090909", data, 0x19, &len);
+ 	
+ 	/* IP parameters */
+-	*((unsigned int*)&buffer[0x3A]) = profile->ip_address; /* Do not reverse bytes */
++	memcpy(&buffer[0x3A],&profile->ip_address,sizeof(profile->ip_address));
++	// *((unsigned int*)&buffer[0x3A]) = profile->ip_address; /* Do not reverse bytes */
+ 	buffer[0x3E] = profile->subnet_mask;
+-	*((unsigned int*)&buffer[0x3F]) = profile->gateway_address; /* Do not reverse bytes */
++	memcpy(&buffer[0x3F],&profile->gateway_address,sizeof(profile->gateway_address));
++	// *((unsigned int*)&buffer[0x3F]) = profile->gateway_address; /* Do not reverse bytes */
+ 	buffer[0x43] = profile->address_mode;
+ 	
+ 	/* Wifi parameters */
