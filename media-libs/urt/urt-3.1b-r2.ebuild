@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI="5"
 
@@ -22,7 +22,7 @@ IUSE="-gif postscript static-libs tiff X"
 
 RDEPEND="X? ( x11-libs/libXext )
 	gif? ( media-libs/giflib )
-	tiff? ( media-libs/tiff )
+	tiff? ( media-libs/tiff:0 )
 	postscript? ( app-text/ghostscript-gpl )"
 
 DEPEND="${RDEPEND}

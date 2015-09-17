@@ -13,7 +13,7 @@ if [[ ${PV} = 9999* ]]; then
 	EGIT_BRANCH="master"
 	inherit git-2
 else
-	SRC_URI="https://github.com/sarnold/${PN}/archive/${P}.tar.gz"
+	SRC_URI="https://github.com/sarnold/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 fi
 
 LICENSE="URT gif? ( free-noncomm )"
@@ -37,8 +37,6 @@ urt_config() {
 
 src_prepare() {
 	rm -f bin/README
-
-#	epatch "${FILESDIR}"/${PN}-qa-x11.patch
 
 	# These are QA flags needed to address QA runtime warnings:
 	# -DNO_ITIMER workaround for deprecated BSD form of sigpause
