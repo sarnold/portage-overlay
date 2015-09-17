@@ -1,0 +1,11 @@
+--- xl/settings.py.orig	2015-09-16 23:37:13.791174654 -0700
++++ xl/settings.py	2015-09-16 23:54:05.718870065 -0700
+@@ -37,7 +37,7 @@
+ import logging
+ import os
+ import sys
+-
++import dbus
+ import glib
+ 
+ logger = logging.getLogger(__name__)
