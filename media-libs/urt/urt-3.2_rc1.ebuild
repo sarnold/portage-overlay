@@ -10,7 +10,6 @@ DESCRIPTION="the Utah Raster Toolkit is a library for dealing with raster images
 HOMEPAGE="http://www.cs.utah.edu/gdc/projects/urt/"
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="git://github.com/sarnold/urt.git"
-	EGIT_BRANCH="master"
 	inherit git-2
 else
 	SRC_URI="https://github.com/sarnold/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
