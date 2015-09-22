@@ -38,7 +38,7 @@ RDEPEND="${PYTHON_DEPS}
 	droptray? ( dev-python/egg-python )
 	libnotify? ( dev-python/notify-python )
 	mp4? ( media-plugins/gst-plugins-libav:1.0 )
-	mpris2? ( media-plugins/exaile-soundmenu-indicator )
+        mpris2? ( media-plugins/exaile-soundmenu-indicator )
 	mtp? ( dev-python/pymtp )
 	wikipedia? ( dev-python/pywebkitgtk )"
 
@@ -50,9 +50,7 @@ RESTRICT="test" #315589
 src_prepare() {
 	python_setup
 
-	epatch "${FILESDIR}"/${PN}-0.3.2.1-amazoncover-lxml.patch \
-		"${FILESDIR}"/${P}-missing_dbus_import.patch \
-		"${FILESDIR}"/${P}-externals_install_fix.patch
+	epatch "${FILESDIR}"/${PN}-0.3.2.1-amazoncover-lxml.patch
 }
 src_compile() {
 	emake compile manpage
