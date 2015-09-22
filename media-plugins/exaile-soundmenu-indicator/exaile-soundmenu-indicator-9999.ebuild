@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -9,9 +9,9 @@ PYTHON_COMPAT=( python2_7 )
 inherit eutils git-r3 python-single-r1
 
 DESCRIPTION="Sound menu indicator plugin (adds MPRISv2 support) for XFCE Panel and Gnome Shell"
-HOMEPAGE="https://github.com/grawity/Exaile-Soundmenu-Indicator"
+HOMEPAGE="https://github.com/sarnold/Exaile-Soundmenu-Indicator"
 
-EGIT_REPO_URI="https://github.com/grawity/Exaile-Soundmenu-Indicator.git"
+EGIT_REPO_URI="https://github.com/sarnold/Exaile-Soundmenu-Indicator.git"
 
 LICENSE="GPL-2"
 SLOT="0"
