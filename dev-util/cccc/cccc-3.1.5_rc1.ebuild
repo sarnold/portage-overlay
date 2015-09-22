@@ -10,7 +10,6 @@ DESCRIPTION="Source metrics (line counts, complexity, etc) for Java and C++"
 HOMEPAGE="http://sarnold.github.io/cccc/"
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/sarnold/cccc.git"
-#	EGIT_BRANCH="3.1.5_rc2-updates"
 	EGIT_BRANCH="master"
 	inherit git-r3
 else
@@ -31,8 +30,6 @@ MAKEOPTS="-j1"
 
 src_prepare() {
 	use mfc && epatch "${FILESDIR}"/${PN}-c_dialect.patch
-
-#	epatch "${FILESDIR}"/${PN}-makefile_update.patch
 }
 
 src_compile() {
@@ -50,21 +47,13 @@ src_test() {
 }
 
 src_install() {
-	if ! use debug ; then
-		dobin cccc/cccc
-	else
-		newbin cccc/cccc ccccd
-	fi
-
-	dodoc README.md
-
+	dobin cccc/cccc
+	dodoc README.md changes.txt
 	if use mfc ; then
 		dodoc "${FILESDIR}"/cccc-MFC-dialect.opt
 		docompress -x "/usr/share/doc/${PF}/cccc-MFC-dialect.opt"
 	fi
-
 	if use doc ; then
-		dodoc CHANGELOG.md HISTORY.md
 		dohtml cccc/*.html || die "html docs failed"
 		if use apidoc ; then
 			docinto api

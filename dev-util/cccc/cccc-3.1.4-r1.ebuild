@@ -22,7 +22,7 @@ MAKEOPTS="-j1"
 
 src_prepare() {
 	# fix new C++ syntax error
-	epatch "${FILESDIR}"/${P}-gcc-4.7.patch
+	epatch "${FILESDIR}"/${P}-whitespace-and-unqualified-lookup.patch
 
 	sed -i -e "/^CFLAGS/s|=|+=|" pccts/antlr/makefile
 	sed -i -e "/^CFLAGS/s|=|+=|" pccts/dlg/makefile
