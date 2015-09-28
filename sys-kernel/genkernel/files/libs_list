@@ -1,3 +1,4 @@
+/lib64/librt.so.1
 /lib64/libext2fs.so.2
 /lib64/libcom_err.so.2
 /lib64/libmount.so.1
