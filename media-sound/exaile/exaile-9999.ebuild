@@ -14,8 +14,9 @@ HOMEPAGE="http://www.exaile.org/"
 
 if [[ ${PV} = 9999* ]]; then
 	inherit git-r3
-	EGIT_REPO_URI="https://github.com/exaile/exaile.git"
-	EGIT_BRANCH="gi"
+	EGIT_REPO_URI="https://github.com/sarnold/exaile.git"
+	EGIT_BRANCH="master"
+#	EGIT_BRANCH="gi"
 else
 	SRC_URI="https://github.com/${PN}/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 fi
@@ -23,7 +24,7 @@ fi
 LICENSE="GPL-2 GPL-3"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~ppc ~sparc ~x86"
-IUSE="cddb droptray extra-plugins libnotify mp4 mpris2 mtp nls wikipedia"
+IUSE="aws cddb droptray extra-plugins libnotify mp4 mpris2 mtp nls wikipedia"
 
 RDEPEND="${PYTHON_DEPS}
 	dev-python/dbus-python
@@ -34,6 +35,7 @@ RDEPEND="${PYTHON_DEPS}
 	>=media-libs/mutagen-1.10
 	media-plugins/gst-plugins-meta:1.0
 	virtual/python-imaging
+	aws? ( dev-python/lxml )
 	cddb? ( dev-python/cddb-py )
 	droptray? ( dev-python/egg-python )
 	libnotify? ( dev-python/notify-python )
@@ -47,13 +49,17 @@ DEPEND="nls? ( dev-util/intltool
 
 RESTRICT="test" #315589
 
+#EPATCH_OPTS="-R"
+
 src_prepare() {
 	python_setup
 
-	epatch "${FILESDIR}"/${PN}-0.3.2.1-amazoncover-lxml.patch
+	# currently in master and upstream pull request
+#	use aws && epatch "${FILESDIR}"/${PN}-0.3.2.1-amazoncover-lxml.patch
+#	epatch "${FILESDIR}"/${P}-manprefix.patch
 }
 src_compile() {
-	emake compile manpage
+	emake all_no_locale
 
 	if use nls; then
 		emake locale
@@ -61,12 +67,14 @@ src_compile() {
 }
 
 src_install() {
-	INSTALL_OPTS='PREFIX=/usr LIBINSTALLDIR=/$(get_libdir) DESTDIR="${ED}"'
+	# other install paths that can be set:
+	#  EPREFIX  DATADIR  XDGCONFDIR  MANPREFIX
+	INSTALL_OPTS="PREFIX=/usr LIBINSTALLDIR=/usr/$(get_libdir)"
 
-	emake ${INSTALL_OPTS} install$(use nls || echo _no_locale)
+	DESTDIR=${ED} emake ${INSTALL_OPTS} install$(use nls || echo _no_locale)
 
 	if use extra-plugins ; then
-		emake ${INSTALL_OPTS} -C plugins extra_install \
+		DESTDIR=${ED} emake ${INSTALL_OPTS} -C plugins extra_install \
 			|| die "install extra plugins failed"
 	fi
 

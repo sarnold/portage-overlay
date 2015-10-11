@@ -47,15 +47,17 @@ DEPEND="nls? ( dev-util/intltool
 
 RESTRICT="test" #315589
 
+EPATCH_OPTS="-F 3"
+
 src_prepare() {
 	python_setup
 
 	epatch "${FILESDIR}"/${PN}-0.3.2.1-amazoncover-lxml.patch \
 		"${FILESDIR}"/${P}-missing_dbus_import.patch \
-		"${FILESDIR}"/${P}-externals_install_fix.patch
+		"${FILESDIR}"/${P}-manprefix-makefile.patch
 }
 src_compile() {
-	emake compile manpage
+	emake all_no_locale
 
 	if use nls; then
 		emake locale
@@ -63,7 +65,8 @@ src_compile() {
 }
 
 src_install() {
-	INSTALL_OPTS='PREFIX=/usr LIBINSTALLDIR=/$(get_libdir) DESTDIR="${ED}"'
+	# MANPREFIX now defaults to PREFIX/share - set path for *BSDs
+	INSTALL_OPTS='PREFIX=/usr LIBINSTALLDIR=/usr/$(get_libdir) DESTDIR="${ED}"'
 
 	emake ${INSTALL_OPTS} install$(use nls || echo _no_locale)
 
