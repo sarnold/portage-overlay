@@ -1,13 +1,13 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI="4"
 
 inherit eutils versionator toolchain-funcs flag-o-matic gnuconfig multilib systemd unpacker multiprocessing
 
 DESCRIPTION="GNU libc6 (also called glibc2) C library"
-HOMEPAGE="http://www.gnu.org/software/libc/libc.html"
+HOMEPAGE="https://www.gnu.org/software/libc/libc.html"
 
 LICENSE="LGPL-2.1+ BSD HPND ISC inner-net rc PCRE"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
@@ -27,10 +27,10 @@ case ${PV} in
 	;;
 esac
 GCC_BOOTSTRAP_VER="4.7.3-r1"
-PATCH_VER="4"                                  # Gentoo patchset
+PATCH_VER="5"                                  # Gentoo patchset
 : ${NPTL_KERN_VER:="2.6.32"}                   # min kernel version nptl requires
 
-IUSE="debug gd hardened multilib nscd selinux systemtap profile suid vanilla crosscompile_opts_headers-only"
+IUSE="debug gd hardened lock-el multilib nscd selinux systemtap profile suid vanilla crosscompile_opts_headers-only"
 
 # Here's how the cross-compile logic breaks down ...
 #  CTARGET - machine that will target the binaries
@@ -93,7 +93,7 @@ upstream_uris() {
 }
 gentoo_uris() {
 	local devspace="HTTP~vapier/dist/URI HTTP~azarah/glibc/URI"
-	devspace=${devspace//HTTP/http://dev.gentoo.org/}
+	devspace=${devspace//HTTP/https://dev.gentoo.org/}
 	echo mirror://gentoo/$1 ${devspace//URI/$1}
 }
 SRC_URI=$(
@@ -187,7 +187,7 @@ eblit-src_prepare-post() {
 	fi
 
 	# work-around for upstream Intel errata from ryao (plus configure option)
-	epatch "${FILESDIR}"/2.20/glibc-2.20-disble_lock_elision_if_not_defined.patch
+	use lock-el && epatch "${FILESDIR}"/2.20/glibc-2.20-disble_lock_elision_if_not_defined.patch
 
 	case $(gcc-fullversion) in
 	4.8.[0-3]|4.9.0)
