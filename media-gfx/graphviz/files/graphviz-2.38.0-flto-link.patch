@@ -1,0 +1,41 @@
+--- lib/gvc/gvplugin.c.orig	2015-10-03 11:44:09.747655644 -0700
++++ lib/gvc/gvplugin.c	2015-10-03 11:44:25.294818056 -0700
+@@ -20,7 +20,7 @@
+ #include	<ltdl.h>
+ #endif
+ 
+-#include	<agxbuf.h>
++#include	"agxbuf.h"
+ #include        "memory.h"
+ #include        "types.h"
+ #include        "gvplugin.h"
+--- lib/common/htmllex.h.orig	2015-10-03 11:45:10.896272185 -0700
++++ lib/common/htmllex.h	2015-10-03 11:45:31.536930394 -0700
+@@ -18,7 +18,7 @@
+ #ifndef HTMLLEX_H
+ #define HTMLLEX_H
+ 
+-#include <agxbuf.h>
++#include "agxbuf.h"
+ 
+     extern int initHTMLlexer(char *, agxbuf *, htmlenv_t *);
+     extern int htmllex(void);
+--- lib/common/taper.c.orig	2015-10-03 11:46:10.271498975 -0700
++++ lib/common/taper.c	2015-10-03 11:48:59.556898076 -0700
+@@ -22,11 +22,11 @@
+ #include <math.h>
+ #include <stdio.h>
+ #include <stdlib.h>
+-#include <types.h>
+-#include <memory.h>
+-#include <logic.h>
+-#include <agxbuf.h>
+-#include <utils.h>
++#include "types.h"
++#include "memory.h"
++#include "logic.h"
++#include "agxbuf.h"
++#include "utils.h"
+ 
+   /* sample point size; should be dynamic based on dpi or under user control */
+ #define BEZIERSUBDIVISION 20
