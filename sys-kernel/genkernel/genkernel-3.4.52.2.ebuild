@@ -116,8 +116,11 @@ src_prepare() {
 
 	if use premount ; then
 		epatch "${FILESDIR}"/${PN}-add-fsck-premount.patch
-		install "${FILESDIR}"/libs_list ${WORKDIR}
+		install "${FILESDIR}"/libs_list "${WORKDIR}"
 		sed -i -e "s|lib64|$(get_libdir)|" \
+			"${WORKDIR}"/libs_list
+		## FIXME
+		use amd64 || sed -i -e "s|-x86-64||" \
 			"${WORKDIR}"/libs_list
 	fi
 
@@ -189,7 +192,7 @@ pkg_postinst() {
 gen_files() {
 	# generate overlay files for premount fsck support
 
-	overlay="${D}usr/share/genkernel/overlay"
+	overlay="${ED}usr/share/genkernel/overlay"
 	mkdir -p $overlay/etc
 	mkdir -p $overlay/sbin
 	mkdir -p $overlay/$(get_libdir)
