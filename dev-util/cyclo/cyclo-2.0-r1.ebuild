@@ -6,21 +6,18 @@ EAPI="2"
 
 inherit eutils toolchain-funcs
 
-DESCRIPTION="Computes cyclomatic complexity metric on source code."
-SRC_URI="http://www.maultech.com/chrislott/resources/cmetrics/${P}.tar.gz"
+DESCRIPTION="Computes cyclomatic complexity metrics on C source code."
+SRC_URI="https://github.com/sarnold/cyclo/archive/2.0.tar.gz -> ${P}.tar.gz"
 HOMEPAGE="http://www.maultech.com/chrislott/resources/cmetrics/"
 
-KEYWORDS="~alpha ~amd64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86 ~x86-fbsd"
+KEYWORDS="alpha amd64 hppa ia64 ~mips ppc ppc64 sparc x86 ~x86-fbsd"
 SLOT="0"
 LICENSE="GPL-2"
 IUSE="debug"
 
 DEPEND="sys-devel/flex"
 
-src_unpack() {
-	unpack ${A}
-	cd "${S}"
-
+src_prepare() {
 	epatch "${FILESDIR}"/${P}-gcc-update.patch \
 		"${FILESDIR}"/${P}-add_flex_noyywrap_option.patch
 
