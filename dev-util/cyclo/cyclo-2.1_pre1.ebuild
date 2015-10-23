@@ -1,8 +1,8 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
-EAPI="4"
+EAPI="5"
 
 inherit eutils toolchain-funcs
 
@@ -24,10 +24,17 @@ IUSE="debug"
 DEPEND="sys-devel/flex"
 
 src_compile() {
+	local my_flags="CC=$(tc-getCC) CCPLUS=$(tc-getCXX)"
+
 	if ! use debug ; then
-		DBG="" make all || die "make failed"
+		DBG="" make ${my_flags} all || die "make failed"
 	else
-		DBG="${DEBUG}" make all || die "make debug failed"
+		export STRIP_MASK="*/bin/*"
+		if [ -n "${DEBUG}" ] ; then
+			DBG="${DEBUG}" make ${my_flags} all || die "make debug failed"
+		else
+			make ${my_flags} all || die "make debug failed"
+		fi
 	fi
 }
 
