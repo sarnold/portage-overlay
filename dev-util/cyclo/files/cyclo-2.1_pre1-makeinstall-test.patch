@@ -1,0 +1,151 @@
+diff --git a/Makefile b/Makefile
+index 61ca29d..0ef8bf9 100644
+--- a/Makefile
++++ b/Makefile
+@@ -14,56 +14,111 @@
+ # Updated 1996 by R. Statsinger, C. Lott
+ # Updated 2015 by Stephen L Arnold
+ 
++# don't forget to update the version!
++MAJOR_VERSION = 2
++MINOR_VERSION = 1
++PATCH_VERSION = 0
++FULL_VERSION = $(MAJOR_VERSION).$(MINOR_VERSION).$(PATCH_VERSION)
++
++PV = $(MAJOR_VERSION).$(MINOR_VERSION)_pre1
++
++# the actual build stuff starts here
+ HEADERS = tokens.h lib.h list.h stack.h
+ 
+ # Compilation configuration
+-# your C compiler must understand ANSI std C
+ CC ?= gcc
+-# and you'll need a C++ compiler as well
+-CCPLUS ?= g++
+-# flex is not absolutely required, but some versions of
+-# lex run out of space while processing the input file
+-LEX ?= flex
+-#LEX = lex
++CXX ?= g++
++
++# we need flex to work around some limitations of certain lex versions
++LEX = flex
+ 
+ DBG ?= -g
+ 
+-OPTIM ?= -O2
+-LEXOPTS = -t
+-LDOPTS = $(LDFLAGS) $(DBG)
+-MYCFLAGS = $(OPTIM) $(CFLAGS) $(DBG) #-Wall
+-MYLIBS = -lstdc++ -lfl
++OPTIM	?= -O2
++LFLAGS	= -t
++MYLDFLAGS	= $(LDFLAGS) $(DBG)
++MYCFLAGS	= $(OPTIM) $(DBG) $(CFLAGS) #-Wall
++MYCXXFLAGS	= $(MYCFLAGS)
++LDADD	= -lstdc++ -lfl
++
++.SUFFIXES:
++.SUFFIXES: .l .c .C .o
++
++GENSRCS	= mcstrip.c scan.c
++BLDSRCS	= lib.C main.C strerror.c
++MCSOBJS	= mcstrip.o strerror.o
++CYCOBJS	= main.o lib.o
++SCNOBJS	= scan.o
++
++.INTERMEDIATE: $(GENSRCS)
++.PHONY: all
++.DEFAULT: all
++
++PGMS	= mcstrip cyclo
++
++all: $(PGMS)
+ 
+-all: mcstrip cyclo
++mcstrip.c: mcstrip.l
++	$(LEX) $(LFLAGS) $^ > $@
+ 
+-mcstrip: mcstrip.o strerror.o
+-	$(CC) $(LDOPTS) $(MYCFLAGS) -o mcstrip mcstrip.o strerror.o $(LIBS)
++scan.c: scan.l
++	$(LEX) $(LFLAGS) $^ > $@
+ 
+-mcstrip.o: mcstrip.l
+-	$(LEX) $(LEXOPTS) mcstrip.l > mcstrip.c
+-	$(CC) $(MYCFLAGS) -c mcstrip.c
+-	rm mcstrip.c
++%.o: %.c
++	$(CC) $(CPPFLAGS) $(MYCFLAGS) -o $@ -c $^
+ 
+-strerror.o: strerror.c
+-	$(CC) $(MYCFLAGS) -c strerror.c
++%.o: %.C
++	$(CXX) $(CPPFLAGS) $(MYCFLAGS) -o $@ -c $^
+ 
+-cyclo: main.o scan.o lib.o
+-	$(CCPLUS) $(LDOPTS) -o $@ main.o scan.o lib.o $(MYLIBS)
++mcstrip: $(MCSOBJS)
++	$(CC) -o $@ $(MYCFLAGS) $(MYLDFLAGS) $^ $(LDADD)
+ 
+-main.o: main.C $(HEADERS)
+-	#$(CCPLUS) $(MYCFLAGS) -DNEEDGETOPTDEFS -c main.C
+-	$(CCPLUS) $(MYCFLAGS) -c main.C
++cyclo: $(CYCOBJS) $(SCNOBJS)
++	$(CXX) -o $@ $(MYCFLAGS) $(MYLDFLAGS) $^ $(LDADD)
+ 
+-lib.o: lib.C $(HEADERS)
+-	$(CCPLUS) $(MYCFLAGS) -c lib.C
++# not sure if we care about -DNEEDGETOPTDEFS or not...
+ 
+-scan.o: scan.l $(HEADERS)
+-	$(LEX) $(LEXOPTS) scan.l > scan.c
+-	$(CC) $(MYCFLAGS) -c scan.c
+-	rm scan.c
++PREFIX		= /usr/local
++EPREFIX		= $(PREFIX)
++DATADIR		= $(PREFIX)/share
++MANPREFIX	= $(PREFIX)/share
++
++BINDIR		= $(DESTDIR)$(EPREFIX)/bin
++MANDIR		= $(DESTDIR)$(MANPREFIX)/man
++DOCDIR		= $(DESTDIR)$(DATADIR)/doc/cyclo-$(PV)
++
++INSTALL		= install -p
++INSTALL_PROGRAM	= $(INSTALL)
++INSTALL_DATA	= $(INSTALL) -m 644
++
++make-install-dirs:
++	mkdir -p $(BINDIR)
++	mkdir -p $(MANDIR)/man0
++	mkdir -p $(MANDIR)/man1
++	mkdir -p $(DOCDIR)
++
++uninstall:
++	$(RM) $(BINDIR)/cyclo
++	$(RM) $(BINDIR)/mcstrip
++	rm -rf $(DOCDIR)
++	$(RM) $(MANDIR)/man0/cyclo.0.gz
++	$(RM) $(MANDIR)/man1/cyclo.1.gz
++	$(RM) $(MANDIR)/man1/mcstrip.1.gz
++
++install: install-targets
++
++install-targets: make-install-dirs
++	$(INSTALL_PROGRAM) -t $(BINDIR) $(PGMS)
++	$(INSTALL_DATA) cyclo.0 $(MANDIR)/man0
++	$(INSTALL_DATA) cyclo.1 $(MANDIR)/man1
++	$(INSTALL_DATA) mcstrip.1 $(MANDIR)/man1
++	$(INSTALL_DATA) README.rst $(DOCDIR)
++	$(INSTALL_DATA) mccabe.example $(DOCDIR)
+ 
+ clean:
+-	rm -f cyclo mcstrip core *.o *~
++	$(RM) cyclo mcstrip core *.o *~
++
++cleanall: clean
++	$(RM) *.pre *.mets *.strp $(GENSRCS)
++
+ 
+-veryclean: clean
+-	rm -f mcstrip.c scan.c

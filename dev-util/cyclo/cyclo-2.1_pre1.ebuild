@@ -23,24 +23,27 @@ IUSE="debug"
 
 DEPEND="sys-devel/flex"
 
+src_prepare() {
+	epatch "${FILESDIR}"/${P}-makeinstall-test.patch
+}
+
 src_compile() {
-	local my_flags="CC=$(tc-getCC) CCPLUS=$(tc-getCXX)"
+	local my_opts
+	my_opts="CC=$(tc-getCC) CXX=$(tc-getCXX)"
 
 	if ! use debug ; then
-		DBG="" make ${my_flags} all || die "make failed"
+		DBG="" make ${my_opts} || die "make failed"
 	else
 		export STRIP_MASK="*/bin/*"
 		if [ -n "${DEBUG}" ] ; then
-			DBG="${DEBUG}" make ${my_flags} all || die "make debug failed"
+			DBG="${DEBUG}" make ${my_opts} \
+				|| die "make debug failed"
 		else
-			make ${my_flags} all || die "make debug failed"
+			make ${my_opts} || die "make debug failed"
 		fi
 	fi
 }
 
 src_install() {
-	dobin cyclo mcstrip
-
-	doman cyclo.0 mcstrip.1 cyclo.1
-	dodoc README.rst mccabe.example || die "dodoc failed"
+	make PREFIX=/usr DESTDIR="${ED}" install
 }
