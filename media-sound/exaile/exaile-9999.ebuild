@@ -27,13 +27,13 @@ SLOT="0"
 KEYWORDS="~amd64 ~arm ~ppc ~sparc ~x86"
 IUSE="aws cddb droptray extra-plugins libnotify mp4 mpris2 mtp nls wikipedia"
 
-RDEPEND="${PYTHON_DEPS}
-	dev-python/dbus-python
+RDEPEND="dev-python/dbus-python[${PYTHON_USEDEP}]
 	dev-python/gst-python:1.0
 	x11-libs/gtk+:3[introspection]
+	dev-libs/keybinder:3[introspection]
 	dev-python/pygobject:3[${PYTHON_USEDEP}]
 	media-libs/gst-plugins-good:1.0
-	>=media-libs/mutagen-1.10
+	>=media-libs/mutagen-1.22[${PYTHON_USEDEP}]
 	media-plugins/gst-plugins-meta:1.0
 	virtual/python-imaging
 	aws? ( dev-python/lxml )
@@ -41,7 +41,7 @@ RDEPEND="${PYTHON_DEPS}
 	droptray? ( dev-python/egg-python )
 	libnotify? ( dev-python/notify-python )
 	mp4? ( media-plugins/gst-plugins-libav:1.0 )
-	mpris2? ( media-plugins/exaile-soundmenu-indicator )
+	mpris2? ( >=media-plugins/exaile-soundmenu-indicator-0.0.6 )
 	mtp? ( dev-python/pymtp )
 	wikipedia? ( dev-python/pywebkitgtk )"
 
