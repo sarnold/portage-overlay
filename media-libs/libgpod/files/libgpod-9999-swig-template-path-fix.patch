@@ -1,0 +1,13 @@
+diff --git a/bindings/python/Makefile.am b/bindings/python/Makefile.am
+index 2dfe30c..06bd234 100644
+--- a/bindings/python/Makefile.am
++++ b/bindings/python/Makefile.am
+@@ -47,7 +47,7 @@ _gpod_la_LIBADD = $(LIBGPOD_LIBS) $(PYGOBJECT_LIBS) $(top_builddir)/src/libgpod.
+ gpod_doc.i: $(srcdir)/gpod_doc.i.in $(srcdir)/gtkdoc-to-swig.xsl
+ 	cat $< > $@
+ 	-if test -x "`which xsltproc 2>/dev/null`"; then \
+-	    for xml in $(top_srcdir)/docs/reference/xml/*.xml; do \
++	    for xml in $(top_srcdir)/docs/reference/*.xml; do \
+ 		xsltproc $(srcdir)/gtkdoc-to-swig.xsl $$xml; \
+ 	    done >> $@; \
+ 	fi
