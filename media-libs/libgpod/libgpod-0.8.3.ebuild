@@ -1,6 +1,6 @@
 # Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -10,9 +10,15 @@ PYTHON_COMPAT=( python2_7 )
 
 inherit autotools eutils mono-env python-single-r1 udev
 
-DESCRIPTION="Shared library to access the contents of an iPod"
+if [[ ${PV} = 9999* ]]; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/VCTLabs/libgpod.git"
+else
+	SRC_URI="mirror://sourceforge/gtkpod/${P}.tar.bz2"
+fi
+
+DESCRIPTION="Shared library to access the contents of an iPod and other Apple stuff"
 HOMEPAGE="http://www.gtkpod.org/libgpod/"
-SRC_URI="mirror://sourceforge/gtkpod/${P}.tar.bz2"
 
 LICENSE="LGPL-2"
 SLOT="0"
