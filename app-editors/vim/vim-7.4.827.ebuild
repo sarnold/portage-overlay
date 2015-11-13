@@ -22,7 +22,7 @@ HOMEPAGE="http://www.vim.org/"
 
 SLOT="0"
 LICENSE="vim"
-IUSE="X acl cscope debug gpm lua luajit minimal nls perl python racket ruby selinux tcl lto vim-pager"
+IUSE="X acl cscope debug gpm lto lua luajit minimal nls perl python racket ruby selinux tcl vim-pager"
 REQUIRED_USE="
 	luajit? ( lua )
 	python? (
