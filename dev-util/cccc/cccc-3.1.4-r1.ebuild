@@ -6,7 +6,7 @@ EAPI=5
 
 inherit eutils toolchain-funcs flag-o-matic
 
-DESCRIPTION="Source metrics (line counts, complexity, etc) for Java and C++"
+DESCRIPTION="Source code metrics (line counts, complexity, etc) for Java and C++"
 HOMEPAGE="http://cccc.sourceforge.net/"
 SRC_URI="mirror://sourceforge/${PN}/${P}.tar.gz"
 
@@ -35,7 +35,7 @@ src_prepare() {
 src_compile() {
 	emake CCC=$(tc-getCXX) LD=$(tc-getCXX) pccts
 
-	append-cflags "-std=gnu++11"
+	append-cflags "-std=c++98"
 	emake CCC=$(tc-getCXX) LD=$(tc-getCXX) cccc
 }
 

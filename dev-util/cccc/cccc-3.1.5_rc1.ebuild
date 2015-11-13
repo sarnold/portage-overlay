@@ -4,9 +4,9 @@
 
 EAPI=5
 
-inherit eutils toolchain-funcs flag-o-matic
+inherit eutils toolchain-funcs
 
-DESCRIPTION="Source metrics (line counts, complexity, etc) for Java and C++"
+DESCRIPTION="Source code metrics (line counts, complexity, etc) for Java and C++"
 HOMEPAGE="http://sarnold.github.io/cccc/"
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/sarnold/cccc.git"
@@ -34,6 +34,7 @@ src_prepare() {
 
 src_compile() {
 	if use debug ; then
+		export STRIP_MASK="*/bin/*"
 		emake DEBUG="true" CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
 	else
 		emake CCC=$(tc-getCXX) CC=$(tc-getCC) cccc

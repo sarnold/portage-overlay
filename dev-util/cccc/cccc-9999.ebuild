@@ -37,7 +37,8 @@ src_prepare() {
 
 src_compile() {
 	if use debug ; then
-		emake DEBUG="true" CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
+		export STRIP_MASK="*/bin/*"
+		DEBUG="true" make CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
 	else
 		emake CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
 	fi
@@ -50,11 +51,7 @@ src_test() {
 }
 
 src_install() {
-	if ! use debug ; then
-		dobin cccc/cccc
-	else
-		newbin cccc/cccc ccccd
-	fi
+	dobin cccc/cccc
 
 	dodoc README.md
 

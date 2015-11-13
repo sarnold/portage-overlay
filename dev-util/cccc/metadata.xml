@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
 <pkgmetadata>
-<herd>dev-tools</herd>
-<maintainer>
-	<email>nerdboy@gentoo.org</email>
-	<name>Steve Arnold</name>
-</maintainer>
-<upstream>
-	<remote-id type="github">sarnold/cccc</remote-id>
-</upstream>
-<flag name="apidoc">Build software docs with doxygen/graphviz and metrics with cccc</flag>
-<flag name="mfc">Add patch for MFC dialect options</flag>
+	<herd>dev-tools</herd>
+	<maintainer>
+		<email>nerdboy@gentoo.org</email>
+		<name>Steve Arnold</name>
+	</maintainer>
+	<upstream>
+		<remote-id type="github">sarnold/cccc</remote-id>
+	</upstream>
+	<flag name="apidoc">Build software docs with doxygen/graphviz and metrics with cccc</flag>
+	<flag name="mfc">Add patch for MFC dialect options</flag>
 </pkgmetadata>
