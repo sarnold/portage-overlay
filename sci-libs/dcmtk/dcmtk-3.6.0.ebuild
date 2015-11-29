@@ -1,8 +1,8 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2015 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
-EAPI="3"
+EAPI="5"
 
 inherit cmake-utils eutils
 
@@ -10,16 +10,17 @@ DESCRIPTION="The DICOM Toolkit"
 HOMEPAGE="http://dicom.offis.de/dcmtk.php.en"
 SRC_URI="ftp://dicom.offis.de/pub/dicom/offis/software/dcmtk/dcmtk360/${P}.tar.gz"
 
-KEYWORDS="amd64 x86"
+LICENSE="OFFIS"
+KEYWORDS="~amd64 ~arm ~x86"
 SLOT="0"
 IUSE="doc png ssl tcpd tiff +threads xml zlib"
 
 RDEPEND="
-	virtual/jpeg
-	png? ( media-libs/libpng )
-	ssl? ( dev-libs/openssl )
+	virtual/jpeg:0
+	png? ( media-libs/libpng:* )
+	ssl? ( dev-libs/openssl:0 )
 	tcpd? ( sys-apps/tcp-wrappers )
-	tiff? ( media-libs/tiff )
+	tiff? ( media-libs/tiff:0 )
 	xml? ( dev-libs/libxml2:2 )
 	zlib? ( sys-libs/zlib )"
 DEPEND="${RDEPEND}
@@ -66,7 +67,9 @@ src_configure() {
 		$(cmake-utils_use ssl DCMTK_WITH_OPENSSL)
 		$(cmake-utils_use doc DCMTK_WITH_DOXYGEN)
 		$(cmake-utils_use threads DCMTK_WITH_THREADS)"
+
 	cmake-utils_src_configure
+
 	if use doc; then
 		cd "${S}"/doxygen
 		econf
@@ -75,6 +78,7 @@ src_configure() {
 
 src_compile() {
 	cmake-utils_src_compile
+
 	if use doc; then
 		emake -C "${S}"/doxygen || die
 	fi
@@ -82,9 +86,10 @@ src_compile() {
 
 src_install() {
 	cmake-utils_src_install
+
+	doman doxygen/manpages/man1/* || die
+
 	if use doc; then
-		cd "${S}"
-		doman doxygen/manpages/man1/* || die
-		dohtml -r doxygen/htmldocs/* || die
+		dohtml -r "${S}"/doxygen/htmldocs/* || die
 	fi
 }
