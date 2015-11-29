@@ -46,8 +46,13 @@ src_prepare() {
 		-i CMakeLists.txt || die
 	sed -e 's:${CMAKE_INSTALL_PREFIX}/::' \
 		-i dcmwlm/data/CMakeLists.txt doxygen/CMakeLists.txt || die
-	# Temporary workaround: docs are not build with CMake
+	# Temporary workaround: docs are not built with CMake
 	sed -i -e '/include/d' doxygen/Makefile.in || die
+
+	# fix -D deprecation warnings
+	sed -i -e "s|_BSD_SOURCE|_DEFAULT_SOURCE|g" \
+		"${S}"/config/configure.in \
+		"${S}"/CMakeLists.txt
 }
 
 src_configure() {
