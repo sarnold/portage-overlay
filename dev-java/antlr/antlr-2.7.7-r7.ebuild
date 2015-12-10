@@ -167,8 +167,8 @@ src_install() {
 	if use examples ; then
 		find "${S}"/examples -iname Makefile\* -exec rm \{\} \;
 		insinto /usr/share/doc/${PF}/examples
+		doins -r "${S}"/examples/java
 		use cxx && doins -r "${S}"/examples/cpp
-		use java && doins -r "${S}"/examples/java
 		use mono && doins -r "${S}"/examples/csharp
 		use python && doins -r "${S}"/examples/python
 	fi
