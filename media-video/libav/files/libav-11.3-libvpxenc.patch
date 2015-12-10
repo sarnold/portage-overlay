@@ -1,0 +1,26 @@
+X-Git-Url: http://git.videolan.org/?p=ffmpeg.git;a=blobdiff_plain;f=libavcodec%2Flibvpxenc.c;h=992122c98276d0fda12f0a6117bc884ec63c9d41;hp=5f397830871b35e9e977c58b1b2abb57aef6f69c;hb=6540fe04a3f9a11ba7084a49b3ee5fa2fc5b32ab;hpb=6b41b4414934cc930468ccd5db598dd6ef643987
+
+diff --git a/libavcodec/libvpxenc.c b/libavcodec/libvpxenc.c
+index 5f39783..992122c 100644
+--- a/libavcodec/libvpxenc.c
++++ b/libavcodec/libvpxenc.c
+@@ -104,19 +104,11 @@ typedef struct VP8EncoderContext {
+ 
+ /** String mappings for enum vp8e_enc_control_id */
+ static const char *const ctlidstr[] = {
+-    [VP8E_UPD_ENTROPY]           = "VP8E_UPD_ENTROPY",
+-    [VP8E_UPD_REFERENCE]         = "VP8E_UPD_REFERENCE",
+-    [VP8E_USE_REFERENCE]         = "VP8E_USE_REFERENCE",
+-    [VP8E_SET_ROI_MAP]           = "VP8E_SET_ROI_MAP",
+-    [VP8E_SET_ACTIVEMAP]         = "VP8E_SET_ACTIVEMAP",
+-    [VP8E_SET_SCALEMODE]         = "VP8E_SET_SCALEMODE",
+     [VP8E_SET_CPUUSED]           = "VP8E_SET_CPUUSED",
+     [VP8E_SET_ENABLEAUTOALTREF]  = "VP8E_SET_ENABLEAUTOALTREF",
+     [VP8E_SET_NOISE_SENSITIVITY] = "VP8E_SET_NOISE_SENSITIVITY",
+-    [VP8E_SET_SHARPNESS]         = "VP8E_SET_SHARPNESS",
+     [VP8E_SET_STATIC_THRESHOLD]  = "VP8E_SET_STATIC_THRESHOLD",
+     [VP8E_SET_TOKEN_PARTITIONS]  = "VP8E_SET_TOKEN_PARTITIONS",
+-    [VP8E_GET_LAST_QUANTIZER]    = "VP8E_GET_LAST_QUANTIZER",
+     [VP8E_SET_ARNR_MAXFRAMES]    = "VP8E_SET_ARNR_MAXFRAMES",
+     [VP8E_SET_ARNR_STRENGTH]     = "VP8E_SET_ARNR_STRENGTH",
+     [VP8E_SET_ARNR_TYPE]         = "VP8E_SET_ARNR_TYPE",
