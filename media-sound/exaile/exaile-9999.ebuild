@@ -16,8 +16,8 @@ if [[ ${PV} = 9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/exaile/exaile.git"
 #	EGIT_REPO_URI="https://github.com/sarnold/exaile.git"
-#	EGIT_BRANCH="master"
-	EGIT_BRANCH="gi"
+	EGIT_BRANCH="master"
+#	EGIT_BRANCH="gi"
 else
 	SRC_URI="https://github.com/${PN}/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 fi
