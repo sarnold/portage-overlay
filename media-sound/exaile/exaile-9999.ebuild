@@ -80,7 +80,7 @@ src_install() {
 			|| die "install extra plugins failed"
 	fi
 
-	dodoc README
+	dodoc README.md
 }
 
 pkg_postinst() {
