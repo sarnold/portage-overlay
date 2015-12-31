@@ -1,0 +1,22 @@
+--- dao/CdrDriver.h.orig	2015-12-31 10:49:24.606929819 -0800
++++ dao/CdrDriver.h	2015-12-31 10:54:51.766778252 -0800
+@@ -440,7 +440,7 @@
+   bool fullBurn_;
+ 
+   static unsigned char syncPattern[12];
+-  static char REMOTE_MSG_SYNC_[4];
++  static unsigned char REMOTE_MSG_SYNC_[4];
+ 
+   static int speed2Mult(int);
+   static int mult2Speed(int);
+--- dao/CdrDriver.cc.orig	2015-12-31 10:49:05.933033805 -0800
++++ dao/CdrDriver.cc	2015-12-31 10:55:40.121565725 -0800
+@@ -495,7 +495,7 @@
+   0, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0xff, 0
+ };
+ 
+-char CdrDriver::REMOTE_MSG_SYNC_[4] = { 0xff, 0x00, 0xff, 0x00 };
++unsigned char CdrDriver::REMOTE_MSG_SYNC_[4] = { 0xff, 0x00, 0xff, 0x00 };
+ 
+ 
+ /* Maps a string to the corresponding driver option value 
