@@ -4,7 +4,7 @@
 
 EAPI="2"
 
-inherit eutils fixheadtails autotools bash-completion
+inherit eutils fixheadtails autotools bash-completion-r1
 
 MY_P="${P/_/-}"
 
