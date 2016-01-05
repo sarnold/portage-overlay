@@ -57,10 +57,6 @@ pkg_setup() {
 }
 
 src_prepare() {
-#	epatch "${FILESDIR}"/${P}-swig-template-path-fix.patch \
-#		"${FILESDIR}"/${PN}-0.8.3-swig-comment-fix.patch \
-#		"${FILESDIR}"/${P}-mount-args-fix.patch
-#
 	eautoreconf
 }
 
