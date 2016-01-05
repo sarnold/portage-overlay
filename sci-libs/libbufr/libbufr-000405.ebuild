@@ -4,7 +4,7 @@
 
 EAPI=4
 
-inherit eutils fortran-2 flag-o-matic toolchain-funcs
+inherit eutils fortran-2 toolchain-funcs
 
 MY_P="${PN/lib/}dc_${PV}"
 
@@ -17,7 +17,7 @@ SLOT="0"
 KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
 # needs someone to test on these: ~alpha ~hppa ~ia64 ~sparc etc ...
 
-IUSE="debug doc examples"
+IUSE="debug doc examples lto"
 
 RDEPEND="
 	virtual/fortran
@@ -26,6 +26,10 @@ RDEPEND="
 DEPEND="sys-apps/findutils"
 
 S=${WORKDIR}/${MY_P}
+
+if use lto; then
+	RESTRICT="strip"
+fi
 
 pkg_setup() {
 	fortran-2_pkg_setup
@@ -73,39 +77,45 @@ src_prepare() {
 	local config="config/config.$target$CNAME$R64$A64"
 
 	if [[ "${ARCH}" == "ppc" ]] ; then
-		sed -i -e "s|= -mcpu=G4 -mtune=G4|= |" $config
+		sed -i -e "s|= -mcpu=G4 -mtune=G4|= |" ${config}
 	elif [[ "${ARCH}" == "ppc64" ]] ; then
-		sed -i -e "s|= -mcpu=G5 -mtune=G5|= |" $config
+		sed -i -e "s|= -mcpu=G5 -mtune=G5|= |" ${config}
 	else
 		cp ${config}.in ${config} || die "Error updating config!"
 	fi
 
-	sed -i -e "s:DEBUG = -O2:DEBUG = -g:g" $config
+	sed -i -e "s:DEBUG = -O2:DEBUG = -g:g" ${config}
+	use debug || sed -i -e "s:DEBUG = -g:DEBUG =:g" ${config}
 
 	# add local CFLAGS to build flags
-	use debug || sed -i -e "s|\$(DEBUG)|${CFLAGS}|" $config
+	sed -i -e "s|\$(DEBUG)|${CFLAGS} \$(DEBUG) -fPIC|" \
+		-e 's|emos|/usr/share/bufrtables|g' ${config}
 
-	# add the math library (fails with gold linker, see bug #370021)
-	append-libs -lm
-	append-flags -fuse-ld=bfd
-
-	# add local LDFLAGS to link commands
+	# add local LDFLAGS to bins
 	sed -i \
-		-e "s|-o|${LDFLAGS} -o|" \
+		-e "s|-o|${LDFLAGS} -fPIC -o|" \
 		examples/Makefile \
 		bufrtables/Makefile
 }
 
 src_compile() {
+	export BUFR_TABLES="${S}"/bufrtables
 	EBUILD_ARCH="${ARCH}"
 	EBUILD_CFLAGS="${CFLAGS}"
 	unset ARCH CFLAGS
-	tc-export CC
-	append-cppflags -DTABLE_PATH="/usr/share/bufrtables"
+
+	tc-export CC FC AR NM STRIP RANLIB
+	TC_FLAGS="CC=$CC FC=$FC AR=$AR RANLIB=$RANLIB"
+	ARFLAGS="rv"
+
+	if use lto; then
+		PLUGIN_PATH="--plugin=$(gcc -print-prog-name=liblto_plugin.so)"
+		tc-ld-is-gold && ARFLAGS="rv ${PLUGIN_PATH}"
+	fi
 
 	# emake won't work with this fossil...
 	BUFRFLAGS="ARCH=$target R64=$R64 CNAME=$CNAME"
-	make $BUFRFLAGS || die "make failed"
+	make $TC_FLAGS ARFLAGS="${ARFLAGS}" $BUFRFLAGS || die "make failed"
 
 	generate_files
 
@@ -170,23 +180,12 @@ generate_files() {
 	## Do not remove blank lines from the response file
 	cat <<-EOF > 20${PN}
 	BUFR_TABLES="/usr/share/bufrtables"
-	CONFIG_PROTECT="/usr/share/bufrtables"
-	EOF
-
-	cat <<-EOF > response_file
-	N
-	N
-	N
-	1
-
-	N
 	EOF
 }
 
 update_configs() {
 	find . -type f -name \*.distinct -o -name \*.f -o -name \*.in \
 		 | xargs chmod -x
-#	chmod +x bufrtables/links.sh
 	cp options/options_linux options/options_ppc
 	cp options/options_linux options/options_ppc_G5
 	cp pbio/sources.linux pbio/sources.ppc
