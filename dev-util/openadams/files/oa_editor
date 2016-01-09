@@ -1,0 +1,9 @@
+#!/bin/sh
+
+# OA Editor launcher script
+
+export OA_DATA_DIR=/usr/share/openadams
+export PYTHONPATH="${OA_DATA_DIR}${PYTHONPATH:+:$PYTHONPATH}"
+exec python2 ${OA_DATA_DIR}/oaeditor.pyw
+exit $?
+
