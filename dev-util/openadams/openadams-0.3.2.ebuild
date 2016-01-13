@@ -17,7 +17,9 @@ if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/sarnold/openadams"
 	DISTUTILS_IN_SOURCE_BUILD=1
 else
-	SRC_URI="mirror://sourceforge/${PN}/${P}.zip"
+	SRC_URI="mirror://sourceforge/${PN}/${P}.zip
+		https://github.com/sarnold/openadams/raw/master/logo.jpg -> ${PN}.jpg
+	"
 fi
 
 LICENSE="GPL-2"
@@ -50,6 +52,11 @@ src_install() {
 	doins {_,naf,oa}*.* filepicker.py PKG-INFO COPYING.txt
 
 	dodoc $DOCS
+
+	doicon "${DISTDIR}"/"${PN}".jpg
+	make_desktop_entry oa_editor "${PN} artifact editor" "${PN}".jpg
+	make_desktop_entry oa_logview "${PN} log viewer" "${PN}".jpg
+	make_desktop_entry oa_testrunner "${PN} test runner" "${PN}".jpg
 
 	python_export EPYTHON PYTHON
 	python_optimize "${D}"/usr/share/"${PN}"
