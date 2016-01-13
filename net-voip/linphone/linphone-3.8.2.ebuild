@@ -19,7 +19,7 @@ IUSE="assistant doc gsm-nonstandard gtk ipv6 libnotify ncurses nls sqlite ssl to
 
 RDEPEND="
 	>=media-libs/mediastreamer-2.11.0[ipv6?,upnp?,video?]
-	>=net-libs/belle-sip-1.4.0[antlr]
+	net-libs/belle-sip:0
 	>=net-libs/ortp-0.24.0[srtp]
 	virtual/udev
 	gtk? (
