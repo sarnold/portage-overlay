@@ -5,9 +5,10 @@
 EAPI=5
 
 PYTHON_COMPAT=( python2_7 )
+DISTUTILS_SINGLE_IMPL=1
 PYTHON_REQ_USE="sqlite,xml"
 
-inherit eutils fdo-mime python-single-r1 toolchain-funcs
+inherit eutils fdo-mime distutils-r1
 
 DESCRIPTION="an Artifact Documentation And Management System to document and manage software engineering artifacts"
 HOMEPAGE="http://openadams.sourceforge.net/"
@@ -15,7 +16,6 @@ HOMEPAGE="http://openadams.sourceforge.net/"
 if [[ ${PV} = 9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/sarnold/openadams"
-	DISTUTILS_IN_SOURCE_BUILD=1
 else
 	SRC_URI="mirror://sourceforge/${PN}/${P}.zip
 		https://github.com/sarnold/openadams/raw/master/logo.jpg -> ${PN}.jpg
@@ -35,25 +35,20 @@ DEPEND=""
 
 DOCS="CHANGELOG.txt README.txt"
 
-pkg_setup() {
-	python-single-r1_pkg_setup
-}
-
-src_prepare() {
-	if [[ ${PV} = 9999* ]]; then
-		cp "${S}"/_naf_version.tmpl "${S}"/_naf_version.py
-	fi
-}
-
 src_install() {
 	dobin "${FILESDIR}"/oa_*
 
 	insinto /usr/share/"${PN}"
-	doins {_,naf,oa}*.* filepicker.py PKG-INFO COPYING.txt
+	doins {_,naf,oa}*.* filepicker.py COPYING.txt
 
 	dodoc $DOCS
 
-	doicon "${DISTDIR}"/"${PN}".jpg
+	if [[ ${PV} = 9999* ]]; then
+		newicon "${S}"/logo.jpg "${PN}".jpg
+	else
+		doicon "${DISTDIR}"/"${PN}".jpg
+	fi
+
 	make_desktop_entry oa_editor "${PN} artifact editor" "${PN}".jpg
 	make_desktop_entry oa_logview "${PN} log viewer" "${PN}".jpg
 	make_desktop_entry oa_testrunner "${PN} test runner" "${PN}".jpg
