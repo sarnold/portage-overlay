@@ -71,12 +71,12 @@ src_install() {
 	# MANPREFIX now defaults to PREFIX/share - set path for *BSDs
 	# other install paths that can be set:
 	#  EPREFIX  DATADIR  XDGCONFDIR
-	INSTALL_OPTS='PREFIX=/usr LIBINSTALLDIR=/usr/$(get_libdir) DESTDIR="${ED}"'
+	INSTALL_OPTS="PREFIX=/usr LIBINSTALLDIR=/usr/$(get_libdir) DESTDIR=${ED}"
 
-	emake ${INSTALL_OPTS} install$(use nls || echo _no_locale)
+	make ${INSTALL_OPTS} install$(use nls || echo _no_locale)
 
 	if use extra-plugins ; then
-		emake ${INSTALL_OPTS} -C plugins extra_install \
+		make ${INSTALL_OPTS} -C plugins extra_install \
 			|| die "install extra plugins failed"
 	fi
 
