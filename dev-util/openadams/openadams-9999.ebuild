@@ -39,7 +39,7 @@ src_install() {
 	dobin "${FILESDIR}"/oa_*
 
 	insinto /usr/share/"${PN}"
-	doins {_,naf,oa}*.* filepicker.py COPYING.txt
+	doins {_,naf,oa}*.* filepicker.py
 
 	dodoc $DOCS
 
