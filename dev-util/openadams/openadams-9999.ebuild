@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -16,35 +16,37 @@ HOMEPAGE="http://openadams.sourceforge.net/"
 if [[ ${PV} = 9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/VCTLabs/openadams"
+	KEYWORDS=""
 else
 	SRC_URI="mirror://sourceforge/${PN}/${P}.zip
 		https://github.com/VCTLabs/openadams/raw/master/logo.jpg -> ${PN}.jpg
 	"
+	KEYWORDS="~amd64 ~arm ~x86"
 fi
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~x86"
-IUSE=""
+IUSE="doc"
 
-RDEPEND="${DEPEND}
-	virtual/jpeg:0
+DEPEND="virtual/jpeg:0
 	dev-python/PyQt4[X,sql,${PYTHON_USEDEP}]"
 
-DEPEND=""
+RDEPEND="${DEPEND}"
 
 DOCS="CHANGELOG.txt README.txt"
 
 src_install() {
-	dobin "${FILESDIR}"/oa_*
-
 	insinto /usr/share/"${PN}"
 	doins {_,naf,oa}*.* filepicker.py
+
+	dobin "${FILESDIR}"/oa_*
 
 	dodoc $DOCS
 
 	if [[ ${PV} = 9999* ]]; then
 		newicon "${S}"/logo.jpg "${PN}".jpg
+		# use doc && dohtml -A db,shtml,svg -r docs
+		# append weird file extensions not working?
 	else
 		doicon "${DISTDIR}"/"${PN}".jpg
 	fi
