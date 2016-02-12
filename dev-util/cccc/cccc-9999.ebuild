@@ -1,6 +1,6 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -10,11 +10,10 @@ DESCRIPTION="Source metrics (line counts, complexity, etc) for Java and C++"
 HOMEPAGE="http://sarnold.github.io/cccc/"
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/sarnold/cccc.git"
-#	EGIT_BRANCH="3.1.5_rc2-updates"
 	EGIT_BRANCH="master"
 	inherit git-r3
 else
-	SRC_URI="https://github.com/sarnold/${PN}/archive/${PV}.tar.gz"
+	SRC_URI="https://github.com/sarnold/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
 fi
 
 LICENSE="GPL-2"
@@ -31,14 +30,12 @@ MAKEOPTS="-j1"
 
 src_prepare() {
 	use mfc && epatch "${FILESDIR}"/${PN}-c_dialect.patch
-
-#	epatch "${FILESDIR}"/${PN}-makefile_update.patch
 }
 
 src_compile() {
 	if use debug ; then
 		export STRIP_MASK="*/bin/*"
-		DEBUG="true" make CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
+		DEBUG="true" emake CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
 	else
 		emake CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
 	fi
