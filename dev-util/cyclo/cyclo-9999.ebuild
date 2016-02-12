@@ -42,6 +42,10 @@ src_compile() {
 	fi
 }
 
+src_test() {
+	make -f Makefile.test test
+}
+
 src_install() {
 	dobin cyclo mcstrip
 
