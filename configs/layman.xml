@@ -2,11 +2,11 @@
 <!DOCTYPE repositories SYSTEM "/dtd/repositories.dtd">
 <repositories xmlns="" version="1.0">
   <repo quality="experimental" status="unofficial">
-    <name><![CDATA[nerdboy-local]]></name>
-    <description lang="en"><![CDATA[Misc extras, fixes, and tests]]></description>
-    <homepage>https://github.com/gentoo/portage-overlay</homepage>
+    <name><![CDATA[nerdboy]]></name>
+    <description lang="en"><![CDATA[nerdboy - Gentoo Overlay]]></description>
+    <homepage>https://github.com/sarnold/portage-overlay</homepage>
     <owner type="person">
-      <name><![CDATA[steev]]></name>
+      <name><![CDATA[nerdboy]]></name>
       <email>nerdboy@gentoo.org</email>
     </owner>
     <source type="git">git://github.com/sarnold/portage-overlay.git</source>
