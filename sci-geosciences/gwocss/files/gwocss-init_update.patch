@@ -1,0 +1,88 @@
+diff --git a/packaging/gentoo/gwocss.confd b/packaging/gentoo/gwocss.confd
+index e126e2a..99cd00c 100644
+--- a/packaging/gentoo/gwocss.confd
++++ b/packaging/gentoo/gwocss.confd
+@@ -15,6 +15,11 @@ ENABLE="no"
+ # HOME dir, each with its own set of input/output directories, configs,
+ # and terrain data.
+ #
++# Note: you need to have installed with USE=demo for the following to
++#       do anything.  You can still copy the files over manually as long
++#       as you preserve the demo/{slcin,slcout} structure.  Running the
++#       init script will check/fix permissions as needed.
++#
+ # demo - setup example domain (copy from gwocss data dir)
+ # foo bar baz - your own domain configs
+ 
+diff --git a/packaging/gentoo/gwocss.init b/packaging/gentoo/gwocss.init
+index 9ffc8ce..d124136 100755
+--- a/packaging/gentoo/gwocss.init
++++ b/packaging/gentoo/gwocss.init
+@@ -37,7 +37,7 @@ check_config() {
+ 
+ 	file="${gwocss_bindir}/gwocss"
+ 	if [ -f ${file} ] ; then
+-		checkpath -f -m 0755 -o root:root ${file}
++		checkpath -f -m 2775 -o root:root ${file}
+ 	else
+ 		eerror "${file} not found"
+ 		eerror "HINT: Try re-installing the gwocss package."
+@@ -52,6 +52,17 @@ check_config() {
+ 		eerror "HINT: Check ${gwocss_homedir} setting in /etc/conf.d/gwocss"
+ 		return 1
+ 	fi
++
++	if [[ ${gwocss_domains} = *demo* ]] ; then
++		setup_demo
++	fi
++	local retval=$?
++
++	if [ $retval -ne 0 ] ; then
++		eerror "Problem setting up demo domain. Check ${gwocss_homedir}/demo."
++		eend $retval
++		return $retval
++	fi
+ }
+ 
+ setup_demo() {
+@@ -67,15 +78,13 @@ start() {
+ 
+ 	check_config || return 1
+ 
+-	if "demo" in "${gwocss_domains}" ; then
+-		setup_demo || return 1
++	if [ "${ENABLE}" = "yes" ] ; then
++		check_domains
+ 	fi
+-
+-	[ "${ENABLE}" = "yes" ] && check_domains
+ 	local retval=$?
+ 
+ 	if [ $retval -ne 0 ] ; then
+-		eerror "Check your config and related files and directories."
++		eerror "Error running gwocss config check; check your confing and restart."
+ 		eend $retval
+ 		return $retval
+ 	fi
+@@ -84,6 +93,7 @@ start() {
+ }
+ 
+ stop() {
++	ebegin "Checking gwocss domains"
+ 	if [ "${ENABLE}" = "no" ] ; then
+ 		ewarn "Config not enabled, nothing to do."
+ 		return 0
+@@ -91,10 +101,10 @@ stop() {
+ 		if [ -z "${gwocss_domains}" ] ; then
+ 			ewarn "gwocss enabled but no domains configured."
+ 		else
+-			elog "gwocss enabled, currently configured model domains are:"
+-			elog "    ${gwocss_domains}"
++			einfo "gwocss enabled, currently configured model domains are:"
++			einfo "    ${gwocss_domains}"
+ 		fi
+ 	fi
+ 
+-	return 0
++	eend
+ }
