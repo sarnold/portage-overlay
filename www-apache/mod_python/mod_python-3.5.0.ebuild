@@ -8,12 +8,18 @@ PYTHON_COMPAT=( python2_7 python3_3 python3_4 )
 
 inherit apache-module eutils python-single-r1
 
+if [[ ${PV} == 9999* ]] ; then
+	inherit git-r3
+	EGIT_REPO_URI="https://github.com/grisha/mod_python.git"
+else
+	SRC_URI="http://dist.modpython.org/dist/${P}.tgz"
+	KEYWORDS="alpha amd64 ~arm ia64 ~mips ppc sparc x86"
+fi
+
 DESCRIPTION="An Apache2 module providing an embedded Python interpreter"
 HOMEPAGE="http://modpython.org/"
-SRC_URI="http://dist.modpython.org/dist/${P}.tgz"
 
 LICENSE="Apache-2.0"
-KEYWORDS="alpha amd64 ia64 ~mips ppc sparc x86"
 IUSE="doc test"
 SLOT="0"
 
