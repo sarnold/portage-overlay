@@ -1,10 +1,10 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
 EAPI=5
 VIM_VERSION="7.4"
-PYTHON_COMPAT=( python{2_7,3_3,3_4} )
+PYTHON_COMPAT=( python{2_7,3_3,3_4,3_5} )
 PYTHON_REQ_USE=threads
 inherit eutils vim-doc flag-o-matic fdo-mime versionator bash-completion-r1 python-r1
 
@@ -18,7 +18,7 @@ else
 fi
 
 DESCRIPTION="Vim, an improved vi-style text editor"
-HOMEPAGE="http://www.vim.org/"
+HOMEPAGE="http://www.vim.org/ https://github.com/vim/vim"
 
 SLOT="0"
 LICENSE="vim"
@@ -34,7 +34,8 @@ REQUIRED_USE="
 
 RDEPEND="
 	>=app-eselect/eselect-vi-1.1
-	>=sys-libs/ncurses-5.2-r2
+	!nls? ( >=sys-libs/ncurses-5.2-r2:= )
+	nls? ( >=sys-libs/ncurses-5.2-r2[unicode] )
 	nls? ( virtual/libintl )
 	acl? ( kernel_linux? ( sys-apps/acl ) )
 	cscope? ( dev-util/cscope )
@@ -50,7 +51,7 @@ RDEPEND="
 	perl? ( dev-lang/perl:= )
 	python? ( ${PYTHON_DEPS} )
 	racket? ( dev-scheme/racket )
-	ruby? ( || ( dev-lang/ruby:2.2 dev-lang/ruby:2.1 dev-lang/ruby:2.0 ) )
+	ruby? ( || ( dev-lang/ruby:2.3 dev-lang/ruby:2.2 dev-lang/ruby:2.1 dev-lang/ruby:2.0 ) )
 	selinux? ( sys-libs/libselinux )
 	tcl? ( dev-lang/tcl:0= )
 	X? ( x11-libs/libXt )
@@ -173,7 +174,7 @@ src_configure() {
 	done
 
 	if use minimal ; then
-		myconf=(
+		myconf+=(
 			--with-features=tiny
 			--disable-nls
 			--disable-multibyte
@@ -193,7 +194,7 @@ src_configure() {
 	else
 		use debug && append-flags "-DDEBUG"
 
-		myconf=(
+		myconf+=(
 			--with-features=huge
 			--enable-multibyte
 			$(use_enable acl)
@@ -257,7 +258,7 @@ src_configure() {
 
 	if is-flagq -flto* ; then
 		LDFLAGS="${LDFLAGS_OLD}"
-		sed -i -e "s|-fno-lto -fno-use-linker-plugin||g" src/auto/config.mk
+		sed -i -e "s|-fno-lto -fno-use-linker-plugin||g" "${S}"/src/auto/config.mk
 	fi
 }
 
@@ -360,26 +361,6 @@ src_install() {
 pkg_postinst() {
 	# Update documentation tags (from vim-doc.eclass)
 	update_vim_helptags
-
-	if [[ -z ${REPLACING_VERSIONS} ]] ; then
-		if use X ; then
-			echo
-			elog "The 'X' USE flag enables vim <-> X communication, like"
-			elog "updating the xterm titlebar. It does not install a GUI."
-		fi
-		echo
-		elog "To install a GUI version of vim, use the app-editors/gvim"
-		elog "package."
-		echo
-		elog "Vim 7 includes an integrated spell checker. You need to install"
-		elog "word list files before you can use it. There are ebuilds for"
-		elog "some of these named app-vim/vim-spell-*. If your language of"
-		elog "choice is not included, please consult vim-spell.eclass for"
-		elog "instructions on how to make a package."
-		echo
-		ewarn "Note that the English word lists are no longer installed by"
-		ewarn "default."
-	fi
 
 	# Make convenience symlinks
 	update_vim_symlinks
