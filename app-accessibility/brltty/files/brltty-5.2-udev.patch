@@ -1,7 +1,17 @@
-diff -Naur brltty-5.2/Autostart/Udev/udev.rules brltty-5.2-new/Autostart/Udev/udev.rules
---- brltty-5.2/Autostart/Udev/udev.rules	2014-11-06 07:28:41.000000000 -0800
-+++ brltty-5.2-new/Autostart/Udev/udev.rules	2014-11-20 05:28:44.404885312 -0800
-@@ -182,20 +182,22 @@
+--- Autostart/Udev/udev.rules.orig	2016-01-19 20:58:58.028677077 -0800
++++ Autostart/Udev/udev.rules	2016-01-19 20:54:16.950366026 -0800
+@@ -34,7 +34,9 @@
+ # Cebra [all models]
+ # HIMS [Sync Braille]
+ # HandyTech [FTDI chip]
+-ENV{PRODUCT}=="403/6001/*", ENV{BRLTTY_BRAILLE_DRIVER}="at,ce,hm,ht", GOTO="brltty_usb_run"
++# FT232R USB UART [sparkfun FTDI breakout]
++## disabled for conflicts (uncomment if you really have FTDI braille device)
++#ENV{PRODUCT}=="403/6001/*", ENV{BRLTTY_BRAILLE_DRIVER}="at,ce,hm,ht", GOTO="brltty_usb_run"
+ 
+ # Device: 0403:DE58
+ # Hedo [MobilLine]
+@@ -182,20 +184,22 @@
  # FreedomScientific [Focus Blue]
  ENV{PRODUCT}=="f4e/114/*", ENV{BRLTTY_BRAILLE_DRIVER}="fs", GOTO="brltty_usb_run"
  

@@ -4,7 +4,7 @@
 
 EAPI=5
 
-PYTHON_COMPAT=( python2_7 python3_3 python3_4 )
+PYTHON_COMPAT=( python2_7 python3_3 python3_4 python3_5 )
 FINDLIB_USE="ocaml"
 
 inherit findlib eutils multilib toolchain-funcs java-pkg-opt-2 flag-o-matic \
@@ -64,12 +64,14 @@ src_prepare() {
 }
 
 src_configure() {
-	tc-export AR LD PKG_CONFIG
+	strip-flags "_BSD_SOURCE"
+	append-cppflags -D_DEFAULT_SOURCE
 
 	if ( use ncurses && built_with_use sys-libs/ncurses tinfo ) ; then
-		append-ldflags " -ltinfo"
+		append-libs " tinfo"
 	fi
 
+	tc-export AR LD PKG_CONFIG
 	# override prefix in order to install into /
 	# braille terminal needs to be available as soon in the boot process as
 	# possible
