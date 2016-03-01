@@ -1,10 +1,10 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
 EAPI="4"
 
-inherit eutils toolchain-funcs
+inherit eutils flag-o-matic toolchain-funcs
 
 MY_P="${PN}2-070721"
 
@@ -52,9 +52,11 @@ pkg_setup() {
 
 src_prepare() {
 	sed -i \
-		-e "s|-O3|${CFLAGS} ${LDFLAGS}|" \
+		-e "s|-O3|${CFLAGS} -std=c++11 ${LDFLAGS}|" \
 		-e "s|@\$(CXX)|\$(CXX)|" \
 		mtl/template.mk || die
+
+	epatch "${FILESDIR}"/${P}-header_fix.patch
 }
 
 src_compile() {

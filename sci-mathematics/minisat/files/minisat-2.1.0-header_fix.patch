@@ -1,0 +1,10 @@
+--- simp/SimpSolver.h.orig	2016-02-24 22:28:27.027765450 -0800
++++ simp/SimpSolver.h	2016-02-24 22:29:09.092348310 -0800
+@@ -22,6 +22,7 @@
+ 
+ #include <cstdio>
+ 
++#include "SolverTypes.h"
+ #include "Queue.h"
+ #include "Solver.h"
+ 
