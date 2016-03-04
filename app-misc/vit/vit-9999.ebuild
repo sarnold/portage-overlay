@@ -22,9 +22,9 @@ SLOT="0"
 IUSE=""
 
 DEPEND=""
-RDEPEND="virtual/perl
-	dev-perl/Curses
-	"
+RDEPEND="${DEPEND}
+	dev-perl/Curses"
+
 src_prepare() {
 	epatch "${FILESDIR}"/${PN}-allow-nonsudo-install.patch \
 		"${FILESDIR}"/${PN}-fix-man-installs.patch
