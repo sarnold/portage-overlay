@@ -1,12 +1,12 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
-inherit eutils autotools git-r3
+inherit eutils git-r3
 
-DESCRIPTION="ncurses front-end for Taskwarrior (app-misc/task)"
+DESCRIPTION="Perl/Curses front-end for Taskwarrior (app-misc/task)"
 HOMEPAGE="http://tasktools.org/projects/vit.html"
 
 EGIT_REPO_URI="https://git.tasktools.org/scm/ex/vit.git"
@@ -35,5 +35,5 @@ src_install() {
 	dodoc AUTHORS README CHANGES
 	doman vit.1 vitrc.5
 
-	rm -rf ${D}/usr/man
+	rm -rf "${ED}"/usr/man
 }
