@@ -35,7 +35,7 @@ RDEPEND="dev-python/dbus-python[${PYTHON_USEDEP}]
 	media-libs/gst-plugins-good:1.0
 	>=media-libs/mutagen-1.22[${PYTHON_USEDEP}]
 	media-plugins/gst-plugins-meta:1.0
-	virtual/python-imaging
+	dev-python/pillow
 	aws? ( dev-python/lxml )
 	cddb? ( dev-python/cddb-py )
 	droptray? ( dev-python/egg-python )
