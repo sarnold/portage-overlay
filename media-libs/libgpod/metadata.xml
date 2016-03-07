@@ -11,6 +11,6 @@
 		<flag name="ios">Enable libimobiledevice for iOS devices</flag>
 	</use>
 	<upstream>
-		<remote-id type="github">VCTLabs/libgpod</remote-id>
+		<remote-id type="github">jburton/libgpod</remote-id>
 	</upstream>
 </pkgmetadata>

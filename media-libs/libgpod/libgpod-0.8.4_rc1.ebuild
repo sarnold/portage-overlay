@@ -8,7 +8,7 @@ EAPI=5
 
 PYTHON_COMPAT=( python2_7 )
 
-inherit autotools eutils flag-o-matic python-single-r1 udev
+inherit autotools eutils python-single-r1 udev
 
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/VCTLabs/libgpod.git"
@@ -57,6 +57,8 @@ pkg_setup() {
 }
 
 src_prepare() {
+	epatch "${FILESDIR}"/${P}-allow_disable_werror.patch
+
 	eautoreconf
 }
 
@@ -72,7 +74,8 @@ src_configure() {
 		--with-udev-dir="$(get_udevdir)" \
 		--with-html-dir=/usr/share/doc/${PF}/html \
 		$(use_with python) \
-		$(use_enable doc gtk-doc)
+		$(use_enable doc gtk-doc) \
+		--enable-more-warnings=no
 }
 
 src_install() {
