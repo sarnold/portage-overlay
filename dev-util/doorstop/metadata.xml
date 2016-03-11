@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">>
+		<email>nerdboy@gentoo.org</email>
+		<name>Steve Arnold</name>
+	</maintainer>
+	<longdescription lang="en">
+		Doorstop is a requirements management tool that leverages 
+		version control to store and manage a project's documentation 
+		traced from specification through implementation.
+	</longdescription>
+</pkgmetadata>

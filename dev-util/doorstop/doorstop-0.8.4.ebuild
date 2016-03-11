@@ -14,22 +14,23 @@ HOMEPAGE="http://doorstop.info"
 if [[ ${PV} = 9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://github.com/VCTLabs/openadams"
+	KEYWORDS=""
 else
 	SRC_URI="https://github.com/jacebrowning/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~x86"
 fi
 
 LICENSE="LGPL-3"
 SLOT="0"
-KEYWORDS="~amd64"
 IUSE=""
 
 RDEPEND="${DEPEND}
-	=dev-python/pyyaml-3*[${PYTHON_USEDEP}]
-	=dev-python/markdown-2*[${PYTHON_USEDEP}]
+	>=dev-python/pyyaml-3[${PYTHON_USEDEP}]
+	dev-python/markdown[${PYTHON_USEDEP}]
 	=dev-python/openpyxl-2.1*[${PYTHON_USEDEP}]
-	=dev-python/bottle-0.12*[${PYTHON_USEDEP}]
-	=dev-python/requests-2*[${PYTHON_USEDEP}]
-	=dev-python/pyficache-0.2*[${PYTHON_USEDEP}]
+	dev-python/bottle[${PYTHON_USEDEP}]
+	dev-python/requests[${PYTHON_USEDEP}]
+	dev-python/pyficache[${PYTHON_USEDEP}]
 "
 
 DEPEND=""
