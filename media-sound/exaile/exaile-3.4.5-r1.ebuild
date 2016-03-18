@@ -33,7 +33,7 @@ RDEPEND="${PYTHON_DEPS}
 	media-libs/gst-plugins-good:1.0
 	>=media-libs/mutagen-1.10
 	media-plugins/gst-plugins-meta:1.0
-	virtual/python-imaging
+	dev-python/pillow
 	cddb? ( dev-python/cddb-py )
 	droptray? ( dev-python/egg-python )
 	libnotify? ( dev-python/notify-python )

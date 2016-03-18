@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=4
+EAPI=5
 
 inherit eutils fortran-2 toolchain-funcs
 
@@ -79,7 +79,13 @@ src_prepare() {
 	if [[ "${ARCH}" == "ppc" ]] ; then
 		sed -i -e "s|= -mcpu=G4 -mtune=G4|= |" ${config}
 	elif [[ "${ARCH}" == "ppc64" ]] ; then
-		sed -i -e "s|= -mcpu=G5 -mtune=G5|= |" ${config}
+		sed -i -e "s|= -mcpu=G5 -mtune=G5|= |" \
+			-e "s|-fdefault-real-8|-fdefault-real-8 -fdefault-double-8|" \
+			${config}
+	elif [[ "${ARCH}" == "amd64" ]] ; then
+		cp ${config}.in ${config}
+		sed -i -e "s|-fdefault-real-8|-fdefault-real-8 -fdefault-double-8|" \
+			${config}
 	else
 		cp ${config}.in ${config} || die "Error updating config!"
 	fi
@@ -104,7 +110,8 @@ src_compile() {
 	EBUILD_CFLAGS="${CFLAGS}"
 	unset ARCH CFLAGS
 
-	tc-export CC FC AR NM STRIP RANLIB
+	tc-export CC FC AR NM RANLIB
+	export STRIP="/bin/true"
 	TC_FLAGS="CC=$CC FC=$FC AR=$AR RANLIB=$RANLIB"
 	ARFLAGS="rv"
 

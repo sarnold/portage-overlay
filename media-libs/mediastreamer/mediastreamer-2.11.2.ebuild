@@ -49,6 +49,7 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 		theora? ( media-libs/libtheora )
 		sdl? ( media-libs/libsdl[video,X] )
 		X? ( x11-libs/libX11
+			x11-libs/libXext
 			x11-libs/libXv ) )"
 DEPEND="${RDEPEND}
 	dev-util/intltool
@@ -57,7 +58,8 @@ DEPEND="${RDEPEND}
 	doc? ( app-doc/doxygen )
 	opengl? ( dev-util/xxdi )
 	test? ( >=dev-util/cunit-2.1_p2[ncurses] )
-	X? ( x11-proto/videoproto )"
+	X? ( x11-proto/videoproto
+		x11-proto/xextproto )"
 
 PDEPEND="amr? ( !bindist? ( media-plugins/mediastreamer-amr ) )
 	g729? ( !bindist? ( media-plugins/mediastreamer-bcg729 ) )
@@ -102,6 +104,7 @@ src_prepare() {
 
 src_configure() {
 	replace-flags "-O3" "-O2"
+	append-libs Xext
 
 	local myeconfargs=(
 		--htmldir="${EPREFIX}"/usr/share/doc/${PF}/html

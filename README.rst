@@ -16,7 +16,7 @@ on the wip branch (not shown below).
 
 You can (optionally) add this overlay with layman::
 
-  $ layman -f -a nerdboy-local -o https://raw.github.com/sarnold/portage-overlay/master/configs/layman.xml
+  $ layman -f -a nerdboy -o https://raw.github.com/sarnold/portage-overlay/master/configs/layman.xml
 
 Latest (sort of)
 ================

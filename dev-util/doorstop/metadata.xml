@@ -6,13 +6,8 @@
 		<name>Steve Arnold</name>
 	</maintainer>
 	<longdescription lang="en">
-		This is the only useable open source BUFR library (from ECMWF) 
-		and comes with a few example tools (some of which are built
-		and installed).
+		Doorstop is a requirements management tool that leverages 
+		version control to store and manage a project's documentation 
+		traced from specification through implementation.
 	</longdescription>
-	<use>
-		<flag name="lto">
-			Use gold linker and -flto (requires existing env setup)
-		</flag>
-	</use>
 </pkgmetadata>
