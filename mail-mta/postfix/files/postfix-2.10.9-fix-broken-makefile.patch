@@ -1,0 +1,11 @@
+--- src/local/Makefile.in.orig	2016-03-27 23:36:01.043036162 -0700
++++ src/local/Makefile.in	2016-03-27 23:38:03.150096555 -0700
+@@ -6,7 +6,7 @@
+ OBJS	= alias.o command.o dotforward.o file.o forward.o \
+ 	include.o indirect.o local.o mailbox.o recipient.o resolve.o token.o \
+ 	deliver_attr.o maildir.o biff_notify.o unknown.o \
+-	local_expand.o bounce_workaround.c
++	local_expand.o bounce_workaround.o
+ HDRS	= local.h
+ TESTSRC	=
+ DEFS	= -I. -I$(INC_DIR) -D$(SYSTYPE)
