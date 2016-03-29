@@ -49,6 +49,10 @@ src_configure() {
 	tc-export_build_env BUILD_{CC,CPP}
 	BUILD_CPPFLAGS+=" -D_GNU_SOURCE" #214642
 
+	if [[ ${ARCH} == arm* ]] ; then
+		append-libs "-L/$(get_libdir) -ldl"
+	fi
+
 	# Build the various variants of ncurses -- narrow, wide, and threaded. #510440
 	# Order matters here -- we want unicode/thread versions to come last so that the
 	# binaries in /usr/bin support both wide and narrow.
