@@ -1,0 +1,14 @@
+--- configure.orig	2016-04-01 11:18:41.563407031 -0700
++++ configure	2016-04-01 11:25:20.333306572 -0700
+@@ -4366,8 +4366,9 @@
+         CXXFLAGS="-Wall -W -Wpointer-arith $CXXFLAGS"
+         case $host in
+           *-*-linux-gnu)
+-            CFLAGS="-std=iso9899:1990 -W -Wall -Wchar-subscripts -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings -D_XOPEN_SOURCE=500 -D_BSD_SOURCE $CFLAGS"
+-            CXXFLAGS="-ansi -D_XOPEN_SOURCE=500 -D_BSD_SOURCE -Wcast-align -Wconversion -Wchar-subscripts $CXXFLAGS"
++            CPPFLAGS="-D_DEFAULT_SOURCE -DPIC $CPPFLAGS"
++            CFLAGS="$CPPFLAGS -fPIC -std=iso9899:1990 -W -Wall -Wchar-subscripts -Wshadow -Wpointer-arith -Wmissing-prototypes -Wwrite-strings $CFLAGS"
++            CXXFLAGS="$CPPFLAGS -fPIC -std=c++98 -fabi-compat-version=7 -Wcast-align -Wconversion -Wchar-subscripts $CXXFLAGS"
+ 
+ echo "$as_me:$LINENO: checking whether $CXX supports -Wmissing-format-attribute" >&5
+ echo $ECHO_N "checking whether $CXX supports -Wmissing-format-attribute... $ECHO_C" >&6
