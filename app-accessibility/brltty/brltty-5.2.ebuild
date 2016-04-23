@@ -64,7 +64,7 @@ src_prepare() {
 }
 
 src_configure() {
-	strip-flags "_BSD_SOURCE"
+	filter-flags "_*_SOURCE*"
 	append-cppflags -D_DEFAULT_SOURCE
 
 	if ( use ncurses && built_with_use sys-libs/ncurses tinfo ) ; then
