@@ -65,42 +65,51 @@ src_configure() {
 		$(use unicode && usex threads 'ncursestw' '')
 	)
 
-#	multijob_init
+	if [[ "${ARCH}" != "arm" ]] ; then
+		multijob_init
 
 	# When installing ncurses, we have to use a compatible version of tic.
 	# This comes up when cross-compiling, doing multilib builds, upgrading,
 	# or installing for the first time.  Build a local copy of tic whenever
 	# the host version isn't available. #249363 #557598
-#	if ! ROOT=/ has_version "~sys-libs/${P}:0" ; then
-#		local lbuildflags="-static"
-#
-#		# some toolchains don't quite support static linking
-#		local dbuildflags="-Wl,-rpath,${WORKDIR}/lib"
-#		case ${CHOST} in
-#			*-darwin*)  dbuildflags=     ;;
-#		esac
-#		echo "int main() {}" | \
-#			$(tc-getCC) -o x -x c - ${lbuildflags} -pipe >& /dev/null \
-#			|| lbuildflags="${dbuildflags}"
-#
-#		# We can't re-use the multilib BUILD_DIR because we run outside of it.
-#		BUILD_DIR="${WORKDIR}" \
-#		CHOST=${CBUILD} \
-#		CFLAGS=${BUILD_CFLAGS} \
-#		CXXFLAGS=${BUILD_CXXFLAGS} \
-#		CPPFLAGS=${BUILD_CPPFLAGS} \
-##		LDFLAGS="${BUILD_LDFLAGS} ${lbuildflags}" \
-#		multijob_child_init do_configure cross --without-shared --with-normal
-#	fi
-	multilib-minimal_src_configure
-#	multijob_finish
+		if ! ROOT=/ has_version "~sys-libs/${P}:0" ; then
+			local lbuildflags="-static"
+
+			# some toolchains don't quite support static linking
+			local dbuildflags="-Wl,-rpath,${WORKDIR}/lib"
+			case ${CHOST} in
+				*-darwin*)  dbuildflags=     ;;
+				*-aix*)     dbuildflags=     ;;
+			esac
+			echo "int main() {}" | \
+				$(tc-getCC) -o x -x c - ${lbuildflags} -pipe >& /dev/null \
+				|| lbuildflags="${dbuildflags}"
+
+			# We can't re-use the multilib BUILD_DIR because we run outside of it.
+			BUILD_DIR="${WORKDIR}" \
+			CHOST=${CBUILD} \
+			CFLAGS=${BUILD_CFLAGS} \
+			CXXFLAGS=${BUILD_CXXFLAGS} \
+			CPPFLAGS=${BUILD_CPPFLAGS} \
+			LDFLAGS="${BUILD_LDFLAGS} ${lbuildflags}" \
+
+			multijob_child_init do_configure cross --without-shared --with-normal
+		fi
+		multilib-minimal_src_configure
+		multijob_finish
+	else
+		multilib-minimal_src_configure
+	fi
 }
 
 multilib_src_configure() {
 	local t
 	for t in "${NCURSES_TARGETS[@]}" ; do
-#		multijob_child_init do_configure "${t}"
-		do_configure "${t}"
+		if [[ ${ARCH} == "arm" ]] ; then
+			do_configure "${t}"
+		else
+			multijob_child_init do_configure "${t}"
+		fi
 	done
 }
 
@@ -170,7 +179,12 @@ do_configure() {
 		conf+=( --without-{pthread,reentrant} )
 	fi
 	# Make sure each variant goes in a unique location.
-	if [[ ${target} != "ncurses" ]] ; then
+	if [[ ${target} == "ncurses" ]] ; then
+		# "ncurses" variant goes into "${EPREFIX}"/usr/include
+		# It is needed on Prefix because the configure script appends
+		# "ncurses" to "${prefix}/include" if "${prefix}" is not /usr.
+		conf+=( --enable-overwrite )
+	else
 		conf+=( --includedir="${EPREFIX}"/usr/include/${target} )
 	fi
 	# See comments in src_configure.
@@ -181,17 +195,19 @@ do_configure() {
 
 	# Force bash until upstream rebuilds the configure script with a newer
 	# version of autotools. #545532
-	CONFIG_SHELL=${EPREFIX}/bin/bash \
+	CONFIG_SHELL=${BASH} \
 	ECONF_SOURCE=${S} \
 	econf "${conf[@]}" "$@"
 }
 
 src_compile() {
-	# See comments in src_configure.
-#	if ! ROOT=/ has_version "~sys-libs/${P}" ; then
-#		BUILD_DIR="${WORKDIR}" \
-#		do_compile cross -C progs tic
-#	fi
+	if [[ "${ARCH}" != "arm" ]] ; then
+		# See comments in src_configure.
+		if ! ROOT=/ has_version "~sys-libs/${P}:0" ; then
+			BUILD_DIR="${WORKDIR}" \
+			do_compile cross -C progs tic
+		fi
+	fi
 
 	multilib-minimal_src_compile
 }
