@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -18,13 +18,14 @@ if [[ ${PV} = 9999* ]]; then
 #	EGIT_REPO_URI="https://github.com/sarnold/exaile.git"
 	EGIT_BRANCH="master"
 #	EGIT_BRANCH="gi"
+	KEYWORDS=""
 else
 	SRC_URI="https://github.com/${PN}/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~arm ~ppc ~sparc ~x86"
 fi
 
 LICENSE="GPL-2 GPL-3"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~ppc ~sparc ~x86"
 IUSE="aws cddb droptray extra-plugins libnotify mp4 mpris2 mtp nls wikipedia"
 
 RDEPEND="dev-python/dbus-python[${PYTHON_USEDEP}]
