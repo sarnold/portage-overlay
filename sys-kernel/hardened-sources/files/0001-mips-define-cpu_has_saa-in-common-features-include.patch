@@ -1,0 +1,15 @@
+diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
+index d1e04c9..6a32785 100644
+--- a/arch/mips/include/asm/cpu-features.h
++++ b/arch/mips/include/asm/cpu-features.h
+@@ -44,6 +44,10 @@
+ #ifndef cpu_has_rw_llb
+ #define cpu_has_rw_llb		(cpu_data[0].options & MIPS_CPU_RW_LLB)
+ #endif
++/* workaround for commit 8d7ba43f6cfc876773652f99f7ec2c9089c0cb1a */
++#ifndef cpu_has_saa
++#define cpu_has_saa              0
++#endif
+ 
+ /*
+  * For the moment we don't consider R6000 and R8000 so we can assume that
