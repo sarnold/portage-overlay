@@ -1,6 +1,6 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -8,11 +8,11 @@ PYTHON_DEPEND="2:2.7"
 SUPPORT_PYTHON_ABIS="1"
 RESTRICT_PYTHON_ABIS="3.*"
 
-inherit eutils gnome2-utils multilib distutils
+inherit eutils gnome2-utils multilib distutils vcs-snapshot
 
 DESCRIPTION="Integrated version control support for your desktop"
 HOMEPAGE="http://rabbitvcs.org"
-SRC_URI="https://github.com/rabbitvcs/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+SRC_URI="https://github.com/rabbitvcs/${PN}/tarball/v${PV} -> ${P}.tar.gz"
 
 LICENSE="GPL-2"
 SLOT="0"
@@ -36,8 +36,6 @@ RDEPEND="dev-python/configobj
 	spell? ( dev-python/gtkspell-python )
 	thunar? ( dev-python/thunarx-python
 		dev-python/dbus-python )"
-
-S="${WORKDIR}/rabbitvcs-rabbitvcs-62fd544"
 
 src_prepare() {
 	python_convert_shebangs -r 2 .
@@ -89,7 +87,7 @@ pkg_postinst() {
 	distutils_pkg_postinst
 	gnome2_icon_cache_update
 
-	elog "You should restart file manager to changes take effect:"
+	elog "You should restart file manager so changes take effect:"
 	use caja && elog "\$ caja -q"
 	use nautilus && elog "\$ nautilus -q"
 	use thunar && elog "\$ thunar -q && thunar &"
