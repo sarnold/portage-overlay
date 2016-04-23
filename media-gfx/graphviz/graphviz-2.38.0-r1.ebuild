@@ -1,11 +1,11 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
 EAPI=5
 PYTHON_COMPAT=( python2_7 )
 
-inherit autotools eutils flag-o-matic java-pkg-opt-2 multilib python-single-r1
+inherit autotools eutils flag-o-matic java-pkg-opt-2 multilib python-single-r1 qmake-utils
 
 DESCRIPTION="Open Source Graph Visualization Software"
 HOMEPAGE="http://www.graphviz.org/"
@@ -13,7 +13,7 @@ SRC_URI="http://www.graphviz.org/pub/graphviz/stable/SOURCES/${P}.tar.gz"
 
 LICENSE="CPL-1.0"
 SLOT="0"
-KEYWORDS="~alpha amd64 ~arm hppa ~ia64 ~mips ~ppc ppc64 ~s390 ~sh ~sparc x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris"
+KEYWORDS="alpha amd64 arm hppa ia64 ~mips ppc ppc64 ~s390 ~sh ~sparc x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~amd64-linux ~arm-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~sparc-solaris ~x64-solaris"
 IUSE="+cairo devil doc examples gdk-pixbuf gtk gts guile java lasi nls pdf perl postscript python qt4 ruby svg static-libs tcl X elibc_FreeBSD"
 
 # Requires ksh
@@ -26,7 +26,7 @@ RDEPEND="
 	dev-libs/libltdl:0
 	>=media-libs/fontconfig-2.3.95
 	>=media-libs/freetype-2.1.10
-	>=media-libs/gd-2.0.34[fontconfig,jpeg,png,truetype,zlib]
+	>=media-libs/gd-2.0.34:=[fontconfig,jpeg,png,truetype,zlib]
 	>=media-libs/libpng-1.2:0
 	!<=sci-chemistry/cluster-1.3.081231
 	virtual/jpeg:0
@@ -166,6 +166,9 @@ src_prepare() {
 
 	# replace the whitespace with tabs
 	sed -i -e 's:  :\t:g' doc/info/Makefile.am || die
+
+	# use correct version of qmake. bug #567236
+	sed -i -e "/AC_CHECK_PROGS(QMAKE/a AC_SUBST(QMAKE,$(qt4_get_bindir)/qmake)" configure.ac || die
 
 	# workaround for http://www.graphviz.org/mantisbt/view.php?id=1895
 	use elibc_FreeBSD && append-flags $(test-flags -fno-builtin-sincos)
