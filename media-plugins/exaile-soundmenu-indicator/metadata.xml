@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+	<maintainer type="person">>
+		<email>nerdboy@gentoo.org</email>
+		<name>Steve Arnold</name>
+	</maintainer>
+	<longdescription lang="en">
+		Exaile plugin to add MPRISv2 sound menu indicator support 
+		for XFCE Panel plugin, Gnome Shell, or other MPRIS2 clients
+	</longdescription>
+</pkgmetadata>

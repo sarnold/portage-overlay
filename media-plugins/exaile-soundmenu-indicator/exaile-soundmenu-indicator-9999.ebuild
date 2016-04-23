@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -16,14 +16,15 @@ HOMEPAGE="https://github.com/sarnold/Exaile-Soundmenu-Indicator"
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/sarnold/Exaile-Soundmenu-Indicator.git"
 	inherit git-r3
+	KEYWORDS=""
 else
 	SRC_URI="https://github.com/sarnold/${MY_PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86"
 	S="${WORKDIR}/${MY_PN}-${PV}"
 fi
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~ppc ~ppc64 ~x86"
 IUSE="gnome xfce"
 
 RESTRICT="test"
@@ -35,8 +36,6 @@ RDEPEND="${PYTHON_DEPS}
 DEPEND="${RDEPEND}"
 
 REQUIRED_USE="|| ( xfce gnome ) ${PYTHON_REQUIRED_USE}"
-
-#S="${WORKDIR}/${P}"
 
 RESTRICT="test"
 
