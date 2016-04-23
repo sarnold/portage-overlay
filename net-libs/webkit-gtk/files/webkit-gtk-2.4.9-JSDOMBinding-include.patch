@@ -1,0 +1,10 @@
+--- DerivedSources/WebCore/JSSVGElementWrapperFactory.h.orig	2016-02-28 12:58:57.824065696 -0800
++++ DerivedSources/WebCore/JSSVGElementWrapperFactory.h	2016-02-28 12:59:22.598180375 -0800
+@@ -31,6 +31,7 @@
+ #define JSSVGElementWrapperFactory_h
+ 
+ #if ENABLE(SVG)
++#include "JSDOMBinding.h"
+ #include <wtf/Forward.h>
+ 
+ namespace JSC {
