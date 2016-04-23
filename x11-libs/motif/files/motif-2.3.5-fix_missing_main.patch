@@ -1,0 +1,7 @@
+--- tools/wml/wmluiltok.l.orig	2016-04-18 00:14:47.991961616 -0700
++++ tools/wml/wmluiltok.l	2016-04-18 00:16:11.901173229 -0700
+@@ -1,3 +1,4 @@
++%option main
+ %{
+ /*
+  * Motif
