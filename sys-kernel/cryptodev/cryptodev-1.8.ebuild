@@ -35,7 +35,7 @@ pkg_setup() {
 	if use kernel_linux ; then
 		linux-mod_pkg_setup
 	else
-		die "cryptodev ebuild only support linux"
+		die "cryptodev ebuild only supports linux kernel"
 	fi
 	BUILD_TARGETS="build"
 	export KERNEL_DIR
