@@ -132,7 +132,10 @@ src_unpack() {
 src_prepare() {
 	# Apply our patches
 	eapply "${WORKDIR}/firefox"
-#		"${FILESDIR}"/${PN}-45-qt-widget-fix.patch
+
+	if use egl ; then
+		epatch "${FILESDIR}"/${PN}-46-fix-egl-configure.patch
+	fi
 
 	# Allow user to apply any additional patches without modifing ebuild
 	eapply_user
