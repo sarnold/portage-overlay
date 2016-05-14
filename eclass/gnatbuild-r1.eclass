@@ -24,7 +24,7 @@ FEATURES=${FEATURES/multilib-strict/}
 
 EXPORTED_FUNCTIONS="pkg_setup pkg_postinst pkg_postrm src_unpack src_configure src_compile src_install"
 
-IUSE="nls lto"
+IUSE="nls"
 # multilib is supported via profiles now, multilib usevar is deprecated
 
 DEPEND=">=app-eselect/eselect-gnat-1.3-r1
@@ -96,6 +96,9 @@ is_crosscompile() {
 BOOT_TARGET=${CTARGET}
 [[ -z ${BOOT_SLOT} ]] && BOOT_SLOT=${SLOT}
 
+# for newer bootstrap starting with 4.9 (still experimental)
+BOOT_VER=${GCCRELEASE}
+
 # set our install locations
 PREFIX=${GNATBUILD_PREFIX:-/usr} # not sure we need this hook, but may be..
 LIBPATH=${PREFIX}/$(get_libdir)/${PN}/${CTARGET}/${SLOT}
@@ -118,6 +121,7 @@ S="${WORKDIR}/gcc-${GCCVER}"
 # bootstrap globals, common to src_unpack and src_compile
 GNATBOOT="${WORKDIR}/usr"
 GNATBUILD="${WORKDIR}/build"
+#GNATBUILD="${BUILD_DIR}"
 
 # necessary for detecting lib locations and creating env.d entry
 #XGCC="${GNATBUILD}/gcc/xgcc -B${GNATBUILD}/gcc"
@@ -340,11 +344,19 @@ gnatbuild_src_unpack() {
 			unpack ${A}
 			pax-mark E $(find ${GNATBOOT} -name gnat1)
 
+			mv "${WORKDIR}"/patch/51_all_gcc-3.4-libiberty-pic.patch \
+				"${WORKDIR}"/patch/exclude/
+
 			cd "${S}"
 			# patching gcc sources, following the toolchain
 			# first, the common patches
+			EPATCH_MULTI_MSG="Applying common Gentoo patches ..." \
+				epatch "${WORKDIR}"/patch/*.patch
+			EPATCH_MULTI_MSG="Applying Gentoo PIE patches ..." \
+				epatch "${WORKDIR}"/piepatch/*.patch
+
 			if [[ -d "${FILESDIR}"/patches ]] && [[ ! -z $(ls "${FILESDIR}"/patches/*.patch 2>/dev/null) ]] ; then
-				EPATCH_MULTI_MSG="Applying common Gentoo patches ..." \
+				EPATCH_MULTI_MSG="Applying local Gentoo patches ..." \
 				epatch "${FILESDIR}"/patches/*.patch
 			fi
 			#
@@ -450,6 +462,9 @@ gnatbuild_src_compile() {
 				arm)
 					GNATLIB="${GNATBOOT}/lib/gcc/${BOOT_TARGET}/${BOOT_SLOT}"
 					;;
+				x86)
+					GNATLIB="${GNATBOOT}/lib/gcc/${BOOT_TARGET}/${BOOT_VER}"
+					;;
 				*)
 					GNATLIB="${GNATBOOT}/lib"
 					;;
@@ -476,6 +491,9 @@ gnatbuild_src_compile() {
 
 		export ADA_OBJECTS_PATH="${GNATLIB}/adalib"
 		export ADA_INCLUDE_PATH="${GNATLIB}/adainclude"
+
+		# make things a bit smaller/faster
+#		export BOOT_CFLAGS="-O"
 
 		einfo "CC=${CC},
 			ADA_INCLUDE_PATH=${ADA_INCLUDE_PATH},
@@ -591,9 +609,18 @@ gnatbuild_src_compile() {
 				# error.
 				filter-flags -floop-interchange -floop-strip-mine -floop-block
 				filter-flags -fuse-linker-plugin -flto*
+				#strip-flags
+
+				# new warning-error to suppress
+				if version_is_at_least 4.9 ; then
+					GCC_WARN_CFLAGS="${GCC_WARN_CFLAGS} -Wno-error=unused-variable"
+					GCC_WARN_CXXFLAGS="${GCC_WARN_CXXFLAGS} -Wno-error=unused-variable"
+					#append-cflags "-Wno-error=unused-variable"
+				fi
 
 				cd "${GNATBUILD}"
-				CC="${CC}" CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" "${S}"/configure \
+				CC="gnatgcc" CXX="gnatg++" \
+					CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" "${S}"/configure \
 					--prefix=${PREFIX} \
 					--bindir=${BINPATH} \
 					--includedir=${INCLUDEPATH} \
@@ -602,7 +629,7 @@ gnatbuild_src_compile() {
 					--datadir=${DATAPATH} \
 					--mandir=${DATAPATH}/man \
 					--infodir=${DATAPATH}/info \
-					--enable-languages="c,ada" \
+					--enable-languages="c,ada,c++" \
 					--with-gcc \
 					${confgcc} || die "configure failed"
 			;;
@@ -631,7 +658,11 @@ gnatbuild_src_compile() {
 				debug-print-section bootstrap
 				# and, finally, the build itself
 				cd "${GNATBUILD}"
-				emake bootstrap || die "bootstrap failed"
+				emake \
+					CC="gnatgcc" CXX="gnatg++" \
+					STAGE1_CFLAGS="${CFLAGS}" \
+					bootstrap-lean \
+					|| die "bootstrap failed"
 			;;
 
 			gnatlib_and_tools)
@@ -680,6 +711,8 @@ gnatbuild_src_install() {
 		export PATH="${GNATBOOT}/bin:${PATH}"
 		if [[ ${BOOT_SLOT} > 4.1 ]] ; then
 			GNATLIB="${GNATBOOT}/lib"
+		elif [[ ${BOOT_SLOT} > 4.8 ]] ; then
+			GNATLIB="${GNATBOOT}/lib/gnatgcc/${BOOT_TARGET}/${BOOT_VER}"
 		else
 			GNATLIB="${GNATBOOT}/lib/gnatgcc/${BOOT_TARGET}/${BOOT_SLOT}"
 		fi
@@ -762,7 +795,7 @@ BINDIR=\$(dirname \$0)
 EOF
 			chmod a+x gnatgcc
 		else
-			local binfiles="cpp gcc gcov"
+			local binfiles="cpp gcc gcov c++ g++"
 			for i in "${binfiles}" ; do
 				mv $i gnat$i
 			done
