@@ -9,7 +9,7 @@ DESCRIPTION="GNAT Ada Compiler - gcc version"
 HOMEPAGE="https://gcc.gnu.org/"
 LICENSE="GMGPL"
 
-IUSE="doc lto openmp"
+IUSE="doc openmp"
 
 BOOT_SLOT="4.9"
 PATCH_VER="1.5"
@@ -20,14 +20,13 @@ PIE_VER="0.6.4"
 
 # SLOT is set in gnatbuild.eclass, depends only on PV (basically SLOT=GCCBRANCH)
 # so the URI's are static.
-KEYWORDS="~x86"
+KEYWORDS="~amd64 ~x86"
 
 SRC_URI="mirror://gnu/gcc/gcc-${PV}/gcc-${PV}.tar.bz2
 	mirror://gentoo/gcc-${PV}-patches-${PATCH_VER}.tar.bz2
 	mirror://gentoo/gcc-${PV}-piepatches-v${PIE_VER}.tar.bz2
+	amd64? ( http://dev.gentoo.org/~nerdboy/files/gnatboot-${BOOT_SLOT}-amd64.tar.xz )
 	x86? ( http://dev.gentoo.org/~nerdboy/files/gnatboot-${BOOT_SLOT}-i686.tar.xz )"
-
-KEYWORDS="~x86"
 
 # starting with 4.3.0 gnat needs these libs
 RDEPEND=">=dev-libs/mpfr-3.1.2
@@ -39,7 +38,7 @@ RDEPEND=">=dev-libs/mpfr-3.1.2
 DEPEND="${RDEPEND}
 	doc? ( >=sys-apps/texinfo-5 )
 	>=sys-devel/bison-1.875
-	elibc_glibc? ( >=sys-libs/glibc-2.8 )
+	>=sys-libs/glibc-2.8
 	>=sys-devel/binutils-2.20"
 
 if [[ ${CATEGORY} != cross-* ]] ; then

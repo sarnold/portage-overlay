@@ -9,7 +9,7 @@ DESCRIPTION="GNAT Ada Compiler - gcc version"
 HOMEPAGE="https://gcc.gnu.org/"
 LICENSE="GMGPL"
 
-IUSE="doc lto openmp"
+IUSE="doc openmp"
 
 BOOT_SLOT="4.4"
 
