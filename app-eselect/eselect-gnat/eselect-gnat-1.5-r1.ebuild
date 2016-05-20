@@ -31,5 +31,5 @@ src_install() {
 	# !ATTN!
 	# Make sure to adjust version of installed file to a proper one if there is
 	# a change!
-	newins "${FILESDIR}"/gnat-common-1.4-r1.bash gnat-common.bash
+	newins "${FILESDIR}"/gnat-common-${PV}.bash gnat-common.bash
 }
