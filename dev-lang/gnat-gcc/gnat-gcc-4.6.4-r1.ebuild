@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
+EAPI=4
 inherit gnatbuild
 
 DESCRIPTION="GNAT Ada Compiler - gcc version"
@@ -33,10 +33,7 @@ RDEPEND=">=dev-libs/mpfr-3.1.2
 	>=sys-libs/ncurses-5.7:0"
 
 DEPEND="${RDEPEND}
-	doc? ( >=sys-apps/texinfo-5 )
-	>=sys-devel/bison-1.875
-	>=sys-libs/glibc-2.8
-	>=sys-devel/binutils-2.20"
+	doc? ( >=sys-apps/texinfo-5 )"
 
 src_unpack() {
 	gnatbuild_src_unpack

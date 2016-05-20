@@ -1,10 +1,10 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 #
 # Author: George Shapovalov <george@gentoo.org>
 # Author: Steve Arnold <nerdboy@gentoo.org>
-# Belongs to: ada herd <ada@gentoo.org>
+# Belongs to: ada project <ada@gentoo.org>
 #
 # Notes:
 #  HOMEPAGE and LICENSE are set in appropriate ebuild, as
@@ -13,7 +13,7 @@
 # The following vars can be set in ebuild before inheriting this eclass. They
 # will be respected:
 #  SLOT
-#  BOOT_SLOT - where old bootstrap is used as it works fine
+#  BOOT_SLOT - where old bootstrap is used as it works fine for 4.4 - 4.6
 
 #WANT_AUTOMAKE="1.8"
 #WANT_AUTOCONF="2.1"
@@ -24,14 +24,22 @@ FEATURES=${FEATURES/multilib-strict/}
 
 EXPORTED_FUNCTIONS="pkg_setup pkg_postinst pkg_postrm src_unpack src_configure src_compile src_install"
 
-IUSE="nls"
+EXPORT_FUNCTIONS ${EXPORTED_FUNCTIONS}
+
+IUSE="nls openmp"
 # multilib is supported via profiles now, multilib usevar is deprecated
 
-DEPEND=">=app-eselect/eselect-gnat-1.3-r1
-          sys-devel/bc
-"
+RDEPEND="virtual/libiconv
+	nls? ( virtual/libintl )"
 
-RDEPEND="app-eselect/eselect-gnat"
+DEPEND="${RDEPEND}
+	>=app-eselect/eselect-gnat-1.5-r1
+	>=sys-libs/glibc-2.12
+	>=sys-devel/binutils-2.23
+	sys-devel/bc
+	>=sys-devel/bison-1.875
+	>=sys-devel/flex-2.5.4
+	nls? ( sys-devel/gettext )"
 
 # Note!
 # It may not be safe to source this at top level. Only source inside local
@@ -111,6 +119,10 @@ CONFIG_PATH="/usr/share/gnat/eselect"
 gnat_profile="${CTARGET}-${PN}-${SLOT}"
 gnat_config_file="${CONFIG_PATH}/${gnat_profile}"
 
+# we also need extra path env var, since current gnat-gcc specs are
+# somewhat broken by the post-install processing (note: this is a
+# temporary workaround)
+compilerpath="${LIBEXECPATH}:${LIBPATH}"
 
 # ebuild globals
 if [[ ${PN} == "${PN_GnatPro}" ]] && [[ ${GNATMAJOR} == "3" ]]; then
@@ -132,6 +144,10 @@ GNATBUILD="${WORKDIR}/build"
 
 #----<< support checks >>----
 # skipping this section - do not care about hardened/multilib for now
+: ${TARGET_ABI:=${ABI}}
+: ${TARGET_MULTILIB_ABIS:=${MULTILIB_ABIS}}
+: ${TARGET_DEFAULT_ABI:=${DEFAULT_ABI}}
+
 
 #---->> specs + env.d logic <<----
 # TODO!!!
@@ -140,6 +156,70 @@ GNATBUILD="${WORKDIR}/build"
 
 
 #---->> some helper functions <<----
+tc_version_is_at_least() {
+	version_is_at_least "$1" "${2:-${GCCBRANCH}}"
+}
+
+guess_patch_type_in_dir() {
+	[[ -n $(ls "$1"/*.bz2 2>/dev/null) ]] \
+		&& EPATCH_SUFFIX="patch.bz2" \
+		|| EPATCH_SUFFIX="patch"
+}
+
+# configure to build with the hardened GCC specs as the default
+make_gcc_hard() {
+	# we want to be able to control the pie patch logic via something other
+	# than ALL_CFLAGS...
+	sed -e '/^ALL_CFLAGS/iHARD_CFLAGS = ' \
+		-e 's|^ALL_CFLAGS = |ALL_CFLAGS = $(HARD_CFLAGS) |' \
+		-i "${S}"/gcc/Makefile.in
+	# Need to add HARD_CFLAGS to ALL_CXXFLAGS on >= 4.7
+	if tc_version_is_at_least 4.7 ; then
+		sed -e '/^ALL_CXXFLAGS/iHARD_CFLAGS = ' \
+                        -e 's|^ALL_CXXFLAGS = |ALL_CXXFLAGS = $(HARD_CFLAGS) |' \
+                        -i "${S}"/gcc/Makefile.in
+	fi
+
+	# defaults to enable for new gnatbuild
+#	if use hardened ; then
+		gcc_hard_flags=" -DEFAULT_PIE_SSP"
+#	else
+#		gcc_hard_flags+=" -DEFAULT_SSP"
+#	fi
+
+	sed -i \
+		-e "/^HARD_CFLAGS = /s|=|= ${gcc_hard_flags} |" \
+		"${S}"/gcc/Makefile.in || die
+
+}
+
+setup_gcc_build_specs() {
+	# Setup the "build.specs" file
+	cat "${WORKDIR}"/specs/pie.specs >> "${WORKDIR}"/build.specs
+	for s in ssp sspall ; do
+		cat "${WORKDIR}"/specs/${s}.specs >> "${WORKDIR}"/build.specs
+	done
+	for s in nostrict znow ; do
+		cat "${WORKDIR}"/specs/${s}.specs >> "${WORKDIR}"/build.specs
+	done
+	export GCC_SPECS="${WORKDIR}"/build.specs
+}
+
+gcc-abi-map() {
+	# Convert the ABI name we use in Gentoo to what gcc uses
+	local map=()
+	case ${CTARGET} in
+		mips*)   map=("o32 32" "n32 n32" "n64 64") ;;
+		x86_64*) map=("amd64 m64" "x86 m32" "x32 mx32") ;;
+	esac
+
+	local m
+	for m in "${map[@]}" ; do
+		l=( ${m} )
+	[[ $1 == ${l[0]} ]] && echo ${l[1]} && break
+	done
+}
+
 is_multilib() {
 	[[ ${GCCMAJOR} < 3 ]] && return 1
 	case ${CTARGET} in
@@ -152,10 +232,11 @@ is_multilib() {
 # adapted from toolchain,
 # left only basic multilib functionality and cut off mips stuff
 
-create_specs_file() {
-	einfo "Creating a vanilla gcc specs file"
-	"${WORKDIR}"/build/gcc/xgcc -dumpspecs > "${WORKDIR}"/build/vanilla.specs
-}
+## note: replaced with minspecs (sort of)
+#create_specs_file() {
+#	einfo "Creating a vanilla gcc specs file"
+#	"${WORKDIR}"/build/gcc/xgcc -dumpspecs > "${WORKDIR}"/build/vanilla.specs
+#}
 
 
 # eselect stuff taken straight from toolchain.eclass and greatly simplified
@@ -188,7 +269,6 @@ add_profile_eselect_conf() {
 	fi
 }
 
-
 create_eselect_conf() {
 	local abi
 
@@ -201,14 +281,13 @@ create_eselect_conf() {
 	echo "  ldpath=${LIBPATH}" >> "${D}/${gnat_config_file}"
 	echo "  manpath=${DATAPATH}/man" >> "${D}/${gnat_config_file}"
 	echo "  infopath=${DATAPATH}/info" >> "${D}/${gnat_config_file}"
+	echo "  compilerpath=${LIBEXECPATH}:${LIBPATH}" >> "${D}/${gnat_config_file}"
 	echo "  bin_prefix=${CTARGET}" >> "${D}/${gnat_config_file}"
 
 	for abi in $(get_all_abis) ; do
-		add_profile_eselect_conf "${D}/${gnat_config_file}" "${abi}"
+		add_profile_eselect_conf "${gnat_config_file}" "${abi}"
 	done
 }
-
-
 
 should_we_eselect_gnat() {
 	# we only want to switch compilers if installing to / or /tmp/stage1root
@@ -288,7 +367,7 @@ disgusting_gcc_multilib_HACK() {
 
 
 #---->> pkg_* <<----
-gnatbuild_pkg_setup() {
+gnatbuild-r1_pkg_setup() {
 	debug-print-function ${FUNCNAME} $@
 
 	# Setup variables which would normally be in the profile
@@ -298,9 +377,10 @@ gnatbuild_pkg_setup() {
 
 	# we dont want to use the installed compiler's specs to build gnat!
 	unset GCC_SPECS
+	unset LANGUAGES #265283
 }
 
-gnatbuild_pkg_postinst() {
+gnatbuild-r1_pkg_postinst() {
 	if should_we_eselect_gnat; then
 		do_gnat_config
 	else
@@ -321,7 +401,7 @@ gnatbuild_pkg_postinst() {
 }
 
 
-gnatbuild_pkg_postrm() {
+gnatbuild-r1_pkg_postrm() {
 	# "eselect gnat update" now removes the env.d file if the corresponding
 	# gnat profile was unmerged
 	eselect gnat update
@@ -334,9 +414,9 @@ gnatbuild_pkg_postrm() {
 #---->> src_* <<----
 
 # common unpack stuff
-gnatbuild_src_unpack() {
+gnatbuild-r1_src_unpack() {
 	debug-print-function ${FUNCNAME} $@
-	[ -z "$1" ] &&  gnatbuild_src_unpack all
+	[ -z "$1" ] &&  gnatbuild-r1_src_unpack all
 
 	while [ "$1" ]; do
 	case $1 in
@@ -344,16 +424,15 @@ gnatbuild_src_unpack() {
 			unpack ${A}
 			pax-mark E $(find ${GNATBOOT} -name gnat1)
 
-			mv "${WORKDIR}"/patch/51_all_gcc-3.4-libiberty-pic.patch \
-				"${WORKDIR}"/patch/exclude/
-
 			cd "${S}"
 			# patching gcc sources, following the toolchain
 			# first, the common patches
+			guess_patch_type_in_dir "${WORKDIR}"/patch
 			EPATCH_MULTI_MSG="Applying common Gentoo patches ..." \
-				epatch "${WORKDIR}"/patch/*.patch
+				epatch "${WORKDIR}"/patch
+			guess_patch_type_in_dir "${WORKDIR}"/piepatch
 			EPATCH_MULTI_MSG="Applying Gentoo PIE patches ..." \
-				epatch "${WORKDIR}"/piepatch/*.patch
+				epatch "${WORKDIR}"/piepatch
 
 			if [[ -d "${FILESDIR}"/patches ]] && [[ ! -z $(ls "${FILESDIR}"/patches/*.patch 2>/dev/null) ]] ; then
 				EPATCH_MULTI_MSG="Applying local Gentoo patches ..." \
@@ -365,6 +444,10 @@ gnatbuild_src_unpack() {
 				EPATCH_MULTI_MSG="Applying SLOT-specific Gentoo patches ..." \
 				epatch "${FILESDIR}"/patches/${SLOT}/*.patch
 			fi
+
+			# add hardening as per toolchain eclass
+			make_gcc_hard
+
 			# Replacing obsolete head/tail with POSIX compliant ones
 			ht_fix_file */configure
 
@@ -417,11 +500,14 @@ gnatbuild_src_unpack() {
 				sed -i -e "/\$(RM) \$(bindir)/d" "${S}"/gcc/ada/Make-lang.in
 			fi
 
+			find "${S}" -name Makefile.in \
+				-exec sed -i '/^pkgconfigdir/s:=.*:=$(toolexeclibdir)/pkgconfig:' {} +
+
 			mkdir -p "${GNATBUILD}"
 		;;
 
 		all)
-			gnatbuild_src_unpack base_unpack common_prep
+			gnatbuild-r1_src_unpack base_unpack common_prep
 		;;
 	esac
 	shift
@@ -429,7 +515,7 @@ gnatbuild_src_unpack() {
 }
 
 # for now just dont run default configure
-gnatbuild_src_configure() {
+gnatbuild-r1_src_configure() {
 	# do nothing
 	:
 }
@@ -439,16 +525,16 @@ gnatbuild_src_configure() {
 # so just do sections for now (as in eclass section of handbook)
 # sections are: configure, make-tools, bootstrap,
 #  gnatlib_and_tools, gnatlib-shared
-gnatbuild_src_compile() {
+gnatbuild-r1_src_compile() {
 	debug-print-function ${FUNCNAME} $@
 	if [[ -z "$1" ]]; then
-		gnatbuild_src_compile all
+		gnatbuild-r1_src_compile all
 		return $?
 	fi
 
 	if [[ "all" == "$1" ]]
 	then # specialcasing "all" to avoid scanning sources unnecessarily
-		gnatbuild_src_compile configure make-tools \
+		gnatbuild-r1_src_compile configure make-tools \
 			bootstrap gnatlib_and_tools gnatlib-shared
 
 	else
@@ -462,7 +548,7 @@ gnatbuild_src_compile() {
 				arm)
 					GNATLIB="${GNATBOOT}/lib/gcc/${BOOT_TARGET}/${BOOT_SLOT}"
 					;;
-				x86)
+				x86|amd64)
 					GNATLIB="${GNATBOOT}/lib/gcc/${BOOT_TARGET}/${BOOT_VER}"
 					;;
 				*)
@@ -474,6 +560,10 @@ gnatbuild_src_compile() {
 		fi
 
 		export CC="${GNATBOOT}/bin/gnatgcc"
+		export CXX="${GNATBOOT}/bin/gnatg++"
+		export LDFLAGS="-Wl,-O2 -Wl,--as-needed"
+		export CFLAGS="-O2 -pipe -fPIC"
+		export CXXFLAGS="${CFLAGS}"
 		# CPATH is supposed to be applied for any language, thus
 		# superceding either of C/CPLUS/OBJC_INCLUDE_PATHs
 		export CPATH="${GNATLIB}/include"
@@ -481,13 +571,15 @@ gnatbuild_src_compile() {
 		#export C_INCLUDE_PATH="${GNATLIB}/include"
 		#export CPLUS_INCLUDE_PATH="${GNATLIB}/include"
 		export LIB_DIR="${GNATLIB}"
-		export LDFLAGS="-L${GNATLIB}"
+		export LDFLAGS="${LDFLAGS} -L${GNATLIB}"
 
 		# additional vars from gnuada and elsewhere
 		#export LD_RUN_PATH="${LIBPATH}"
 		export LIBRARY_PATH="${GNATLIB}"
 		#export LD_LIBRARY_PATH="${GNATLIB}"
 #		export COMPILER_PATH="${GNATBOOT}/bin/"
+
+		STDCXX_INCDIR="${LIBPATH}/include/g++-v${SLOT/\.*/}"
 
 		export ADA_OBJECTS_PATH="${GNATLIB}/adalib"
 		export ADA_INCLUDE_PATH="${GNATLIB}/adainclude"
@@ -496,8 +588,8 @@ gnatbuild_src_compile() {
 #		export BOOT_CFLAGS="-O"
 
 		einfo "CC=${CC},
+			CXX=${CXX},
 			ADA_INCLUDE_PATH=${ADA_INCLUDE_PATH},
-			LDFLAGS=${LDFLAGS},
 			PATH=${PATH}"
 
 		while [ "$1" ]; do
@@ -521,26 +613,31 @@ gnatbuild_src_compile() {
 					confgcc="${confgcc} --disable-nls"
 				fi
 
-				if version_is_at_least 4.6 ; then
-					confgcc+=( $(use_enable lto) $(use_enable lto plugin) )
+				if tc_version_is_at_least 4.6 ; then
+					confgcc="${confgcc} --enable-lto"
 				else
-					confgcc+=( --disable-lto --disable-plugin )
+					confgcc="${confgcc} --disable-lto"
 				fi
 
 				# reasonably sane globals (from toolchain)
 				# also disable mudflap and ssp
 				confgcc="${confgcc} \
 					--with-system-zlib \
-					--disable-checking \
+					--enable-obsolete \
+					--enable-secureplt \
 					--disable-werror \
+					--enable-checking=release \
+					--enable-libstdcxx-time \
 					--disable-libmudflap \
 					--disable-libssp \
 					--disable-altivec \
 					--disable-fixed-point \
 					--disable-libgcj \
 					--disable-libcilkrts \
-					--disable-libsanitizer \
-					--disable-libunwind-exceptions"
+					--disable-libquadmath \
+					--enable-libsanitizer \
+					--enable-esp \
+					--enable-targets=all"
 
 				if in_iuse openmp ; then
 					# Make sure target has pthreads support. #326757 #335883
@@ -555,20 +652,24 @@ gnatbuild_src_compile() {
 								confgcc="${confgcc} --disable-libgomp"
 								;;
 							*)
-								confgcc+=( $(use_enable openmp libgomp) )
+								if use openmp ; then
+									confgcc="${confgcc} --enable-libgomp"
+								else
+									confgcc="${confgcc} --disable-libgomp"
+								fi
 								;;
 						esac
 					else
 						# Force disable as the configure script can be dumb #359855
-						confgcc+=( --disable-libgomp )
+						confgcc="${confgcc} --disable-libgomp"
 					fi
 				else
 					# For gcc variants where we don't want openmp (e.g. kgcc)
-					confgcc+=( --disable-libgomp )
+					confgcc="${confgcc} --disable-libgomp"
 				fi
 
 				# ACT's gnat-gpl does not like libada for whatever reason..
-				if version_is_at_least 4.2 ; then
+				if tc_version_is_at_least 4.2 ; then
 					confgcc="${confgcc} --enable-libada"
 #				else
 #					einfo "ACT's gnat-gpl does not like libada, disabling"
@@ -576,24 +677,35 @@ gnatbuild_src_compile() {
 				fi
 
 				# set some specifics available in later versions
-				if version_is_at_least 4.7 ; then
+				confgcc="${confgcc} --enable-shared"
+				if tc_version_is_at_least 4.7 ; then
 					einfo "setting gnat thread model"
 					confgcc="${confgcc} --enable-threads=posix"
 					confgcc="${confgcc} --enable-shared=boehm-gc,ada,libada"
-				elif version_is_at_least 4.3 ; then
+				elif tc_version_is_at_least 4.3 ; then
 					confgcc="${confgcc} --enable-threads=gnat"
 					confgcc="${confgcc} --enable-shared=boehm-gc,ada,libada"
 				else
 					confgcc="${confgcc} --enable-threads=posix"
-					confgcc="${confgcc} --enable-shared"
 				fi
 
 				# multilib support
-				if is_multilib ; then
-					confgcc="${confgcc} --enable-multilib"
-				else
+				case $(tc-arch) in
+				amd64)
+					if is_multilib ; then
+						confgcc="${confgcc} --enable-multilib"
+						if has x32 $(get_all_abis TARGET) ; then
+							confgcc="${confgcc} --with-abi=$(gcc-abi-map ${TARGET_DEFAULT_ABI})"
+						fi
+					else
+						confgcc="${confgcc} --disable-multilib"
+					fi
+					;;
+				x86)
+					confgcc="${confgcc} --with-arch=${CTARGET%%-*}"
 					confgcc="${confgcc} --disable-multilib"
-				fi
+					;;
+				esac
 
 				# __cxa_atexit is "essential for fully standards-compliant handling of
 				# destructors", but apparently requires glibc.
@@ -602,36 +714,56 @@ gnatbuild_src_compile() {
 					confgcc="${confgcc} --enable-clocale=gnu"
 				fi
 
-				einfo "confgcc=${confgcc}"
+				export gcc_cv_prog_makeinfo_modern=no
+				export ac_cv_have_x='have_x=yes ac_x_includes= ac_x_libraries='
+				export gcc_cv_libc_provides_ssp=yes
 
 				# need to strip graphite/lto flags or we'll get the
 				# dreaded C compiler cannot create executables...
 				# error.
 				filter-flags -floop-interchange -floop-strip-mine -floop-block
 				filter-flags -fuse-linker-plugin -flto*
-				#strip-flags
+#				strip-flags
+				replace-flags -O? -O2
+				filter-flags '-mabi*' -m31 -m32 -m64
+				filter-flags -frecord-gcc-switches
+				filter-flags -mno-rtm -mno-htm
 
-				# new warning-error to suppress
-				if version_is_at_least 4.9 ; then
-					GCC_WARN_CFLAGS="${GCC_WARN_CFLAGS} -Wno-error=unused-variable"
-					GCC_WARN_CXXFLAGS="${GCC_WARN_CXXFLAGS} -Wno-error=unused-variable"
-					#append-cflags "-Wno-error=unused-variable"
-				fi
+				# gold linker barfs on some arches/configs :/
+				#tc-ld-is-gold && tc-ld-disable-gold
 
-				cd "${GNATBUILD}"
-				CC="gnatgcc" CXX="gnatg++" \
-					CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" "${S}"/configure \
-					--prefix=${PREFIX} \
-					--bindir=${BINPATH} \
-					--includedir=${INCLUDEPATH} \
+				case $(tc-arch) in
+					amd64|x86)
+						filter-flags '-mcpu=*'
+						;;
+					*)
+						;;
+				esac
+
+				strip-unsupported-flags
+
+				confgcc+=( "$@" ${EXTRA_ECONF} )
+				einfo "confgcc=${confgcc}"
+
+				pushd "${GNATBUILD}" > /dev/null
+				CC="${CC}" CXX="${CXX}" \
+					LDFLAGS="${LDFLAGS}" \
+					CFLAGS="${CFLAGS}" \
+					CXXFLAGS="${CFLAGS}" \
+					"${S}"/configure \
+					--prefix="${PREFIX}" \
+					--bindir="${BINPATH}" \
+					--includedir="${INCLUDEPATH}" \
 					--libdir="${LIBPATH}" \
 					--libexecdir="${LIBEXECPATH}" \
-					--datadir=${DATAPATH} \
-					--mandir=${DATAPATH}/man \
-					--infodir=${DATAPATH}/info \
+					--datadir="${DATAPATH}" \
+					--mandir="${DATAPATH}"/man \
+					--infodir="${DATAPATH}"/info \
+					--with-gxx-include-dir="${STDCXX_INCDIR}" \
 					--enable-languages="c,ada,c++" \
 					--with-gcc \
 					${confgcc} || die "configure failed"
+				popd > /dev/null
 			;;
 
 			make-tools)
@@ -648,19 +780,29 @@ gnatbuild_src_compile() {
 					cp "${S}"/gcc/ada/csinfo.adb  .
 					cp "${S}"/gcc/ada/ceinfo.adb  .
 				fi
-				gnatmake xtreeprs && \
-				gnatmake xsinfo   && \
-				gnatmake xeinfo   && \
-				gnatmake xnmake   || die "building helper tools"
+
+				gnatmake xtreeprs  && \
+				gnatmake xsinfo  && \
+				gnatmake xeinfo  && \
+				gnatmake xnmake || die "building helper tools"
+
+				mv xeinfo xnmake xsinfo xtreeprs bin/
 			;;
 
 			bootstrap)
 				debug-print-section bootstrap
 				# and, finally, the build itself
+				# do we need this?  STAGE1_CFLAGS="${CFLAGS}"
+				# or this?  bootstrap-lean
+				# removing both to try --disable-bootstrap
 				cd "${GNATBUILD}"
 				emake \
-					CC="gnatgcc" CXX="gnatg++" \
+					LDFLAGS="${LDFLAGS}" \
+					LIBPATH="${LIBPATH}" \
+					CC="${CC}" CXX="${CXX}" \
 					STAGE1_CFLAGS="${CFLAGS}" \
+					LIBRARY_VERSION="${SLOT}" \
+					BOOT_CFLAGS="$(get_abi_CFLAGS ${TARGET_DEFAULT_ABI}) ${CFLAGS}" \
 					bootstrap-lean \
 					|| die "bootstrap failed"
 			;;
@@ -679,7 +821,7 @@ gnatbuild_src_compile() {
 				cd "${GNATBUILD}"
 				rm -f gcc/ada/rts/*.{o,ali} || die
 				#otherwise make tries to reuse already compiled (without -fPIC) objs..
-				emake -j1 -C gcc gnatlib-shared LIBRARY_VERSION="${GCCBRANCH}" || \
+				emake -j1 -C gcc gnatlib-shared LIBRARY_VERSION="${SLOT}" || \
 					die "gnatlib-shared failed"
 			;;
 
@@ -688,14 +830,14 @@ gnatbuild_src_compile() {
 		done # while
 	fi   # "all" == "$1"
 }
-# -- end gnatbuild_src_compile
+# -- end gnatbuild-r1_src_compile
 
 
-gnatbuild_src_install() {
+gnatbuild-r1_src_install() {
 	debug-print-function ${FUNCNAME} $@
 
 	if [[ -z "$1" ]] ; then
-		gnatbuild_src_install all
+		gnatbuild-r1_src_install all
 		return $?
 	fi
 
@@ -728,11 +870,8 @@ gnatbuild_src_install() {
 
 		# Do not allow symlinks in /usr/lib/gcc/${CHOST}/${MY_PV}/include as
 		# this can break the build.
-		for x in "${GNATBUILD}"/gcc/include/* ; do
-			if [ -L ${x} ] ; then
-				rm -f ${x}
-			fi
-		done
+		find "${GNATBUILD}"/gcc/include/* -type l -delete
+
 		# Remove generated headers, as they can cause things to break
 		# (ncurses, openssl, etc). (from toolchain.eclass)
 		for x in $(find "${WORKDIR}"/build/gcc/include/ -name '*.h') ; do
@@ -742,7 +881,10 @@ gnatbuild_src_install() {
 
 
 		cd "${GNATBUILD}"
-		make DESTDIR="${D}" install || die
+		make -j1 DESTDIR="${D}" install || die
+
+		find "${D}" -name install-tools -prune -type d -exec rm -rf "{}" \;
+		find "${D}" -name libiberty.a -delete
 
 		if use doc ; then
 			if (( $(bc <<< "${GNATBRANCH} > 4.3") )) ; then
@@ -757,7 +899,7 @@ gnatbuild_src_install() {
 		debug-print-section move_libs
 
 		# first we need to remove some stuff to make moving easier
-		rm -rf "${D}${LIBPATH}"/{32,include,libiberty.a}
+		rm -rf "${D}${LIBPATH}"/{32,include}
 		# gcc insists on installing libs in its own place
 		mv "${D}${LIBPATH}/gcc/${CTARGET}/${GCCRELEASE}"/* "${D}${LIBPATH}"
 		mv "${D}${LIBEXECPATH}/gcc/${CTARGET}/${GCCRELEASE}"/* "${D}${LIBEXECPATH}"
@@ -775,14 +917,18 @@ gnatbuild_src_install() {
 					# actually build gnat for that arch
 				;;
 			esac
+		else
+			# x86 cleanup (maybe arm)
+			mv "${D}${LIBPATH}"/../lib/* "${D}${LIBPATH}"
+			rm -rf "${D}${LIBPATH}"/../lib
 		fi
 
 		# force gnatgcc to use its own specs - versions prior to 3.4.6 read specs
 		# from system gcc location. Do the simple wrapper trick for now
 		# !ATTN! change this if eselect-gnat starts to follow eselect-compiler
+		cd "${D}${BINPATH}"
 		if [[ ${GCCVER} < 3.4.6 ]] ; then
 			# gcc 4.1 uses builtin specs. What about 4.0?
-			cd "${D}${BINPATH}"
 			mv gnatgcc gnatgcc_2wrap
 			cat > gnatgcc << EOF
 #! /bin/bash
@@ -795,9 +941,9 @@ BINDIR=\$(dirname \$0)
 EOF
 			chmod a+x gnatgcc
 		else
-			local binfiles="cpp gcc gcov c++ g++"
-			for i in "${binfiles}" ; do
-				mv $i gnat$i
+			local i
+			for i in cpp gcc gcov c++ g++ ; do
+				ln -s ${i} gnat${i}
 			done
 		fi
 
@@ -808,11 +954,16 @@ EOF
 
 		# use gid of 0 because some stupid ports don't have
 		# the group 'root' set to gid 0 (toolchain.eclass)
-		chown -R root:0 "${D}${LIBPATH}"
-		;;
+		chown -R root:0 "${D}${LIBPATH}" 2>/dev/null
 
+		# add hardening spec stuff
+		insinto "${LIBPATH}"
+		doins "${WORKDIR}"/specs/*.specs || die "failed to install specs"
+		;;
 	cleanup)
 		debug-print-section cleanup
+
+		setup_gcc_build_specs
 
 		rm -rf "${D}${LIBPATH}"/{gcc,install-tools,../lib{32,64}}
 		rm -rf "${D}${LIBEXECPATH}"/{gcc,install-tools}
@@ -825,12 +976,10 @@ EOF
 		rm -rf "${D}${DATAPATH}"/man/man7/
 
 		# fix .la path for lto plugin
-		if use lto ; then
+		[ -f "${D}${LIBEXECPATH}"/liblto_plugin.la ] &&
 			sed -i -e \
 				"/libdir=/c\libdir='${LIBEXECPATH}'" \
-				"${D}${LIBEXECPATH}"/liblto_plugin.la \
-				|| die "sed update of .la file failed!"
-		fi
+				"${D}${LIBEXECPATH}"/liblto_plugin.la
 		;;
 
 	prep_env)
@@ -840,10 +989,10 @@ EOF
 		;;
 
 	all)
-		gnatbuild_src_install install move_libs cleanup prep_env
+		gnatbuild-r1_src_install install move_libs cleanup prep_env
 		;;
 	esac
 	shift
 	done # while
 }
-# -- end gnatbuild_src_install
+# -- end gnatbuild-r1_src_install
