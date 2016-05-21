@@ -9,7 +9,7 @@ DESCRIPTION="GNAT Ada Compiler - gcc version"
 HOMEPAGE="https://gcc.gnu.org/"
 LICENSE="GMGPL"
 
-IUSE="doc"
+IUSE="doc hardened"
 
 BOOT_SLOT="4.9"
 PATCH_VER="1.5"
@@ -27,7 +27,7 @@ KEYWORDS="~amd64 ~x86"
 SRC_URI="mirror://gnu/gcc/gcc-${PV}/gcc-${PV}.tar.bz2
 	mirror://gentoo/gcc-${PV}-patches-${PATCH_VER}.tar.bz2
 	mirror://gentoo/gcc-${PV}-piepatches-v${PIE_VER}.tar.bz2
-	mirror://gentoo/gcc-${SPECS_GCC_VER}-specs-${SPECS_VER}.tar.bz2
+	hardened? ( mirror://gentoo/gcc-${SPECS_GCC_VER}-specs-${SPECS_VER}.tar.bz2 )
 	amd64? ( http://dev.gentoo.org/~nerdboy/files/gnatboot-${BOOT_SLOT}-amd64.tar.xz )
 	x86? ( http://dev.gentoo.org/~nerdboy/files/gnatboot-${BOOT_SLOT}-i686.tar.xz )"
 
