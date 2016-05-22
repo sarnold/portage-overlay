@@ -22,16 +22,23 @@ inherit eutils fixheadtails flag-o-matic gnuconfig libtool multilib pax-utils to
 
 FEATURES=${FEATURES/multilib-strict/}
 
-EXPORTED_FUNCTIONS="pkg_setup pkg_postinst pkg_postrm src_unpack src_configure src_compile src_install"
+EXPORT_FUNCTIONS="pkg_setup pkg_postinst pkg_postrm src_unpack src_configure src_compile src_install"
 
-IUSE="nls lto"
+IUSE="nls"
 # multilib is supported via profiles now, multilib usevar is deprecated
 
-DEPEND=">=app-eselect/eselect-gnat-1.3-r1
-          sys-devel/bc
-"
+RDEPEND="app-eselect/eselect-gnat
+	virtual/libiconv
+	nls? ( virtual/libintl )"
 
-RDEPEND="app-eselect/eselect-gnat"
+DEPEND="${RDEPEND}
+	>=app-eselect/eselect-gnat-1.3-r1
+	>=sys-libs/glibc-2.12
+	>=sys-devel/binutils-2.23
+	sys-devel/bc
+	>=sys-devel/bison-1.875
+	>=sys-devel/flex-2.5.4
+	nls? ( sys-devel/gettext )"
 
 # Note!
 # It may not be safe to source this at top level. Only source inside local
@@ -200,7 +207,7 @@ create_eselect_conf() {
 	echo "  bin_prefix=${CTARGET}" >> "${D}/${gnat_config_file}"
 
 	for abi in $(get_all_abis) ; do
-		add_profile_eselect_conf "${D}/${gnat_config_file}" "${abi}"
+		add_profile_eselect_conf "${gnat_config_file}" "${abi}"
 	done
 }
 
@@ -332,7 +339,10 @@ gnatbuild_pkg_postrm() {
 # common unpack stuff
 gnatbuild_src_unpack() {
 	debug-print-function ${FUNCNAME} $@
-	[ -z "$1" ] &&  gnatbuild_src_unpack all
+	if [[ -z "$1" ]]; then
+		gnatbuild_src_unpack all
+		return $?
+	fi
 
 	while [ "$1" ]; do
 	case $1 in
@@ -504,9 +514,9 @@ gnatbuild_src_compile() {
 				fi
 
 				if version_is_at_least 4.6 ; then
-					confgcc+=( $(use_enable lto) $(use_enable lto plugin) )
-				else
-					confgcc+=( --disable-lto --disable-plugin )
+					confgcc="${confgcc} --enable-lto"
+				elif tc_version_is_at_least 4.5 ; then
+					confgcc="${confgcc} --disable-lto --disable-plugin"
 				fi
 
 				# reasonably sane globals (from toolchain)
@@ -537,16 +547,16 @@ gnatbuild_src_compile() {
 								confgcc="${confgcc} --disable-libgomp"
 								;;
 							*)
-								confgcc+=( $(use_enable openmp libgomp) )
+								confgcc="${confgcc} $(use_enable openmp libgomp)"
 								;;
 						esac
 					else
 						# Force disable as the configure script can be dumb #359855
-						confgcc+=( --disable-libgomp )
+						confgcc="${confgcc} --disable-libgomp"
 					fi
 				else
 					# For gcc variants where we don't want openmp (e.g. kgcc)
-					confgcc+=( --disable-libgomp )
+					confgcc="${confgcc} --disable-libgomp"
 				fi
 
 				# ACT's gnat-gpl does not like libada for whatever reason..
@@ -586,23 +596,33 @@ gnatbuild_src_compile() {
 
 				einfo "confgcc=${confgcc}"
 
+				export gcc_cv_lto_plugin=1  # okay to build, default to opt-in
+				export gcc_cv_prog_makeinfo_modern=no
+				export ac_cv_have_x='have_x=yes ac_x_includes= ac_x_libraries='
+				export gcc_cv_libc_provides_ssp=yes
+
 				# need to strip graphite/lto flags or we'll get the
 				# dreaded C compiler cannot create executables...
 				# error.
-				filter-flags -floop-interchange -floop-strip-mine -floop-block
-				filter-flags -fuse-linker-plugin -flto*
+				strip-flags
+				replace-flags -O? -O2
+				filter-flags '-mabi*' -m31 -m32 -m64
+				filter-flags -frecord-gcc-switches
+				filter-flags -mno-rtm -mno-htm
+				#filter-flags -floop-interchange -floop-strip-mine -floop-block
+				#filter-flags -fuse-linker-plugin -flto*
 
 				cd "${GNATBUILD}"
-				CC="${CC}" CFLAGS="${CFLAGS}" CXXFLAGS="${CXXFLAGS}" "${S}"/configure \
-					--prefix=${PREFIX} \
-					--bindir=${BINPATH} \
-					--includedir=${INCLUDEPATH} \
+				CC="${CC}" CFLAGS="${CFLAGS}" CXXFLAGS="${CFLAGS}" "${S}"/configure \
+					--prefix="${PREFIX}" \
+					--bindir="${BINPATH}" \
+					--includedir="${INCLUDEPATH}" \
 					--libdir="${LIBPATH}" \
 					--libexecdir="${LIBEXECPATH}" \
-					--datadir=${DATAPATH} \
-					--mandir=${DATAPATH}/man \
-					--infodir=${DATAPATH}/info \
-					--enable-languages="c,ada" \
+					--datadir="${DATAPATH}" \
+					--mandir="${DATAPATH}"/man \
+					--infodir="${DATAPATH}"/info \
+					--enable-languages=c,ada \
 					--with-gcc \
 					${confgcc} || die "configure failed"
 			;;
@@ -625,13 +645,19 @@ gnatbuild_src_compile() {
 				gnatmake xsinfo   && \
 				gnatmake xeinfo   && \
 				gnatmake xnmake   || die "building helper tools"
+
+				mv xeinfo xnmake xsinfo xtreeprs bin/
 			;;
 
 			bootstrap)
 				debug-print-section bootstrap
 				# and, finally, the build itself
 				cd "${GNATBUILD}"
-				emake bootstrap || die "bootstrap failed"
+				emake \
+					LDFLAGS="${LDFLAGS}" \
+					LIBPATH="${LIBPATH}" \
+					CC="${CC}" \
+					bootstrap-lean || die "bootstrap failed"
 			;;
 
 			gnatlib_and_tools)
@@ -711,6 +737,12 @@ gnatbuild_src_install() {
 		cd "${GNATBUILD}"
 		make DESTDIR="${D}" install || die
 
+		# Disable RANDMMAP so PCH works. #301299
+		pax-mark r "${D}"${LIBEXECPATH}/{gnat1,cc1,cc1plus}
+		# Quiet QA warnings, wait for adacore exec stack patch in gcc 7
+		export QA_EXECSTACK="${BINPATH:1}/gnatls ${BINPATH:1}/gnatname
+			${BINPATH:1}/gnatmake ${BINPATH:1}/gnatclean ${BINPATH:1}/gnat"
+
 		if use doc ; then
 			if (( $(bc <<< "${GNATBRANCH} > 4.3") )) ; then
 				#make a convenience info link
@@ -747,9 +779,9 @@ gnatbuild_src_install() {
 		# force gnatgcc to use its own specs - versions prior to 3.4.6 read specs
 		# from system gcc location. Do the simple wrapper trick for now
 		# !ATTN! change this if eselect-gnat starts to follow eselect-compiler
+		cd "${D}${BINPATH}"
 		if [[ ${GCCVER} < 3.4.6 ]] ; then
 			# gcc 4.1 uses builtin specs. What about 4.0?
-			cd "${D}${BINPATH}"
 			mv gnatgcc gnatgcc_2wrap
 			cat > gnatgcc << EOF
 #! /bin/bash
@@ -762,9 +794,9 @@ BINDIR=\$(dirname \$0)
 EOF
 			chmod a+x gnatgcc
 		else
-			local binfiles="cpp gcc gcov"
-			for i in "${binfiles}" ; do
-				mv $i gnat$i
+			local i
+			for i in cpp gcc gcov ; do
+				ln -s ${i} gnat${i}
 			done
 		fi
 
@@ -775,7 +807,7 @@ EOF
 
 		# use gid of 0 because some stupid ports don't have
 		# the group 'root' set to gid 0 (toolchain.eclass)
-		chown -R root:0 "${D}${LIBPATH}"
+#		chown -R root:0 "${D}${LIBPATH}"
 		;;
 
 	cleanup)

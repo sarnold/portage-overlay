@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -23,7 +23,7 @@ SRC_URI="ftp://gcc.gnu.org/pub/gcc/releases/gcc-${PV}/gcc-core-${PV}.tar.bz2
 	arm?   ( http://dev.gentoo.org/~nerdboy/files/gnatboot-${BOOT_SLOT}-arm.tar.xz )"
 #	ppc?   ( mirror://gentoo/gnatboot-${BOOT_SLOT}-ppc.tar.bz2 )
 
-KEYWORDS="~amd64 ~sparc ~x86"
+KEYWORDS="~amd64 ~arm ~sparc ~x86"
 
 # starting with 4.3.0 gnat needs these libs
 RDEPEND=">=dev-libs/mpfr-3.1.2
@@ -36,8 +36,10 @@ DEPEND="${RDEPEND}
 	doc? ( >=sys-apps/texinfo-5 )"
 
 src_unpack() {
-	gnatbuild_src_unpack
+	gnatbuild_src_unpack all
+}
 
+src_prepare() {
 	#fixup some hardwired flags
 	cd "${S}"/gcc/ada
 
@@ -53,6 +55,10 @@ src_unpack() {
 	sed -i -e "s:libgui zlib:libgui:" "${S}"/configure
 }
 
+src_configure() {
+	:
+}
+
 src_compile() {
 	# looks like gnatlib_and_tools and gnatlib_shared have become part of
 	# bootstrap
@@ -60,6 +66,5 @@ src_compile() {
 }
 
 src_install() {
-	gnatbuild_src_install
+	gnatbuild_src_install all
 }
-

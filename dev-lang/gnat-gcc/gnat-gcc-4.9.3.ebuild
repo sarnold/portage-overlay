@@ -22,13 +22,16 @@ SSP_STABLE="amd64 x86 mips ppc ppc64 arm"
 
 # SLOT is set in gnatbuild.eclass, depends only on PV (basically SLOT=GCCBRANCH)
 # so the URI's are static.
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~arm ~x86"
 
+# arm is armv7-hardfloat, no neon:
+#  (--with-arch=armv7-a --with-mode=thumb --with-float=hard --with-fpu=vfpv3-d16)
 SRC_URI="mirror://gnu/gcc/gcc-${PV}/gcc-${PV}.tar.bz2
 	mirror://gentoo/gcc-${PV}-patches-${PATCH_VER}.tar.bz2
 	mirror://gentoo/gcc-${PV}-piepatches-v${PIE_VER}.tar.bz2
 	hardened? ( mirror://gentoo/gcc-${SPECS_GCC_VER}-specs-${SPECS_VER}.tar.bz2 )
 	amd64? ( http://dev.gentoo.org/~nerdboy/files/gnatboot-${BOOT_SLOT}-amd64.tar.xz )
+	arm? ( http://dev.gentoo.org/~nerdboy/files/gnatboot-${BOOT_SLOT}-arm.tar.xz )
 	x86? ( http://dev.gentoo.org/~nerdboy/files/gnatboot-${BOOT_SLOT}-i686.tar.xz )"
 
 # starting with 4.3.0 gnat needs these libs
@@ -46,6 +49,9 @@ if [[ ${CATEGORY} != cross-* ]] ; then
 fi
 
 src_prepare() {
+	# See if we can enable boehm-gc for Ada
+	#epatch "${FILESDIR}"/${PN}-4.9.3-enable-boehm-gc-for-Ada.patch
+
 	#fixup some hardwired flags
 	pushd "${S}"/gcc/ada > /dev/null
 
