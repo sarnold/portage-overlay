@@ -26,7 +26,7 @@ EXPORTED_FUNCTIONS="pkg_setup pkg_postinst pkg_postrm src_unpack src_configure s
 
 EXPORT_FUNCTIONS ${EXPORTED_FUNCTIONS}
 
-IUSE="nls openmp hardened"
+IUSE="nls openmp hardened multilib"
 # multilib is supported via profiles now, multilib usevar is deprecated
 
 RDEPEND="virtual/libiconv
@@ -137,8 +137,8 @@ GNATBUILD="${WORKDIR}/build"
 
 # set SRC_URI's in ebuilds for now
 
-#----<< support checks >>----
-# skipping this section - do not care about hardened/multilib for now
+#----<< global toolchain vars >>----
+
 : ${TARGET_ABI:=${ABI}}
 : ${TARGET_MULTILIB_ABIS:=${MULTILIB_ABIS}}
 : ${TARGET_DEFAULT_ABI:=${DEFAULT_ABI}}
@@ -188,6 +188,32 @@ make_gcc_hard() {
 
 }
 
+gcc-multilib-configure() {
+	if ! is_multilib ; then
+		confgcc="${confgcc} --disable-multilib"
+		# Fun times: if we are building for a target that has multiple
+		# possible ABI formats, and the user has told us to pick one
+		# that isn't the default, then not specifying it via the list
+		# below will break that on us.
+	else
+		confgcc="${confgcc} --enable-multilib"
+	fi
+
+	# translate our notion of multilibs into gcc's
+	local abi list
+	for abi in $(get_all_abis TARGET) ; do
+		local l=$(gcc-abi-map ${abi})
+		[[ -n ${l} ]] && list+=",${l}"
+	done
+	if [[ -n ${list} ]] ; then
+		case ${CTARGET} in
+		x86_64*)
+			tc_version_is_at_least 4.8 && confgcc="${confgcc} --with-multilib-list=${list:1}"
+			;;
+		esac
+	fi
+}
+
 gcc-abi-map() {
 	# Convert the ABI name we use in Gentoo to what gcc uses
 	local map=()
@@ -204,23 +230,15 @@ gcc-abi-map() {
 }
 
 is_multilib() {
-	[[ ${GCCMAJOR} < 3 ]] && return 1
-	case ${CTARGET} in
-		mips64*|powerpc64*|s390x*|sparc64*|x86_64*)
-			has_multilib_profile || use multilib ;;
-		*)  false ;;
-	esac
+	tc_version_is_at_least 3 || return 1
+	use multilib
 }
-
-# adapted from toolchain,
-# left only basic multilib functionality and cut off mips stuff
 
 ## note: replaced with minspecs (sort of)
 #create_specs_file() {
 #	einfo "Creating a vanilla gcc specs file"
 #	"${WORKDIR}"/build/gcc/xgcc -dumpspecs > "${WORKDIR}"/build/vanilla.specs
 #}
-
 
 # eselect stuff taken straight from toolchain.eclass and greatly simplified
 add_profile_eselect_conf() {
@@ -398,6 +416,7 @@ gnatbuild-r1_pkg_postrm() {
 # common unpack stuff
 gnatbuild-r1_src_unpack() {
 	debug-print-function ${FUNCNAME} $@
+
 	[ -z "$1" ] &&  gnatbuild-r1_src_unpack all
 
 	while [ "$1" ]; do
@@ -515,6 +534,7 @@ gnatbuild-r1_src_configure() {
 #  gnatlib_and_tools, gnatlib-shared
 gnatbuild-r1_src_compile() {
 	debug-print-function ${FUNCNAME} $@
+
 	if [[ -z "$1" ]]; then
 		gnatbuild-r1_src_compile all
 		return $?
@@ -549,8 +569,8 @@ gnatbuild-r1_src_compile() {
 
 		export CC="${GNATBOOT}/bin/gnatgcc"
 		export CXX="${GNATBOOT}/bin/gnatg++"
-		export LDFLAGS="-Wl,-O2 -Wl,--as-needed"
-		export CFLAGS="-O2 -pipe -fPIC"
+		export LDFLAGS="${LDFLAGS}"
+		export CFLAGS="${CFLAGS}"
 		export CXXFLAGS="${CFLAGS}"
 		# CPATH is supposed to be applied for any language, thus
 		# superceding either of C/CPLUS/OBJC_INCLUDE_PATHs
@@ -566,17 +586,14 @@ gnatbuild-r1_src_compile() {
 		export ADA_OBJECTS_PATH="${GNATLIB}/adalib"
 		export ADA_INCLUDE_PATH="${GNATLIB}/adainclude"
 
-		einfo "CC=${CC},
-			CXX=${CXX},
-			ADA_INCLUDE_PATH=${ADA_INCLUDE_PATH},
-			PATH=${PATH}"
-
 		while [ "$1" ]; do
 		case $1 in
 			configure)
 				debug-print-section configure
+
 				# Configure gcc
-				local confgcc="--host=${CHOST}"
+				local confgcc
+				confgcc="${confgcc} --host=${CHOST}"
 
 				# some cross-compile logic from toolchain
 				if is_crosscompile || tc-is-cross-compiler ; then
@@ -597,6 +614,11 @@ gnatbuild-r1_src_compile() {
 					confgcc="${confgcc} --disable-lto"
 				fi
 
+				# setup multilib abi stuff
+				gcc-multilib-configure
+
+				use hardened && confgcc="${confgcc} --enable-esp"
+
 				# reasonably sane globals (from toolchain)
 				# also disable mudflap and ssp
 				confgcc="${confgcc} \
@@ -616,7 +638,6 @@ gnatbuild-r1_src_compile() {
 					--disable-libcilkrts \
 					--disable-libquadmath \
 					--enable-libsanitizer \
-					--enable-esp \
 					--enable-targets=all \
 					--with-bugurl=https://bugs.gentoo.org/ \
 					--with-python-dir=${DATAPATH/$PREFIX/}/python"
@@ -671,8 +692,62 @@ gnatbuild-r1_src_compile() {
 					confgcc="${confgcc} --enable-threads=posix"
 				fi
 
-				# multilib support
+				# harfloat vs soft
+				case $(tc-is-softfloat) in
+				yes)    confgcc="${confgcc} --with-float=soft" ;;
+				softfp) confgcc="${confgcc} --with-float=softfp" ;;
+				*)
+					# If they've explicitly opt-ed in, do hardfloat,
+					# otherwise let the gcc default kick in.
+					case ${CTARGET//_/-} in
+					*-hardfloat-*|*eabihf) confgcc="${confgcc} --with-float=hard" ;;
+					esac
+				esac
+
+				# multilib and arch support
 				case $(tc-arch) in
+				arm)
+					local a arm_arch=${CTARGET%%-*}
+					# Remove trailing endian variations first: eb el be bl b l
+					for a in e{b,l} {b,l}e b l ; do
+						if [[ ${arm_arch} == *${a} ]] ; then
+							arm_arch=${arm_arch%${a}}
+							break
+						fi
+					done
+					# Convert armv7{a,r,m} to armv7-{a,r,m}
+					[[ ${arm_arch} == armv7? ]] && arm_arch=${arm_arch/7/7-}
+					# See if this is a valid --with-arch flag
+					if (srcdir=${S}/gcc target=${CTARGET} with_arch=${arm_arch};
+					    . "${srcdir}"/config.gcc) &>/dev/null
+					then
+						confgcc="${confgcc} --with-arch=${arm_arch}"
+					fi
+
+					# Make default mode thumb for microcontroller classes #418209
+					[[ ${arm_arch} == *-m ]] && confgcc="${confgcc} --with-mode=thumb"
+
+					# Enable hardvfp
+					if [[ $(tc-is-softfloat) == "no" ]] && \
+					   [[ ${CTARGET} == armv[67]* ]]
+					then
+						# Follow the new arm hardfp distro standard by default
+						confgcc="${confgcc} --with-float=hard"
+						case ${CTARGET} in
+						armv6*) confgcc="${confgcc} --with-fpu=vfp" ;;
+						armv7*) confgcc="${confgcc} --with-fpu=vfpv3-d16" ;;
+						esac
+					fi
+					;;
+				mips)
+					# Add --with-abi flags to set default ABI
+					confgcc="${confgcc} --with-abi=$(gcc-abi-map ${TARGET_DEFAULT_ABI})"
+					;;
+				ppc)
+					# Set up defaults based on current CFLAGS
+					is-flagq -mfloat-gprs=double && confgcc="${confgcc} --enable-e500-double"
+					[[ ${CTARGET//_/-} == *-e500v2-* ]] && confgcc="${confgcc} --enable-e500-double"
+					;;
 				amd64)
 					if is_multilib ; then
 						confgcc="${confgcc} --enable-multilib"
@@ -699,7 +774,7 @@ gnatbuild-r1_src_compile() {
 				export gcc_cv_lto_plugin=1  # okay to build, default to opt-in
 				export gcc_cv_prog_makeinfo_modern=no
 				export ac_cv_have_x='have_x=yes ac_x_includes= ac_x_libraries='
-				export gcc_cv_libc_provides_ssp=yes
+				use hardened && export gcc_cv_libc_provides_ssp=yes
 
 				# need to strip graphite/lto flags or we'll get the
 				# dreaded C compiler cannot create executables...
@@ -725,8 +800,26 @@ gnatbuild-r1_src_compile() {
 
 #				strip-unsupported-flags
 
-				confgcc+=( "$@" ${EXTRA_ECONF} )
-				einfo "confgcc=${confgcc}"
+				STAGE1_CFLAGS="${CFLAGS} -fPIC"
+				use hardened && STAGE1_CFLAGS="-O2 -fPIC"
+				BOOT_CFLAGS="$(get_abi_CFLAGS ${TARGET_DEFAULT_ABI}) ${CFLAGS} -fPIC"
+				is_crosscompile && BOOT_CFLAGS="-O2 -fPIC"
+
+				einfo "Environment vars:
+	CC=${CC},
+	CXX=${CXX},
+	CTARGET=${CTARGET}
+	ABI=${TARGET_DEFAULT_ABI},
+	TARGET_ABI=${TARGET_ABI}.
+	TARGET_MULTILIB_ABIS=${TARGET_MULTILIB_ABIS},
+	TARGET_DEFAULT_ABI=${TARGET_DEFAULT_ABI},
+	GCC_ABI=$(gcc-abi-map ${TARGET_DEFAULT_ABI})
+	ADA_OBJECTS_PATH=${ADA_OBJECTS_PATH},
+	ADA_INCLUDE_PATH=${ADA_INCLUDE_PATH},
+	PATH=${PATH}"
+
+				confgcc="${confgcc} ${EXTRA_ECONF}"
+				einfo "Configuring with confgcc=${confgcc}"
 
 				pushd "${GNATBUILD}" > /dev/null
 				CC="${CC}" CXX="${CXX}" \
@@ -775,16 +868,19 @@ gnatbuild-r1_src_compile() {
 				# do we need this?  STAGE1_CFLAGS="${CFLAGS}"
 				# or this?  bootstrap-lean
 				# removing both to try --disable-bootstrap
-				cd "${GNATBUILD}"
+				pushd "${GNATBUILD}" >/dev/null
+
 				emake \
 					LDFLAGS="${LDFLAGS}" \
 					LIBPATH="${LIBPATH}" \
 					CC="${CC}" CXX="${CXX}" \
-					STAGE1_CFLAGS="${CFLAGS}" \
+					STAGE1_CFLAGS="${STAGE1_CFLAGS}" \
 					LIBRARY_VERSION="${SLOT}" \
-					BOOT_CFLAGS="$(get_abi_CFLAGS ${TARGET_DEFAULT_ABI}) ${CFLAGS}" \
+					BOOT_CFLAGS="${BOOT_CFLAGS}" \
 					bootstrap-lean \
 					|| die "bootstrap failed"
+
+				popd >/dev/null
 			;;
 
 			gnatlib_and_tools)
@@ -865,16 +961,21 @@ gnatbuild-r1_src_install() {
 		find "${D}" -name libiberty.a -delete
 
 		# Disable RANDMMAP so PCH works. #301299
-		pax-mark r "${D}"${LIBEXECPATH}/{gnat1,cc1,cc1plus}
+		pax-mark r "${D}${LIBEXECPATH}"/{gnat1,cc1,cc1plus}
+
 		# Quiet QA warnings, wait for adacore exec stack patch in gcc 7
 		#   (note: needs testing with hardened emulate trampolines)
 		#if use hardened ; then
 		#	pax-mark Emr "${D}"${BINPATH}/{gnatmake,gnatname,gnatls,gnatclean,gnat}
 		#else
-			export QA_EXECSTACK="${BINPATH:1}/gnatls ${BINPATH:1}/gnatname
-				${BINPATH:1}/gnatmake ${BINPATH:1}/gnatclean ${BINPATH:1}/gnat
-			#	${LIBEXECPATH:1}/gnat1 ${LIBPATH:1}/adalib/libgnat-${SLOT}.so"
+		#	export QA_EXECSTACK="${BINPATH:1}/gnatls ${BINPATH:1}/gnatname
+		#		${BINPATH:1}/gnatmake ${BINPATH:1}/gnatclean ${BINPATH:1}/gnat
+		#		${LIBEXECPATH:1}/gnat1 ${LIBPATH:1}/adalib/libgnat-${SLOT}.so"
 		#fi
+#		export QA_EXECSTACK="${BINPATH:1}/gnatls ${BINPATH:1}/gnatname
+#			${BINPATH:1}/gnatmake ${BINPATH:1}/gnatclean ${BINPATH:1}/gnat"
+
+		use hardened && pax-mark E "${D}${BINPATH}"/{gnatmake,gnatname,gnatls,gnatclean,gnat}
 
 		if use doc ; then
 			if (( $(bc <<< "${GNATBRANCH} > 4.3") )) ; then
@@ -891,17 +992,18 @@ gnatbuild-r1_src_install() {
 		# first we need to remove some stuff to make moving easier
 		#rm -rf "${D}${LIBPATH}"/{32,include}
 		# gcc insists on installing libs in its own place
-		mv "${D}${PREFIX}/lib/${PN}/${CTARGET}/${SLOT}"/* "${D}${LIBPATH}"
-		mv "${D}${PREFIX}/lib/gcc/${CTARGET}/${GCCRELEASE}"/* "${D}${LIBPATH}"
-		mv "${D}${PREFIX}/libexec/gcc/${CTARGET}/${GCCRELEASE}"/* "${D}${LIBEXECPATH}"
+		cp -a -t "${D}${LIBPATH}"/ "${D}${PREFIX}"/lib/gcc/"${CTARGET}/${GCCRELEASE}"/*
+		cp -a -t "${D}${LIBEXECPATH}"/ "${D}${PREFIX}"/libexec/gcc/"${CTARGET}/${GCCRELEASE}"/*
 		rm -rf "${D}${PREFIX}"/libexec/gcc
 
 		# libgcc_s  and, with gcc>=4.0, other libs get installed in multilib specific locations by gcc
 		# we pull everything together to simplify working environment
-		if has_multilib_profile ; then
+		if is_multilib ; then
 			case $(tc-arch) in
 				amd64)
-					mv "${D}${PREFIX}"/lib32/* "${D}${LIBPATH}"/32
+					cp -a -t "${D}${LIBPATH}"/ "${D}${PREFIX}"/lib/"${PN}/${CTARGET}/${SLOT}"/*
+					mv -t "${D}${LIBPATH}"/32/ "${D}${PREFIX}"/lib32/*
+					mv -t "${D}${LIBPATH}"/ "${D}${PREFIX}"/lib64/lib*
 					rm -rf "${D}${PREFIX}"/lib "${D}${PREFIX}"/lib32
 				;;
 				ppc64)
@@ -911,16 +1013,15 @@ gnatbuild-r1_src_install() {
 			esac
 		else
 			# x86 cleanup (maybe arm)
-			mv "${D}${PREFIX}/lib/gcc/${CTARGET}/${GCCRELEASE}"/* "${D}${LIBPATH}"
+			mv -t "${D}${LIBPATH}"/ "${D}${PREFIX}/lib/gcc/${CTARGET}/${GCCRELEASE}"/*
+			mv -t "${D}${LIBPATH}"/ "${D}${PREFIX}"/lib/lib*
+			#mv -t "${D}${LIBPATH}"/include/ "${D}${LIBPATH}"/gcc/"${CTARGET}/${GCCRELEASE}"/include/*
 			rm -rf "${D}${PREFIX}"/lib/gcc
-			mv "${D}${PREFIX}"/lib/lib* "${D}${LIBPATH}"*
-			mv "${D}${LIBPATH}"/gcc/"${CTARGET}/${GCCRELEASE}"/include/* \
-				"${D}${LIBPATH}"/include/
 			rm -rf "${D}${LIBPATH}"/gcc
 		fi
 
 		local py gdbdir=/usr/share/gdb/auto-load${LIBPATH/\/lib\//\/$(get_libdir)\/}
-		pushd "${D}"${LIBPATH} >/dev/null
+		pushd "${D}${LIBPATH}" >/dev/null
 		for py in $(find . -name '*-gdb.py') ; do
 			local multidir=${py%/*}
 			insinto "${gdbdir}/${multidir}"
@@ -966,7 +1067,7 @@ EOF
 		rm -rf "${D}${LIBPATH}"/install-tools "${D}${LIBEXECPATH}"/install-tools
 
 		# remove duplicate docs
-		rm -f  "${D}${DATAPATH}"/info
+		rm -rf  "${D}${DATAPATH}"/info
 		rm -rf "${D}${DATAPATH}"/man
 
 		# fix .la path for lto plugin

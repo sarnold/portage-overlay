@@ -9,9 +9,10 @@ DESCRIPTION="GNAT Ada Compiler - gcc version"
 HOMEPAGE="https://gcc.gnu.org/"
 LICENSE="GMGPL"
 
-IUSE="doc hardened"
+IUSE="acats doc hardened"
 
 BOOT_SLOT="4.9"
+
 PATCH_VER="1.5"
 #UCLIBC_VER="1.0"
 PIE_VER="0.6.4"
@@ -75,3 +76,11 @@ src_compile() {
 	gnatbuild-r1_src_compile configure make-tools bootstrap
 }
 
+src_install() {
+	gnatbuild-r1_src_install
+
+	if use acats ; then
+		insinto "${LIBPATH}"/acats
+		doins -r "${S}"/gcc/testsuite/ada/acats
+	fi
+}
