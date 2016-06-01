@@ -1,0 +1,42 @@
+--- Ada95/src/Makefile.in.orig	2016-05-31 15:56:50.894856339 -0700
++++ Ada95/src/Makefile.in	2016-05-31 16:08:13.926198493 -0700
+@@ -80,12 +80,16 @@
+ RANLIB		= @RANLIB@
+ 
+ ################################################################################
+-ADA             = @cf_ada_compiler@
++ADA		= @cf_ada_compiler@
+ ADAPREP		= gnatprep
+-ADAFLAGS        = @ADAFLAGS@ -I. -I$(srcdir)
++ADAFLAGS	= @ADAFLAGS@ -I. -I$(srcdir)
+ 
+-LIB_NAME	= AdaCurses
+-SONAME		= @ADA_SHAREDLIB@
++REL_VERSION     = @cf_cv_rel_version@
++ABI_VERSION     = @cf_cv_abi_version@
++
++LIB_NAME	= ada@LIB_NAME@
++LIB_SUFFIX	= @LIB_SUFFIX@
++SONAME		= lib$(LIB_NAME)$(LIB_SUFFIX).so.$(REL_VERSION)
+ 
+ GNAT_PROJECT	= $(srcdir)/library.gpr
+ 
+@@ -102,15 +106,15 @@
+ 	-XBUILD_DIR=`cd $(BUILD_DIR);pwd` \
+ 	-XSOURCE_DIR=`cd $(SOURCE_DIR);pwd` \
+ 	-XSOURCE_DIR2=`cd $(srcdir);pwd` \
+-	-XLIB_NAME=$(LIB_NAME) \
++	-XLIB_NAME=$(LIB_NAME)$(LIB_SUFFIX) \
+ 	-XSONAME=$(SONAME)
+ 
+ CARGS           = -cargs $(ADAFLAGS)
+ LARGS           =
+ 
+-STATIC_LIBNAME	= lib$(LIB_NAME).a
++STATIC_LIBNAME	= lib$(LIB_NAME)$(LIB_SUFFIX).a
+ SHARED_LIBNAME	= $(SONAME)
+-SHARED_SYMLINK	= lib$(LIB_NAME).so
++SHARED_SYMLINK	= lib$(LIB_NAME)$(LIB_SUFFIX).so
+ 
+ ALIB            = @cf_ada_package@
+ ABASE           = $(ALIB)-curses

@@ -1,10 +1,10 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
 EAPI="5"
 
-inherit eutils flag-o-matic toolchain-funcs multilib-minimal multiprocessing
+inherit eutils flag-o-matic toolchain-funcs multilib-minimal multiprocessing versionator
 
 MY_PV=${PV:0:3}
 PV_SNAP=${PV:4}
@@ -19,7 +19,8 @@ SLOT="0/6"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
 IUSE="ada +cxx debug doc gpm minimal profile static-libs test threads tinfo trace unicode"
 
-DEPEND="gpm? ( sys-libs/gpm[${MULTILIB_USEDEP}] )"
+DEPEND="gpm? ( sys-libs/gpm[${MULTILIB_USEDEP}] )
+	ada? ( >=virtual/ada-1995 )"
 #	berkdb? ( sys-libs/db )"
 # Block the older ncurses that installed all files w/SLOT=5. #557472
 RDEPEND="${DEPEND}
@@ -37,6 +38,8 @@ PATCHES=(
 	"${FILESDIR}/${PN}-6.0-pkg-config.patch"
 	"${FILESDIR}/${PN}-5.9-gcc-5.patch" #545114
 	"${FILESDIR}/${PN}-6.0-ticlib.patch" #557360
+	"${FILESDIR}/${PN}-6.0-ada-lib-suffix.patch"
+	#"${FILESDIR}/${PN}-6.0-ada-multilib.patch"
 )
 
 src_prepare() {
@@ -140,7 +143,6 @@ do_configure() {
 		# Now the rest of the various standard flags.
 		--with-shared
 		--without-hashed-db
-		$(use_with ada)
 		$(use_with cxx)
 		$(use_with cxx cxx-binding)
 		--with-cxx-shared
@@ -158,6 +160,7 @@ do_configure() {
 		--enable-hard-tabs
 		--enable-echo
 		$(use_enable !ada warnings)
+		$(multilib_native_with ada)
 		$(use_with debug assertions)
 		$(use_enable !debug leaks)
 		$(use_with debug expanded)
@@ -193,10 +196,33 @@ do_configure() {
 		[[ -d ${cross_path} ]] && export TIC_PATH="${cross_path}/progs/tic"
 	fi
 
+	# try enabling Ada support again
+	if use ada ; then
+#		MULTILIB_COMPAT=( abi_x86_{32,64} )
+#		if multilib_is_native_abi ; then
+		#	sed -i -e "s|-g\"|${CFLAGS_x86} --RTS=32\"|" \
+		#		"${S}"/Ada95/src/library.gpr
+		#	export LDMFAGS="${LDFLAGS_x86} ${LDFLAGS}"
+		#	export OPT_FLAGS="-O2"
+		#else
+		#	sed -i -e "s|-g\"|${CFLAGS_amd64}\"|" \
+		#		"${S}"/Ada95/src/library.gpr
+		#fi
+		conf+=( --with-ada-sharedlib="libada${target}.so.${PV}" )
+#		fi
+		conf+=(
+			--with-ada-include="${ADA_INCLUDE_PATH}/${target}"
+			--with-ada-objects="${ADA_OBJECTS_PATH}/${target}"
+		)
+	fi
+
 	# Force bash until upstream rebuilds the configure script with a newer
 	# version of autotools. #545532
+	# Note use=ada requires LIB_NAME and the patch to build all the target
+	# libs correctly (teensy bit of bit-rot in the Ada source tree).
 	CONFIG_SHELL=${BASH} \
 	ECONF_SOURCE=${S} \
+	LIB_NAME=${target} \
 	econf "${conf[@]}" "$@"
 }
 
@@ -215,7 +241,13 @@ src_compile() {
 multilib_src_compile() {
 	local t
 	for t in "${NCURSES_TARGETS[@]}" ; do
-		do_compile "${t}"
+		if use ada ; then
+			BUILD_DIR="${BUILD_DIR}/${target}" \
+			SOURCE_DIR="${S}/Ada95" \
+			do_compile "${t}"
+		else
+			do_compile "${t}"
+		fi
 	done
 }
 
@@ -243,9 +275,14 @@ multilib_src_install() {
 	local target
 	for target in "${NCURSES_TARGETS[@]}" ; do
 		emake -C "${BUILD_DIR}/${target}" DESTDIR="${D}" install
+		if use ada && multilib_is_native_abi ; then
+			dosym libada${target}$(get_libname).${PV} \
+				/usr/$(get_libdir)/libada${target}$(get_libname $(get_major_version))
+		fi
 	done
 
 	# Move main libraries into /.
+	# Note the Ada libs don't need pkgconfig or libtool
 	if multilib_is_native_abi ; then
 		gen_usr_ldscript -a \
 			"${NCURSES_TARGETS[@]}" \
@@ -253,8 +290,13 @@ multilib_src_install() {
 			$(usev tinfo)
 	fi
 	if ! tc-is-static-only ; then
-		# Provide a link for -lcurses.
+		# Provide a link for -lcurses and -lAdaCurses.
 		ln -sf libncurses$(get_libname) "${ED}"/usr/$(get_libdir)/libcurses$(get_libname) || die
+		if use ada && multilib_is_native_abi ; then
+			ln -sf libadancurses$(get_libname) \
+				"${ED}"/usr/$(get_libdir)/libAdaCurses$(get_libname) \
+				|| die
+		fi
 	fi
 	use static-libs || find "${ED}"/usr/ -name '*.a' -delete
 
