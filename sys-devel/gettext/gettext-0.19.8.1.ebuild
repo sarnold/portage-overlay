@@ -16,7 +16,7 @@ SRC_URI="mirror://gnu/${PN}/${P}.tar.gz"
 # so put that license behind USE=cxx.
 LICENSE="GPL-3+ cxx? ( LGPL-2.1+ )"
 SLOT="0"
-KEYWORDS="alpha amd64 arm ~arm64 hppa ~ia64 ~m68k ~mips ~ppc ppc64 ~s390 ~sh ~sparc x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
+KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~sparc-fbsd ~x86-fbsd"
 IUSE="acl -cvs +cxx doc emacs git java ncurses nls openmp static-libs"
 
 # only runtime goes multilib
@@ -29,7 +29,7 @@ DEPEND=">=virtual/libiconv-0-r1[${MULTILIB_USEDEP}]
 	dev-libs/expat
 	acl? ( virtual/acl )
 	ncurses? ( sys-libs/ncurses:0= )
-	java? ( >=virtual/jdk-1.4 )"
+	java? ( >=virtual/jdk-1.4:= )"
 RDEPEND="${DEPEND}
 	!git? ( cvs? ( dev-vcs/cvs ) )
 	git? ( dev-vcs/git )
@@ -48,6 +48,8 @@ pkg_setup() {
 
 src_prepare() {
 	java-pkg-opt-2_src_prepare
+
+	epatch "${FILESDIR}"/${PN}-0.19.7-disable-libintl.patch #564168
 
 	epunt_cxx
 	elibtoolize
