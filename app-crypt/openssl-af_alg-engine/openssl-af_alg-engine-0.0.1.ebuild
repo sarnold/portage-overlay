@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI="4"
+EAPI="5"
 
 MY_PN="af_alg"
 
@@ -15,10 +15,11 @@ SRC_URI="mirror://gentoo/${MY_PN}-${PV}.tar.gz"
 LICENSE="openssl"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~ia64 ~mips ~ppc ~ppc64 ~sparc ~x86"
-IUSE=""
+IUSE="libressl"
 
 DEPEND="virtual/linux-sources
-	>=dev-libs/openssl-1.0.0d"
+	!libressl? ( dev-libs/openssl:0= )
+	libressl? ( dev-libs/libressl:0= )"
 RDEPEND=""
 
 RESTRICT="test"
