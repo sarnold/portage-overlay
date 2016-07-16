@@ -1,0 +1,40 @@
+--- Ada95/src/Makefile.in.orig	2016-07-13 18:59:47.113265110 -0700
++++ Ada95/src/Makefile.in	2016-07-13 19:00:04.727148201 -0700
+@@ -67,7 +67,7 @@
+ 
+ CCFLAGS		= $(CPPFLAGS) $(CFLAGS)
+ 
+-CFLAGS_NORMAL	= $(CCFLAGS)
++CFLAGS_NORMAL	= $(CCFLAGS) @CC_SHARED_OPTS@
+ CFLAGS_DEBUG	= $(CCFLAGS) @CC_G_OPT@ -DTRACE
+ CFLAGS_PROFILE	= $(CCFLAGS) -pg
+ CFLAGS_SHARED	= $(CCFLAGS) @CC_SHARED_OPTS@
+@@ -79,6 +79,8 @@
+ 
+ RANLIB		= @RANLIB@
+ 
++ARCHFLAGS	= $(CFLAGS_default)
++
+ ################################################################################
+ ADA             = @cf_ada_compiler@
+ ADAPREP		= gnatprep
+@@ -97,7 +99,7 @@
+ SOURCE_DIR_SRC	= $(SOURCE_DIR)/src
+ 
+ ADAMAKE         = @cf_ada_make@
+-ADAMAKEFLAGS    = \
++ADAMAKEFLAGS    = $(ARCHFLAGS) -XBITSFLAG=$(BITSFLAG) \
+ 	-P$(GNAT_PROJECT) \
+ 	-XBUILD_DIR=`cd $(BUILD_DIR);pwd` \
+ 	-XSOURCE_DIR=`cd $(SOURCE_DIR);pwd` \
+@@ -105,8 +107,8 @@
+ 	-XLIB_NAME=$(LIB_NAME) \
+ 	-XSONAME=$(SONAME)
+ 
+-CARGS           = -cargs $(ADAFLAGS)
+-LARGS           =
++CARGS           = -cargs $(ARCHFLAGS)
++LARGS           = -largs $(ARCHFLAGS)
+ 
+ STATIC_LIBNAME	= lib$(LIB_NAME).a
+ SHARED_LIBNAME	= $(SONAME)

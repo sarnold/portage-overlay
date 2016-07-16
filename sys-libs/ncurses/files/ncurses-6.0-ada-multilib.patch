@@ -1,0 +1,55 @@
+--- Ada95/src/Makefile.in.orig	2016-05-30 15:14:22.824590656 -0700
++++ Ada95/src/Makefile.in	2016-05-30 16:18:47.973357594 -0700
+@@ -72,10 +72,10 @@
+ CFLAGS_PROFILE	= $(CCFLAGS) -pg
+ CFLAGS_SHARED	= $(CCFLAGS) @CC_SHARED_OPTS@
+ 
+-CFLAGS_DEFAULT	= $(CFLAGS_@DFT_UPR_MODEL@)
++CFLAGS_DEFAULT	= $(CFLAGS_@DFT_UPR_MODEL@) $(OPT_FLAGS)
+ 
+ LINK		= $(CC)
+-LDFLAGS		= @LDFLAGS@ @LD_MODEL@ @LIBS@
++LDFLAGS		= $(LDMFLAGS) @LDFLAGS@ @LD_MODEL@ @LIBS@
+ 
+ RANLIB		= @RANLIB@
+ 
+@@ -99,6 +99,8 @@
+ ADAMAKE         = @cf_ada_make@
+ ADAMAKEFLAGS    = \
+ 	-P$(GNAT_PROJECT) \
++	-XCCM_FLAGS=$(CCM_FLAGS) \
++	-XOPT_FLAGS=$(OPT_FLAGS) \
+ 	-XBUILD_DIR=`cd $(BUILD_DIR);pwd` \
+ 	-XSOURCE_DIR=`cd $(SOURCE_DIR);pwd` \
+ 	-XSOURCE_DIR2=`cd $(srcdir);pwd` \
+@@ -106,7 +108,7 @@
+ 	-XSONAME=$(SONAME)
+ 
+ CARGS           = -cargs $(ADAFLAGS)
+-LARGS           =
++LARGS           = 
+ 
+ STATIC_LIBNAME	= lib$(LIB_NAME).a
+ SHARED_LIBNAME	= $(SONAME)
+--- Ada95/src/library.gpr.orig	2016-05-30 19:41:42.169828516 -0700
++++ Ada95/src/library.gpr	2016-05-30 19:47:08.239827199 -0700
+@@ -32,6 +32,8 @@
+   Build_Dir := External ("BUILD_DIR");
+   Source_Dir := External ("SOURCE_DIR");
+   Source_Dir2 := External ("SOURCE_DIR2");
++  Multilib_Flags := External ("CCM_FLAGS");
++  Optimize_Flags := External ("OPT_FLAGS");
+   Kind := External ("LIB_KIND");
+   for Library_Name use External ("LIB_NAME");
+   for Library_Version use External ("SONAME");
+@@ -46,8 +48,8 @@
+   for Library_Options use ("-lncurses", "-lpanel", "-lmenu", "-lform");
+   package Compiler is
+      for Default_Switches ("Ada") use
+-       ("-g",
+-        "-O2",
++       (Multilib_Flags,
++        Optimize_Flags,
+         "-gnatafno",
+         "-gnatVa",   -- All validity checks
+         "-gnatwa");  -- Activate all optional errors

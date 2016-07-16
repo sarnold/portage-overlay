@@ -1,0 +1,43 @@
+-- Copyright (c) 2016 Stephen Arnold <nerdboy@gentoo.org>
+
+-- This build script is free software; you can redistribute it and/or
+-- modify it under the terms of the GNU General Public License as
+-- published by the Free Software Foundation; either version 3 of the
+-- License, or (at your option) any later version.
+
+-- This program is distributed in the hope that it will be useful, but
+-- WITHOUT ANY WARRANTY; without even the implied warranty of
+-- MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+-- General Public License for more details.
+
+-- You should have received a copy of the GNU General Public License
+-- along with this program; if not, write to the Free Software
+-- Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA 02110-1301
+-- USA
+
+-- On Gentoo systems, the full text of the GPL version 3 is in the file
+-- /usr/portage/licenses/GPL-3
+
+--  This project file is used for building applications that use ncursesada.
+--  Here is an example of how to use it:
+--
+--  with "adancurses";
+--  project Example is
+--     for Source_Dirs use (".");
+--     for Object_Dir use "obj";
+--     for Exec_Dir use ".";
+--     for Main use ("example");
+--  end Example;
+
+library project adancurses is
+  for Library_Name use "adancurses";
+  for Library_Dir use "/usr/lib";
+  for Library_Kind use "dynamic";
+  for Source_Dirs use ("/usr/share/ada/adainclude/adancurses");
+  for Library_ALI_Dir use "/usr/lib/ada/adalib/adancurses";
+  for Externally_Built use "true";
+  for Languages use ("Ada", "C");
+  package Linker is
+    for Linker_Options use ("-ltinfo", "-lform", "-lmenu", "-lpanel", "-lncurses");
+  end Linker;
+end adancurses;

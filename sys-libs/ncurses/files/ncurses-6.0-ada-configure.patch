@@ -1,0 +1,11 @@
+--- configure.orig	2016-07-12 15:14:13.247223761 -0700
++++ configure	2016-07-12 15:16:12.080974421 -0700
+@@ -20689,7 +20689,7 @@
+    GNAT.OS_Lib.OS_Exit (0);
+ end conftest;
+ CF_EOF
+-if ( $cf_ada_make $ADAFLAGS conftest 1>&5 2>&1 ) ; then
++if ( $cf_ada_make $ADAFLAGS conftest -largs $LINKFLAGS 1>&5 2>&1 ) ; then
+    if ( ./conftest 1>&5 2>&1 ) ; then
+       cf_cv_prog_gnat_correct=yes
+    else

@@ -4,7 +4,7 @@
 
 EAPI="5"
 
-inherit eutils flag-o-matic toolchain-funcs multilib-minimal multiprocessing versionator
+inherit eutils flag-o-matic toolchain-funcs gnat-r1 versionator multilib-minimal multiprocessing
 
 MY_PV=${PV:0:3}
 PV_SNAP=${PV:4}
@@ -39,7 +39,9 @@ PATCHES=(
 	"${FILESDIR}/${PN}-5.9-gcc-5.patch" #545114
 	"${FILESDIR}/${PN}-6.0-ticlib.patch" #557360
 	"${FILESDIR}/${PN}-6.0-ada-lib-suffix.patch"
-	#"${FILESDIR}/${PN}-6.0-ada-multilib.patch"
+#	"${FILESDIR}/${PN}-6.0-ada-configure.patch"
+#	"${FILESDIR}/${PN}-6.0-ada-makefile.patch"
+#	"${FILESDIR}/${PN}-6.0-ada-project.patch"
 )
 
 src_prepare() {
@@ -159,8 +161,9 @@ do_configure() {
 		--enable-colorfgbg
 		--enable-hard-tabs
 		--enable-echo
-		$(use_enable !ada warnings)
 		$(multilib_native_with ada)
+		# $(use_with ada)
+		$(use_enable !ada warnings)
 		$(use_with debug assertions)
 		$(use_enable !debug leaks)
 		$(use_with debug expanded)
@@ -198,28 +201,44 @@ do_configure() {
 
 	# try enabling Ada support again
 	if use ada ; then
+		unset ADAMAKEFLAGS
 #		MULTILIB_COMPAT=( abi_x86_{32,64} )
-#		if multilib_is_native_abi ; then
-		#	sed -i -e "s|-g\"|${CFLAGS_x86} --RTS=32\"|" \
-		#		"${S}"/Ada95/src/library.gpr
-		#	export LDMFAGS="${LDFLAGS_x86} ${LDFLAGS}"
-		#	export OPT_FLAGS="-O2"
-		#else
-		#	sed -i -e "s|-g\"|${CFLAGS_amd64}\"|" \
-		#		"${S}"/Ada95/src/library.gpr
-		#fi
-		conf+=( --with-ada-sharedlib="libada${target}.so.${PV}" )
+#		if ! multilib_is_native_abi ; then
+#			# configure is pretty weird...
+#			BITSARG="32"
+#			export BITSFLAG="-m${BITSARG}"
+#			export RTSFLAG="--RTS=${BITSARG}"
+#			RTSPATH="/usr/lib/gnat-gcc/x86_64-pc-linux-gnu/4.9/${BITSARG}"
+#			ARCH_LARGS="${RTSPATH}/adalib"
+#			ARCH_PATH="-aI${RTSPATH}/adainclude -aO${ARCH_LARGS}"
+#			ARCHFLAGS="${BITSFLAG} ${ARCH_PATH}"
+#			LDFLAGS="${LDFLAGS} -Wl,-m32 -Wl,-m,elf_i386"
+#			LINKFLAGS="-largs -lgnat"
+			AdalibLibTop=${PREFIX}/$(get_libdir)/ada
+#			EXTRA_RPATH="/usr/lib32 /lib32 ${RTSPATH} ${ARCH_LARG}"
+#			conf+=( --with-ada-compiler="gnatmake ${BITSFLAG}" )
+#		else
+#			ARCHFLAGS=""
+#			BITSFLAG=""
+#			BITSARG="64"
+#			RTSPATH="/usr/lib/gnat-gcc/x86_64-pc-linux-gnu/4.9"
 #		fi
+
+#		sed -i -e "s|\$(CFLAGS_default)|${BITSFLAG}|" \
+#			"${S}"/Ada95/src/Makefile.in
+
+		conf+=( --with-ada-sharedlib="libada${target}.so.${PV}" )
 		conf+=(
-			--with-ada-include="${ADA_INCLUDE_PATH}/${target}"
-			--with-ada-objects="${ADA_OBJECTS_PATH}/${target}"
+			--with-ada-include="${AdalibSpecsDir}/${target}"
+			--with-ada-objects="${AdalibLibTop}/${target}"
 		)
 	fi
 
 	# Force bash until upstream rebuilds the configure script with a newer
 	# version of autotools. #545532
-	# Note use=ada requires LIB_NAME and the patch to build all the target
-	# libs correctly (teensy bit of bit-rot in the Ada source tree).
+	# Note use=ada requires LIB_NAME and the patch to build just the native
+	# libs correctly (teensy bit of bit-rot in the Ada source tree).  All
+	# the rest of the shennanigans does not fix multilib/x86...
 	CONFIG_SHELL=${BASH} \
 	ECONF_SOURCE=${S} \
 	LIB_NAME=${target} \
@@ -241,13 +260,7 @@ src_compile() {
 multilib_src_compile() {
 	local t
 	for t in "${NCURSES_TARGETS[@]}" ; do
-		if use ada ; then
-			BUILD_DIR="${BUILD_DIR}/${target}" \
-			SOURCE_DIR="${S}/Ada95" \
-			do_compile "${t}"
-		else
-			do_compile "${t}"
-		fi
+		do_compile "${t}"
 	done
 }
 
@@ -268,13 +281,19 @@ do_compile() {
 	# Manually delete the pc-files file so the install step will
 	# create the .pc files we want.
 	rm -f misc/pc-files
-	emake "$@"
+	if use ada ; then
+		BUILD_DIR="${BUILD_DIR}/${target}" \
+		SOURCE_DIR="${S}/Ada95" \
+		emake "$@"
+	else
+		emake "$@"
+	fi
 }
 
 multilib_src_install() {
 	local target
 	for target in "${NCURSES_TARGETS[@]}" ; do
-		emake -C "${BUILD_DIR}/${target}" DESTDIR="${D}" install
+		emake -C "${BUILD_DIR}/${target}" DESTDIR="${ED}" install
 		if use ada && multilib_is_native_abi ; then
 			dosym libada${target}$(get_libname).${PV} \
 				/usr/$(get_libdir)/libada${target}$(get_libname $(get_major_version))
@@ -291,17 +310,26 @@ multilib_src_install() {
 	fi
 	if ! tc-is-static-only ; then
 		# Provide a link for -lcurses and -lAdaCurses.
-		ln -sf libncurses$(get_libname) "${ED}"/usr/$(get_libdir)/libcurses$(get_libname) || die
+		dosym libncurses$(get_libname) /usr/$(get_libdir)/libcurses$(get_libname)
 		if use ada && multilib_is_native_abi ; then
-			ln -sf libadancurses$(get_libname) \
-				"${ED}"/usr/$(get_libdir)/libAdaCurses$(get_libname) \
-				|| die
+			dosym libadancurses$(get_libname) \
+				/usr/$(get_libdir)/libAdaCurses$(get_libname)
 		fi
 	fi
 	use static-libs || find "${ED}"/usr/ -name '*.a' -delete
 
 	# Build fails to create this ...
 	dosym ../share/terminfo /usr/$(get_libdir)/terminfo
+
+	if use ada ; then
+		local target="ncurses"
+#		for target in "${NCURSES_TARGETS[@]}" ; do
+			insinto ${AdalibgprDir}
+			doins "${FILESDIR}"/ada${target}.gpr
+			use tinfo || sed -i -e 's|"-ltinfo", ||' \
+				"${ED}/${AdalibgprDir}"/ada${target}.gpr
+#		done
+	fi
 }
 
 multilib_src_install_all() {

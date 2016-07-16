@@ -1,0 +1,25 @@
+--- Ada95/src/library.gpr.orig	2016-07-13 16:41:51.081100143 -0700
++++ Ada95/src/library.gpr	2016-07-13 18:56:46.827638206 -0700
+@@ -46,11 +46,17 @@
+   for Library_Options use ("-lncurses", "-lpanel", "-lmenu", "-lform");
+   package Compiler is
+      for Default_Switches ("Ada") use
+-       ("-g",
+-        "-O2",
+-        "-gnatafno",
+-        "-gnatVa",   -- All validity checks
+-        "-gnatwa");  -- Activate all optional errors
++       External_As_List ("BITSFLAG", " ")
++       & ("-g",
++          "-O2",
++          "-gnatafno",
++          "-gnatVa",   -- All validity checks
++          "-gnatwa");  -- Activate all optional errors
+   end Compiler;
++  package Binder is
++    for Default_Switches ("Ada") use
++      External_As_List ("RTSFLAG", " ")
++      & ("-E", "-K");
++  end Binder;
+   for Languages use ("C", "Ada");
+ end Library;
