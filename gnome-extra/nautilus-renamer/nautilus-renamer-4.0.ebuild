@@ -1,38 +1,48 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id $
 
-EAPI="4"
-PYTHON_DEPEND="2"
-inherit eutils python gnome2
+EAPI="5"
+PYTHON_COMPAT=( python{2_7,3_3,3_4,3_5} )
+GCONF_DEBUG="yes"
+
+inherit eutils fdo-mime gnome2 python-any-r1
+
+MY_P="${PN}_${PV}"
 
 DESCRIPTION="A python script for batch renaming files in nautilus."
 HOMEPAGE="https://launchpad.net/nautilus-renamer"
-SRC_URI="http://launchpad.net/${PN}/trunk/${PV}/+download/${P}.tar.gz"
+SRC_URI="https://launchpad.net/${PN}/trunk/${PV}/+download/${MY_P}.tar.gz -> ${MY_P}.tar"
 
 LICENSE="GPL-2"
 SLOT="0"
 KEYWORDS="~amd64 ~ppc ~ppc64 ~x86"
-IUSE="debug"
 
-RDEPEND="gnome-base/nautilus
-	dev-libs/glib:2
+IUSE="debug nls"
+LANGS="ar cs de el eo es fi fr gl id it ja ko pl pt_BR ro ru sv ta tr uk"
+for X in $LANGS; do IUSE="${IUSE} linguas_${X}"; done
+
+RDEPEND="${PYTHON_DEPS}
+	( >=gnome-base/nautilus-2.32[introspection] )
+	dev-libs/gobject-introspection
+	dev-libs/glib
 	dev-python/pygobject
-	x11-libs/pango
+	x11-libs/pango[introspection]
 	dev-python/notify-python
 	dev-python/pygtk
-	x11-libs/gtk+:2"
+	x11-libs/gtk+[introspection]"
 
 DEPEND="${RDEPEND}
 	dev-util/pkgconfig
-	dev-python/docutils"
+	dev-python/docutils
+	nls? ( >=sys-devel/gettext-0.14 )"
 
 DOCS="AUTHORS ChangeLog TODO README"
-G2CONF="${G2CONF} $(use_enable debug) --disable-static"
-S="${WORKDIR}"/${PN}
+
+S="${WORKDIR}/${MY_P}"
 
 pkg_setup() {
-	python_pkg_setup
+	python-any-r1_pkg_setup
 }
 
 src_prepare() {
@@ -48,7 +58,9 @@ src_configure() {
 }
 
 src_compile() {
-	echo "Nothing to see here...  Move along..."
+	if use nls ; then
+		scripts/genmo.py po/ mo/
+	fi
 }
 
 src_install() {
@@ -58,19 +70,22 @@ src_install() {
 	exeinto ${extensiondir}/python
 	newexe nautilus-renamer.py Renamer
 
-	scripts/genmo.py po/ "${D}"usr/share/locale
+	if use nls; then
+		[[ -d mo ]] && domo mo/*/*/*.mo || die "domo failed"
+	fi
 }
 
 pkg_postinst() {
-	python_mod_optimize ${extensiondir}/python
 	gnome2_pkg_postinst
+	gnome2_icon_cache_update
 	elog ""
-	ewarn "Note, you still need to add the following symlink in order"
+	ewarn "Note, you may still need to add the following symlink in order"
 	ewarn "to make the scripts menu show up in Nautilus:"
 	ewarn "  ln -s /usr/$(get_libdir)/nautilus/extensions-3.0/python/Renamer \${HOME}/.gnome2/nautilus-scripts/Renamer"
 	elog ""
 }
 
 pkg_postrm() {
-	python_mod_cleanup ${extensiondir}/python
+	gnome2_pkg_postrm
+	gnome2_icon_cache_update
 }
