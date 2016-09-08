@@ -9,7 +9,7 @@ if [[ ${PV} == "99999999" ]] ; then
 	EGIT_REPO_URI="git://anongit.gentoo.org/proj/crossdev.git"
 	inherit git-r3
 	SRC_URI=""
-	KEYWORDS=""
+	#KEYWORDS=""
 else
 	SRC_URI="mirror://gentoo/${P}.tar.xz
 		https://dev.gentoo.org/~vapier/dist/${P}.tar.xz"
