@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=5
-VIM_VERSION="7.4"
-PYTHON_COMPAT=( python{2_7,3_3,3_4,3_5} )
+EAPI=6
+VIM_VERSION="8.0"
+PYTHON_COMPAT=( python{2_7,3_4,3_5} )
 PYTHON_REQ_USE=threads
 inherit eutils vim-doc flag-o-matic fdo-mime versionator bash-completion-r1 python-r1
 
@@ -13,7 +13,7 @@ if [[ ${PV} == 9999* ]] ; then
 	EGIT_REPO_URI="https://github.com/vim/vim.git"
 else
 	SRC_URI="https://github.com/vim/vim/archive/v${PV}.tar.gz -> ${P}.tar.gz
-		https://dev.gentoo.org/~radhermit/vim/vim-7.4.827-gentoo-patches.tar.bz2"
+		https://dev.gentoo.org/~radhermit/vim/vim-7.4.2102-gentoo-patches.tar.bz2"
 	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~ppc-aix ~amd64-fbsd ~sparc-fbsd ~x86-fbsd ~x64-freebsd ~x86-freebsd ~hppa-hpux ~ia64-hpux ~x86-interix ~amd64-linux ~x86-linux ~ppc-macos ~x64-macos ~x86-macos ~m68k-mint ~sparc-solaris ~sparc64-solaris ~x64-solaris ~x86-solaris"
 fi
 
@@ -34,9 +34,8 @@ REQUIRED_USE="
 
 RDEPEND="
 	>=app-eselect/eselect-vi-1.1
-	!nls? ( >=sys-libs/ncurses-5.2-r2:= )
-	nls? ( virtual/libintl
-		>=sys-libs/ncurses-5.2-r2[unicode] )
+	>=sys-libs/ncurses-5.2-r2:0=
+	nls? ( virtual/libintl )
 	acl? ( kernel_linux? ( sys-apps/acl ) )
 	cscope? ( dev-util/cscope )
 	gpm? ( >=sys-libs/gpm-1.19.3 )
@@ -73,11 +72,8 @@ pkg_setup() {
 
 src_prepare() {
 	if [[ ${PV} != 9999* ]] ; then
-		if [[ -d "${WORKDIR}"/patches/ ]]; then
-			# Gentoo patches to fix runtime issues, cross-compile errors, etc
-			EPATCH_SUFFIX="patch" EPATCH_FORCE="yes" \
-				epatch "${WORKDIR}"/patches/
-		fi
+		# Gentoo patches to fix runtime issues, cross-compile errors, etc
+		eapply "${WORKDIR}"/patches/
 	fi
 
 	# Fixup a script to use awk instead of nawk
@@ -138,7 +134,7 @@ src_prepare() {
 			"${S}"/src/Makefile || die 'sed for ExtUtils-ParseXS failed'
 	fi
 
-	epatch_user
+	eapply_user
 }
 
 src_configure() {
@@ -174,7 +170,7 @@ src_configure() {
 	done
 
 	if use minimal ; then
-		myconf+=(
+		myconf=(
 			--with-features=tiny
 			--disable-nls
 			--disable-multibyte
@@ -194,7 +190,7 @@ src_configure() {
 	else
 		use debug && append-flags "-DDEBUG"
 
-		myconf+=(
+		myconf=(
 			--with-features=huge
 			--enable-multibyte
 			$(use_enable acl)
@@ -246,11 +242,17 @@ src_configure() {
 		)
 	fi
 
-	# Let Portage do the stripping. Some people like that.
+	# let package manager strip binaries
 	export ac_cv_prog_STRIP="$(type -P true ) faking strip"
 
-	# Keep Gentoo Prefix env contained within the EPREFIX
+	# keep prefix env contained within the EPREFIX
 	use prefix && myconf+=( --without-local-dir )
+
+	if built_with_use sys-libs/ncurses tinfo; then
+		myconf+=( --with-tlib="tinfo" )
+	else
+		myconf+=( --with-tlib="ncurses" )
+	fi
 
 	econf \
 		--with-modified-by=Gentoo-${PVR} \
@@ -258,7 +260,7 @@ src_configure() {
 
 	if is-flagq -flto* ; then
 		LDFLAGS="${LDFLAGS_OLD}"
-		sed -i -e "s|-fno-lto -fno-use-linker-plugin||g" "${S}"/src/auto/config.mk
+		sed -i -e "s|-fno-lto -fno-use-linker-plugin||g" src/auto/config.mk
 	fi
 }
 
@@ -282,19 +284,7 @@ src_test() {
 	# Don't let vim talk to X
 	unset DISPLAY
 
-	# We've got to call make test from within testdir, since the Makefiles
-	# don't pass through our VIMPROG argument
-	cd "${S}"/src/testdir
-
-	# Test 49 won't work inside a portage environment
-	einfo "Test 49 isn't sandbox-friendly, so it will be skipped."
-	sed -i 's~test49.out~~g' Makefile
-
-	# We don't want to rebuild vim before running the tests
-	sed -i 's,: \$(VIMPROG),: ,' Makefile
-
-	# Don't try to do the additional GUI test
-	emake -j1 VIMPROG=../vim nongui
+	emake -j1 -C src/testdir nongui
 }
 
 # Make convenience symlinks, hopefully without stepping on toes.  Some
