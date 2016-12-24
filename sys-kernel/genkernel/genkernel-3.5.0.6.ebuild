@@ -16,9 +16,9 @@ VERSION_LVM='2.02.88'
 VERSION_UNIONFS_FUSE='0.24'
 VERSION_GPG='1.4.11'
 
-RH_HOME="ftp://sources.redhat.com/pub"
+RH_HOME="ftp://sourceware.org/pub"
 DM_HOME="https://people.redhat.com/~heinzm/sw/dmraid/src"
-BB_HOME="http://www.busybox.net/downloads"
+BB_HOME="https://busybox.net/downloads"
 
 COMMON_URI="${DM_HOME}/dmraid-${VERSION_DMRAID}.tar.bz2
 		${DM_HOME}/old/dmraid-${VERSION_DMRAID}.tar.bz2
@@ -40,18 +40,18 @@ then
 	SRC_URI="${COMMON_URI}"
 else
 	inherit bash-completion-r1 eutils
-	SRC_URI="https://dev.gentoo.org/~zerochaos/distfiles/${P}.tar.xz
+	SRC_URI="mirror://gentoo/${P}.tar.xz
 		${COMMON_URI}"
-	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 s390 ~sh ~sparc ~x86"
+	KEYWORDS="~alpha ~amd64 ~arm ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
 fi
 
-DESCRIPTION="Gentoo automatic kernel building scripts and initramfs scripts"
+DESCRIPTION="Gentoo automatic kernel building and initramfs scripts"
 HOMEPAGE="https://www.gentoo.org"
 
 LICENSE="GPL-2"
 SLOT="0"
 RESTRICT=""
-IUSE="cryptsetup ibm premount selinux"
+IUSE="cryptsetup ibm +firmware premount selinux"
 
 DEPEND="sys-fs/e2fsprogs
 	premount? ( sys-fs/jfsutils
@@ -62,6 +62,7 @@ RDEPEND="${DEPEND}
 	cryptsetup? ( sys-fs/cryptsetup )
 	app-arch/cpio
 	>=app-misc/pax-utils-0.2.1
+	firmware? ( sys-kernel/linux-firmware )
 	!<sys-apps/openrc-0.9.9"
 # pax-utils is used for lddtree
 
@@ -91,6 +92,9 @@ src_unpack() {
 
 src_prepare() {
 	if [[ ${PV} == 9999* ]] ; then
+		einfo "Updating version tag"
+		GK_V="$(git describe --tags | sed 's:^v::')-git"
+		sed "/^GK_V/s,=.*,='${GK_V}',g" -i "${S}"/genkernel
 		einfo "Producing ChangeLog from Git history..."
 		pushd "${S}/.git" >/dev/null || die
 		git log > "${S}"/ChangeLog || die
@@ -113,7 +117,6 @@ src_prepare() {
 		"${S}"/defaults/software.sh \
 		|| die "Could not adjust versions"
 
-	epatch "${FILESDIR}"/${P}-system-map.patch #570822
 	if use premount ; then
 		epatch "${FILESDIR}"/${PN}-add-fsck-premount.patch
 		install "${FILESDIR}"/libs_list "${WORKDIR}"
