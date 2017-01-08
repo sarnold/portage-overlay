@@ -1,0 +1,29 @@
+From 2a822d79c236fee0136aa931967c88a16c4c23c2 Mon Sep 17 00:00:00 2001
+From: Steve Arnold <stephen.arnold42@gmail.com>
+Date: Sat, 7 Jan 2017 12:59:21 -0800
+Subject: [PATCH] Add patch to fix METAR url (upstream change to data source
+ location). Courtesy of Roland Hieber <rohieb@rohieb.name> on the debian bug
+ tracker.
+
+Signed-off-by: Steve Arnold <stephen.arnold42@gmail.com>
+---
+ GrabWeather | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/GrabWeather b/GrabWeather
+index d3bcd95..04810ba 100755
+--- a/GrabWeather
++++ b/GrabWeather
+@@ -11,8 +11,7 @@
+ #
+ 
+ $ReportDir  = '.wmWeatherReports';
+-#$WeatherSrc = 'ftp://weather.noaa.gov/data/observations/metar/decoded';
+-$WeatherSrc = 'http://weather.noaa.gov/pub/data/observations/metar/decoded';
++$WeatherSrc = 'http://tgftp.nws.noaa.gov/data/observations/metar/decoded';
+ 
+ use strict; 
+ use vars qw( $ReportDir $WeatherSrc );
+-- 
+2.11.0
+
