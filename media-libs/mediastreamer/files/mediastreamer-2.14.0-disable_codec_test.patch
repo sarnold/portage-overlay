@@ -1,0 +1,37 @@
+--- ./tester/mediastreamer2_tester.c.orig	2017-02-20 23:06:54.958042810 -0800
++++ ./tester/mediastreamer2_tester.c	2017-02-20 23:07:59.966685452 -0800
+@@ -61,9 +61,6 @@
+ 	bc_tester_add_suite(&neon_test_suite);
+ #endif
+ 	bc_tester_add_suite(&text_stream_test_suite);
+-#ifdef HAVE_PCAP
+-	bc_tester_add_suite(&codec_impl_test_suite);
+-#endif
+ }
+ 
+ void mediastreamer2_tester_uninit(void) {
+--- ./tester/mediastreamer2_tester.h.orig	2017-02-20 23:01:21.197897621 -0800
++++ ./tester/mediastreamer2_tester.h	2017-02-20 23:08:20.610646267 -0800
+@@ -28,12 +28,6 @@
+ #include "mediastreamer-config.h"
+ #endif
+ 
+-#include <mediastreamer2/mediastream.h>
+-
+-#ifdef HAVE_CONFIG_H
+-#include "mediastreamer-config.h"
+-#endif
+-
+ #ifdef __cplusplus
+ extern "C" {
+ #endif
+@@ -46,9 +40,6 @@
+ extern test_suite_t framework_test_suite;
+ extern test_suite_t player_test_suite;
+ extern test_suite_t text_stream_test_suite;
+-#ifdef HAVE_PCAP
+-extern test_suite_t codec_impl_test_suite;
+-#endif
+ #ifdef __ARM_NEON__
+ extern test_suite_t neon_test_suite;
+ #endif

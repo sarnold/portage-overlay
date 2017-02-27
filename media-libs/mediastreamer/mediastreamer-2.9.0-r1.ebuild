@@ -1,6 +1,6 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
@@ -38,7 +38,7 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 	speex? ( >=media-libs/speex-1.2_beta3 )
 	upnp? ( net-libs/libupnp )
 	video? (
-		libav? ( <media-video/libav-10.0:0= )
+		libav? ( >=media-video/libav-9.12:0= )
 		!libav? ( >=media-video/ffmpeg-1.2.6-r1:0= )
 
 		opengl? ( media-libs/glew
@@ -101,7 +101,7 @@ src_prepare() {
 		"${FILESDIR}/${P}-underlinking.patch" \
 		"${FILESDIR}/${P}-tests.patch" \
 		"${FILESDIR}/${P}-xxd.patch" \
-		"${FILESDIR}"/${P}-missing-old_codec_ids-header.patch
+		"${FILESDIR}/${P}-ffmpeg3.patch"
 
 	eautoreconf
 }

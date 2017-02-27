@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit autotools eutils
+inherit autotools eutils flag-o-matic
 
 DESCRIPTION="Mediastreaming library for telephony application"
 HOMEPAGE="http://www.linphone.org/"
@@ -31,14 +31,14 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 	g726? ( >=media-libs/spandsp-0.0.6_pre1 )
 	gsm? ( media-sound/gsm )
 	opus? ( media-libs/opus )
-	ortp? ( >=net-libs/ortp-0.21.0[ipv6?] )
+	ortp? ( >=net-libs/ortp-0.27.0 )
 	pcap? ( sys-libs/libcap )
 	portaudio? ( media-libs/portaudio )
 	pulseaudio? ( >=media-sound/pulseaudio-0.9.21 )
 	speex? ( >=media-libs/speex-1.2_beta3 )
 	upnp? ( net-libs/libupnp )
 	video? (
-		libav? ( <media-video/libav-10.0:0= )
+		libav? ( <media-video/libav-12.0:0= )
 		!libav? ( >=media-video/ffmpeg-1.2.6-r1:0= )
 
 		opengl? ( media-libs/glew
@@ -49,14 +49,18 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 		theora? ( media-libs/libtheora )
 		sdl? ( media-libs/libsdl[video,X] )
 		X? ( x11-libs/libX11
+			x11-libs/libXext
 			x11-libs/libXv ) )"
 DEPEND="${RDEPEND}
+	app-misc/bctoolbox
 	dev-util/intltool
 	virtual/pkgconfig
+	app-editors/vim-core
 	doc? ( app-doc/doxygen )
 	opengl? ( dev-util/xxdi )
 	test? ( >=dev-util/cunit-2.1_p2[ncurses] )
-	X? ( x11-proto/videoproto )"
+	X? ( x11-proto/videoproto
+		x11-proto/xextproto )"
 
 PDEPEND="amr? ( !bindist? ( media-plugins/mediastreamer-amr ) )
 	g729? ( !bindist? ( media-plugins/mediastreamer-bcg729 ) )
@@ -96,17 +100,18 @@ src_prepare() {
 		-e 's:linux/videodev.h ::' \
 		configure.ac || die
 
-#	epatch "${FILESDIR}/${P}-v4l-automagic.patch" \
-#		"${FILESDIR}/${P}-libav9.patch" \
-#		"${FILESDIR}/${P}-underlinking.patch" \
-#		"${FILESDIR}/${P}-tests.patch" \
-#		"${FILESDIR}/${P}-xxd.patch" \
-#		"${FILESDIR}"/${P}-missing-old_codec_ids-header.patch
+	epatch "${FILESDIR}/${PN}-2.9.0-tests.patch" \
+		"${FILESDIR}/${P}-dtls_srtp-build-fix.patch" \
+		"${FILESDIR}/${P}-disable_codec_test.patch"
 
 	eautoreconf
 }
 
 src_configure() {
+	replace-flags "-O3" "-O2"
+	append-cflags "-Dbctbx_list_remove_link=bctbx_list_unlink -Dbctbx_list_delete_link=bctbx_list_erase_link"
+	append-libs Xext
+
 	local myeconfargs=(
 		--htmldir="${EPREFIX}"/usr/share/doc/${PF}/html
 		--datadir="${EPREFIX}"/usr/share/${PN}
