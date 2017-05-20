@@ -1,4 +1,4 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
@@ -63,6 +63,9 @@ src_prepare() {
 	sed -i -e "s|pure_parser|pure-parser|" \
 		"${S}"/elkhound/grampar.y \
 		"${S}"/ast/agrampar.y || die
+
+	# fix silly missing define
+	sed -i -e "s|$(CXX) -c|$(CXX) -DFLEX_STD -c|" "${S}"/ast/Makefile.in
 }
 
 src_configure() {
