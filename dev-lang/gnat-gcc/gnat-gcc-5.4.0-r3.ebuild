@@ -1,4 +1,4 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
@@ -13,12 +13,12 @@ IUSE="acats doc hardened"
 
 BOOT_SLOT="4.9"
 
-PATCH_VER="1.5"
+PATCH_VER="1.3"
 #UCLIBC_VER="1.0"
-PIE_VER="0.6.4"
+PIE_VER="0.6.5"
 SPECS_VER="0.2.0"
 SPECS_GCC_VER="4.4.3"
-PIE_GLIBC_STABLE="amd64 x86 mips ppc ppc64 arm"
+PIE_GLIBC_STABLE="amd64 x86 mips ppc ppc64 arm ia64"
 SSP_STABLE="amd64 x86 mips ppc ppc64 arm"
 
 # SLOT is set in gnatbuild.eclass, depends only on PV (basically SLOT=GCCBRANCH)
@@ -40,7 +40,9 @@ RDEPEND=">=dev-libs/mpfr-3.1.2
 	>=dev-libs/gmp-5.1.3
 	>=dev-libs/mpc-1.0.1
 	>=sys-libs/zlib-1.2
-	>=sys-libs/ncurses-5.7:0"
+	>=sys-libs/ncurses-5.7:0
+	>=sys-libs/glibc-2.12
+	>=sys-devel/binutils-2.20"
 
 DEPEND="${RDEPEND}
 	doc? ( >=sys-apps/texinfo-5 )"
@@ -52,20 +54,6 @@ fi
 src_prepare() {
 	# See if we can enable boehm-gc for Ada
 	#epatch "${FILESDIR}"/${PN}-4.9.3-enable-boehm-gc-for-Ada.patch
-
-	# moved from gnatbuild-r1, invalid for gcc-5
-	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env-r1.patch
-
-	#fixup some hardwired flags
-	pushd "${S}"/gcc/ada > /dev/null
-
-	# universal gcc -> gnatgcc substitution occasionally produces lines too long
-	# and then build halts on the style check.
-	#
-	sed -i -e 's:gnatgcc:gcc:' osint.ads switch.ads ||
-		die	"reversing [gnat]gcc substitution in comments failed"
-
-	popd > /dev/null
 
 	# gcc pretty much ignores --with-system-zlib. At least it still descends
 	# into zlib and does configure and build there (gcc bug@7125?). For whatever

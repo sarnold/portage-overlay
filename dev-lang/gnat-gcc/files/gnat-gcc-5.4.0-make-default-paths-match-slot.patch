@@ -1,18 +1,18 @@
---- a/gcc/Makefile.in	2016-05-20 15:01:04.277726220 -0700
-+++ b/gcc/Makefile.in	2016-05-20 18:40:43.658617109 -0700
-@@ -594,9 +594,9 @@
+--- a/gcc/Makefile.in	2017-06-16 11:34:36.390869589 -0700
++++ b/gcc/Makefile.in	2017-06-16 11:37:25.917294526 -0700
+@@ -589,9 +589,9 @@
  # --------
  
  # Directory in which the compiler finds libraries etc.
--libsubdir = $(libdir)/gcc/$(target_noncanonical)/$(version)
-+libsubdir = $(libdir)/gnat-gcc/$(target_noncanonical)/SLOT_MARKER
+-libsubdir = $(libdir)/gcc/$(real_target_noncanonical)/$(version)$(accel_dir_suffix)
++libsubdir = $(libdir)/gcc/$(real_target_noncanonical)/SLOT_MARKER$(accel_dir_suffix)
  # Directory in which the compiler finds executables
--libexecsubdir = $(libexecdir)/gcc/$(target_noncanonical)/$(version)
-+libexecsubdir = $(libexecdir)/gnat-gcc/$(target_noncanonical)/SLOT_MARKER
+-libexecsubdir = $(libexecdir)/gcc/$(real_target_noncanonical)/$(version)$(accel_dir_suffix)
++libexecsubdir = $(libexecdir)/gcc/$(real_target_noncanonical)/SLOT_MARKER$(accel_dir_suffix)
  # Directory in which all plugin resources are installed
  plugin_resourcesdir = $(libsubdir)/plugin
   # Directory in which plugin headers are installed
-@@ -1944,9 +1944,9 @@
+@@ -1989,9 +1989,9 @@
  
  DRIVER_DEFINES = \
    -DSTANDARD_STARTFILE_PREFIX=\"$(unlibsubdir)/\" \
@@ -22,6 +22,6 @@
 +  -DSTANDARD_EXEC_PREFIX=\"$(libdir)/gnat-gcc/\" \
 +  -DSTANDARD_LIBEXEC_PREFIX=\"$(libexecdir)/gnat-gcc/\" \
 +  -DDEFAULT_TARGET_VERSION=\"SLOT_MARKER\" \
+   -DDEFAULT_REAL_TARGET_MACHINE=\"$(real_target_noncanonical)\" \
    -DDEFAULT_TARGET_MACHINE=\"$(target_noncanonical)\" \
    -DSTANDARD_BINDIR_PREFIX=\"$(bindir)/\" \
-   -DTOOLDIR_BASE_PREFIX=\"$(libsubdir_to_prefix)$(prefix_to_exec_prefix)\" \

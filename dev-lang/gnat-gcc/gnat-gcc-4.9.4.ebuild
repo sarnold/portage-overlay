@@ -1,8 +1,8 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=4
+EAPI="5"
 inherit gnatbuild-r1
 
 DESCRIPTION="GNAT Ada Compiler - gcc version"
@@ -13,7 +13,7 @@ IUSE="acats doc hardened"
 
 BOOT_SLOT="4.9"
 
-PATCH_VER="1.5"
+PATCH_VER="1.0"
 #UCLIBC_VER="1.0"
 PIE_VER="0.6.4"
 SPECS_VER="0.2.0"
@@ -43,6 +43,8 @@ RDEPEND=">=dev-libs/mpfr-3.1.2
 	>=sys-libs/ncurses-5.7:0"
 
 DEPEND="${RDEPEND}
+	elibc_glibc? ( >=sys-libs/glibc-2.8 )
+	>=sys-devel/binutils-2.20
 	doc? ( >=sys-apps/texinfo-5 )"
 
 if [[ ${CATEGORY} != cross-* ]] ; then

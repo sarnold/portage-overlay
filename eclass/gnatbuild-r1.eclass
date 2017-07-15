@@ -472,11 +472,12 @@ gnatbuild-r1_src_unpack() {
 			done
 
 			# apply global slot/path patch
-			EPATCH_MULTI_MSG="Adjusting default paths for gnat-gcc ..." \
-			epatch "${FILESDIR}"/${PN}-4.9.3-make-default-paths-match-slot.patch
-			sed -i -e "s|SLOT_MARKER|${BOOT_SLOT}|" "${S}"/gcc/Makefile.in
-
-			[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env-r1.patch
+			SLOT_PATCH="${PN}-${PV}-make-default-paths-match-slot.patch"
+			if [[ -d "${FILESDIR}/${SLOT_PATCH}" ]]; then
+				EPATCH_MULTI_MSG="Adjusting default paths for gnat-gcc ..." \
+				epatch "${FILESDIR}/${SLOT_PATCH}"
+				sed -i -e "s|SLOT_MARKER|${BOOT_SLOT}|" "${S}"/gcc/Makefile.in
+			fi
 
 #			this is only needed for gnat-gpl-4.1 and breaks for gnat-gcc, so
 #			this block was moved to corresponding ebuild
