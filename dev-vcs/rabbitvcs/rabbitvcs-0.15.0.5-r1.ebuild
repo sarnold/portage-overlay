@@ -1,14 +1,12 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
-EAPI=4
+EAPI=5
 
-PYTHON_DEPEND="2:2.5"
-SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="2.4 3.*"
+PYTHON_COMPAT=( python2_7 )
 
-inherit gnome2-utils distutils
+inherit gnome2-utils distutils-r1
 
 DESCRIPTION="Integrated version control support for your desktop"
 HOMEPAGE="http://rabbitvcs.org"

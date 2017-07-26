@@ -1,13 +1,13 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-admin/system-config-printer-common/system-config-printer-common-1.3.11-r1.ebuild,v 1.1 2012/08/08 17:15:29 ssuominen Exp $
 
-EAPI=4
+EAPI=5
 
-PYTHON_DEPEND="2:2.6"
+PYTHON_COMPAT=( python2_7 )
 WANT_AUTOMAKE="1.11"
 
-inherit autotools eutils python toolchain-funcs
+inherit autotools eutils python-r1 toolchain-funcs
 
 MY_P=${PN%-common}-${PV}
 
@@ -26,19 +26,20 @@ RESTRICT="test"
 # system-config-printer split since 1.1.3
 COMMON_DEPEND="
 	>=dev-libs/glib-2
-	dev-libs/libxml2[python]
-	dev-python/dbus-python
-	>=dev-python/pycups-1.9.60
-	dev-python/pycurl
-	>=dev-python/pygobject-2.21.5:2
+	dev-libs/libxml2[${PYTHON_USEDEP}]
+	dev-python/dbus-python[${PYTHON_USEDEP}]
+	>=dev-python/pycups-1.9.60[${PYTHON_USEDEP}]
+	dev-python/pycurl[${PYTHON_USEDEP}]
+	>=dev-python/pygobject-2.21.5:2[${PYTHON_USEDEP}]
 	net-print/cups[dbus]
 	>=sys-fs/udev-164-r2
 	virtual/libusb:0
+	${PYTHON_DEPS}
 "
 DEPEND="${COMMON_DEPEND}
 	dev-util/intltool
 	virtual/pkgconfig
-	doc? ( dev-python/epydoc )
+	doc? ( dev-python/epydoc[${PYTHON_USEDEP}] )
 "
 RDEPEND="${COMMON_DEPEND}
 	!<app-admin/system-config-printer-gnome-${PV}

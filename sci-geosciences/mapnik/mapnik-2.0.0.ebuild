@@ -2,10 +2,10 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=3
+EAPI=5
 
 PYTHON_DEPEND="python? 2"
-inherit eutils python scons-utils toolchain-funcs
+inherit eutils python-r1 scons-utils toolchain-funcs
 
 DESCRIPTION="A Free Toolkit for developing mapping applications."
 HOMEPAGE="http://www.mapnik.org/"

@@ -1,10 +1,12 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-doc/doxygen/doxygen-1.8.0.ebuild,v 1.1 2012/02/29 09:12:35 xarthisius Exp $
+# $Id$
 
-EAPI=4
+EAPI=5
 
-inherit eutils fdo-mime flag-o-matic python qt4-r2 toolchain-funcs
+PYTHON_COMPAT=( python2_7 )
+
+inherit eutils fdo-mime flag-o-matic python-r1 qt4-r2 toolchain-funcs
 
 DESCRIPTION="Documentation system for most programming languages"
 HOMEPAGE="http://www.doxygen.org/"

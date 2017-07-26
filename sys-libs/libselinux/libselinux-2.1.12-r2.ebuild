@@ -9,7 +9,7 @@ RESTRICT_PYTHON_ABIS="2.5 *-jython *-pypy-*"
 USE_RUBY="ruby18 ruby19"
 RUBY_OPTIONAL="yes"
 
-inherit multilib python toolchain-funcs eutils ruby-ng
+inherit multilib python-r1 toolchain-funcs eutils ruby-ng
 
 SEPOL_VER="2.1.8"
 

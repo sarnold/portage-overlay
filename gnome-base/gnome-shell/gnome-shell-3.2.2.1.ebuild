@@ -1,13 +1,14 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/gnome-base/gnome-shell/gnome-shell-3.2.2.1.ebuild,v 1.6 2012/05/22 03:21:17 tetromino Exp $
 
-EAPI="4"
+EAPI="5"
 GCONF_DEBUG="no"
 GNOME2_LA_PUNT="yes"
-PYTHON_DEPEND="2:2.5"
+#PYTHON_DEPEND="2:2.5"
+PYTHON_COMPAT=( python{2_5,2_6,2_7} )
 
-inherit autotools eutils gnome2 multilib pax-utils python
+inherit autotools eutils gnome2 multilib pax-utils python-single-r1
 
 DESCRIPTION="Provides core UI functions for the GNOME 3 desktop"
 HOMEPAGE="http://live.gnome.org/GnomeShell"

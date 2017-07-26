@@ -4,10 +4,9 @@
 
 EAPI="5"
 
-SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.* *-jython 2.7-pypy-*"
+PYTHON_COMPAT=( python{2_5,2_6,2_7} pypy{1_9,2_0} )
 
-inherit cmake-utils eutils subversion python
+inherit cmake-utils eutils subversion python-r1
 
 DESCRIPTION="OpenSync synchronisation framework library"
 HOMEPAGE="http://www.opensync.org/"

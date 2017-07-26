@@ -2,11 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sci-geosciences/gpsd/gpsd-2.96-r1.ebuild,v 1.2 2011/07/18 07:09:17 scarabeus Exp $
 
-EAPI=3
+EAPI=4
 
 PYTHON_DEPEND="2:2.6"
 
-inherit python base autotools
+inherit python-r1 base autotools
 
 DESCRIPTION="GPS daemon and library to support USB/serial GPS devices and various GPS/mapping clients."
 HOMEPAGE="http://gpsd.berlios.de/"

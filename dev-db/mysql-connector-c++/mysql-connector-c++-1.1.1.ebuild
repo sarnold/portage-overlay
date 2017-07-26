@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-db/mysql-connector-c++/mysql-connector-c++-1.1.1.ebuild,v 1.3 2012/12/18 15:22:21 scarabeus Exp $
 
-EAPI=4
+EAPI=5
 
 inherit eutils cmake-utils flag-o-matic multilib
 

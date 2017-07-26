@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/sci-libs/libbufr/libbufr-000387.ebuild,v 1.6 2011/06/21 15:15:13 jlec Exp $
 
-EAPI=3
+EAPI=4
 
 inherit eutils fortran-2 flag-o-matic toolchain-funcs
 

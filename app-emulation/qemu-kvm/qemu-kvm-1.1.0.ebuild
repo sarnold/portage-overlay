@@ -5,7 +5,7 @@
 EAPI="4"
 
 PYTHON_DEPEND="2"
-inherit eutils flag-o-matic linux-info toolchain-funcs multilib python user
+inherit eutils flag-o-matic linux-info toolchain-funcs multilib python-r1 user
 BACKPORTS=1
 
 if [[ ${PV} = *9999* ]]; then

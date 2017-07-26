@@ -1,11 +1,11 @@
-# Copyright 1999-2014 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=3
-PYTHON_DEPEND="python? 2"
+EAPI=5
+PYTHON_COMPAT=( python2_7 )
 
-inherit eutils autotools libtool multilib python flag-o-matic
+inherit eutils autotools libtool multilib python-r1 flag-o-matic
 
 DESCRIPTION="Open Source Graph Visualization Software"
 HOMEPAGE="http://www.graphviz.org/"

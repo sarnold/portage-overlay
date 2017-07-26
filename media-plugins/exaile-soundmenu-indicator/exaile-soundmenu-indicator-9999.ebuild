@@ -29,10 +29,12 @@ IUSE="gnome xfce"
 
 RESTRICT="test"
 
+PDEPEND=">=media-sound/exaile-3.0[${PYTHON_USEDEP}]"
+
 RDEPEND="${PYTHON_DEPS}
-	>=media-sound/exaile-3.0[${PYTHON_USEDEP}]
 	xfce? ( xfce-extra/xfce4-soundmenu-plugin )
 	gnome? ( gnome-base/gnome-shell )"
+
 DEPEND="${RDEPEND}"
 
 REQUIRED_USE="|| ( xfce gnome ) ${PYTHON_REQUIRED_USE}"

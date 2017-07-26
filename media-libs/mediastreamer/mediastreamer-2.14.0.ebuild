@@ -35,10 +35,10 @@ RDEPEND="alsa? ( media-libs/alsa-lib )
 	pcap? ( sys-libs/libcap )
 	portaudio? ( media-libs/portaudio )
 	pulseaudio? ( >=media-sound/pulseaudio-0.9.21 )
-	speex? ( >=media-libs/speex-1.2_beta3 )
+	speex? ( >=media-libs/speex-1.2[utils] )
 	upnp? ( net-libs/libupnp )
 	video? (
-		libav? ( <media-video/libav-12.0:0= )
+		libav? ( <media-video/libav-12:0= )
 		!libav? ( >=media-video/ffmpeg-1.2.6-r1:0= )
 
 		opengl? ( media-libs/glew

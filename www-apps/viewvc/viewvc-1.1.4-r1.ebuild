@@ -5,7 +5,7 @@
 EAPI="2"
 SUPPORT_PYTHON_ABIS="1"
 
-inherit confutils eutils python webapp
+inherit confutils eutils python-r1 webapp
 
 WEBAPP_MANUAL_SLOT="yes"
 

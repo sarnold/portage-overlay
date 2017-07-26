@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Id$
 
-EAPI=3
+EAPI=4
 inherit eutils autotools flag-o-matic elisp-common
 
 DESCRIPTION="GNU Ubiquitous Intelligent Language for Extensions"

@@ -1,10 +1,10 @@
-# Copyright 1999-2012 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/app-pda/libimobiledevice/libimobiledevice-1.1.4.ebuild,v 1.1 2012/04/12 14:41:27 ssuominen Exp $
+# $Id$
 
-EAPI=4
-PYTHON_DEPEND="python? 2:2.7"
-inherit eutils python
+EAPI=5
+PYTHON_COMPAT=( python2_7 )
+inherit eutils python-r1
 
 DESCRIPTION="Support library to communicate with Apple iPhone/iPod Touch devices"
 HOMEPAGE="http://www.libimobiledevice.org/"

@@ -2,14 +2,14 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/app-office/dia/dia-0.97.2-r1.ebuild,v 1.11 2012/10/28 15:22:42 armin76 Exp $
 
-EAPI=4
+EAPI=5
 
 GCONF_DEBUG=yes
 GNOME2_LA_PUNT=yes
 
-PYTHON_DEPEND="python? 2"
+PYTHON_COMPAT=( python2_7 )
 
-inherit autotools eutils gnome2 python multilib
+inherit autotools eutils gnome2 python-r1 multilib
 
 DESCRIPTION="Diagram/flowchart creation program"
 HOMEPAGE="http://live.gnome.org/Dia"

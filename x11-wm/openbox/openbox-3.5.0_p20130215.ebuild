@@ -1,9 +1,11 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: /var/cvsroot/gentoo-x86/x11-wm/openbox/openbox-3.5.0_p20130215.ebuild,v 1.6 2013/07/22 22:03:17 ago Exp $
+# $Id$
 
-EAPI="4"
-inherit multilib autotools python eutils
+EAPI="5"
+
+PYTHON_COMPAT=( python2_7 )
+inherit multilib autotools python-r1 eutils
 
 DESCRIPTION="A standards compliant, fast, light-weight, extensible window manager"
 HOMEPAGE="http://openbox.org/"
@@ -14,10 +16,14 @@ LICENSE="GPL-2"
 SLOT="3"
 KEYWORDS="~alpha amd64 ~arm ~hppa ppc ppc64 ~sparc x86 ~x86-fbsd ~arm-linux ~x86-linux"
 IUSE="branding debug imlib nls python session startup-notification static-libs"
+REQUIRED_USE="python? ( ${PYTHON_REQUIRED_USE} )"
 
 RDEPEND="dev-libs/glib:2
 	>=dev-libs/libxml2-2.0
-	python? ( dev-python/pyxdg )
+	python? (
+			${PYTHON_DEPS}
+			dev-python/pyxdg[${PYTHON_USEDEP}]
+	)
 	>=media-libs/fontconfig-2
 	x11-libs/libXft
 	x11-libs/libXrandr

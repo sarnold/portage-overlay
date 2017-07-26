@@ -1,12 +1,12 @@
-# Copyright 1999-2015 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
 EAPI=5
 
 XORG_DOC=doc
 inherit xorg-2 multilib versionator flag-o-matic
-EGIT_REPO_URI="git://anongit.freedesktop.org/git/xorg/xserver"
+EGIT_REPO_URI="git://anongit.freedesktop.org/xorg/xserver"
 
 DESCRIPTION="X.Org X servers"
 SLOT="0/${PV}"
@@ -47,7 +47,7 @@ CDEPEND=">=app-eselect/eselect-opengl-1.3.0
 		>=x11-libs/libXtst-1.0.99.2
 	)
 	glamor? (
-		media-libs/libepoxy
+		media-libs/libepoxy[X]
 		>=media-libs/mesa-10.3.4-r1[egl,gbm]
 		!x11-libs/glamor
 	)
@@ -62,6 +62,9 @@ CDEPEND=">=app-eselect/eselect-opengl-1.3.0
 		x11-libs/xcb-util-keysyms
 		x11-libs/xcb-util-renderutil
 		x11-libs/xcb-util-wm
+	)
+	xnest? (
+		x11-libs/xcb-util-keysyms
 	)
 	!minimal? (
 		>=x11-libs/libX11-1.1.5
@@ -89,7 +92,7 @@ DEPEND="${CDEPEND}
 	>=x11-proto/fixesproto-5.0
 	>=x11-proto/fontsproto-2.1.3
 	>=x11-proto/glproto-1.4.17-r1
-	>=x11-proto/inputproto-2.2.99.1
+	>=x11-proto/inputproto-2.3
 	>=x11-proto/kbproto-1.0.3
 	>=x11-proto/randrproto-1.4.0
 	>=x11-proto/recordproto-1.13.99.1
@@ -106,6 +109,7 @@ DEPEND="${CDEPEND}
 	>=x11-proto/xineramaproto-1.1.3
 	>=x11-proto/xproto-7.0.26
 	>=x11-proto/presentproto-1.0
+	>=x11-proto/dri2proto-2.8
 	>=x11-proto/dri3proto-1.0
 	dmx? (
 		>=x11-proto/dmxproto-2.2.99.1
@@ -119,7 +123,6 @@ DEPEND="${CDEPEND}
 	)
 	!minimal? (
 		>=x11-proto/xf86driproto-2.1.0
-		>=x11-proto/dri2proto-2.8
 	)"
 
 RDEPEND="${CDEPEND}
@@ -161,8 +164,8 @@ src_configure() {
 	# localstatedir is used for the log location; we need to override the default
 	#	from ebuild.sh
 	# sysconfdir is used for the xorg.conf location; same applies
-	# NOTE: fop is used for doc generating ; and i have no idea if gentoo
-	#	package it somewhere
+	# NOTE: fop is used for doc generating; i have no idea if gentoo
+	#	packaged it somewhere
 	XORG_CONFIGURE_OPTIONS=(
 		$(use_enable ipv6)
 		$(use_enable dmx)
@@ -212,7 +215,7 @@ src_install() {
 
 	server_based_install
 
-	if ! use minimal &&	use xorg; then
+	if ! use minimal && use xorg; then
 		# Install xorg.conf.example into docs
 		dodoc "${AUTOTOOLS_BUILD_DIR}"/hw/xfree86/xorg.conf.example
 	fi

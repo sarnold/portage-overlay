@@ -2,9 +2,9 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=2
+EAPI=5
 
-inherit fdo-mime multilib python subversion
+inherit fdo-mime multilib python-r1 subversion
 
 ESVN_REPO_URI="https://bitpim.svn.sourceforge.net/svnroot/bitpim/trunk/bitpim"
 ESVN_FETCH_CMD="svn checkout -r 4759"

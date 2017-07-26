@@ -1,12 +1,12 @@
-# Copyright 1999-2013 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
+# $Id$
 
-EAPI="3"
-PYTHON_DEPEND="2:2.4"
-PYTHON_USE_WITH="threads"
+EAPI="5"
 
-inherit eutils python unpacker
+PYTHON_COMPAT=( python2_7 )
+
+inherit eutils python-r1 unpacker
 
 DESCRIPTION="Commercial version of app-emulation/wine with paid support."
 HOMEPAGE="http://www.codeweavers.com/products/crossover/"
@@ -28,7 +28,10 @@ MLIB_DEPS="amd64 ? (
 	openal? ( app-emulation/emul-linux-x86-sdl )
 	)"
 
-DEPEND="dev-lang/perl"
+DEPEND="${RDEPEND}
+        ${PYTHON_DEPS}
+	dev-lang/perl
+"
 
 RDEPEND="sys-libs/glibc
 	>=dev-lang/python-2.4
@@ -63,6 +66,7 @@ RDEPEND="sys-libs/glibc
 	x11-libs/libXxf86vm
 	"
 
+REQUIRED_USE="( ${PYTHON_REQUIRED_USE} )"
 
 pkg_nofetch() {
 	einfo "Please visit ${HOMEPAGE}"

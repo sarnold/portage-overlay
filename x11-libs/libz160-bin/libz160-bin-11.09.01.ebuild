@@ -2,7 +2,7 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=3
+EAPI=4
 
 # This ebuild is by no means complete or work ready.  Need clarification
 # on the LICENSE, as well as the ability to mirror.  Currently the only 

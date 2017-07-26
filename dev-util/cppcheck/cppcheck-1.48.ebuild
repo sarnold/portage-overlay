@@ -1,11 +1,11 @@
-# Copyright 1999-2011 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 # $Header: /var/cvsroot/gentoo-x86/dev-util/cppcheck/cppcheck-1.47.ebuild,v 1.2 2011/04/12 22:51:39 arfrever Exp $
 
-EAPI="3"
-PYTHON_DEPEND="htmlreport? 2"
+EAPI="5"
+PYTHON_COMPAT=( python2_7 )
 
-inherit distutils eutils qt4-r2 toolchain-funcs
+inherit distutils-r1 eutils qt4-r2 toolchain-funcs
 
 DESCRIPTION="static analyzer of C/C++ code"
 HOMEPAGE="http://apps.sourceforge.net/trac/cppcheck/"

@@ -2,10 +2,10 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI=3
+EAPI=5
 
 PYTHON_DEPEND="python? 2"
-inherit eutils flag-o-matic python toolchain-funcs versionator
+inherit eutils flag-o-matic python-r1 toolchain-funcs versionator
 
 DESCRIPTION="A Free Toolkit for developing mapping applications."
 HOMEPAGE="http://www.mapnik.org/"
