@@ -1,0 +1,11 @@
+--- bfd/elflink.c.orig	2017-06-26 13:29:23.550812995 -0700
++++ bfd/elflink.c	2017-06-26 13:30:14.339042495 -0700
+@@ -6805,7 +6805,7 @@
+ 	    = compute_bucket_count (info, hashcodes, nsyms, 0);
+ 	  free (hashcodes);
+ 
+-	  if (bucketcount == 0)
++	  if (bucketcount == 0 && nsyms > 0)
+ 	    return FALSE;
+ 
+ 	  elf_hash_table (info)->bucketcount = bucketcount;
