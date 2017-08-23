@@ -20,7 +20,10 @@ KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~s
 IUSE="ada +cxx debug doc gpm minimal profile static-libs test threads tinfo trace unicode"
 
 DEPEND="gpm? ( sys-libs/gpm[${MULTILIB_USEDEP}] )
-	ada? ( >=virtual/ada-1995 )"
+	|| (
+		ada? ( sys-devel/gcc[ada] )
+		ada? ( >=virtual/ada-1995 )
+	)"
 #	berkdb? ( sys-libs/db )"
 # Block the older ncurses that installed all files w/SLOT=5. #557472
 RDEPEND="${DEPEND}
