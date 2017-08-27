@@ -42,7 +42,6 @@ PATCHES=(
 	"${FILESDIR}/${PN}-5.9-gcc-5.patch" #545114
 	"${FILESDIR}/${PN}-6.0-ticlib.patch" #557360
 	"${FILESDIR}/${PN}-6.0-ada-lib-suffix.patch"
-	#"${FILESDIR}/${PN}-6.0-ada-multilib.patch"
 )
 
 src_prepare() {
@@ -57,6 +56,17 @@ src_configure() {
 
 	if [[ ${ARCH} == arm* ]] ; then
 		append-libs "-L/$(get_libdir) -ldl"
+	fi
+
+	if use ada ; then
+		if [[ -z "${ADA_INCLUDE_PATH}" ]] ; then
+			ewarn "ADA_INCLUDE_PATH is not defined !!!"
+			ewarn "You need to either run gcc-config, disable the ada use flag, or"
+			ewarn "rebuild gcc with USE=ada to compile ${PN} with Ada support."
+			die
+		else
+			elog "ADA_INCLUDE_PATH found, building with Ada support..."
+		fi
 	fi
 
 	# Build the various variants of ncurses -- narrow, wide, and threaded. #510440
