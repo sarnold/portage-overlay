@@ -1,5 +1,0 @@
-#include "pagestart.h"
-
-<P>BitPim support for this model was developed and tested with a Susteen straight USB data cable.  To the OS, the data cable appears as 2 ports: a <B>modem</B> port and a <B>diag</B> port.  You <B>MUST</B> use/set the <B>modem</B> port with the <B>SPH-M300PIM</B> model, and the <B>diag</B> port with the <B>SPH-M300MEDIA</B> model.
-
-#include "pageend.h"

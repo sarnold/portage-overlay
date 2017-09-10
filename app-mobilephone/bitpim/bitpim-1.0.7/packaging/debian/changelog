@@ -1,5 +1,0 @@
-bitpim (%%VERSION%%) unstable; urgency=low
-
-  * Debian package build.
-
- -- %%PUBLISHER%%  %%BUILDDATETIME%%

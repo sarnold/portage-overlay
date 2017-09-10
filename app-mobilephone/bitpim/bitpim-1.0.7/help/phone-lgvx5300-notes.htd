@@ -1,8 +1,0 @@
-#include "pagestart.h"
-<UL>
-<LI><P>Tested with both Bluetooth and direct USB connections.
-<LI><P>Phone does not support memos and has no SD card.
-<LI><P>MP3s go in the "ringers" folder, not the MP3 folder.
-<LI><P>Some problems when downloading large collections of camera pictures, may need to download them one at a time rather than as a batch.
-</UL>
-#include "pageend.h"

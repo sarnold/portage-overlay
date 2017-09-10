@@ -1,3 +1,0 @@
-#include "pagestart.h"
-<P>This is by design due to the fact that file transfer between the phone and the PC is VERY SLOW!  Users are better off transferring data directly between the SD card and the PC.  Future BitPim releases may include enhancements to this feature such as allowing users to selectively (and intentionally) retrieve media files from the SD card.
-#include "pageend.h"

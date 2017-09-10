@@ -1,9 +1,0 @@
-#include "pagestart.h"
-
-SCREENSHOT(screen-calendartab.png,)
-
-<p>You can edit events in the calendar here.  Double click on any day
-to edit or create events on that day.  You can also click the <B>Year</B> button
-in the top left to select any date quickly, or click on the <B>Today</B> button to directly to today date.
-
-#include "pageend.h"

@@ -3,8 +3,7 @@
 # $Header: $
 
 EAPI="5"
-PYTHON_DEPEND="2:2.6"
-#SUPPORT_PYTHON_ABIS="1"
+PYTHON_COMPAT=( python2_7 )
 
 inherit eutils python-r1 fdo-mime
 

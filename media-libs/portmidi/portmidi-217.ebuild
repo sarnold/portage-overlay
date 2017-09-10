@@ -2,13 +2,11 @@
 # Distributed under the terms of the GNU General Public License v2
 # $Header: $
 
-EAPI="4"
-PYTHON_DEPEND="python? 2:2.6"
-SUPPORT_PYTHON_ABIS="1"
-RESTRICT_PYTHON_ABIS="3.*"
+EAPI="5"
+PYTHON_COMPAT=( python2_7 )
 PYTHON_MODNAME="pyportmidi"
 
-inherit cmake-utils distutils eutils multilib java-pkg-opt-2
+inherit cmake-utils distutils-r1 eutils multilib java-pkg-opt-2
 
 DESCRIPTION="A library for real time MIDI input and output"
 HOMEPAGE="http://portmedia.sourceforge.net/"

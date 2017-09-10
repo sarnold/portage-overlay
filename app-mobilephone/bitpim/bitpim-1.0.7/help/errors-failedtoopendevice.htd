@@ -1,9 +1,0 @@
-#include "pagestart.h"
-
-SCREENSHOT(screen-failedtoopencomms.png,)
-
-<p>BitPim couldn't open the device.  There could be many reasons for this,
-such as it being in use by another program, or you not having permission
-to use it.
-
-#include "pageend.h"

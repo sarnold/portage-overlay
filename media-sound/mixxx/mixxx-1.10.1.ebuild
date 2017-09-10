@@ -44,12 +44,19 @@ RDEPEND="media-libs/fidlib
 DEPEND="${RDEPEND}
 	virtual/pkgconfig"
 
-# need to set machine type explicitly for ppc
-EMACHINE_TYPE=""
-use ppc && export EMACHINE_TYPE="machine=powerpc"
-use ppc64 && export EMACHINE_TYPE="machine=powerpc64"
-
 src_prepare() {
+	# need to set machine type explicitly for ppc
+	case "${ARCH}" in
+		ppc64)
+			export EMACHINE_TYPE="machine=powerpc64"
+			;;
+		ppc)
+			export EMACHINE_TYPE="machine=powerpc"
+			;;
+		*)
+			;;
+	esac
+
 	epatch "${FILESDIR}"/${PN}-1.10.0-system-libs.patch
 	epatch "${FILESDIR}"/${PN}-1.10.0-cflags.patch
 	epatch "${FILESDIR}"/${PN}-1.10.0-docs.patch

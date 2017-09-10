@@ -1,8 +1,0 @@
-#include "pagestart.h"
-
-<p>The phone has blocked access to the specified file or directory.  There is nothing
-BitPim can do to get access as the block is on the phone itself.  These blocks
-are usually because the carrier wants customers to update content via their
-services rather than using a program like BitPim.
-
-#include "pageend.h"

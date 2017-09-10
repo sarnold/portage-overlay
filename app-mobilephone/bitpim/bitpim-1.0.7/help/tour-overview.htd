@@ -1,9 +1,0 @@
-#include "pagestart.h"
-
-<p>BitPim is a program that allows you to view and manipulate
-data on cell phones.  This includes the PhoneBook,  Calendar, WallPapers and RingTones,
-as well as the embedded filesystem (for expert users).
-
-<p>BitPim runs on Windows, Linux and Mac.
-
-#include "pageend.h"

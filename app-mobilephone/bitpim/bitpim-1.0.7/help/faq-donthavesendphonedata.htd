@@ -1,5 +1,0 @@
-#include "pagestart.h"
-
-<p>Make sure that the <B>Read Only</B> option in the <B>Settings</B> dialog is turned off.
-
-#include "pageend.h"

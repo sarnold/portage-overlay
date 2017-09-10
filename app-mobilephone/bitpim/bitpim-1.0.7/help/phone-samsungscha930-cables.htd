@@ -1,5 +1,0 @@
-#include "pagestart.h"
-
-<p>This phone uses the same cable as the SCH-A950.  It was successfully tested with a Samsung OEM straight USB data cable (Model: <B>PCB113VBE</B>) and a charging straight USB data cable on loan from RPI Wireless.
-
-#include "pageend.h"

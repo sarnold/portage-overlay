@@ -1,5 +1,0 @@
-#include "pagestart.h"
-
-<p>When a user adds an image to the Wallpaper tab, BitPim resizes and converts the source image into a Wallpaper image suitable for a specific phone model via the Image Preview Dialog.  To bypass this dialog, press and hold the <B>Shift</B> key and click on the <B>Add</B> button (Shift+Add).  Of course, users are then responsible for ensuring that those images are suitable/compatible with their phones.
-
-#include "pageend.h"

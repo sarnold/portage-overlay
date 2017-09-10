@@ -1,7 +1,0 @@
-#include "pagestart.h"
-
-<p>You have tried to view a wallpaper or ringtone but have no associated programs 
-defined to handle them.  Linux users will need to edit their MIME associations as
-defined in mailcap files.
-
-#include "pageend.h"
