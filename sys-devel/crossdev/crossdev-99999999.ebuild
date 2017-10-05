@@ -32,6 +32,9 @@ DEPEND="app-arch/xz-utils"
 
 src_prepare() {
 	epatch "${FILESDIR}"/use-new-path-for-functions.sh.patch
+
+	# fix for building with USE=ada - keep out of stage1
+	sed -i -e "s|} -for|} -ada -for|" "${S}"/crossdev
 }
 
 src_install() {
