@@ -1,6 +1,5 @@
 # Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 EAPI=5
 
@@ -20,6 +19,8 @@ DEPEND="
 	dev-lang/perl
 	dev-perl/Curses"
 RDEPEND="${DEPEND}"
+
+RESTRICT="test" # missing the extra .makefile for extra targets (like test)
 
 S="${WORKDIR}/${PN}"
 
