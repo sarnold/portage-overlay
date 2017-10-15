@@ -1,15 +1,11 @@
 # Copyright 1999-2016 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
-EAPI="5"
-inherit eutils
+EAPI="6"
 
 if [[ ${PV} == "99999999" ]] ; then
-	EGIT_REPO_URI="git://anongit.gentoo.org/proj/crossdev.git"
 	inherit git-r3
-	SRC_URI=""
-	#KEYWORDS=""
+	EGIT_REPO_URI="https://github.com/sarnold/crossdev.git"
 else
 	SRC_URI="mirror://gentoo/${P}.tar.xz
 		https://dev.gentoo.org/~vapier/dist/${P}.tar.xz"
@@ -30,16 +26,9 @@ RDEPEND=">=sys-apps/portage-2.1
 	!sys-devel/crossdev-wrappers"
 DEPEND="app-arch/xz-utils"
 
-src_prepare() {
-	epatch "${FILESDIR}"/use-new-path-for-functions.sh.patch
-
-	# fix for building with USE=ada - keep out of stage1
-	sed -i -e "s|} -for|} -ada -for|" "${S}"/crossdev
-}
-
 src_install() {
 	default
 	if [[ "${PV}" == "99999999" ]] ; then
-		sed -i "s:@CDEVPV@:${EGIT_VERSION}:" "${ED}"/usr/bin/crossdev || die
+		sed -i "s:@CDEVPV@:${EGIT_VERSION}:" "${ED%/}"/usr/bin/crossdev || die
 	fi
 }
