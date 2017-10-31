@@ -1,0 +1,10 @@
+--- ./gcc/config/avr/gen-avr-mmcu-texi.c.orig	2017-10-14 16:13:22.475453814 -0700
++++ ./gcc/config/avr/gen-avr-mmcu-texi.c	2017-10-14 16:14:08.496869046 -0700
+@@ -19,6 +19,7 @@
+ 
+ #include <stdlib.h>
+ #include <stdio.h>
++#include <string.h>
+ 
+ #define IN_GEN_AVR_MMCU_TEXI
+ 

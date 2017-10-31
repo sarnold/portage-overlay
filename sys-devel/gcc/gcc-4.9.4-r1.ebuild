@@ -1,10 +1,9 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
-EAPI="4"
+EAPI="5"
 
-PATCH_VER="1.5"
+PATCH_VER="1.1"
 UCLIBC_VER="1.0"
 
 # Hardened gcc 4 stuff
@@ -22,7 +21,7 @@ SSP_UCLIBC_STABLE="x86 amd64 mips ppc ppc64 arm"
 
 inherit eutils toolchain
 
-KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd"
+# KEYWORDS="alpha amd64 arm arm64 hppa ia64 m68k ~mips ppc ppc64 s390 sh sparc x86 ~amd64-fbsd ~x86-fbsd"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
@@ -40,14 +39,12 @@ src_prepare() {
 		EPATCH_EXCLUDE+=" 10_all_default-fortify-source.patch"
 	fi
 
-	# add patch for building with gcc-5.x
-	epatch "${FILESDIR}"/${PV}/${PN}-4-build-with-gcc5.patch
-
-	tc-ld-is-gold && tc-ld-disable-gold
-
 	toolchain_src_prepare
 
 	use vanilla && return 0
 	#Use -r1 for newer piepatchet that use DRIVER_SELF_SPECS for the hardened specs.
 	[[ ${CHOST} == ${CTARGET} ]] && epatch "${FILESDIR}"/gcc-spec-env-r1.patch
+
+	# fix QA warning
+	epatch "${FILESDIR}"/${P}-fix-qa-warning-add-missing-include.patch
 }
