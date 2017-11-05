@@ -1,0 +1,22 @@
+diff -uNr a/app/src/processing/app/Base.java b/app/src/processing/app/Base.java
+--- a/app/src/processing/app/Base.java	2015-11-07 16:00:54.614383789 +0100
++++ b/app/src/processing/app/Base.java	2015-11-07 16:01:09.486384112 +0100
+@@ -49,7 +49,6 @@
+ import processing.app.helpers.filefilters.OnlyFilesWithExtension;
+ import processing.app.javax.swing.filechooser.FileNameExtensionFilter;
+ import processing.app.legacy.PApplet;
+-import processing.app.macosx.ThinkDifferent;
+ import processing.app.packages.LibraryList;
+ import processing.app.packages.UserLibrary;
+ import processing.app.syntax.PdeKeywords;
+@@ -129,10 +128,6 @@
+ 
+     splashScreenHelper.splashText(_("Loading configuration..."));
+ 
+-    if (OSUtils.isMacOS()) {
+-      ThinkDifferent.init();
+-    }
+-
+     try {
+       guardedMain(args);
+     } catch (Throwable e) {

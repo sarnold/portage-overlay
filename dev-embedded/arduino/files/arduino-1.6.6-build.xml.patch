@@ -1,0 +1,579 @@
+diff -uNr a/build/build.xml b/build/build.xml
+--- a/build/build.xml	2015-11-07 16:16:05.143403547 +0100
++++ b/build/build.xml	2015-11-07 16:19:37.270408150 +0100
+@@ -8,35 +8,18 @@
+     <format property="BUILD_DATE" pattern="yyyy/MM/dd hh:mm"/>
+   </tstamp>
+ 
+-  <!-- Sets properties for macosx/windows/linux depending on current system -->
+-  <condition property="platform" value="macosx-old">
+-    <and>
+-      <os family="mac" />
+-      <matches string="${os.version}" pattern="^10.[56]." />
+-    </and>
+-  </condition>
+-  <condition property="macosx-old"><equals arg1="${platform}" arg2="macosx-old" /></condition>
+-  <fail if="macosx-old" message="MacOSX older than 10.7 are not supported"/>
+-
+-  <condition property="platform" value="macosx"><os family="mac" /></condition>
+-  <condition property="platform" value="windows"><os family="windows" /></condition>
++  <!-- Sets properties for linux depending on current system -->
+   <condition property="platform" value="linux32"><os family="unix" arch="i386" /></condition>
+   <condition property="platform" value="linux64"><os family="unix" arch="amd64" /></condition>
+ 
+-  <condition property="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
+-  <condition property="windows"><equals arg1="${platform}" arg2="windows" /></condition>
+   <condition property="linux32"><equals arg1="${platform}" arg2="linux32" /></condition>
+   <condition property="linux64"><equals arg1="${platform}" arg2="linux64" /></condition>
+   <condition property="linux"><equals arg1="${platform}" arg2="linux32" /></condition>
+   <condition property="linux"><equals arg1="${platform}" arg2="linux64" /></condition>
+ 
+-  <condition property="staging_folder" value="macosx"><equals arg1="${platform}" arg2="macosx" /></condition>
+-  <condition property="staging_folder" value="windows"><equals arg1="${platform}" arg2="windows" /></condition>
+   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linux32" /></condition>
+   <condition property="staging_folder" value="linux"><equals arg1="${platform}" arg2="linux64" /></condition>
+ 
+-  <condition property="staging_hardware_folder" value="Arduino.app/Contents/Java/hardware"><equals arg1="${platform}" arg2="macosx" /></condition>
+-  <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="windows" /></condition>
+   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux32" /></condition>
+   <condition property="staging_hardware_folder" value="hardware"><equals arg1="${platform}" arg2="linux64" /></condition>
+ 
+@@ -47,7 +30,6 @@
+     <equals arg1="${platform}" arg2="linux64"/>
+   </condition>
+ 
+-  <condition property="launch4j-download-unpack-target-name" value="launch4j-windows"><os family="windows" /></condition>
+   <property name="launch4j-download-unpack-target-name" value="launch4j-linux"/>
+ 
+   <property name="MACOSX_BUNDLED_JVM" value="${java.home}/../"/>
+@@ -259,246 +241,6 @@
+   </target>
+ 
+   <!-- - - - - - - - -->
+-  <!-- Mac OS X      -->
+-  <!-- - - - - - - - -->
+-  <target name="macosx-clean" depends="subprojects-clean" description="Clean Mac OS X build">
+-    <delete dir="macosx/work" />
+-    <delete dir="macosx/working_dir" />
+-    <delete dir="macosx/working.dmg" />
+-    <delete file="macosx/arduino-*.dmg" />
+-    <delete>
+-      <fileset dir="macosx" includes="arduino-*macosx*.zip"/>
+-    </delete>
+-  </target>
+-
+-  <target name="macosx-checkos" unless="macosx">
+-    <echo>
+-      =======================================================
+-      Arduino for Mac OS X can only be built on Mac OS X.
+-
+-      Bye.
+-      =======================================================
+-    </echo>
+-    <fail message="wrong platform (${os.name})" />
+-  </target>
+-
+-  <target name="macosx-build" if="macosx" depends="revision-check, macosx-checkos, subprojects-build" description="Build Mac OS X version">
+-    <fail unless="MACOSX_BUNDLED_JVM" message="MacOSX requires MACOSX_BUNDLED_JVM property set"/>
+-    <mkdir dir="${staging_folder}/work" />
+-
+-    <antcall target="unzip">
+-      <param name="archive_file" value="${staging_folder}/appbundler-1.0ea-arduino4.jar.zip" />
+-      <param name="archive_url" value="http://downloads.arduino.cc/appbundler-1.0ea-arduino4.jar.zip" />
+-      <param name="final_folder" value="${staging_folder}/appbundler-1.0ea-arduino4" />
+-      <param name="dest_folder" value="${staging_folder}/appbundler-1.0ea-arduino4" />
+-    </antcall>
+-
+-    <taskdef name="bundleapp" classname="com.oracle.appbundler.AppBundlerTask" classpath="${staging_folder}/appbundler-1.0ea-arduino4/appbundler-1.0ea-arduino4.jar"/>
+-
+-    <bundleapp
+-            jvmRequired="1.8"
+-            jrepreferred="true"
+-            outputdirectory="${staging_folder}/work"
+-            name="Arduino"
+-            displayname="Arduino"
+-            executablename="Arduino"
+-            identifier="cc.arduino.Arduino"
+-            shortversion="${version}"
+-            version="${revision}"
+-            signature="Pde1"
+-            icon="macosx/processing.icns"
+-            mainclassname="processing.app.Base"
+-            copyright="Arduino LLC"
+-            applicationCategory="public.app-category.education"
+-            minimumsystemversion="10.7"
+-            highresolutioncapable="true">
+-
+-      <runtime dir="${MACOSX_BUNDLED_JVM}"/>
+-
+-      <arch name="x86_64"/>
+-      <arch name="i386"/>
+-
+-      <classpath refid="runtime.jars"/>
+-
+-      <option value="-Dapple.awt.application.name=Arduino"/>
+-      <option value="-Dapple.laf.useScreenMenuBar=true"/>
+-      <option value="-Dcom.apple.macos.use-file-dialog-packages=true"/>
+-      <option value="-Dcom.apple.smallTabs=true"/>
+-      <option value="-Dcom.apple.macos.useScreenMenuBar=true"/>
+-      <option value="-DAPP_DIR=$APP_ROOT/Contents/Java"/>
+-      <option value="-Djava.ext.dirs=$JVM_RUNTIME/Contents/Home/lib/ext/:$JVM_RUNTIME/Contents/Home/jre/lib/ext/"/>
+-
+-      <!--
+-      <option value="-Dapple.awt.showGrowBox=false"/>
+-      <option value="-Dapple.awt.Antialiasing=false"/>
+-      <option value="-Dapple.awt.TextAntialiasing=true"/>
+-      <option value="-Dcom.apple.hwaccel=true"/>
+-      <option value="-Dapple.awt.graphics.UseQuartz=true"/>
+-      -->
+-
+-      <!--<option value="-Dcom.apple.macos.useScreenMenuBar=true"/>-->
+-
+-      <!-- Workaround since the icon parameter for bundleapp doesn't work -->
+-      <option value="-Xdock:name=Arduino"/>
+-      <option value="-Dcom.apple.mrj.application.apple.menu.about.name=Arduino"/>
+-      <option value="-Dfile.encoding=UTF-8"/>
+-
+-      <option value="-Xms128M"/>
+-      <option value="-Xmx512M"/>
+-      <option value="-splash:$APP_ROOT/Contents/Java/lib/splash.png"/>
+-
+-      <bundledocument extensions="ino,c,cpp,h"
+-                      icon="macosx/pde.icns"
+-                      name="Arduino Source File"
+-                      role="Editor" ispackage="false">
+-      </bundledocument>
+-
+-    </bundleapp>
+-
+-    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}" />
+-
+-    <copy todir="${staging_folder}/work/${staging_hardware_folder}/../">
+-      <fileset dir="shared" includes="lib/**" />
+-      <fileset file="shared/revisions.txt" />
+-    </copy>
+-
+-    <mkdir dir="${staging_folder}/work" />
+-    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}" />
+-
+-    <antcall target="macosx-build-avr-toolchain" />
+-
+-    <antcall target="package-library-index-json-bundle"/>
+-
+-    <antcall target="assemble">
+-      <param name="target.path" value="${staging_folder}/work/${staging_hardware_folder}/.." />
+-    </antcall>
+-
+-    <antcall target="unzip">
+-      <param name="archive_file" value="./libastylej-2.05.1.zip" />
+-      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.1.zip" />
+-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
+-      <param name="dest_folder" value="${staging_folder}" />
+-    </antcall>
+-    <copy file="macosx/libastylej-2.05.1/libastylej.jnilib" todir="macosx/work/${staging_hardware_folder}/../lib/" />
+-    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.jnilib" />
+-    <copy file="macosx/libastylej-2.05.1/libastylej.jnilib" tofile="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
+-    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../lib/libastylej.dylib" />
+-
+-    <delete dir="${staging_folder}/arduino-builder-macosx" includeemptydirs="true"/>
+-    <mkdir dir="${staging_folder}/arduino-builder-macosx"/>
+-    <antcall target="untar">
+-      <param name="archive_file" value="./arduino-builder-macosx-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
+-      <param name="archive_url" value="http://downloads.arduino.cc/tools/arduino-builder-macosx-${ARDUINO-BUILDER-VERSION}.tar.bz2" />
+-      <param name="final_folder" value="${staging_folder}/arduino-builder-macosx/arduino-builder" />
+-      <param name="dest_folder" value="${staging_folder}/arduino-builder-macosx" />
+-    </antcall>
+-    <copy file="${staging_folder}/arduino-builder-macosx/arduino-builder" tofile="macosx/work/${staging_hardware_folder}/../arduino-builder" />
+-    <chmod perm="755" file="macosx/work/${staging_hardware_folder}/../arduino-builder" />
+-    <move file="${staging_folder}/arduino-builder-macosx/tools" tofile="macosx/work/${staging_hardware_folder}/../tools-builder"/>
+-    <copy todir="macosx/work/${staging_hardware_folder}" overwrite="true">
+-      <fileset dir="${staging_folder}/arduino-builder-macosx/hardware" includes="*.txt"/>
+-    </copy>
+-    <delete dir="${staging_folder}/arduino-builder-macosx" includeemptydirs="true"/>
+-
+-  </target>
+-
+-  <!-- Unzip AVR tools -->
+-  <target name="macosx-build-avr-toolchain" unless="light_bundle">
+-    <antcall target="avr-toolchain-bundle">
+-      <param name="unpack_target" value="untar"/>
+-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i386-apple-darwin11.tar.bz2"/>
+-      <param name="gcc_version" value="4.8.1-arduino5"/>
+-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-r2-i386-apple-darwin11.tar.bz2"/>
+-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+-    </antcall>
+-
+-    <chmod perm="+x">
+-      <fileset dir="${staging_folder}/work/${staging_hardware_folder}/tools" includes="**/bin/*"/>
+-      <fileset dir="${staging_folder}/work/${staging_hardware_folder}/tools" includes="**/libexec/gcc/avr/4.8.1/*"/>
+-    </chmod>
+-
+-    <!-- macosx gatekeeper workaround. See https://github.com/arduino/Arduino/issues/3468 -->
+-    <chmod perm="-x">
+-      <fileset dir="${staging_folder}/work/${staging_hardware_folder}/tools" includes="**/bin/avrdude_bin" />
+-    </chmod>
+-  </target>
+-
+-  <target name="macosx-run" depends="build,start"/>
+-
+-  <target name="macosx-start">
+-    <exec executable="macosx/work/Arduino.app/Contents/MacOS/Arduino" spawn="false" failonerror="true"/>
+-  </target>
+-
+-  <!-- - - - - - - - - - - - - - - - -->
+-  <!-- Sign application for MacOSX.  -->
+-  <!-- - - - - - - - - - - - - - - - -->
+-  <target name="macosx-signed-dist" if="macosx" depends="macosx-singed-dist-check, dist"
+-    description="Create a downloadable and signed .zip for the Mac OS X version">
+-    <fail unless="version" message="Please set the property 'version' to correctly sign distribution file" />
+-
+-    <!-- Remove everything from working folder -->
+-    <delete dir="macosx/work/Arduino.app" />
+-
+-    <!-- Unzip unsigned app into working dir -->
+-    <exec executable="unzip" dir="macosx/work" failonerror="true">
+-      <arg line="../arduino-${version}-${platform}.zip" />
+-    </exec>
+-
+-    <!-- Unlock keychain file -->
+-    <exec executable="security" dir="macosx/work" failonerror="true">
+-      <arg line="unlock-keychain -p &quot;${macosx-sign-keychain-pass}&quot; &quot;${macosx-sign-keychain}&quot;" />
+-    </exec>
+-
+-    <!-- Sign app -->
+-    <exec executable="codesign" dir="macosx/work" failonerror="true">
+-      <arg line="--keychain &quot;${macosx-sign-keychain}&quot; --force -s &quot;${macosx-sign-id}&quot; --deep -v Arduino.app/" />
+-    </exec>
+-
+-    <!-- Check for successful signing -->
+-    <exec executable="codesign" dir="macosx/work" failonerror="true">
+-      <arg line="-vvvv Arduino.app/" />
+-    </exec>
+-
+-    <delete file="macosx/arduino-${version}-${platform}.zip" />
+-
+-    <!-- Create signed zip file -->
+-    <exec executable="zip" dir="macosx/work" failonerror="true">
+-      <arg line="-q -r ../arduino-${version}-${platform}-signed.zip ." />
+-    </exec>
+-
+-    <echo>
+-      =======================================================
+-      Arduino for Mac OS X built and signed.
+-
+-      macosx/arduino-${version}-${platform}-signed.zip
+-      =======================================================
+-    </echo>
+-  </target>
+-
+-  <target name="macosx-singed-dist-check">
+-    <fail unless="macosx-sign-keychain" message="Please set the property 'macosx-sign-keychain' to the correct keychain file" />
+-    <fail unless="macosx-sign-keychain-pass" message="Please set the property 'macosx-sign-keychain-pass' with the password to unlock the keychain" />
+-    <fail unless="macosx-sign-id" message="Please set the property 'macosx-sign-id' to the correct cert identifier" />
+-  </target>
+-
+-  <!-- - - - - - - - - - - - - - - - - - - -->
+-  <!-- Build distribution file for MacOSX. -->
+-  <!-- - - - - - - - - - - - - - - - - - - -->
+-  <target name="macosx-dist" if="macosx" depends="build" description="Create a downloadable .zip for the Mac OS X version">
+-    <exec executable="zip" dir="macosx/work" failonerror="true">
+-      <arg line="-q -r ../arduino-${version}-${platform}.zip ." />
+-    </exec>
+-
+-    <echo>
+-      =======================================================
+-      Arduino for Mac OS X was built. Grab the image from
+-
+-      macosx/arduino-${version}-${platform}.zip
+-      =======================================================
+-    </echo>
+-  </target>
+-
+-  <!-- - - - - - - - -->
+   <!-- Linux         -->
+   <!-- - - - - - - - -->
+ 
+@@ -584,14 +326,6 @@
+     </copy>
+     <delete dir="${staging_folder}/arduino-builder-linux32" includeemptydirs="true"/>
+ 
+-    <antcall target="avr-toolchain-bundle">
+-      <param name="unpack_target" value="untar"/>
+-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
+-      <param name="gcc_version" value="4.8.1-arduino5"/>
+-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-pc-linux-gnu.tar.bz2"/>
+-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+-    </antcall>
+-
+     <antcall target="package-library-index-json-bundle"/>
+   </target>
+ 
+@@ -616,14 +350,6 @@
+     </copy>
+     <delete dir="${staging_folder}/arduino-builder-linux64" includeemptydirs="true"/>
+ 
+-    <antcall target="avr-toolchain-bundle">
+-      <param name="unpack_target" value="untar"/>
+-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"/>
+-      <param name="gcc_version" value="4.8.1-arduino5"/>
+-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-x86_64-pc-linux-gnu.tar.bz2"/>
+-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+-    </antcall>
+-
+     <antcall target="package-library-index-json-bundle"/>
+   </target>
+ 
+@@ -736,189 +462,6 @@
+ 	  description="Build .tar.xz of linux version" />
+ 
+   <!-- - - - - - - - -->
+-  <!-- Windows       -->
+-  <!-- - - - - - - - -->
+-
+-  <target name="windows-clean" depends="subprojects-clean"
+-	  description="Clean windows version">
+-    <delete dir="windows/work" />
+-    <delete>
+-      <fileset dir="windows" includes="arduino-*windows*.zip"/>
+-    </delete>
+-  </target>
+-
+-  <target name="windows-checkos" unless="windows">
+-    <echo>
+-      =======================================================
+-      Arduino for Windows can only be built on windows.
+-
+-      Bye.
+-      =======================================================
+-    </echo>
+-
+-    <fail message="wrong platform (${os.name})" />
+-  </target>
+-
+-  <target name="download-launch4j-windows">
+-    <antcall target="unzip-with-ant-task">
+-      <param name="archive_file" value="windows/launch4j-3.7-win32.zip"/>
+-      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.7/launch4j-3.7-win32.zip"/>
+-      <param name="final_folder" value="windows/launcher/launch4j"/>
+-      <param name="dest_folder" value="windows/launcher/"/>
+-    </antcall>
+-  </target>
+-
+-  <target name="download-launch4j-linux">
+-    <antcall target="untar">
+-      <param name="archive_file" value="windows/launch4j-3.7-linux.tgz"/>
+-      <param name="archive_url" value="http://downloads.sourceforge.net/project/launch4j/launch4j-3/3.7/launch4j-3.7-linux.tgz"/>
+-      <param name="final_folder" value="windows/launcher/launch4j"/>
+-      <param name="dest_folder" value="windows/launcher/"/>
+-    </antcall>
+-  </target>
+-
+-  <target name="windows-build"
+-	  depends="revision-check, windows-checkos, subprojects-build"
+-	  description="Build windows version">
+-    <mkdir dir="windows/work" />
+-    <mkdir dir="windows/work/${staging_hardware_folder}" />
+-
+-    <!-- assemble the pde -->
+-    <mkdir dir="windows/work/lib" />
+-    <copy todir="windows/work/lib" flatten="true">
+-      <fileset refid="runtime.jars" />
+-    </copy>
+-
+-    <copy todir="windows/work">
+-      <fileset dir="shared" includes="lib/**" />
+-      <fileset file="shared/revisions.txt" />
+-    </copy>
+-
+-    <fixcrlf file="windows/work/revisions.txt" eol="dos"/>
+-    <fixcrlf file="windows/work/lib/formatter.conf" eol="dos"/>
+-
+-    <copy todir="windows/work">
+-      <fileset dir="windows/dist" includes="*.dll" />
+-    </copy>
+-
+-    <copy todir="windows/work">
+-      <fileset dir="windows/dist" includes="drivers/**" />
+-    </copy>
+-
+-    <antcall target="windows-build-avr-toolchain" />
+-
+-    <antcall target="unzip">
+-      <param name="archive_file" value="./libastylej-2.05.1.zip" />
+-      <param name="archive_url" value="http://downloads.arduino.cc/libastylej-2.05.1.zip" />
+-      <param name="final_folder" value="${staging_folder}/libastylej-2.05.1" />
+-      <param name="dest_folder" value="${staging_folder}" />
+-    </antcall>
+-    <copy file="windows/libastylej-2.05.1/AStylej.dll" todir="windows/work/lib" />
+-    <copy file="windows/msvcp100.dll" todir="windows/work" />
+-    <copy file="windows/msvcr100.dll" todir="windows/work" />
+-
+-    <!-- Copy listComPort.exe tool -->
+-    <copy todir="windows/work/hardware/tools">
+-      <fileset file="windows/listComPorts.exe" />
+-    </copy>
+-    <chmod perm="755">
+-      <fileset file="windows/work/hardware/tools/listComPorts.exe" />
+-    </chmod>
+-
+-    <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
+-    <mkdir dir="${staging_folder}/arduino-builder-windows"/>
+-    <antcall target="unzip-with-ant-task">
+-      <param name="archive_file" value="./arduino-builder-windows-${ARDUINO-BUILDER-VERSION}.zip" />
+-      <param name="archive_url" value="http://downloads.arduino.cc/tools/arduino-builder-windows-${ARDUINO-BUILDER-VERSION}.zip" />
+-      <param name="final_folder" value="${staging_folder}/arduino-builder-windows/arduino-builder.exe" />
+-      <param name="dest_folder" value="${staging_folder}/arduino-builder-windows" />
+-    </antcall>
+-    <copy file="${staging_folder}/arduino-builder-windows/arduino-builder.exe" tofile="windows/work/arduino-builder.exe" />
+-    <chmod perm="755" file="windows/work/arduino-builder.exe" />
+-    <move file="${staging_folder}/arduino-builder-windows/tools" tofile="windows/work/tools-builder"/>
+-    <chmod perm="755" file="windows/work/tools-builder/ctags/5.8-arduino2/ctags.exe" />
+-    <copy todir="windows/work/hardware" overwrite="true">
+-      <fileset dir="${staging_folder}/arduino-builder-windows/hardware" includes="*.txt"/>
+-    </copy>
+-    <delete dir="${staging_folder}/arduino-builder-windows" includeemptydirs="true"/>
+-
+-    <antcall target="assemble">
+-      <param name="target.path" value="windows/work" />
+-    </antcall>
+-
+-    <delete dir="windows/launcher/launch4j"/>
+-    <antcall target="download-${launch4j-download-unpack-target-name}" />
+-
+-    <property name="launch4j.dir" value="windows/launcher/launch4j/" />
+-    <taskdef name="launch4j"
+-	     classname="net.sf.launch4j.ant.Launch4jTask"
+-	     classpath="${launch4j.dir}/launch4j.jar; ${launch4j.dir}/lib/xstream.jar" />
+-
+-    <copy todir="windows/work">
+-      <fileset dir="windows/launcher"
+-	       includes="application.ico, config.xml, config_debug.xml, arduino.l4j.ini"/>
+-    </copy>
+-    <launch4j configFile="windows/work/config.xml" fileVersion="${revision}.0" txtFileVersion="${revision}" productVersion="${revision}.0" txtProductVersion="${revision}"/>
+-    <launch4j configFile="windows/work/config_debug.xml" fileVersion="${revision}.0" txtFileVersion="${revision}" productVersion="${revision}.0" txtProductVersion="${revision}"/>
+-    <delete dir="windows/work" includes="application.ico, config.xml, config_debug.xml" />
+-    <copy file="windows/work/arduino.l4j.ini" tofile="windows/work/arduino_debug.l4j.ini" />
+-
+-    <!-- cygwin requires html, dll, and exe to have the +x flag -->
+-    <chmod perm="755">
+-      <fileset dir="windows/work" includes="**/*.html, **/*.dll, **/*.exe" />
+-    </chmod>
+-
+-    <!-- For JVM within JDK, release file is in parent directory -->
+-    <property file="${WINDOWS_BUNDLED_JVM}/release" prefix="windows"/>
+-    <property file="${WINDOWS_BUNDLED_JVM}/../release" prefix="windows"/>
+-
+-    <fail message="It looks like ${WINDOWS_BUNDLED_JVM} does not contain a Windows JVM">
+-      <condition>
+-        <not>
+-          <equals arg1="${windows.OS_NAME}" arg2="&quot;Windows&quot;"/>
+-        </not>
+-      </condition>
+-    </fail>
+-
+-    <copy todir="${staging_folder}/work/java" includeemptydirs="true" preservelastmodified="true" overwrite="true" failonerror="true">
+-      <fileset dir="${WINDOWS_BUNDLED_JVM}" includes="*/**"/>
+-    </copy>
+-  </target>
+-
+-  <target name="windows-build-avr-toolchain">
+-    <antcall target="avr-toolchain-bundle">
+-      <param name="unpack_target" value="unzip"/>
+-      <param name="gcc_archive_file" value="avr-gcc-4.8.1-arduino5-i686-mingw32.zip"/>
+-      <param name="gcc_version" value="4.8.1-arduino5"/>
+-      <param name="avrdude_archive_file" value="avrdude-6.0.1-arduino5-i686-mingw32.zip"/>
+-      <param name="avrdude_version" value="6.0.1-arduino5"/>
+-    </antcall>
+-
+-    <antcall target="package-library-index-json-bundle"/>
+-  </target>
+-
+-  <target name="windows-run" depends="build,start"/>
+-
+-  <target name="windows-start">
+-    <exec executable="windows/work/arduino.exe" dir="windows/work" spawn="false" failonerror="true"/>
+-  </target>
+-
+-  <target name="windows-dist" depends="build" description="Create .zip files of windows version">
+-    <zip destfile="windows/arduino-${version}-${platform}.zip" level="9">
+-      <zipfileset dir="windows/work" prefix="arduino-${version}"/>
+-    </zip>
+-
+-    <echo>
+-      =======================================================
+-      Arduino for Windows was built. Grab the archive from
+-
+-      windows/arduino-${version}-${platform}.zip
+-      =======================================================
+-    </echo>
+-  </target>
+-
+-
+-  <!-- - - - - - - - -->
+   <!-- Source        -->
+   <!-- - - - - - - - -->
+ 
+@@ -933,8 +476,6 @@
+ 		  prefix="arduino-${version}"
+ 		  excludes="**/*.tgz,
+ 			     **/*.bz2,
+-			     **/build/macosx/,
+-			     **/build/windows/,
+ 			     **/work/,
+ 			     **/.git/,
+ 			     **/*.class"
+@@ -956,35 +497,7 @@
+   <!-- - - - - - - - -->
+ 
+   <target name="clean" description="Perform a spring cleaning"
+-	  depends="linux-clean, windows-clean, macosx-clean, subprojects-clean">
+-  </target>
+-
+-  <target name="avr-toolchain-bundle" unless="light_bundle">
+-    <!-- Unzip AVR tools -->
+-    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc"/>
+-
+-    <antcall target="${unpack_target}">
+-      <param name="archive_file" value="${staging_folder}/${gcc_archive_file}"/>
+-      <param name="archive_url" value="http://downloads.arduino.cc/tools/${gcc_archive_file}"/>
+-      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc/${gcc_version}/"/>
+-      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc/"/>
+-    </antcall>
+-
+-    <mkdir dir="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude"/>
+-
+-    <antcall target="${unpack_target}">
+-      <param name="archive_file" value="${staging_folder}/${avrdude_archive_file}"/>
+-      <param name="archive_url" value="http://downloads.arduino.cc/tools/${avrdude_archive_file}"/>
+-      <param name="final_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/${avrdude_version}"/>
+-      <param name="dest_folder" value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/"/>
+-    </antcall>
+-
+-    <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/gcc/avr" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
+-    <move file="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1" tofile="${staging_folder}/work/${staging_hardware_folder}/tools/avr"/>
+-    <antcall target="macosx-fix-bundled-toolchain-missing-symlinks"/>
+-
+-    <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avrdude=${avrdude_version}${line.separator}"/>
+-    <echo append="true" file="${staging_folder}/work/${staging_hardware_folder}/tools/avr/builtin_tools_versions.txt" message="arduino.avr-gcc=${gcc_version}${line.separator}"/>
++	  depends="linux-clean, subprojects-clean">
+   </target>
+ 
+   <target name="package-library-index-json-bundle">
+@@ -1003,17 +516,6 @@
+     <delete dir="${staging_folder}/work/${staging_hardware_folder}/tmp"/>
+   </target>
+ 
+-  <target name="macosx-fix-bundled-toolchain-missing-symlinks" if="macosx">
+-    <exec executable="mv" failonerror="true">
+-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1/lib/libusb.dylib"/>
+-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
+-    </exec>
+-    <exec executable="mv" failonerror="true">
+-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tmp/avrdude/avrdude-6.0.1/lib/libusb-1.0.dylib"/>
+-      <arg value="${staging_folder}/work/${staging_hardware_folder}/tools/avr/lib/"/>
+-    </exec>
+-  </target>
+-
+   <target name="generate-hourly-build-txt" if="hourly">
+     <echo file="${staging_folder}/work/${staging_hardware_folder}/../lib/hourlyBuild.txt">${BUILD_DATE}</echo>
+   </target>

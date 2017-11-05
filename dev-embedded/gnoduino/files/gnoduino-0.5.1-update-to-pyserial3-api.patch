@@ -1,0 +1,11 @@
+--- a/src/serialio.py	2017-10-21 13:34:41.929265617 -0700
++++ b/src/serialio.py	2017-10-21 13:53:38.073768434 -0700
+@@ -106,7 +106,7 @@
+ 		b.set_text("")
+ 
+ 	def getBaudrates(self):
+-		return [i[0] for i in self.serial.getSupportedBaudrates() if i[1] >= 300 and i[1] <= 1150000]
++		return [i[0] for i in self.serial.baudrate if i[1] >= 300 and i[1] <= 1150000]
+ 	def getConfigSerialPort(self, notify, output):
+ 		if config.cur_serial_port == -1:
+ 			misc.printError(None, output, \
