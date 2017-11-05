@@ -1,0 +1,30 @@
+From dad7514f9ec8a8c5e44d70fcfbbcedeff16f7e13 Mon Sep 17 00:00:00 2001
+From: Luca Barbato <lu_zero@gentoo.org>
+Date: Sun, 30 Oct 2016 17:44:49 +0100
+Subject: [PATCH] xcb: Add all the libraries to the link line explicitly
+
+Avoid an underlink issue on recent distributions.
+
+CC: libav-stable@libav.org
+---
+ configure | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/configure b/configure
+index c7185e3..8c2b4fd 100755
+--- a/configure
++++ b/configure
+@@ -4786,8 +4786,8 @@ if enabled libxcb; then
+             enabled libxcb_xfixes && die "ERROR: libxcb_xfixes not found";
+         } && enable libxcb_xfixes
+ 
+-    add_cflags "$xcb_event_cflags $xcb_shm_cflags $xcb_xfixes_cflags"
+-    add_extralibs "$xcb_event_libs $xcb_shm_libs $xcb_xfixes_libs"
++    add_cflags "$xcb_shape_cflags $xcb_event_cflags $xcb_shm_cflags $xcb_xfixes_cflags"
++    add_extralibs "-lxcb $xcb_shape_libs $xcb_event_libs $xcb_shm_libs $xcb_xfixes_libs"
+ fi
+ 
+ enabled vaapi && require vaapi va/va.h vaInitialize -lva
+-- 
+2.9.2
+
