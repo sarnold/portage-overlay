@@ -1,0 +1,10 @@
+--- ./block/linux-aio.c.orig	2017-10-05 20:31:28.301246599 -0700
++++ ./block/linux-aio.c	2017-10-05 20:33:49.738841124 -0700
+@@ -17,6 +17,7 @@
+ #include "qemu/coroutine.h"
+ 
+ #include <libaio.h>
++#include <sys/eventfd.h>
+ 
+ /*
+  * Queue size (per-device).
