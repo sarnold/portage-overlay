@@ -1,10 +1,37 @@
---- CMakeLists.txt.orig	2016-04-18 10:39:25.561974431 -0700
-+++ CMakeLists.txt	2016-04-18 10:41:48.309784287 -0700
-@@ -29,6 +29,7 @@
- pkg_check_modules(LIBCURL libcurl)
+From 18569c69b24c51d8e1097bef96cfd77ed18604f2 Mon Sep 17 00:00:00 2001
+From: Simon Kagstrom <simon.kagstrom@netinsight.net>
+Date: Fri, 12 Jun 2015 08:48:29 +0200
+Subject: [PATCH] Issue #27: build: Add -pthread option to CXXFLAGS
+
+---
+ CMakeLists.txt        | 2 +-
+ src/qt/CMakeLists.txt | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 24a2841..03ae035 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -29,7 +29,7 @@ pkg_check_modules(GTKSOURCEVIEWMM REQUIRED gtksourceviewmm-3.0)
+ pkg_check_modules(LIBXMLPP REQUIRED libxml++-2.6)
+ pkg_check_modules(LIBCURL REQUIRED libcurl)
  
- set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -D_GLIBCXX_USE_NANOSLEEP -DPACKAGE=emilpro -DPACKAGE_VERSION=1 -pthread")
-+set (CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS "${CMAKE_SHARED_LIBRARY_LINK_CXX_FLAGS} -lpthread")
+-set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -D_GLIBCXX_USE_NANOSLEEP -DPACKAGE=emilpro -DPACKAGE_VERSION=1")
++set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -D_GLIBCXX_USE_NANOSLEEP -DPACKAGE=emilpro -DPACKAGE_VERSION=1 -pthread")
  
  if (HAVE_BFD_MULTIARCH)
- 	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_BFD_MULTIARCH")
+         set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_BFD_MULTIARCH")
+diff --git a/src/qt/CMakeLists.txt b/src/qt/CMakeLists.txt
+index 0da2d07..14d2abb 100644
+--- a/src/qt/CMakeLists.txt
++++ b/src/qt/CMakeLists.txt
+@@ -30,7 +30,7 @@ set (CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}
+ pkg_check_modules(LIBXMLPP REQUIRED libxml++-2.6)
+ pkg_check_modules(LIBCURL REQUIRED libcurl)
+ 
+-set (CMAKE_CXX_FLAGS "-std=c++0x -Wall -D_GLIBCXX_USE_NANOSLEEP -DPACKAGE=emilpro -DPACKAGE_VERSION=1 ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS}")
++set (CMAKE_CXX_FLAGS "-std=c++0x -Wall -D_GLIBCXX_USE_NANOSLEEP -DPACKAGE=emilpro -DPACKAGE_VERSION=1 ${Qt5Widgets_EXECUTABLE_COMPILE_FLAGS} -pthread")
+ LINK_DIRECTORIES(${CMAKE_BINARY_DIR}/install-binutils/lib ${CMAKE_BINARY_DIR}/install-binutils/lib64)
+ 
+ set (CMAKE_BUILD_TYPE debug)
+

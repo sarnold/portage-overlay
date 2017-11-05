@@ -1,0 +1,12 @@
+diff --git a/src/bfd-disassembly.cc b/src/bfd-disassembly.cc
+index b448c73..0783db8 100644
+--- a/src/bfd-disassembly.cc
++++ b/src/bfd-disassembly.cc
+@@ -3,6 +3,7 @@
+ 
+ #include <map>
+ #include <vector>
++#include <cstring>
+ #include <functional>
+ 
+ #include <bfd.h>

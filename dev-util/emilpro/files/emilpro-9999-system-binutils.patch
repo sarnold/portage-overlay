@@ -1,7 +1,8 @@
-diff -Naur emilpro-9999-orig/CMakeLists.txt emilpro-9999/CMakeLists.txt
---- emilpro-9999-orig/CMakeLists.txt	2016-03-29 14:30:48.017340585 -0400
-+++ emilpro-9999/CMakeLists.txt	2016-03-29 14:31:21.335339797 -0400
-@@ -11,7 +11,6 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 8297366..c8cff0f 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -11,7 +11,6 @@ set (CMAKE_MODULE_PATH  ${CMAKE_MODULE_PATH}
  set (BASE_DIR ${CMAKE_CURRENT_SOURCE_DIR})
  
  # Dependencies
@@ -9,7 +10,7 @@ diff -Naur emilpro-9999-orig/CMakeLists.txt emilpro-9999/CMakeLists.txt
  
  find_package (LibElf REQUIRED)
  find_package (LibCapstone)
-@@ -40,10 +39,6 @@
+@@ -40,10 +39,6 @@ pkg_check_modules(LIBXMLPP REQUIRED libxml++-2.6)
  pkg_check_modules(LIBCURL REQUIRED libcurl)
  
  set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++0x -Wall -D_GLIBCXX_USE_NANOSLEEP -DPACKAGE=emilpro -DPACKAGE_VERSION=1 -pthread")
@@ -20,7 +21,7 @@ diff -Naur emilpro-9999-orig/CMakeLists.txt emilpro-9999/CMakeLists.txt
  
  if (HAVE_BFD_MULTIARCH)
  	set (CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DHAVE_BFD_MULTIARCH")
-@@ -120,7 +115,6 @@
+@@ -120,7 +115,6 @@ set_property(SOURCE src/gtk/main.cc APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_BINAR
  set_property(SOURCE src/emilpro.cc APPEND PROPERTY OBJECT_DEPENDS ${CMAKE_BINARY_DIR}/built_in_instruction_models.hh)
  
  include_directories(
@@ -28,19 +29,20 @@ diff -Naur emilpro-9999-orig/CMakeLists.txt emilpro-9999/CMakeLists.txt
  	src/gtk/include/
  	src/include/
  	${CMAKE_BINARY_DIR}
-@@ -143,9 +137,6 @@
+@@ -143,9 +137,6 @@ add_executable (tools/squash-instruction-models
  	tools/squash-instruction-models.cc
  	)
  
--set_property(TARGET emilpro APPEND PROPERTY OBJECT_DEPENDS binutils)
--set_property(TARGET tools/squash-instruction-models APPEND PROPERTY OBJECT_DEPENDS binutils)
+-add_dependencies(emilpro binutils)
+-add_dependencies(tools/squash-instruction-models binutils)
 -
  set (BASE_LIBS
  	${LIBELF_LIBRARIES}
  	opcodes
-diff -Naur emilpro-9999-orig/src/namemangler.cc emilpro-9999/src/namemangler.cc
---- emilpro-9999-orig/src/namemangler.cc	2016-03-29 14:30:48.017340585 -0400
-+++ emilpro-9999/src/namemangler.cc	2016-03-29 14:31:06.397340150 -0400
+diff --git a/src/namemangler.cc b/src/namemangler.cc
+index 117695e..1348054 100644
+--- a/src/namemangler.cc
++++ b/src/namemangler.cc
 @@ -1,7 +1,7 @@
  #include <namemangler.hh>
  

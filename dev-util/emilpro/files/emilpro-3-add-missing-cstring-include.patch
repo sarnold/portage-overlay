@@ -1,0 +1,10 @@
+--- src/bfd-disassembly.cc.orig	2017-10-31 15:27:25.356554286 -0700
++++ src/bfd-disassembly.cc	2017-10-31 15:28:21.388293739 -0700
+@@ -3,6 +3,7 @@
+ 
+ #include <map>
+ #include <vector>
++#include <cstring>
+ 
+ #include <bfd.h>
+ #include <dis-asm.h>
