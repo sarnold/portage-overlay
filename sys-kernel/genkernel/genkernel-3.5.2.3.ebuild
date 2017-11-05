@@ -1,20 +1,19 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2017 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
-# $Id$
 
 # genkernel-9999        -> latest Git branch "master"
 # genkernel-VERSION     -> normal genkernel release
 
 EAPI=5 # approved 2012.09.11, required by all profiles since 2014.03.12
 
-VERSION_BUSYBOX='1.20.2'
-VERSION_DMRAID='1.0.0.rc16-3'
-VERSION_MDADM='3.1.5'
-VERSION_FUSE='2.8.6'
-VERSION_ISCSI='2.0-872'
-VERSION_LVM='2.02.88'
+VERSION_BUSYBOX='1.27.2' # warning, be sure to bump patches
+VERSION_DMRAID='1.0.0.rc16-3' # warning, be sure to bump patches
+VERSION_MDADM='4.0' # warning, be sure to bump patches
+VERSION_FUSE='2.8.6' # warning, be sure to bump patches
+VERSION_ISCSI='2.0-872' # warning, be sure to bump patches
+VERSION_LVM='2.02.173' # warning, be sure to bump patches
 VERSION_UNIONFS_FUSE='0.24'
-VERSION_GPG='1.4.11'
+VERSION_GPG='1.4.22'
 
 RH_HOME="ftp://sourceware.org/pub"
 DM_HOME="https://people.redhat.com/~heinzm/sw/dmraid/src"
@@ -22,7 +21,7 @@ BB_HOME="https://busybox.net/downloads"
 
 COMMON_URI="${DM_HOME}/dmraid-${VERSION_DMRAID}.tar.bz2
 		${DM_HOME}/old/dmraid-${VERSION_DMRAID}.tar.bz2
-		mirror://kernel/linux/utils/raid/mdadm/mdadm-${VERSION_MDADM}.tar.bz2
+		mirror://kernel/linux/utils/raid/mdadm/mdadm-${VERSION_MDADM}.tar.xz
 		${RH_HOME}/lvm2/LVM2.${VERSION_LVM}.tgz
 		${RH_HOME}/lvm2/old/LVM2.${VERSION_LVM}.tgz
 		${BB_HOME}/busybox-${VERSION_BUSYBOX}.tar.bz2
@@ -50,7 +49,6 @@ HOMEPAGE="https://www.gentoo.org"
 
 LICENSE="GPL-2"
 SLOT="0"
-RESTRICT=""
 IUSE="cryptsetup ibm +firmware premount selinux"
 
 DEPEND="sys-fs/e2fsprogs
@@ -61,7 +59,8 @@ DEPEND="sys-fs/e2fsprogs
 RDEPEND="${DEPEND}
 	cryptsetup? ( sys-fs/cryptsetup )
 	app-arch/cpio
-	>=app-misc/pax-utils-0.2.1
+	>=app-misc/pax-utils-1.2.2
+	sys-apps/util-linux[static-libs(+)]
 	firmware? ( sys-kernel/linux-firmware )
 	!<sys-apps/openrc-0.9.9"
 # pax-utils is used for lddtree
@@ -70,7 +69,17 @@ if [[ ${PV} == 9999* ]]; then
 	DEPEND="${DEPEND} app-text/asciidoc"
 fi
 
-RESTRICT="binchecks" # quiet QA warnings about prestripped files in overlay
+OVERLAY_PATH=usr/share/genkernel/overlay
+QA_PRESTRIPPED="
+	${OVERLAY_PATH}/sbin/.*
+	${OVERLAY_PATH}/$(get_libdir)/.*
+	${OVERLAY_PATH}/usr/bin/.*
+"
+#	/usr/share/genkernel/overlay/sbin/fsck*
+#	/usr/share/genkernel/overlay/lib*/ld-linux*
+#	/usr/share/genkernel/overlay/lib*/lib*
+#	/usr/share/genkernel/overlay/usr/bin/uniq
+
 
 pkg_pretend() {
 	if ! use cryptsetup && has_version "sys-kernel/genkernel[crypt]"; then
@@ -140,6 +149,8 @@ src_install() {
 	insinto /etc
 
 	use premount && gen_files
+	elog "QA_PRESTRIPPED list:"
+	elog "${QA_PRESTRIPPED}"
 
 	doins "${S}"/genkernel.conf
 
@@ -170,7 +181,7 @@ pkg_postinst() {
 	elog 'Documentation is available in the genkernel manual page'
 	elog 'as well as the following URL:'
 	echo
-	elog 'https://www.gentoo.org/doc/en/genkernel.xml'
+	elog 'https://wiki.gentoo.org/wiki/Genkernel'
 	echo
 	ewarn "This package is known to not work with reiser4.  If you are running"
 	ewarn "reiser4 and have a problem, do not file a bug.  We know it does not"
@@ -196,7 +207,7 @@ pkg_postinst() {
 gen_files() {
 	# generate overlay files for premount fsck support
 
-	overlay="${ED}usr/share/genkernel/overlay"
+	overlay="${ED}${OVERLAY_PATH}"
 	mkdir -p $overlay/etc
 	mkdir -p $overlay/sbin
 	mkdir -p $overlay/$(get_libdir)
@@ -209,3 +220,4 @@ gen_files() {
 		cat ${FILESDIR}/bin_list | xargs cp -t $overlay/usr/bin
 	popd > /dev/null
 }
+
