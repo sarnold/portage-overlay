@@ -1,0 +1,14 @@
+--- Makefile.in.orig	2017-11-13 18:00:29.751177707 -0800
++++ Makefile.in	2017-11-13 17:52:30.249939086 -0800
+@@ -149,6 +149,11 @@
+ # gnatprfh tool
+ 
+ .PHONY: build-gnatprfh
++
++build-gnatprfh: \
++  PRJ_GNATMAKE_FLAGS := -I${top_srcdir}/compilers/common_files \
++                        -I${top_builddir}/compilers/common_files
++
+ build-gnatprfh: compiler_dir := gnatprfh
+ 
+ #############################
