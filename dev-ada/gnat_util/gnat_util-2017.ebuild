@@ -25,7 +25,8 @@ REQUIRED_USE="^^ ( system-gcc gnat_2017 )"
 
 S="${WORKDIR}"/${MYP}-src
 
-PATCHES=( "${FILESDIR}"/${P}-gentoo.patch )
+PATCHES=( "${FILESDIR}"/${P}-gentoo.patch
+	"${FILESDIR}"/${P}-profile.patch )
 
 src_compile() {
 	if use system-gcc; then

@@ -1,0 +1,10 @@
+--- a/gnat_util.gpr	2017-11-14 09:46:44.229602328 -0800
++++ b/gnat_util.gpr	2017-11-14 09:43:50.324173141 -0800
+@@ -1,5 +1,7 @@
+ project Gnat_Util is
+ 
++   for Runtime ("Ada") use "GNAT_Extended_Ravenscar";
++
+    type Build_Type is ("Debug", "Production");
+    Build : Build_Type := External ("BUILD", "Production");
+ 
