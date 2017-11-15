@@ -1,0 +1,40 @@
+Description: typographic errors detected by Lintian
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: no
+
+--- a/asis/a4g-ee_cache.adb
++++ b/asis/a4g-ee_cache.adb
+@@ -325,9 +325,9 @@
+       Average_Hash_Chain := Average_Hash_Chain / Hash_Entries;
+ 
+       Write_Line ("Number of Hash table entries         :" & Hash_Entries'Img);
+-      Write_Line ("Max hash chain lenght                :" &
++      Write_Line ("Max hash chain length                :" &
+                   Max_Hash_Chain'Img);
+-      Write_Line ("Average hash chain lenght            :" &
++      Write_Line ("Average hash chain length            :" &
+                   Average_Hash_Chain'Img);
+ 
+    end Print_EE_Cache_Summary_Info;
+--- a/tools/gnatpp/gnatpp-output.adb
++++ b/tools/gnatpp/gnatpp-output.adb
+@@ -138,7 +138,7 @@
+       Info (" --pp-off=xxx - Use ""--xxx"" as the comment string to disable");
+       Info ("                pretty printing instead of the default " &
+               """--!pp off""");
+-      Info (" --pp-on=xxx - Use ""--xxx"" as the comment string to reenable");
++      Info (" --pp-on=xxx - Use ""--xxx"" as the comment string to re-enable");
+       Info ("                pretty printing instead of the default " &
+               """--!pp on""");
+ 
+--- a/tools/gnattest/gnattest-harness-generator-gather_data.adb
++++ b/tools/gnattest/gnattest-harness-generator-gather_data.adb
+@@ -668,7 +668,7 @@
+          Report_Std
+            ("gnattest: "                                &
+             Base_Name (To_String (Text_Name (Processed_Unit))) &
+-            " is an unsuported kind of unit.");
++            " is an unsupported kind of unit.");
+          Set_Source_Status (Unit_SF_Name.all, Bad_Content);
+          Apropriate_Source := False;
+ 

@@ -1,0 +1,356 @@
+Description: revert changes requiring latest gcc.
+ Debian currently uses gnat-7.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: not-needed
+
+--- a/asis/a4g-a_elists.ads
++++ b/asis/a4g-a_elists.ads
+@@ -74,7 +74,7 @@
+ --  6. Adjusting documentation: some minor and natural adjustments in the
+ --     documentation has been done
+ 
+-with GNAT.Table;
++with Table;
+ 
+ with Alloc;
+ with Types;       use Types;
+@@ -263,7 +263,7 @@
+       Last  : Elmt_Id;
+    end record;
+ 
+-   package Elists is new GNAT.Table (
++   package Elists is new Table.Table (
+      Table_Component_Type => Elist_Header,
+      Table_Index_Type     => Elist_Id,
+      Table_Low_Bound      => First_Elist_Id,
+@@ -276,7 +276,7 @@
+       Next : Union_Id;
+    end record;
+ 
+-   package Elmts is new GNAT.Table (
++   package Elmts is new Table.Table (
+      Table_Component_Type => Elmt_Item,
+      Table_Index_Type     => Elmt_Id,
+      Table_Low_Bound      => First_Elmt_Id,
+--- a/asis/a4g-asis_tables.ads
++++ b/asis/a4g-asis_tables.ads
+@@ -54,8 +54,7 @@
+      Table_Index_Type     => Asis.ASIS_Natural,
+      Table_Low_Bound      => 1,
+      Table_Initial        => 10,
+-     Table_Increment      => 100,
+-     Table_Name           => "Internal Element_List");
++     Table_Increment      => 100);
+ 
+    --  This table contains ASIS Elements. It is supposed to be used only for
+    --  creating the result Element lists in ASIS structural queries. Note that
+@@ -69,8 +68,7 @@
+      Table_Index_Type     => Asis.ASIS_Natural,
+      Table_Low_Bound      => 1,
+      Table_Initial        => 10,
+-     Table_Increment      => 100,
+-     Table_Name           => "Element_List");
++     Table_Increment      => 100);
+    --  This table contains ASIS Elements. It is supposed to be used for any
+    --  purpose except creating the result Element lists in ASIS structural
+    --  queries.
+@@ -95,8 +93,7 @@
+      Table_Index_Type     => Int,
+      Table_Low_Bound      => 0,
+      Table_Initial        => 10,
+-     Table_Increment      => 100,
+-     Table_Name           => "Node_Trace");
++     Table_Increment      => 100);
+    --  This table is used to create the node trace needed to compare elements
+    --  from nested instances
+ 
+--- a/asis/a4g-contt-ut.adb
++++ b/asis/a4g-contt-ut.adb
+@@ -132,8 +132,7 @@
+      Table_Index_Type     => Unit_Id,
+      Table_Low_Bound      => First_Unit_Id,
+      Table_Initial        => 1000,
+-     Table_Increment      => 100,
+-     Table_Name           => "Top Node Cache");
++     Table_Increment      => 100);
+    --  Used to cache the already computed results of the Top function
+ 
+    package Config_files_Sets is new
+--- a/asis/a4g-contt.ads
++++ b/asis/a4g-contt.ads
+@@ -47,7 +47,7 @@
+ with A4G.A_Elists; use A4G.A_Elists;
+ with A4G.A_Opt;    use A4G.A_Opt;
+ 
+-with GNAT.Table;
++with Table;
+ with GNAT.OS_Lib; use GNAT.OS_Lib;
+ 
+ with Alloc;
+@@ -382,7 +382,7 @@
+    -- NEW STUFF --
+    ---------------
+ 
+-   package A_Name_Chars is new GNAT.Table (
++   package A_Name_Chars is new Table.Table (
+      Table_Component_Type => Character,
+      Table_Index_Type     => Int,
+      Table_Low_Bound      => 0,
+@@ -390,7 +390,7 @@
+      Table_Increment      => Alloc.Name_Chars_Increment,
+      Table_Name           => "A_Name_Chars");
+ 
+-   package Unit_Table is new GNAT.Table (
++   package Unit_Table is new Table.Table (
+      Table_Component_Type => A4G.Unit_Rec.Unit_Record,
+      Table_Index_Type     => A4G.A_Types.Unit_Id,
+      Table_Low_Bound      => A4G.A_Types.First_Unit_Id,
+@@ -398,7 +398,7 @@
+      Table_Increment      => A4G.A_Alloc.Alloc_ASIS_Units_Increment,
+      Table_Name           => "ASIS_Compilation_Units");
+ 
+-   package Tree_Table is new GNAT.Table (
++   package Tree_Table is new Table.Table (
+      Table_Component_Type => A4G.Tree_Rec.Tree_Record,
+      Table_Index_Type     => A4G.A_Types.Tree_Id,
+      Table_Low_Bound      => A4G.A_Types.First_Tree_Id,
+@@ -518,7 +518,7 @@
+    -- Context Table --
+    -------------------
+ 
+-   package Contexts is new GNAT.Table (
++   package Contexts is new Table.Table (
+      Table_Component_Type => Context_Record,
+      Table_Index_Type     => Context_Id,
+      Table_Low_Bound      => First_Context_Id,
+--- a/asis/a4g-defaults.ads
++++ b/asis/a4g-defaults.ads
+@@ -60,8 +60,7 @@
+      Table_Index_Type     => Dir_Id,
+      Table_Low_Bound      => First_Dir_Id,
+      Table_Initial        => 12,
+-     Table_Increment      => 100,
+-     Table_Name           => "A4G.Defaults.Src_Search_Directories");
++     Table_Increment      => 100);
+    --  Table of the names of the directories listed as the value of the
+    --  ADA_INCLUDE_PATH environment variable
+ 
+@@ -70,8 +69,7 @@
+      Table_Index_Type     => Dir_Id,
+      Table_Low_Bound      => First_Dir_Id,
+      Table_Initial        => 12,
+-     Table_Increment      => 100,
+-     Table_Name           => "A4G.Defaults.Lib_Search_Directories");
++     Table_Increment      => 100);
+    --  Table of the names of the directories listed as the value of the
+    --  ADA_OBJECT_PATH environment variable. We are considering object
+    --  and ALI files coming together, so we call them both as library
+@@ -82,8 +80,7 @@
+      Table_Index_Type     => Dir_Id,
+      Table_Low_Bound      => First_Dir_Id,
+      Table_Initial        => 12,
+-     Table_Increment      => 100,
+-     Table_Name           => "A4G.Defaults.Lib_Search_Directories");
++     Table_Increment      => 100);
+    --  Table of the names of the directories for dfault trees. Currently
+    --  contains exactly the same information as the table defined by
+    --  ASIS_Lib_Search_Directories, because we consider, that
+--- a/asis/asis-data_decomposition-set_get.ads
++++ b/asis/asis-data_decomposition-set_get.ads
+@@ -57,8 +57,7 @@
+      Table_Index_Type     => Asis.ASIS_Natural,
+      Table_Low_Bound      => 1,
+      Table_Initial        => 10,
+-     Table_Increment      => 100,
+-     Table_Name           => "Record_Componnet_List");
++     Table_Increment      => 100);
+ 
+    RC_Table : Record_Component_Table.Table_Ptr renames
+       Record_Component_Table.Table;
+--- a/asis/asis-extensions-strings.adb
++++ b/asis/asis-extensions-strings.adb
+@@ -62,8 +62,7 @@
+      Table_Index_Type     => Integer,
+      Table_Low_Bound      => 1,
+      Table_Initial        => 10000,
+-     Table_Increment      => 1000,
+-     Table_Name           => "character container");
++     Table_Increment      => 1000);
+ 
+    Table : Chars.Table_Ptr renames Chars.Table;
+ 
+--- a/tools/tool_utils/asis_ul-compiler_options.adb
++++ b/tools/tool_utils/asis_ul-compiler_options.adb
+@@ -53,16 +53,14 @@
+       Table_Index_Type     => Natural,
+       Table_Low_Bound      => 1,
+       Table_Initial        => 20,
+-      Table_Increment      => 100,
+-      Table_Name           => "Compiler options");
++      Table_Increment      => 100);
+ 
+    package I_Options is new GNAT.Table (
+       Table_Component_Type => String_Access,
+       Table_Index_Type     => Natural,
+       Table_Low_Bound      => 1,
+       Table_Initial        => 20,
+-      Table_Increment      => 100,
+-      Table_Name           => "Source search path options");
++      Table_Increment      => 100);
+ 
+    function Get_Full_Path_To_RTS (RTS : String) return String;
+    --  Assumes that RTS is a short name of run-time (no path information),
+--- a/tools/tool_utils/asis_ul-source_table.adb
++++ b/tools/tool_utils/asis_ul-source_table.adb
+@@ -135,8 +135,7 @@
+      Table_Index_Type     => SF_Id,
+      Table_Low_Bound      => First_SF_Id,
+      Table_Initial        => 100,
+-     Table_Increment      => 100,
+-     Table_Name           => "Source file table");
++     Table_Increment      => 100);
+ 
+    Source_Table : Source_File_Table.Table_Ptr renames Source_File_Table.Table;
+ 
+--- a/tools/tool_utils/asis_ul-global_state.adb
++++ b/tools/tool_utils/asis_ul-global_state.adb
+@@ -138,8 +138,7 @@
+       Table_Index_Type     => Scope_Ind_Type,
+       Table_Low_Bound      => 1,
+       Table_Initial        => 50,
+-      Table_Increment      => 100,
+-      Table_Name           => "scope stack table");
++      Table_Increment      => 100);
+ 
+    procedure Set_Scope_Level (N : GS_Node_Id; Val : Positive);
+    --  Sets Val as a scope level of N
+--- a/tools/gnatcheck/gnatcheck-rules-rule_table.ads
++++ b/tools/gnatcheck/gnatcheck-rules-rule_table.ads
+@@ -107,8 +107,7 @@
+      Table_Index_Type     => Rule_Id,
+      Table_Low_Bound      => First_Rule,
+      Table_Initial        => 100,
+-     Table_Increment      => 100,
+-     Table_Name           => "Rule table");
++     Table_Increment      => 100);
+ 
+    function Get_Rule (Rule_Name : String) return Rule_Id;
+    --  Returns the Id for the rule registered under the name Rule_Name or
+--- a/tools/gnatcheck/gnatcheck-rules-rule_table.adb
++++ b/tools/gnatcheck/gnatcheck-rules-rule_table.adb
+@@ -58,8 +58,7 @@
+      Table_Index_Type     => Natural,
+      Table_Low_Bound      => 1,
+      Table_Initial        => 20,
+-     Table_Increment      => 100,
+-     Table_Name           => "Rule file stack");
++     Table_Increment      => 100);
+    --  Keeps the names of the "nested" rule files, in the order of the
+    --  macro expansion that is currently performed, is used to detect looping
+    --  in macro expansions
+--- a/tools/gnatcheck/gnatcheck-asis_utilities.adb
++++ b/tools/gnatcheck/gnatcheck-asis_utilities.adb
+@@ -79,8 +79,7 @@
+      Table_Index_Type     => Natural,
+      Table_Low_Bound      => 1,
+      Table_Initial        => 100,
+-     Table_Increment      => 100,
+-     Table_Name           => "GNATCHECK Element List");
++     Table_Increment      => 100);
+ 
+    -----------------------
+    -- Local subprograms --
+--- a/tools/gnatcheck/gnatcheck-categories.adb
++++ b/tools/gnatcheck/gnatcheck-categories.adb
+@@ -48,8 +48,7 @@
+      Table_Index_Type     => Category_Id,
+      Table_Low_Bound      => Root_Category_Id,
+      Table_Initial        => 100,
+-     Table_Increment      => 100,
+-     Table_Name           => "Category table");
++     Table_Increment      => 100);
+    --  ????
+ 
+    Categories : All_Categories .Table_Ptr renames All_Categories.Table;
+--- a/tools/gnatcheck/gnatcheck-diagnoses_old.adb
++++ b/tools/gnatcheck/gnatcheck-diagnoses_old.adb
+@@ -124,8 +124,7 @@
+      Table_Index_Type     => Diag_Id,
+      Table_Low_Bound      => First_Diag,
+      Table_Initial        => 10000,
+-     Table_Increment      => 100,
+-     Table_Name           => "diagnoses database");
++     Table_Increment      => 100);
+ 
+    Diag_Table : Rule_Violations.Table_Ptr renames Rule_Violations.Table;
+ 
+@@ -160,8 +159,7 @@
+      Table_Index_Type     => SF_Id,
+      Table_Low_Bound      => First_SF_Id,
+      Table_Initial        => 10000,
+-     Table_Increment      => 100,
+-     Table_Name           => "diagnoses mapping database");
++     Table_Increment      => 100);
+    --  The Mapping Table. We have to use dynamic table here, because we do not
+    --  know in advance how many needed sources may be added during the rule
+    --  checking
+--- a/tools/gnatcheck/gnatcheck-name_dictionary.adb
++++ b/tools/gnatcheck/gnatcheck-name_dictionary.adb
+@@ -62,8 +62,7 @@
+      Table_Index_Type     => Dictionary_Id,
+      Table_Low_Bound      => First_Dictionary_Id,
+      Table_Initial        => 100,
+-     Table_Increment      => 100,
+-     Table_Name           => "GNATCHECK Name Dictionary");
++     Table_Increment      => 100);
+ 
+    package Dictionary_Hash_Table is new
+      ASIS_UL.Misc.String_Hash_Table (Entry_Id => Dictionary_Id);
+--- a/tools/gnatcheck/gnatcheck-rules-custom_1.adb
++++ b/tools/gnatcheck/gnatcheck-rules-custom_1.adb
+@@ -8774,8 +8774,7 @@
+       Table_Index_Type     => Natural,
+       Table_Low_Bound      =>  1,
+       Table_Initial        => 20,
+-      Table_Increment      => 50,
+-      Table_Name           => "OUT parameters");
++      Table_Increment      => 50);
+ 
+    procedure Set_OUT_Parameters (El : Asis.Element);
+    --  Supposing that El is a procedure body declaration, sets in
+--- a/tools/gnatcheck/gnatcheck-traversal_stack.adb
++++ b/tools/gnatcheck/gnatcheck-traversal_stack.adb
+@@ -58,8 +58,7 @@
+       Table_Index_Type     => Elmt_Idx,
+       Table_Low_Bound      => 1,
+       Table_Initial        => 100,
+-      Table_Increment      => 100,
+-      Table_Name           => "Traversal Stack");
++      Table_Increment      => 100);
+ 
+    Stack : Stack_Table.Table_Ptr renames Stack_Table.Table;
+ 
+--- a/tools/gnatelim/gnatelim-closure.adb
++++ b/tools/gnatelim/gnatelim-closure.adb
+@@ -63,8 +63,7 @@
+       Table_Index_Type     => Natural,
+       Table_Low_Bound      => 1,
+       Table_Initial        => 20,
+-      Table_Increment      => 100,
+-      Table_Name           => "Tool options");
++      Table_Increment      => 100);
+    --  Used to compose a list of switches to call a tool
+ 
+    -----------------------
+--- a/tools/gnatmetric/metrics-source_table.adb
++++ b/tools/gnatmetric/metrics-source_table.adb
+@@ -38,8 +38,7 @@
+      Table_Index_Type     => SF_Id,
+      Table_Low_Bound      => First_SF_Id,
+      Table_Initial        => 100,
+-     Table_Increment      => 100,
+-     Table_Name           => "Source file metric table");
++     Table_Increment      => 100);
+ 
+    Source_Metric_Table : Source_File_Metric_Table.Table_Ptr renames
+       Source_File_Metric_Table.Table;

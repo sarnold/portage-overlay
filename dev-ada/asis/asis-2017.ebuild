@@ -27,7 +27,14 @@ REQUIRED_USE="^^ ( gnat_2017 system-gcc )"
 
 S="${WORKDIR}"/${MYP}
 
-PATCHES=( "${FILESDIR}"/${P}-gentoo.patch )
+PATCHES=( "${FILESDIR}"/${P}-gentoo.patch
+	"${FILESDIR}"/gnatgcc.patch
+	"${FILESDIR}"/compilation_options.diff
+	"${FILESDIR}"/link_tools_with_shared_asis.diff
+	"${FILESDIR}"/typos.diff
+	"${FILESDIR}"/xmlada-split.diff
+	"${FILESDIR}"/gcc-7.diff
+)
 
 src_compile() {
 	emake PROCESSORS=$(makeopts_jobs)
@@ -35,6 +42,6 @@ src_compile() {
 }
 
 src_install() {
-	emake prefix="${D}"/usr install
-	emake prefix="${D}"/usr install-tools
+	emake prefix="${ED}"/usr install
+	emake prefix="${ED}"/usr install-tools
 }

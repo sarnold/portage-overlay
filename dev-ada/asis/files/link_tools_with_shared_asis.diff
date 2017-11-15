@@ -1,0 +1,43 @@
+Description: allow to link executables with ASIS shared library
+ Passing -XLIBRARY_KIND=dynamic lets the project build ASIS as a
+ shared library and link the tools with it.
+ .
+ The resulting project is not very readable because I attempt to avoid
+ intrusive changes and ensure that the default behaviour does not change.
+ .
+ It depends on compilation_options.diff via ldflags.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: no
+
+--- a/asis.gpr
++++ b/asis.gpr
+@@ -32,6 +32,17 @@
+    for Library_Dir use "lib";
+    for Library_Kind use "static";
+ 
++   case Common.Asis_Soversion is
++      when "" =>
++         null;
++      when others =>
++         for Library_Kind use "dynamic";
++         for Object_Dir use "obj-dynamic";
++         for Library_Dir use "lib-dynamic";
++         for Library_Version use "libasis.so." & Common.Asis_Soversion;
++         for Leading_Library_Options use Common.Ldflags;
++   end case;
++
+    package Builder renames Common.Builder;
+    package Compiler renames Common.Compiler;
+    package Ide renames Common.Ide;
+--- a/common.gpr
++++ b/common.gpr
+@@ -57,6 +57,9 @@
+ 
+    Processors := External ("PROCESSORS", "1");
+ 
++   Asis_Soversion := External ("soversion", "");
++   --  "" means that we require static linking.
++
+    package Builder is
+       case Bld is
+          when "debug" =>

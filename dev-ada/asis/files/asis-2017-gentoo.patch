@@ -8,7 +8,7 @@
 -		$(GPRBUILD_FLAGS) -XASIS_COMPONENTS=$(COMPS) build_asis.gpr
 +	$(GPRBUILD) -p -j$(PROCESSORS) -XBLD=$(BLD) -XOPSYS=$(OPSYS) -XGNSA=$(GNSA) \
 +		$(GPRBUILD_FLAGS) -XASIS_COMPONENTS=$(COMPS) build_asis.gpr \
-+		-cargs $(ADAFLAGS)
++		-cargs $(ADAFLAGS) -largs $(LDFLAGS)
  
  .PHONY: tools
  tools: setup
@@ -16,7 +16,7 @@
 -		$(GPRBUILD_FLAGS) -XASIS_COMPONENTS=tools build_asis.gpr
 +	$(GPRBUILD) -p -j$(PROCESSORS) -XBLD=$(BLD) -XOPSYS=$(OPSYS) \
 +		$(GPRBUILD_FLAGS) -XASIS_COMPONENTS=tools build_asis.gpr \
-+		-cargs $(ADAFLAGS)
++		-cargs $(ADAFLAGS) -largs $(LDFLAGS)
  
  .PHONY: toolsdev
  toolsdev: setup
@@ -24,7 +24,7 @@
 -		$(GPRBUILD_FLAGS) -XASIS_COMPONENTS=toolsdev build_asis.gpr
 +	$(GPRBUILD) -p -j$(PROCESSORS) -XBLD=$(BLD) -XOPSYS=$(OPSYS) \
 +		$(GPRBUILD_FLAGS) -XASIS_COMPONENTS=toolsdev build_asis.gpr \
-+		-cargs $(ADAFLAGS)
++		-cargs $(ADAFLAGS) -largs $(LDFLAGS)
  
  # The setup target re-generates 4 generated Ada files. We avoid changing the
  # timestamps of unchanged files, to avoid triggering recompilation of
@@ -34,7 +34,7 @@
  setup-snames: gnat/snames.ads-tmpl gnat/snames.adb-tmpl gnat/xutil.ads gnat/xutil.adb
 -	$(GPRBUILD) -p  -XBLD=$(BLD) $(GPRBUILD_FLAGS) gnat/snames.gpr
 +	$(GPRBUILD) -p  -XBLD=$(BLD) $(GPRBUILD_FLAGS) gnat/snames.gpr \
-+		-cargs $(ADAFLAGS)
++		-cargs $(ADAFLAGS) -largs $(LDFLAGS)
  	cd gnat ; ./xsnamest$(exe_ext)
  	if cmp --quiet gnat/snames.ns gnat/snames.ads; then \
  	  echo "snames.ads unchanged"; \
@@ -44,7 +44,7 @@
  	$(GPRBUILD) -p  -XBLD=$(BLD) $(GPRBUILD_FLAGS) \
 -		tools/tool_utils/generate_factory.gpr
 +		tools/tool_utils/generate_factory.gpr \
-+		-cargs $(ADAFLAGS)
++		-cargs $(ADAFLAGS) -largs $(LDFLAGS)
  	cd tools/tool_utils ; \
  		./ada_trees-generate_factory$(exe_ext)
  	if cmp --quiet tools/tool_utils/ada_trees-factory.ns tools/tool_utils/ada_trees-factory.ads; then \

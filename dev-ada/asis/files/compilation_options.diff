@@ -1,0 +1,142 @@
+Description: handle ADAFLAGS LDFLAGS
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: no
+
+--- a/common.gpr
++++ b/common.gpr
+@@ -52,6 +52,9 @@
+      ("-gnatf",
+       "-gnatws");
+ 
++   Adaflags := External_As_List ("ADAFLAGS", " ");
++   Ldflags := External_As_List ("LDFLAGS", " ");
++
+    Processors := External ("PROCESSORS", "1");
+ 
+    package Builder is
+@@ -90,8 +93,17 @@
+          when others =>
+             null;
+       end case;
++
++      --  Put ADAFLAGS last so that they take priority.
++      for Default_Switches ("Ada") use Compiler'Default_switches ("Ada")
++        & Adaflags;
+    end Compiler;
+ 
++   package Linker is
++      --  Put LDFLAGS first so that they affect libraries.
++      for Leading_Switches ("Ada") use Ldflags;
++   end Linker;
++
+    package Binder is
+       for Default_Switches ("ada") use ("-static");
+    end Binder;
+--- a/tools/asistant/asistant.gpr
++++ b/tools/asistant/asistant.gpr
+@@ -52,4 +52,5 @@
+       for Install_Name use "asislib";
+    end Install;
+ 
++   package Linker renames Common.Linker;
+ end Asistant;
+--- a/tools/gnat2xml/boot.gpr
++++ b/tools/gnat2xml/boot.gpr
+@@ -24,4 +24,5 @@
+       for Executable ("gnat2xml-xml2gnat.adb") use "xml2gnat";
+    end Builder;
+ 
++   package Linker renames Common.Linker;
+ end Boot;
+--- a/tools/gnat2xml/gnat2xml.gpr
++++ b/tools/gnat2xml/gnat2xml.gpr
+@@ -58,4 +58,5 @@
+    package Binder renames Common.Binder;
+    package Ide renames Common.Ide;
+ 
++   package Linker renames Common.Linker;
+ end Gnat2xml;
+--- a/tools/gnat2xml/self_rep.gpr
++++ b/tools/gnat2xml/self_rep.gpr
+@@ -19,4 +19,5 @@
+       --  unformatted.
+    end Compiler;
+ 
++   package Linker renames Common.Linker;
+ end Self_Rep;
+--- a/tools/gnat2xml/tokens.gpr
++++ b/tools/gnat2xml/tokens.gpr
+@@ -17,7 +17,8 @@
+ 
+    package Compiler is
+       for Default_Switches ("ada") use
+-        ("-O0", "-g", "-gnata", "-gnatyN", "-gnatyM30000", "-gnatws");
++        ("-O0", "-g", "-gnata", "-gnatyN", "-gnatyM30000", "-gnatws")
++        & Common.Adaflags;
+       --  Need to suppress style warnings, because the code is completely
+       --  unformatted.
+    end Compiler;
+@@ -28,4 +29,5 @@
+       for Executable ("gnat2xml-xml2gnat.adb") use "xml2gnat";
+    end Builder;
+ 
++   package Linker renames Common.Linker;
+ end Tokens;
+--- a/tools/gnatcheck/gnatcheck.gpr
++++ b/tools/gnatcheck/gnatcheck.gpr
+@@ -52,4 +52,5 @@
+    end Install;
+ 
+ 
++   package Linker renames Common.Linker;
+ end Gnatcheck;
+--- a/tools/gnatelim/gnatelim.gpr
++++ b/tools/gnatelim/gnatelim.gpr
+@@ -36,4 +36,5 @@
+    package Compiler renames Common.Compiler;
+    package Binder renames Common.Binder;
+    package Ide renames Common.Ide;
++   package Linker renames Common.Linker;
+ end Gnatelim;
+--- a/tools/gnatmetric/gnatmetric.gpr
++++ b/tools/gnatmetric/gnatmetric.gpr
+@@ -41,4 +41,5 @@
+ 
+    package Ide renames Common.Ide;
+ 
++   package Linker renames Common.Linker;
+ end Gnatmetric;
+--- a/tools/gnatpp/gnatpp.gpr
++++ b/tools/gnatpp/gnatpp.gpr
+@@ -35,4 +35,5 @@
+    package Compiler renames Common.Compiler;
+    package Binder renames Common.Binder;
+    package Ide renames Common.Ide;
++   package Linker renames Common.Linker;
+ end Gnatpp;
+--- a/tools/gnatstub/gnatstub.gpr
++++ b/tools/gnatstub/gnatstub.gpr
+@@ -52,4 +52,5 @@
+       for Install_Name use "asistools";
+    end Install;
+ 
++   package Linker renames Common.Linker;
+ end Gnatstub;
+--- a/tools/gnattest/gnattest.gpr
++++ b/tools/gnattest/gnattest.gpr
+@@ -44,4 +44,5 @@
+ 
+    package Binder renames Common.Binder;
+    package Ide renames Common.Ide;
++   package Linker renames Common.Linker;
+ end GNATtest;
+--- a/tools/tool_utils/generate_factory.gpr
++++ b/tools/tool_utils/generate_factory.gpr
+@@ -38,6 +38,7 @@
+ 
+    package Compiler renames Common.Compiler;
+    package Binder renames Common.Binder;
++   package Linker renames Common.Linker;
+    package Ide renames Common.Ide;
+ 
+ end Generate_Factory;

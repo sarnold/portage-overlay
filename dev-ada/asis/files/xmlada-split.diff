@@ -1,0 +1,50 @@
+Description: only import used xmlada sublibraries in gnat2xml projects
+ Using the compatibility xmlada.gpr would imply an unneeded dependency
+ on libxmlada-schema-dev.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+
+--- a/tools/gnat2xml/boot.gpr
++++ b/tools/gnat2xml/boot.gpr
+@@ -1,6 +1,8 @@
+ --  Project file used by Makefile to build the stage 2 version
+ 
+-with "xmlada.gpr";
++with "xmlada_input";
++with "xmlada_sax";
++with "xmlada_dom";
+ with "../../../../../asis.gpr";
+ --  This gets copied into .../ASIS/tools/gnat2xml/stage/1/generated_ada,
+ --  and we're referring to .../ASIS/asis.gpr.
+--- a/tools/gnat2xml/gnat2xml.gpr
++++ b/tools/gnat2xml/gnat2xml.gpr
+@@ -22,7 +22,9 @@
+ --                                                                          --
+ ------------------------------------------------------------------------------
+ 
+-with "xmlada";
++with "xmlada_input";
++with "xmlada_sax";
++with "xmlada_dom";
+ with "../../asis";
+ with "../../common";
+ 
+--- a/tools/gnat2xml/self_rep.gpr
++++ b/tools/gnat2xml/self_rep.gpr
+@@ -1,4 +1,6 @@
+-with "xmlada";
++with "xmlada_input";
++with "xmlada_sax";
++with "xmlada_dom";
+ with "../../asis";
+ with "../../common";
+ 
+--- a/tools/gnat2xml/tokens.gpr
++++ b/tools/gnat2xml/tokens.gpr
+@@ -1,4 +1,6 @@
+-with "xmlada";
++with "xmlada_input";
++with "xmlada_sax";
++with "xmlada_dom";
+ with "../../../../asis";
+ --  This gets copied into .../ASIS/tools/gnat2xml/stage/tokens,
+ --  and we're referring to .../ASIS/asis.gpr.

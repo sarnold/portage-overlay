@@ -1,0 +1,63 @@
+Description: Explicitly use gnatgcc as the compiler driver rather than gcc.
+ Gcc may not be the default Ada compiler.
+ .
+ The part in asis/a4g-a_opt.ads circumvents #759038.
+ The removed test was redundant in Debian anyway:
+ per policy, libasis-dev depends on the gnat-X it was compiled with.
+ Moreover, another test checks the tree format version.
+Author: Ludovic Brenta <lbrenta@debian.org>
+Author: Nicolas Boulenguez <nicolas@debian.org>
+
+Forwarded: not-needed
+--- a/asis/a4g-gnat_int.adb
++++ b/asis/a4g-gnat_int.adb
+@@ -75,7 +75,7 @@
+ 
+    LT           : String renames ASIS_Line_Terminator;
+    Standard_GCC : constant String_Access :=
+-     GNAT.OS_Lib.Locate_Exec_On_Path ("gcc");
++     GNAT.OS_Lib.Locate_Exec_On_Path ("gcc-" & Gnatvsn.Library_Version);
+ 
+    -----------------
+    -- Create_Tree --
+--- a/asis/a4g-contt.adb
++++ b/asis/a4g-contt.adb
+@@ -59,6 +59,7 @@
+ with A4G.GNSA_Switch;
+ with A4G.Vcheck;        use A4G.Vcheck;
+ 
++with Gnatvsn;
+ with Namet;             use Namet;
+ with Output;            use Output;
+ 
+@@ -1016,7 +1017,8 @@
+                end;
+             end if;
+ 
+-            Tree_Builder := Locate_Exec_On_Path (Target.all & "gcc");
++            Tree_Builder := Locate_Exec_On_Path (Target.all & "gcc-"
++                                                   & Gnatvsn.Library_Version);
+ 
+             if Tree_Builder = null then
+                         Set_Error_Status
+@@ -1045,7 +1047,8 @@
+                              A4G.GNSA_Switch.GNSA_Dir                         &
+                                Directory_Separator & "bin"                    &
+                                Directory_Separator &
+-                             "gcc" & Get_Executable_Suffix.all);
++                               "gcc-" & Gnatvsn.Library_Version
++                               & Get_Executable_Suffix.all);
+                Free (Tree_Builder);
+             else
+                Contexts.Table (Cont).GCC := Tree_Builder;
+--- a/asis/a4g-a_opt.ads
++++ b/asis/a4g-a_opt.ads
+@@ -59,7 +59,7 @@
+    --  treated as an error: ASIS_Failed is raised and the warning message is
+    --  sent to an ASIS Diagnosis string.
+ 
+-   Strong_Version_Check : Boolean := True;
++   Strong_Version_Check : Boolean := False;
+    --  Strong version check means that version strings read from the tree and
+    --  stored in Gnatvsn are compared. Weak check means comparing ASIS version
+    --  numbers. See BA23-002
