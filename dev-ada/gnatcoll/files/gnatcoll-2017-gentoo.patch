@@ -11,7 +11,7 @@
  	@# requires gtkada.gpr, which might not exist on the machine.
  ifeq (${WITH_GTK},yes)
 -	${GPRBUILD} ${GPRBLD_OPTS} -Psrc/gnatcoll_gtk
-+	${GPRBUILD} ${GPRBLD_OPTS} -Psrc/gnatcoll_gtk -cargs ${ADAFLAGS}
++	${GPRBUILD} ${GPRBLD_OPTS} -Psrc/gnatcoll_gtk -cargs ${ADAFLAGS} -largs ${LDFLAGS}
  endif
  
  build_tools/%: build_library_type/%
@@ -121,7 +121,8 @@
  
 --- gnatcoll-gpl-2016-src/testsuite/projects/aggregate_create/c1/c.gpr.old	2017-04-24 18:00:21.652975475 +0200
 +++ gnatcoll-gpl-2016-src/testsuite/projects/aggregate_create/c1/c.gpr	2017-04-24 18:01:23.035983670 +0200
-@@ -15,5 +15,6 @@
+@@ -14,6 +14,7 @@
+    package Compiler is
        for Default_Switches ("ada") use
          ("-g", "-gnatQ", "-O1", "-gnatf", "-gnato", "-gnatwa.Xe", "-gnaty");
 +      for Driver ("c") use External ("GCC", "gcc");
@@ -130,7 +131,8 @@
  end c;
 --- gnatcoll-gpl-2016-src/testsuite/projects/aggregate_create/c2/c.gpr.old	2017-04-24 18:01:28.394896928 +0200
 +++ gnatcoll-gpl-2016-src/testsuite/projects/aggregate_create/c2/c.gpr	2017-04-24 18:01:44.343638682 +0200
-@@ -15,5 +15,6 @@
+@@ -14,6 +14,7 @@
+    package Compiler is
        for Default_Switches ("ada") use
          ("-g", "-gnatQ", "-O1", "-gnatf", "-gnato", "-gnatwa.Xe", "-gnaty");
 +      for Driver ("C") use External ("GCC", "gcc");
