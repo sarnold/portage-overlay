@@ -1,0 +1,23 @@
+--- ./Ada95/src/library.gpr.orig	2014-05-31 18:13:09.000000000 -0700
++++ ./Ada95/src/library.gpr	2017-11-15 22:43:32.483471683 -0800
+@@ -43,7 +43,6 @@
+   for Source_Dirs use (Source_Dir & "/src",
+                        Source_Dir2,
+                        Build_Dir & "/src");
+-  for Library_Options use ("-lncurses", "-lpanel", "-lmenu", "-lform");
+   package Compiler is
+      for Default_Switches ("Ada") use
+        ("-g",
+@@ -51,6 +50,12 @@
+         "-gnatafno",
+         "-gnatVa",   -- All validity checks
+         "-gnatwa");  -- Activate all optional errors
++     for Default_Switches ("C") use ("-I../../include",
++                                     "-L/usr/lib",
++                                     "-lncurses",
++                                     "-lpanel",
++                                     "-lmenu",
++                                     "-lform");
+   end Compiler;
+   for Languages use ("C", "Ada");
+ end Library;

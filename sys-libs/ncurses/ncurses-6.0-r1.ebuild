@@ -42,6 +42,7 @@ PATCHES=(
 	"${FILESDIR}/${PN}-5.9-gcc-5.patch" #545114
 	"${FILESDIR}/${PN}-6.0-ticlib.patch" #557360
 	"${FILESDIR}/${PN}-6.0-ada-lib-suffix.patch"
+	"${FILESDIR}/${PN}-6.0-ada-find-ncurses_cfg.patch"
 )
 
 src_prepare() {
@@ -211,18 +212,8 @@ do_configure() {
 
 	# try enabling Ada support again
 	if use ada ; then
-#		MULTILIB_COMPAT=( abi_x86_{32,64} )
-#		if multilib_is_native_abi ; then
-		#	sed -i -e "s|-g\"|${CFLAGS_x86} --RTS=32\"|" \
-		#		"${S}"/Ada95/src/library.gpr
-		#	export LDMFAGS="${LDFLAGS_x86} ${LDFLAGS}"
-		#	export OPT_FLAGS="-O2"
-		#else
-		#	sed -i -e "s|-g\"|${CFLAGS_amd64}\"|" \
-		#		"${S}"/Ada95/src/library.gpr
-		#fi
+		conf+=( --with-normal )
 		conf+=( --with-ada-sharedlib="libada${target}.so.${PV}" )
-#		fi
 		conf+=(
 			--with-ada-include="${ADA_INCLUDE_PATH}/${target}"
 			--with-ada-objects="${ADA_OBJECTS_PATH}/${target}"
@@ -276,6 +267,11 @@ do_compile() {
 	# in parallel.  This is not really a perf hit since the source
 	# generation is quite small.
 	emake -j1 sources
+	if use ada ; then
+		pushd "${S}" > /dev/null
+		make -C include
+		popd > /dev/null
+	fi
 	# For some reason, sources depends on pc-files which depends on
 	# compiled libraries which depends on sources which ...
 	# Manually delete the pc-files file so the install step will
