@@ -9,8 +9,7 @@ MYP=${PN}-gpl-${PV}
 
 DESCRIPTION="GNAT Component Collection"
 HOMEPAGE="http://libre.adacore.com"
-SRC_URI="http://mirrors.cdn.adacore.com/art/591c45e2c7a447af2deed016
-	-> ${MYP}-src.tar.gz"
+SRC_URI="http://mirrors.cdn.adacore.com/art/591c45e2c7a447af2deed016 -> ${MYP}-src.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
@@ -48,19 +47,25 @@ DEPEND="${RDEPEND}
 
 REQUIRED_USE="${PYTHON_REQUIRED_USE}
 	pygobject? ( gtk )
-	tools? ( static static-pic )
+	tools? ( static )
 	^^ ( system-gcc gnat_2017 )"
 
 S="${WORKDIR}"/${MYP}-src
 
-PATCHES=( "${FILESDIR}"/${P}-gentoo.patch )
+PATCHES=( "${FILESDIR}"/${P}-gentoo.patch
+	"${FILESDIR}"/shebang_for_executable.diff
+	"${FILESDIR}"/library_versions.diff
+	"${FILESDIR}"/visible_make_recipes.diff
+	"${FILESDIR}"/no_inline_gnatcoll-sql-exec-tasking.diff
+	"${FILESDIR}"/python_single_statement_set_default_console.diff
+	"${FILESDIR}"/python3-sphinx.diff )
 
 src_prepare() {
 	eapply -F 3 -- "${PATCHES[@]}"
+	eapply_user
+
 	mv configure.{in,ac} || die
 	eautoreconf
-
-	eapply_user
 }
 
 src_configure() {
@@ -126,18 +131,18 @@ src_compile() {
 
 src_install() {
 	if use shared; then
-		emake prefix="${D}usr" install_library_type/relocatable
+		emake prefix="${ED}usr" install_library_type/relocatable
 	fi
 	if use static-pic; then
-		emake prefix="${D}usr" install_library_type/static-pic
+		emake prefix="${ED}usr" install_library_type/static-pic
 	fi
 	if use static; then
-		emake prefix="${D}usr" install_library_type/static
+		emake prefix="${ED}usr" install_library_type/static
 	fi
 	if use tools; then
-		emake prefix="${D}usr" install_tools/static
+		emake prefix="${ED}usr" install_tools/static
 	fi
-	emake prefix="${D}usr" install_gps_plugin
+	emake prefix="${ED}usr" install_gps_plugin
 	einstalldocs
 }
 

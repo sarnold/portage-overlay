@@ -1,0 +1,136 @@
+Description: allow the user to select each soversion separately
+ The default behaviour should not have changed.I have tried to respect
+ upstream workflow: all External values are read in
+ GnatColl_Shared.gpr.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: no
+
+--- a/gnatcoll_shared.gpr.in
++++ b/gnatcoll_shared.gpr.in
+@@ -30,6 +30,16 @@
+    Postgres_Has_PQprepare : Yes_No :=
+       External ("HAS_PQPREPARE", "@HAS_PQPREPARE@");
+ 
++   Gnatcoll_Gmp_Version      := External ("GNATCOLL_GMP_VERSION",       Version);
++   Gnatcoll_Gtk_Version      := External ("GNATCOLL_GTK_VERSION",       Version);
++   Gnatcoll_Iconv_Version    := External ("GNATCOLL_ICONV_VERSION" ,    Version);
++   Gnatcoll_Postgres_Version := External ("GNATCOLL_POSTGRES_VERSION",  Version);
++   Gnatcoll_Python_Version   := External ("GNATCOLL_PYTHON_VERSION",    Version);
++   Gnatcoll_Readline_Version := External ("GNATCOLL_READLINE_VERSION" , Version);
++   Gnatcoll_Sqlite_Version   := External ("GNATCOLL_SQLITE_VERSION",    Version);
++   Gnatcoll_Xref_Version     := External ("GNATCOLL_XREF_VERSION",      Version);
++   Gnatcoll_Version          := External ("GNATCOLL_VERSION",           Version);
++
+    So_Ext := "@SO_EXT@";
+ 
+    type Library_Type_Type is ("relocatable", "static", "static-pic");
+--- a/src/gnatcoll__nogpr.gpr
++++ b/src/gnatcoll__nogpr.gpr
+@@ -33,7 +33,7 @@
+    for Library_Name    use GnatColl_Shared.Name;
+    for Library_Version use
+       "lib" & Project'Library_Name
+-      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Version;
++      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Gnatcoll_Version;
+ 
+    case GnatColl_Shared.Library_Type is
+       when "relocatable" =>
+--- a/src/gnatcoll__libgpr.gpr
++++ b/src/gnatcoll__libgpr.gpr
+@@ -34,7 +34,7 @@
+    for Library_Name    use GnatColl_Shared.Name;
+    for Library_Version use
+       "lib" & Project'Library_Name
+-      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Version;
++      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Gnatcoll_Version;
+ 
+    case GnatColl_Shared.Library_Type is
+       when "relocatable" =>
+--- a/src/gnatcoll_gmp.gpr
++++ b/src/gnatcoll_gmp.gpr
+@@ -35,7 +35,7 @@
+          for Library_Name    use GnatColl_Shared.Name & "_gmp";
+          for Library_Version use
+             "lib" & Project'Library_Name
+-            & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Version;
++            & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Gnatcoll_Gmp_Version;
+ 
+          case Gnatcoll_Shared.Library_Type is
+             when "relocatable" =>
+--- a/src/gnatcoll_gtk.gpr
++++ b/src/gnatcoll_gtk.gpr
+@@ -39,7 +39,7 @@
+    for Library_Name    use GnatColl_Shared.Name & "_gtk";
+    for Library_Version use
+       "lib" & Project'Library_Name
+-      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Version;
++      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Gnatcoll_Gtk_Version;
+ 
+    for Languages use ("Ada", "C");
+ 
+--- a/src/gnatcoll_iconv.gpr
++++ b/src/gnatcoll_iconv.gpr
+@@ -41,7 +41,7 @@
+         for Library_Name    use GnatColl_Shared.Name & "_" & Name;
+         for Library_Version use
+            "lib" & Project'Library_Name
+-           & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Version;
++           & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Gnatcoll_Iconv_Version;
+ 
+         for Source_Dirs use ("iconv");
+ 
+--- a/src/gnatcoll_postgres.gpr
++++ b/src/gnatcoll_postgres.gpr
+@@ -34,7 +34,7 @@
+    for Library_Name    use GnatColl_Shared.Name & "_postgres";
+    for Library_Version use
+       "lib" & Project'Library_Name
+-      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Version;
++      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Gnatcoll_Postgres_Version;
+ 
+    case GnatColl_Shared.Postgres is
+       when "no" =>
+--- a/src/gnatcoll_python.gpr
++++ b/src/gnatcoll_python.gpr
+@@ -31,7 +31,7 @@
+    for Library_Name    use GnatColl_Shared.Name & "_python";
+    for Library_Version use
+       "lib" & Project'Library_Name
+-      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Version;
++      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Gnatcoll_Python_Version;
+ 
+    case GnatColl_Shared.Python is
+       when "yes" =>
+--- a/src/gnatcoll_readline.gpr
++++ b/src/gnatcoll_readline.gpr
+@@ -25,7 +25,7 @@
+    for Library_Name    use GnatColl_Shared.Name & "_readline";
+    for Library_Version use
+       "lib" & Project'Library_Name
+-      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Version;
++      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Gnatcoll_Readline_Version;
+ 
+    package Builder renames GnatColl_Shared.Builder;
+    package Compiler renames GnatColl_Shared.Compiler;
+--- a/src/gnatcoll_sqlite.gpr
++++ b/src/gnatcoll_sqlite.gpr
+@@ -34,7 +34,7 @@
+    for Library_Name    use GnatColl_Shared.Name & "_sqlite";
+    for Library_Version use
+       "lib" & Project'Library_Name
+-      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Version;
++      & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Gnatcoll_Sqlite_Version;
+ 
+    Thread_Lib := ();
+ 
+--- a/src/gnatcoll_xref.gpr
++++ b/src/gnatcoll_xref.gpr
+@@ -44,7 +44,7 @@
+         for Library_Name    use GnatColl_Shared.Name & "_" & Name;
+         for Library_Version use
+            "lib" & Project'Library_Name
+-           & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Version;
++           & GnatColl_Shared.So_Ext & "." & GnatColl_Shared.Gnatcoll_Xref_Version;
+         for Leading_Library_Options use GnatColl_Shared.Ldflags;
+    end case;
+ 

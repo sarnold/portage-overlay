@@ -1,0 +1,14 @@
+Description: add shebang for an executable script
+ The executable shell script examples/library/build.sh is run by
+ testsuite/sql/__init__.py, but may be run manually as an example.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: no
+
+--- a/examples/library/build.sh
++++ b/examples/library/build.sh
+@@ -1,3 +1,5 @@
++#!/bin/sh
++
+ cd obj
+ 
+ # Create the database from the schema (remove the old one, just in case)

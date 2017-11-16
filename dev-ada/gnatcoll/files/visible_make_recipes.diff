@@ -1,0 +1,52 @@
+Description: avoid hiding Make recipes
+ Quite useful in this labyrinthic build system.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Forwarded: not-needed
+
+--- a/Makefile
++++ b/Makefile
+@@ -104,7 +104,8 @@
+ # requires to have already built GNATCOLL once before).
+ 
+ generate_sources:
+-	-@if [ -f src/obj/gnatcoll_db2ada${EXE} ]; then \
++	-if [ -f src/obj/gnatcoll_db2ada${EXE} ]; then \
++	   echo "Regenerating files in src/generated/."; \
+ 	   src/obj/gnatcoll_db2ada${EXE} -dbtype=sqlite -dbname=:memory: \
+ 		-output src/xref.generated \
+ 		-dbmodel=src/dbschema.txt \
+@@ -141,13 +142,13 @@
+ test_names=
+ 
+ local_install: force
+-	@${MAKE} prefix=${shell pwd}/local_install install >/dev/null
++	${MAKE} prefix=${shell pwd}/local_install install >/dev/null
+ 
+ test: sqlite3_shell local_install
+-	@${MAKE} test_names="${test_names}" -C testsuite
++	${MAKE} test_names="${test_names}" -C testsuite
+ 
+ test_verbose: local_install
+-	@${MAKE} test_names="${test_names}" -C testsuite verbose
++	${MAKE} test_names="${test_names}" -C testsuite verbose
+ 
+ #######################################################################
+ #  clean
+--- a/testsuite/Makefile
++++ b/testsuite/Makefile
+@@ -9,12 +9,12 @@
+ test_names=
+ 
+ test:
+-	@python ./run.py ${test_names}
++	python ./run.py ${test_names}
+ 
+ test_local:
+-	@python ./run.py --local ${test_names}
++	python ./run.py --local ${test_names}
+ 
+ verbose:
+-	@python ./run.py -v -v ${test_names}
++	python ./run.py -v -v ${test_names}
+ 
+ clean:

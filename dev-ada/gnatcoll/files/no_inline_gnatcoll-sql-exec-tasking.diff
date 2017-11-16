@@ -1,0 +1,34 @@
+Description: Link gnatcoll with pthread to circumvent #760211.
+ On armel armhf hurd-i386 kfreebsd-amd64 s390x, inlining of
+ Ada.Task_Attributes creates a direct dependency to the
+ pthread_getspecific symbol.
+ With --as-needed, -lpthread has no other effect than fixing the link
+ stage for buggy architectures.
+Author: Nicolas Boulenguez <nicolas@debian.org>
+Bug-Debian: https://bugs.debian.org/760211
+Forwarded: no
+
+--- a/src/gnatcoll__nogpr.gpr
++++ b/src/gnatcoll__nogpr.gpr
+@@ -38,7 +38,8 @@
+    case GnatColl_Shared.Library_Type is
+       when "relocatable" =>
+          for Leading_Library_Options use GnatColl_Shared.Ldflags;
+-         for Library_Options use GnatColl_Shared.Rss_Libs;
++         --  Only used on some arch because LDFLAGS contains --as-needed.
++         for Library_Options use GnatColl_Shared.Rss_Libs & ("-lpthread");
+       when others =>
+          null;
+    end case;
+--- a/src/gnatcoll__libgpr.gpr
++++ b/src/gnatcoll__libgpr.gpr
+@@ -39,7 +39,8 @@
+    case GnatColl_Shared.Library_Type is
+       when "relocatable" =>
+          for Leading_Library_Options use GnatColl_Shared.Ldflags;
+-         for Library_Options use GnatColl_Shared.Rss_Libs;
++         --  Only used on some arch because LDFLAGS contains --as-needed.
++         for Library_Options use GnatColl_Shared.Rss_Libs & ("-lpthread");
+       when others =>
+          null;
+    end case;
