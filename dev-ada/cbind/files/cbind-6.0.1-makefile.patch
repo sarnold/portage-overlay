@@ -1,0 +1,52 @@
+--- Makefile.orig	2017-11-15 23:20:40.398251912 -0800
++++ Makefile	2017-11-15 23:32:30.343284373 -0800
+@@ -1,8 +1,9 @@
+ VERSION		  = 6
+ 
+-CFLAGS= -g -DPUBLIC
++CFLAGS	  = -g -DPUBLIC
+ LIBS		  =
+-LINKER		  = cc
++LINKER		  = $(CC)
++ARCHIVER	  = $(AR)
+ 
+ MAKEFILE= Makefile
+ 
+@@ -90,11 +91,10 @@
+ make::	cbfe
+ 
+ install: all
+-		- rm -f $(PREFIX)/bin/cbpp $(PREFIX)/bin/cbfe $(PREFIX)/bin/cbind $(PREFIX)/bin/cdep
+-		- install -D cbpp $(PREFIX)/bin/cbpp
+-		- install -D cbfe $(PREFIX)/bin/cbfe
+-		- install -D cbind $(PREFIX)/bin/cbind
+-		- install -D cdep $(PREFIX)/bin/cdep
++		- install -D cbpp $(DESTDIR)$(PREFIX)/bin/cbpp
++		- install -D cbfe $(DESTDIR)$(PREFIX)/bin/cbfe
++		- install -D cbind $(DESTDIR)$(PREFIX)/bin/cbind
++		- install -D cdep $(DESTDIR)$(PREFIX)/bin/cdep
+ 
+ 
+ 
+@@ -117,7 +117,7 @@
+ 
+ libcbind.a:	$(COMMON_OBJS)
+ 		@ rm -f $@
+-		ar rc $@ $(COMMON_OBJS)
++		$(ARCHIVER) rc $@ $(COMMON_OBJS)
+ 
+ clean::;	- rm -f cbind cbfe cbpp cdep
+ clean::;	- rm -f *.o
+@@ -134,9 +134,9 @@
+ 		mkmf -f $(MAKEFILE)
+ 
+ backup:
+-		- rm -f $(PREFIX)/save/newc2a.tar.Z
+-		tar -chf $(PREFIX)/save/newc2a.tar *.1 *.c *.h *.y *.prf $(SCRIPTS) DOCS README makefile
+-		compress $(PREFIX)/save/newc2a.tar
++		- rm -f $(DESTDIR)$(PREFIX)/save/newc2a.tar.Z
++		tar -chf $(DESTDIR)$(PREFIX)/save/newc2a.tar *.1 *.c *.h *.y *.prf $(SCRIPTS) DOCS README makefile
++		compress $(DESTDIR)$(PREFIX)/save/newc2a.tar
+ 
+ touch:;	touch $(GENED_SRC)
+ 
