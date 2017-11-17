@@ -3,7 +3,7 @@
 
 EAPI=6
 PYTHON_COMPAT=( python2_7 )
-inherit multilib multiprocessing autotools python-single-r1
+inherit flag-o-matic multilib multiprocessing autotools python-single-r1
 
 MYP=${PN}-gpl-${PV}
 
@@ -69,6 +69,10 @@ src_prepare() {
 }
 
 src_configure() {
+	# we need to filter out -flto here and in gpfbuild.  building both
+	# gprbuild and gnatcoll without -flto makes gnatcoll happy for now...
+	is-flagq -flto* && filter-flags -flto* -fuse-linker-plugin -Wl,-z,defs
+
 	if use system-gcc; then
 		GCC_PV=$(gcc -dumpversion)
 	else
