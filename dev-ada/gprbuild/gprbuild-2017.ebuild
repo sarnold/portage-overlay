@@ -3,7 +3,7 @@
 
 EAPI=6
 
-inherit toolchain-funcs multiprocessing
+inherit flag-o-matic toolchain-funcs multiprocessing
 
 MYP=${PN}-gpl-${PV}
 
@@ -34,16 +34,21 @@ REQUIRED_USE="bootstrap? ( !shared static !static-pic )
 PATCHES=( "${FILESDIR}"/${P}-gentoo.patch )
 
 pkg_setup() {
-	local gpr_bin=/usr/bin/gprbuild
-	if (! [[ -e ${gpr_bin} ]] || use bootstrap) ; then
+	local gpr_bin=$(which gprbuild)
+
+	if use bootstrap && use static ; then
+		elog "Bootstrapping gprbuild and xmlada..."
+	elif ! [[ -e ${gpr_bin} ]] ; then
+		echo
 		ewarn "Missing gprbuild binary !!"
 		ewarn "Plese emerge with bootstrap and static first."
-		die "Cannot bootstrap..."
+		die
+		echo
 	fi
 }
 
 src_prepare() {
-	if use gnat_2017; then
+	if use system-gcc ; then
 		GCC_PV=$(gcc -dumpversion)
 	else
 		GCC_PV=6.4.0
@@ -53,6 +58,15 @@ src_prepare() {
 }
 
 src_configure() {
+	# we need to check for lto due to gnatcoll; note all other adacore
+	# tools are happy with -flto except gnatcoll (needs a build fix)
+	# so building gprbuild without -flto makes gnatcoll happy for now...
+	if is-flagq -flto* ; then
+		ewarn "you cannot use -flto or gnatcoll will not link tools."
+		ewarn "filtering out -flto flags..."
+		filter-flags -flto* -fuse-linker-plugin
+	fi
+
 	emake prefix="${D}"usr setup
 }
 
@@ -88,8 +102,8 @@ src_compile() {
 		for kind in static static-pic; do
 			if use ${kind}; then
 				gprbuild -p -m -j$(makeopts_jobs) -XBUILD=production -v \
-					-XLIBRARY_TYPE=${kind} -XXMLADA_BUILD=${kind} gpr/gpr.gpr \
-					-cargs:C ${CFLAGS} -cargs:Ada ${ADAFLAGS} || die
+					-XLIBRARY_TYPE=${kind} -XXMLADA_BUILD=${kind} \
+					gpr/gpr.gpr -cargs:C ${CFLAGS} -cargs:Ada ${ADAFLAGS} || die
 			fi
 		done
 	fi
