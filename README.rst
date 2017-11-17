@@ -21,7 +21,7 @@ Latest (sort of)
 ================
 
 Other than Ada tools for that shiny new FOSS compiler (and more LTO fixes) the
-latest new-ish "thing" are the IMX etnaviv drivers, plus DRM support and the
+latest new-ish "thing" are the iMX etnaviv drivers, plus DRM support and the
 xf86-video-armada drivers.  Yay for FOSS GPU acceleration and an actual X
 desktop on most iMX6 machines (eg, wandboard, udoo, nitrogen6x, and cubox).
 
