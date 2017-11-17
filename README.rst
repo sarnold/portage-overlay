@@ -24,7 +24,10 @@ Other than Ada tools for that shiny new FOSS compiler (and more LTO fixes) the
 latest new-ish "thing" are the iMX etnaviv drivers, plus DRM support and the
 xf86-video-armada drivers.  Yay for FOSS GPU acceleration and an actual X
 desktop on most iMX6 machines (eg, wandboard, udoo, nitrogen6x, and cubox).
+Most of the new ARM goodies are in the `Gentoo ARM overlay`_.
 
 Also, check out the new `Gentoo wiki page`_ for the amr64 espressobin board.
 
+
+.. _Gentoo wiki page: https://github.com/sarnold/arm
 .. _Gentoo wiki page: https://wiki.gentoo.org/wiki/ESPRESSOBin
