@@ -9,14 +9,14 @@ MYP=${PN}-gpl-${PV}
 
 DESCRIPTION="Provides access to GNAT compiler internals for AdaCore utilities"
 HOMEPAGE="http://libre.adacore.com"
-SRC_URI="http://mirrors.cdn.adacore.com/art/591c45e2c7a447af2deed037 -> ${MYP}-src.tar.gz"
+SRC_URI="http://mirrors.cdn.adacore.com/art/57399637c7a447658e0affa6 -> ${MYP}-src.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
-IUSE="+system-gcc gnat_2017 +shared static static-pic"
+IUSE="system-gcc gnat_2017 +shared static static-pic"
 
-RDEPEND="system-gcc? ( sys-devel/gcc:7.2.0[ada] )
+RDEPEND="system-gcc? ( sys-devel/gcc:6.4.0[ada] )
 	gnat_2017? ( dev-lang/gnat-gpl:6.3.0 )"
 DEPEND="${RDEPEND}
 	dev-ada/gprbuild[system-gcc?,gnat_2017?]"
@@ -26,14 +26,8 @@ S="${WORKDIR}"/${MYP}-src
 
 PATCHES=( "${FILESDIR}"/${P}-gentoo.patch )
 
-src_prepare() {
-	use system-gcc && eapply "${FILESDIR}"/${P}-remove-missing-EDF-profile.patch
-
-	default_src_prepare
-}
-
 src_compile() {
-	if use system-gcc; then
+	if use system-gcc ; then
 		GCC_PV=$(gcc -dumpversion)
 		# build uses -Wl,-r for partial linking
 		append-ldflags -no-pie
