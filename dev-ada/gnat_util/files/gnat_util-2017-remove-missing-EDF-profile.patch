@@ -1,0 +1,17 @@
+--- a/targparm.adb	2017-11-16 17:31:59.533755134 -0800
++++ b/targparm.adb	2017-11-16 17:32:46.068508804 -0800
+@@ -336,14 +336,6 @@
+             Opt.Locking_Policy          := 'C';
+             goto Line_Loop_Continue;
+ 
+-         --  Test for pragma Profile (GNAT_Ravenscar_EDF);
+-
+-         elsif Looking_At_Skip ("pragma Profile (GNAT_Ravenscar_EDF);") then
+-            Set_Profile_Restrictions (GNAT_Ravenscar_EDF);
+-            Opt.Task_Dispatching_Policy := 'E';
+-            Opt.Locking_Policy          := 'C';
+-            goto Line_Loop_Continue;
+-
+          --  Test for pragma Profile (Restricted);
+ 
+          elsif Looking_At_Skip ("pragma Profile (Restricted);") then

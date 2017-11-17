@@ -3,21 +3,20 @@
 
 EAPI=6
 
-inherit toolchain-funcs multiprocessing
+inherit flag-o-matic toolchain-funcs multiprocessing
 
 MYP=${PN}-gpl-${PV}
 
 DESCRIPTION="Provides access to GNAT compiler internals for AdaCore utilities"
 HOMEPAGE="http://libre.adacore.com"
-SRC_URI="http://mirrors.cdn.adacore.com/art/591c45e2c7a447af2deed037
-	-> ${MYP}-src.tar.gz"
+SRC_URI="http://mirrors.cdn.adacore.com/art/591c45e2c7a447af2deed037 -> ${MYP}-src.tar.gz"
 
 LICENSE="GPL-3"
 SLOT="0"
 KEYWORDS="~amd64"
 IUSE="+system-gcc gnat_2017 +shared static static-pic"
 
-RDEPEND="system-gcc? ( >=sys-devel/gcc-6.3.0[ada] )
+RDEPEND="system-gcc? ( >=sys-devel/gcc-7.2.0[ada] )
 	gnat_2017? ( dev-lang/gnat-gpl:6.3.0 )"
 DEPEND="${RDEPEND}
 	dev-ada/gprbuild[system-gcc?,gnat_2017?]"
@@ -28,7 +27,7 @@ S="${WORKDIR}"/${MYP}-src
 PATCHES=( "${FILESDIR}"/${P}-gentoo.patch )
 
 src_prepare() {
-	use system-gcc && eapply "${FILESDIR}"/${P}-profile.patch
+	use system-gcc && eapply "${FILESDIR}"/${P}-remove-missing-EDF-profile.patch
 
 	default_src_prepare
 }
@@ -36,13 +35,20 @@ src_prepare() {
 src_compile() {
 	if use system-gcc; then
 		GCC_PV=$(gcc -dumpversion)
+		# build uses -Wl,-r for partial linking
+		append-ldflags -no-pie
+		tc-export CC LD AS AR NM RANLIB STRIP OBJCOPY
+		GCC=${CC}
+		GNATMAKE=$(which gnatmake)
 	else
 		GCC_PV=6.3.0
+		GCC=${CHOST}-gcc-${GCC_PV}
+		GNATMAKE=${CHOST}-gnatmake-${GCC_PV}
 	fi
-	GCC=${CHOST}-gcc-${GCC_PV}
-	GNATMAKE=${CHOST}-gnatmake-${GCC_PV}
+
 	emake GNATMAKE="${GNATMAKE} ${ADAFLAGS}" \
 		BUILDER="gprbuild -j$(makeopts_jobs)" generate_sources
+
 	for kind in shared static static-pic; do
 		if use ${kind}; then
 			emake CC="${GCC}" BUILDER="gprbuild -v -j$(makeopts_jobs)" \
