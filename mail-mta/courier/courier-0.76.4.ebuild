@@ -71,6 +71,8 @@ src_configure() {
 	local myconf
 	myconf=""
 
+	use gnutls && export ac_cv_path_CERTTOOL=/usr/bin/certtool
+
 	use ldap && myconf="${myconf} --with-ldapconfig=/etc/courier/maildropldap.conf"
 
 	econf ${myconf} \
@@ -254,7 +256,7 @@ pkg_config() {
 	mailhost="$(hostname)"
 	export mailhost
 
-	domainname="$(domainname)"
+	domainname="$(hostname -d)"
 	if [ "x$domainname" = "x(none)" ] ; then
 		domainname="$(echo ${mailhost} | sed -e "s/[^\.]*\.\(.*\)/\1/")"
 	fi
