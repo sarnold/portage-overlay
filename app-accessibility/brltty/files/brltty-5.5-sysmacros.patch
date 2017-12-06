@@ -1,0 +1,10 @@
+--- a/Programs/brlapi_client.c
++++ b/Programs/brlapi_client.c
+@@ -73,6 +73,7 @@
+ #include <linux/tty.h>
+ #include <linux/vt.h>
+ #define MAXIMUM_VIRTUAL_CONSOLE MAX_NR_CONSOLES
++#include <sys/sysmacros.h>
+ #endif /* linux */
+ 
+ #ifdef __OpenBSD__
