@@ -155,15 +155,18 @@ src_install() {
 		java-pkg_dojar Bindings/Java/brlapi.jar
 	fi
 
+	systemd_newunit Autostart/Systemd/brltty@.service brltty.service
+	systemd_dotmpfilesd "${FILESDIR}/${PN}.tmpfiles.conf"
+	dosbin Autostart/Systemd/brltty-systemd-wrapper
+
+	udev_newrules Autostart/Udev/rules 70-brltty.rules
+	newinitd "${FILESDIR}"/brltty.rc brltty
+	insinto "$(get_udevdir)"
+	doins Autostart/Udev/brltty-wrapper
+	fperms 0755 "$(get_udevdir)"/brltty-wrapper
+
 	insinto /etc
 	doins Documents/brltty.conf
-	udev_newrules Autostart/Udev/rules 70-brltty.rules
-#	into $(get_udevdir)
-#	dobin Autostart/Udev/brltty-wrapper
-	newinitd "${FILESDIR}"/brltty.rc brltty
-	systemd_dounit Autostart/Systemd/brltty@.service
-#	dosbin Autostart/Systemd/brltty-systemd-wrapper
-	systemd_dotmpfilesd "${FILESDIR}/${PN}.tmpfiles.conf"
 
 	libdir="$(get_libdir)"
 	mkdir -p "${D}"/usr/${libdir}/
