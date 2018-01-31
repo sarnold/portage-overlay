@@ -19,7 +19,7 @@ DEPEND="
 	>=net-libs/courier-unicode-1.4
 	!gnutls? ( !libressl? ( dev-libs/openssl:0= ) )
 	libressl? ( dev-libs/libressl:= )
-	gnutls? ( net-libs/gnutls )
+	gnutls? ( net-libs/gnutls[tools] )
 	>=sys-libs/gdbm-1.8.0
 	dev-libs/libpcre
 	app-misc/mime-types
