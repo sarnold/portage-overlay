@@ -61,7 +61,7 @@ src_prepare() {
 	##sntp/harden/linux:NTP_HARD_CFLAGS="-pie -fPIE -fPIC -fstack-protector-all -O1"
 	if use elibc_musl ; then
 		sed -i -e "s|-fstack-protector-all -O1|-O2|" \
-			-i '/^NTP_HARD_CPPFLAGS="-D_FORTIFY_SOURCE=2"/d' \
+			-e "s|-D_FORTIFY_SOURCE=2||" \
 			sntp/harden/linux || die "sed failed!"
 	fi
 }
