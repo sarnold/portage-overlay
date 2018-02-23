@@ -14,7 +14,7 @@ SRC_URI="http://www.eecis.udel.edu/~ntp/ntp_spool/ntp4/ntp-${PV:0:3}/${MY_P}.tar
 LICENSE="HPND BSD ISC"
 SLOT="0"
 KEYWORDS="alpha amd64 arm ~arm64 hppa ia64 ~m68k ~mips ppc ppc64 ~s390 ~sh sparc x86 ~amd64-fbsd ~x86-fbsd ~amd64-linux ~x86-linux ~m68k-mint"
-IUSE="caps debug hardened ipv6 libressl openntpd parse-clocks readline samba selinux snmp ssl +threads vim-syntax zeroconf"
+IUSE="caps debug elibc_musl ipv6 libressl openntpd parse-clocks readline samba selinux snmp ssl +threads vim-syntax zeroconf"
 
 CDEPEND="readline? ( >=sys-libs/readline-4.1:0= )
 	>=dev-libs/libevent-2.0.9:=[threads?]
@@ -59,6 +59,10 @@ src_prepare() {
 
 	# needs musl/32bit fixes, see:
 	##sntp/harden/linux:NTP_HARD_CFLAGS="-pie -fPIE -fPIC -fstack-protector-all -O1"
+	if use elibc_musl ; then
+		sed -i -e "s|-fstack-protector-all -O1|-O2|" \
+			sntp/harden/linux || die "sed failed!"
+	fi
 }
 
 src_configure() {
