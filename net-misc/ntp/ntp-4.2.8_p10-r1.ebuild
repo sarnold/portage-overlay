@@ -61,13 +61,12 @@ src_prepare() {
 	##sntp/harden/linux:NTP_HARD_CFLAGS="-pie -fPIE -fPIC -fstack-protector-all -O1"
 	if use elibc_musl ; then
 		sed -i -e "s|-fstack-protector-all -O1|-O2|" \
+			-i '/^NTP_HARD_CPPFLAGS="-D_FORTIFY_SOURCE=2"/d' \
 			sntp/harden/linux || die "sed failed!"
 	fi
 }
 
 src_configure() {
-	use hardened || export NTP_HARD_CFLAGS="${CFLAGS} -fPIC"
-
 	# avoid libmd5/libelf
 	export ac_cv_search_MD5Init=no ac_cv_header_md5_h=no
 	export ac_cv_lib_elf_nlist=no
