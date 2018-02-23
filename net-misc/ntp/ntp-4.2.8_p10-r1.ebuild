@@ -62,7 +62,7 @@ src_prepare() {
 }
 
 src_configure() {
-	use hardened || export NTP_HARD_CFLAGS="${CFLAGS}"
+	use hardened || export NTP_HARD_CFLAGS="${CFLAGS} -fPIC"
 
 	# avoid libmd5/libelf
 	export ac_cv_search_MD5Init=no ac_cv_header_md5_h=no
