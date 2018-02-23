@@ -57,10 +57,9 @@ src_prepare() {
 	# Disable pointless checks.
 	touch .checkChangeLog .gcc-warning FRC.html html/.datecheck
 
-	# needs musl/32bit fixes, see:
-	##sntp/harden/linux:NTP_HARD_CFLAGS="-pie -fPIE -fPIC -fstack-protector-all -O1"
+	# needs musl/64bit fixes; works on i686 but segfaults on amd64
 	if use elibc_musl ; then
-		sed -i -e "s|-fstack-protector-all -O1|-O2|" \
+		sed -i -e "s|-pie -fPIE -fPIC -fstack-protector-all -O1|-fPIC|" \
 			-e "s|-D_FORTIFY_SOURCE=2||" \
 			sntp/harden/linux || die "sed failed!"
 	fi
