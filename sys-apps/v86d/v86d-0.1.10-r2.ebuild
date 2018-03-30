@@ -4,7 +4,7 @@
 
 EAPI=5
 
-inherit eutils flag-o-matic linux-info multilib
+inherit eutils flag-o-matic linux-info multilib toolchain-funcs
 
 DESCRIPTION="A daemon to run x86 code in an emulated environment"
 HOMEPAGE="https://github.com/sarnold/v86d"
@@ -15,8 +15,10 @@ SLOT="0"
 KEYWORDS="amd64 x86"
 IUSE="debug x86emu"
 
-DEPEND="dev-libs/klibc"
-RDEPEND=""
+DEPEND="dev-libs/libx86
+	dev-libs/klibc"
+
+RDEPEND="${DEPEND}"
 
 S="${WORKDIR}/${PN}-86d-${PV}"
 
@@ -25,22 +27,29 @@ pkg_setup() {
 }
 
 src_prepare() {
-	if [ -z "$(grep V86D ${ROOT}/usr/src/linux/include/uapi/linux/connector.h)" ]; then
-		## old path: ${ROOT}/usr/$(get_libdir)/klibc/include/linux/connector.h)
-		eerror "You need to compile klibc against a kernel tree patched with uvesafb"
-		eerror "prior to merging this package."
-		die "Kernel not patched with uvesafb."
-	fi
+#	if [ -z "$(grep V86D ${ROOT}/usr/src/linux/include/uapi/linux/connector.h)" ]; then
+#		## old path: ${ROOT}/usr/$(get_libdir)/klibc/include/linux/connector.h)
+#		eerror "You need to compile klibc against a kernel tree patched with uvesafb"
+#		eerror "prior to merging this package."
+#		die "Kernel not patched with uvesafb."
+#	fi
+
+	epatch "${FILESDIR}"/01_use-external-libx86.patch \
+		"${FILESDIR}"/02_dont-include-kernel.patch \
+		"${FILESDIR}"/v86d-9999-add-atomic_t.patch
+
+	default_src_prepare
 }
 
 src_configure() {
-	./configure --with-klibc $(use_with debug) $(use_with x86emu) || die
+	tc-export CC LD AS AR
+	./configure --default $(use_with debug) $(use_with x86emu) || die
 }
 
 src_compile() {
 	# Disable stack protector, as it does not work with klibc (bug #346397).
 	filter-flags -fstack-protector -fstack-protector-all
-	emake KDIR="${KV_DIR}" || die
+	emake KDIR="${EROOT}"/usr || die
 }
 
 src_install() {
