@@ -18,8 +18,7 @@ if [[ ${PV} == 9999* ]]; then
 	EGIT_REPO_URI="git://sourceware.org/git/glibc.git"
 	inherit git-r3
 else
-	# KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
-	KEYWORDS=""
+	KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~m68k ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
 	SRC_URI="mirror://gnu/glibc/${P}.tar.xz"
 fi
 
@@ -28,10 +27,12 @@ RELEASE_VER=${PV}
 GCC_BOOTSTRAP_VER="4.7.3-r1"
 
 # Gentoo patchset
-PATCH_VER="1"
+PATCH_VER=4
 
 SRC_URI+=" https://dev.gentoo.org/~dilfridge/distfiles/${P}-patches-${PATCH_VER}.tar.bz2"
 SRC_URI+=" multilib? ( https://dev.gentoo.org/~dilfridge/distfiles/gcc-${GCC_BOOTSTRAP_VER}-multilib-bootstrap.tar.bz2 )"
+
+GLIBC_PATCH_EXCLUDE+=" 0004_all_sys-types.h-drop-sys-sysmacros.h-include.patch"
 
 IUSE="audit caps debug gd hardened multilib nscd selinux systemtap profile suid vanilla crosscompile_opts_headers-only"
 
@@ -190,6 +191,21 @@ pkg_pretend() {
 			die "old __guard detected"
 		fi
 	fi
+
+	# Check for sanity of /etc/nsswitch.conf
+	if [[ -e ${EROOT}/etc/nsswitch.conf ]] ; then
+		local entry
+		for entry in passwd group shadow; do
+			if ! egrep -q "^[ \t]*${entry}:.*files" "${EROOT}"/etc/nsswitch.conf; then
+				eerror "Your ${EROOT}/etc/nsswitch.conf is out of date."
+				eerror "Please make sure you have 'files' entries for"
+				eerror "'passwd:', 'group:' and 'shadow:' databases."
+				eerror "For more details see:"
+				eerror "  https://wiki.gentoo.org/wiki/Project:Toolchain/nsswitch.conf_in_glibc-2.26"
+				die "nsswitch.conf has no 'files' provider in '${entry}'."
+			fi
+		done
+	fi
 }
 
 src_unpack() {
@@ -211,20 +227,13 @@ src_unpack() {
 
 	cd "${WORKDIR}"
 	unpack glibc-${RELEASE_VER}-patches-${PATCH_VER}.tar.bz2
-	# pull out all the addons
-	local d
-	for d in extra/*/configure ; do
-		d=${d%/configure}
-		[[ -d ${S}/${d} ]] && die "${d} already exists in \${S}"
-		mv "${d}" "${S}" || die "moving ${d} failed"
-	done
 }
 
 src_prepare() {
 	if ! use vanilla ; then
-		elog "Applying Gentoo Glibc Patchset ${RELEASE_VER}-${PATCH_VER} ..."
-		eapply "${WORKDIR}"/patches/*.patch \
-			"${FILESDIR}"/${PN}-add-patch-fixing-the-build-with-binutils-2.29.patch
+		elog "Applying Gentoo Glibc Patchset ${RELEASE_VER}-${PATCH_VER}"
+		eapply "${WORKDIR}"/patches
+		einfo "Done."
 	fi
 
 	if just_headers ; then
@@ -689,7 +698,7 @@ glibc_do_src_install() {
 	keepdir /usr/$(get_libdir)/locale
 	for a in $(get_install_abis) ; do
 		if [[ ! -e ${ED}/usr/$(get_abi_LIBDIR ${a})/locale ]] ; then
-			dosym /usr/$(get_libdir)/locale /usr/$(get_abi_LIBDIR ${a})/locale
+			dosym ../$(get_libdir)/locale /usr/$(get_abi_LIBDIR ${a})/locale
 		fi
 	done
 
@@ -792,5 +801,20 @@ pkg_postinst() {
 			locale_list="${EROOT}usr/share/i18n/SUPPORTED"
 		fi
 		locale-gen -j $(makeopts_jobs) --config "${locale_list}"
+	fi
+
+	# Check for sanity of /etc/nsswitch.conf, take 2
+	if [[ -e ${EROOT}/etc/nsswitch.conf ]] && ! has_version sys-auth/libnss-nis ; then
+		local entry
+		for entry in passwd group shadow; do
+			if egrep -q "^[ \t]*${entry}:.*nis" "${EROOT}"/etc/nsswitch.conf; then
+				ewarn ""
+				ewarn "Your ${EROOT}/etc/nsswitch.conf uses NIS. Support for that has been"
+				ewarn "removed from glibc and is now provided by the package"
+				ewarn "  sys-auth/libnss-nis"
+				ewarn "Install it now to keep your NIS setup working."
+				ewarn ""
+			fi
+		done
 	fi
 }
