@@ -1,0 +1,47 @@
+--- a/gen_initramfs.sh	2018-03-30 14:39:01.785728991 -0700
++++ b/gen_initramfs.sh	2018-03-30 15:00:15.715716670 -0700
+@@ -81,6 +81,29 @@
+ 			|| gen_die "Failed to add devices to cpio"
+ }
+ 
++append_fbsplash() {
++	# WARNING, does NOT support appending to cpio!
++	cat >"${TEMP}/initramfs-splash-temp.devices" <<-EOF
++	dir /dev 0755 0 0
++	nod /dev/console 660 0 0 c 5 1
++	nod /dev/null 660 0 0 c 1 3
++	nod /dev/zero 660 0 0 c 1 5
++	nod /dev/tty0 600 0 0 c 4 0
++	nod /dev/tty1 600 0 0 c 4 1
++	nod /dev/ttyS0 600 0 0 c 4 64
++	nod /dev/mem 0600 0 0 c 1 1
++	dir /root 0700 0 0
++	dir /sbin 0755 0 0
++	file /sbin/v86d /sbin/v86d 0755 0 0
++	EOF
++	if [[ "${LOGLEVEL}" -gt 1 ]]; then
++		echo "Adding splash devices to cpio:"
++		cat "${TEMP}/initramfs-splash-temp.devices"
++	fi
++	${KERNEL_OUTPUTDIR}/usr/gen_init_cpio "${TEMP}/initramfs-splash-temp.devices" >"${CPIO}" \
++			|| gen_die "Failed to add splash devices to cpio"
++}
++
+ append_base_layout() {
+ 	if [ -d "${TEMP}/initramfs-base-temp" ]
+ 	then
+@@ -960,7 +983,13 @@
+ 
+ 	# Create empty cpio
+ 	CPIO="${TMPDIR}/initramfs-${KV}"
+-	append_data 'devices' # WARNING, must be first!
++	if [ "${SPLASH}" = 'yes' ]
++	then
++		# WARNING, must be first!
++		append_data 'fbsplash'
++	else
++		append_data 'devices'
++	fi
+ 	append_data 'base_layout'
+ 	append_data 'auxilary' "${BUSYBOX}"
+ 	append_data 'busybox' "${BUSYBOX}"
