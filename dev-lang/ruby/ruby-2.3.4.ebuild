@@ -75,8 +75,7 @@ PDEPEND="
 
 src_prepare() {
 	EPATCH_FORCE="yes" EPATCH_SUFFIX="patch" \
-		epatch "${WORKDIR}/patches" \
-			"${FILESDIR}"/${P}-gcc7.patch
+		epatch "${WORKDIR}/patches"
 
 	einfo "Unbundling gems..."
 	cd "$S"
@@ -150,7 +149,7 @@ src_configure() {
 		--enable-pthread \
 		--disable-rpath \
 		--with-out-ext="${modules}" \
-		$(use_with jemalloc jemalloc) \
+		$(use_enable jemalloc jemalloc) \
 		$(use_enable socks5 socks) \
 		$(use_enable doc install-doc) \
 		--enable-ipv6 \

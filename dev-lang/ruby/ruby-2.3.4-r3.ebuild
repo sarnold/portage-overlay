@@ -75,8 +75,7 @@ PDEPEND="
 
 src_prepare() {
 	EPATCH_FORCE="yes" EPATCH_SUFFIX="patch" \
-		epatch "${WORKDIR}/patches" \
-			"${FILESDIR}"/${P}-gcc7.patch
+		epatch "${WORKDIR}/patches"
 
 	einfo "Unbundling gems..."
 	cd "$S"

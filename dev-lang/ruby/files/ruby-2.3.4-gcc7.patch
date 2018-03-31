@@ -1,7 +1,7 @@
 diff --git include/ruby/ruby.h include/ruby/ruby.h
 index 60cfb1174e..dccfdc763a 100644
---- a/include/ruby/ruby.h
-+++ b/include/ruby/ruby.h
+--- include/ruby/ruby.h
++++ include/ruby/ruby.h
 @@ -551,27 +551,23 @@ static inline int rb_type(VALUE obj);
  	((type) == RUBY_T_FLOAT) ? RB_FLOAT_TYPE_P(obj) : \
  	(!RB_SPECIAL_CONST_P(obj) && RB_BUILTIN_TYPE(obj) == (type)))
@@ -40,8 +40,8 @@ index 60cfb1174e..dccfdc763a 100644
  #define RB_UNUSED_VAR(x) x __attribute__ ((unused))
 diff --git marshal.c marshal.c
 index c56de4af8d..b7274bf3c4 100644
---- a/marshal.c
-+++ b/marshal.c
+--- marshal.c
++++ marshal.c
 @@ -1022,7 +1022,7 @@ VALUE
  rb_marshal_dump_limited(VALUE obj, VALUE port, int limit)
  {
@@ -84,8 +84,8 @@ index c56de4af8d..b7274bf3c4 100644
  }
 diff --git test/ruby/test_marshal.rb test/ruby/test_marshal.rb
 index 6ac5c29991..dc2b8b30dc 100644
---- a/test/ruby/test_marshal.rb
-+++ b/test/ruby/test_marshal.rb
+--- test/ruby/test_marshal.rb
++++ test/ruby/test_marshal.rb
 @@ -645,6 +645,9 @@ def test_continuation
      c = Bug9523.new
      assert_raise_with_message(RuntimeError, /Marshal\.dump reentered at marshal_dump/) do

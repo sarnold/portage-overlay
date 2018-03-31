@@ -1,0 +1,31 @@
+--- a/common.mk	2017-11-23 17:51:47.873904394 -0800
++++ b/common.mk	2017-11-23 17:58:38.173235719 -0800
+@@ -140,7 +140,7 @@
+ 		--make-flags="V=$(V) MINIRUBY='$(MINIRUBY)'" \
+ 		--gnumake=$(gnumake) --extflags="$(EXTLDFLAGS)" \
+ 		--
+-INSTRUBY      =	$(SUDO) $(RUNRUBY) -r./$(arch)-fake $(srcdir)/tool/rbinstall.rb
++INSTRUBY      =	$(RUNRUBY) -r./$(arch)-fake $(srcdir)/tool/rbinstall.rb
+ INSTRUBY_ARGS =	$(SCRIPT_ARGS) \
+ 		--data-mode=$(INSTALL_DATA_MODE) \
+ 		--prog-mode=$(INSTALL_PROG_MODE) \
+--- a/Makefile.in	2016-01-20 23:41:11.000000000 -0800
++++ b/Makefile.in	2017-11-23 22:07:22.221459813 -0800
+@@ -72,6 +72,8 @@
+ LDFLAGS = @STATIC@ $(CFLAGS) @LDFLAGS@
+ EXTLDFLAGS = @EXTLDFLAGS@
+ XLDFLAGS = @XLDFLAGS@ $(EXTLDFLAGS)
++MINIFLAGS =
++MINILIBS =
+ EXTLIBS =
+ LIBS = @LIBS@ $(EXTLIBS)
+ MISSING = @LIBOBJS@ @ALLOCA@
+@@ -217,7 +219,7 @@
+ miniruby$(EXEEXT):
+ 		@-if test -f $@; then $(MV) -f $@ $@.old; $(RM) $@.old; fi
+ 		$(ECHO) linking $@
+-		$(Q) $(PURIFY) $(CC) $(LDFLAGS) $(XLDFLAGS) $(NORMALMAINOBJ) $(MINIOBJS) $(COMMONOBJS) $(MAINLIBS) $(LIBS) $(OUTFLAG)$@
++		$(Q) $(PURIFY) $(CC) $(LDFLAGS) $(XLDFLAGS) $(MINIFLAGS) $(NORMALMAINOBJ) $(MINIOBJS) $(COMMONOBJS) $(MAINLIBS) $(LIBS) $(MINILIBS) $(OUTFLAG)$@
+ 
+ $(PROGRAM):
+ 		@$(RM) $@

@@ -1,0 +1,11 @@
+--- a/file.c	2017-11-22 14:22:01.941251664 -0800
++++ b/file.c	2017-11-22 14:26:22.336099706 -0800
+@@ -64,6 +64,8 @@
+ #endif
+ 
+ #include <sys/types.h>
++# undef major
++# undef minor
+ #include <sys/stat.h>
+ 
+ #if defined(__native_client__)

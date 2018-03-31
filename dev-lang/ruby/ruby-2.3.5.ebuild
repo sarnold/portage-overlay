@@ -5,7 +5,7 @@ EAPI=5
 
 #PATCHSET=1
 
-inherit autotools eutils flag-o-matic multilib versionator
+inherit autotools eutils flag-o-matic multilib versionator toolchain-funcs
 
 MY_P="${PN}-$(get_version_component_range 1-3)"
 S=${WORKDIR}/${MY_P}
@@ -31,7 +31,7 @@ SRC_URI="mirror://ruby/${SLOT}/${MY_P}.tar.xz
 
 LICENSE="|| ( Ruby-BSD BSD-2 )"
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86 ~amd64-fbsd ~x86-fbsd"
-IUSE="berkdb debug doc examples gdbm ipv6 jemalloc libressl +rdoc rubytests socks5 ssl tk xemacs ncurses +readline"
+IUSE="berkdb debug doc examples gdbm ipv6 jemalloc libressl ncurses -nopie +rdoc +readline rubytests +shared socks5 ssl threads tk xemacs"
 
 RDEPEND="
 	berkdb? ( sys-libs/db:= )
@@ -55,7 +55,8 @@ RDEPEND="
 	!<dev-ruby/rdoc-3.9.4
 	!<dev-ruby/rubygems-1.8.10-r1"
 
-DEPEND="${RDEPEND}"
+DEPEND="${RDEPEND}
+	nopie? ( dev-libs/gmp[static-libs] )"
 
 BUNDLED_GEMS="
 	>=dev-ruby/did_you_mean-1.0.0:1[ruby_targets_ruby23]
@@ -75,8 +76,9 @@ PDEPEND="
 
 src_prepare() {
 	EPATCH_FORCE="yes" EPATCH_SUFFIX="patch" \
-		epatch "${WORKDIR}/patches"
-#			"${FILESDIR}"/${P}-gcc7.patch
+		epatch "${WORKDIR}/patches" \
+		"${FILESDIR}"/${PN}-add-miniruby-flags-var.patch
+#		"${FILESDIR}"/${PN}-use-system-macros_major_minor.patch
 
 	einfo "Unbundling gems..."
 	cd "$S"
@@ -102,6 +104,9 @@ src_configure() {
 	append-flags -fno-strict-aliasing
 	# SuperH needs this
 	use sh && append-flags -mieee
+	# arm is weird...
+	use nopie && myconf="${myconf} --disable-pie"
+	tc-ld-is-gold && tc-ld-disable-gold
 
 	# Socks support via dante
 	if use socks5 ; then
@@ -146,8 +151,8 @@ src_configure() {
 		--program-suffix=${MY_SUFFIX} \
 		--with-soname=ruby${MY_SUFFIX} \
 		--docdir=${EPREFIX}/usr/share/doc/${P} \
-		--enable-shared \
-		--enable-pthread \
+		$(use_enable shared) \
+		$(use_enable threads pthread) \
 		--disable-rpath \
 		--with-out-ext="${modules}" \
 		$(use_with jemalloc jemalloc) \
@@ -161,7 +166,13 @@ src_configure() {
 }
 
 src_compile() {
-	emake V=1 EXTLDFLAGS="${LDFLAGS}" || die "emake failed"
+	local MINIFLAGS= MINILIBS=
+	if use nopie ; then
+		MINIFLAGS="-static -static-libgcc"
+		MINILIBS="-lc -lgcc"
+	fi
+	emake V=1 EXTLDFLAGS="${LDFLAGS}" MINIFLAGS="${MINIFLAGS}" \
+		MINILIBS="${MINILIBS}" || die "emake failed"
 }
 
 src_test() {
@@ -200,7 +211,8 @@ src_install() {
 	done
 	export LD_LIBRARY_PATH RUBYLIB
 
-	emake V=1 DESTDIR="${D}" install || die "make install failed"
+	emake V=1 DESTDIR="${D}" SUDO="" install \
+		|| die "make install failed"
 
 	# Remove installed rubygems and rdoc copy
 	rm -rf "${D}/usr/$(get_libdir)/ruby/${RUBYVERSION}/rubygems" || die "rm rubygems failed"
@@ -234,7 +246,7 @@ pkg_postinst() {
 
 	elog
 	elog "To switch between available Ruby profiles, execute as root:"
-	elog "\teselect ruby set ruby(19|20|...)"
+	elog "\teselect ruby set ruby(22|23|...)"
 	elog
 }
 
