@@ -11,6 +11,7 @@ HOMEPAGE="http://www.cs.utah.edu/gdc/projects/urt/"
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="git://github.com/sarnold/urt.git"
 	EGIT_BRANCH="3.2rc_X11qa-fixes"
+	SO_VERSION="3.1.0"
 	inherit git-2
 else
 	SRC_URI="https://github.com/sarnold/${PN}/archive/${P}.tar.gz"
