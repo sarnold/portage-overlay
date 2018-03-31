@@ -29,5 +29,5 @@ Most of the new ARM goodies are in the `Gentoo ARM overlay`_.
 Also, check out the new `Gentoo wiki page`_ for the amr64 espressobin board.
 
 
-.. _Gentoo wiki page: https://github.com/sarnold/arm
+.. _Gentoo ARM overlay: https://github.com/sarnold/arm
 .. _Gentoo wiki page: https://wiki.gentoo.org/wiki/ESPRESSOBin
