@@ -61,8 +61,8 @@ start() {
 	ebegin " Starting courierfilterd"
 	${sbindir}/courierfilter start
 
-	[ ! -d /etc/courier/authlib ] && [ -x ${libexecdir}/authlib/authdaemond ] && \
-	${libexecdir}/authlib/authdaemond start && ebegin " Starting authdaemond"
+	[ ! -d /etc/courier/authlib ] && [ -x ${libexecdir}/courier-authlib/authdaemond ] && \
+	${libexecdir}/courier-authlib/authdaemond start && ebegin " Starting authdaemond"
 
 	[ -x ${sbindir}/webmaild ] && \
 	  ${sbindir}/webmaild start && ebegin " Starting webmaild" 
@@ -179,8 +179,8 @@ stop() {
 	[ -x ${sbindir}/webmaild ] && \
 	  ( ${sbindir}/webmaild stop ; ebegin " Stopping webmaild" )
 
-	[ ! -d /etc/courier/authlib ] && [ -x ${libexecdir}/authlib/authdaemond ] && \
-	( ${libexecdir}/authlib/authdaemond stop ; ebegin " Stopping authdaemond" )
+	[ ! -d /etc/courier/authlib ] && [ -x ${libexecdir}/courier-authlib/authdaemond ] && \
+	( ${libexecdir}/courier-authlib/authdaemond stop ; ebegin " Stopping authdaemond" )
 
 	${sbindir}/courierfilter stop
 	ebegin " Stopping courierfilterd"
