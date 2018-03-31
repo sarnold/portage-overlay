@@ -12,5 +12,6 @@ IUSE=""
 
 # Only one at present, but gnat-gcc-5.x is coming soon (I Swear)
 RDEPEND="|| (
-	>=virtual/gnat-4.9 )"
+	>=sys-devel/gcc-6.3.0[ada]
+	>=dev-lang/gnat-gpl-2017 )"
 DEPEND=""

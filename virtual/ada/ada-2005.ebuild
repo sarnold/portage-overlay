@@ -9,4 +9,5 @@ KEYWORDS="amd64 x86"
 
 # Only one at present, but gnat-gcc-4.3 is coming soon too
 RDEPEND="|| (
-	>=dev-lang/gnat-gcc-4.3 )"
+	>=sys-devel/gcc-5.4.0[ada]
+	>=dev-lang/gnat-gpl-2016 )"
