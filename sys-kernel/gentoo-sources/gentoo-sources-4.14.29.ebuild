@@ -10,6 +10,7 @@ K_GENPATCHES_VER="34"
 
 SPLASH_PATCH="linux-4.14-bootsplash-patches-for-kernel-space-fbc.patch"
 SPL_PATCH_URI="mirror://gentoo/${SPLASH_PATCH}.gz"
+LOGO_PATCH="linux-4.14-bootsplash-add-gentoo-logo-build-script.patch"
 
 inherit kernel-2
 detect_version
@@ -45,8 +46,9 @@ src_prepare() {
 
 	ebegin "Applying kernel bootsplash patches"
 		EPATCH_OPTS="-F3"
-		epatch "${WORKDIR}"/${SPLASH_PATCH} || die "patch failed!"
-		cp "${FILESDIR}"/ajax-loader.gif "${S}"/tools/bootsplash/
+		epatch "${WORKDIR}"/${SPLASH_PATCH} \
+			"${FILESDIR}"/${LOGO_PATCH} || die "patch failed!"
+		cp "${FILESDIR}"/*.gif "${S}"/tools/bootsplash/
 	eend $? || return
 
 	default
