@@ -49,6 +49,8 @@ src_prepare() {
 		epatch "${WORKDIR}"/${SPLASH_PATCH} \
 			"${FILESDIR}"/${LOGO_PATCH} || die "patch failed!"
 		cp "${FILESDIR}"/*.gif "${S}"/tools/bootsplash/
+		sed -i -e "s|/usr/src/linux|../..|g" \
+			"${S}"/tools/bootsplash/Makefile
 	eend $? || return
 
 	default
