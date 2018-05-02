@@ -1,4 +1,4 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2018 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
@@ -16,7 +16,7 @@ HOMEPAGE="https://wiki.gnome.org/Projects/NetworkManager"
 LICENSE="GPL-2+"
 SLOT="0" # add subslot if libnm-util.so.2 or libnm-glib.so.4 bumps soname version
 
-IUSE="audit bluetooth connection-sharing consolekit +dhclient dhcpcd elogind gnutls +introspection json kernel_linux +nss +modemmanager ncurses ofono policykit +ppp resolvconf selinux systemd teamd test vala +wext +wifi"
+IUSE="audit bluetooth connection-sharing consolekit dhclient dhcpcd elogind gnutls +introspection json kernel_linux +nss +modemmanager ncurses +nodhcp ofono policykit +ppp resolvconf selinux systemd teamd test vala +wext +wifi"
 
 REQUIRED_USE="
 	modemmanager? ( ppp )
@@ -149,6 +149,11 @@ src_prepare() {
 		root password, add your user account to the 'plugdev' group."
 
 	use vala && vala_src_prepare
+
+	# need to append a config option to use internal dhcp
+	use nodhcp && sed -i '/[main]/adhcp=internal' \
+		"${FILESDIR}"/nm-system-settings.conf-ifnet
+
 	gnome2_src_prepare
 }
 
