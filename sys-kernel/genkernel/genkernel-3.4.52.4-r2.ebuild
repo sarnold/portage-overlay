@@ -111,6 +111,8 @@ src_prepare() {
 
 	epatch "${FILESDIR}"/${P}-system-map.patch #570822
 	epatch "${FILESDIR}"/${P}-grub-mkconfig.patch #591200
+	epatch "${FILESDIR}"/${P}-add-v86d-initramfs-data.patch
+	epatch "${FILESDIR}"/${P}-allow-firmware-subdirs-in-config.patch
 	epatch_user
 }
 
