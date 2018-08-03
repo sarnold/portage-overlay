@@ -1,0 +1,94 @@
+From patchwork Wed Mar 28 19:57:12 2018
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+Subject: [RFC, v10,
+ 6/6] doc: self-protection: Add information about STACKLEAK feature
+From: Alexander Popov <alex.popov@linux.com>
+X-Patchwork-Id: 10313999
+Message-Id: <1522267032-6603-7-git-send-email-alex.popov@linux.com>
+To: kernel-hardening@lists.openwall.com, Kees Cook <keescook@chromium.org>,
+ PaX Team <pageexec@freemail.hu>, Brad Spengler <spender@grsecurity.net>,
+ Ingo Molnar <mingo@kernel.org>, Andy Lutomirski <luto@kernel.org>,
+ Tycho Andersen <tycho@tycho.ws>, Laura Abbott <labbott@redhat.com>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Ard Biesheuvel <ard.biesheuvel@linaro.org>, Borislav Petkov <bp@alien8.de>,
+ Richard Sandiford <richard.sandiford@arm.com>,
+ Thomas Gleixner <tglx@linutronix.de>, "H . Peter Anvin" <hpa@zytor.com>,
+ Peter Zijlstra <a.p.zijlstra@chello.nl>,
+ "Dmitry V . Levin" <ldv@altlinux.org>, Emese Revfy <re.emese@gmail.com>,
+ Jonathan Corbet <corbet@lwn.net>,
+ Andrey Ryabinin <aryabinin@virtuozzo.com>,
+ "Kirill A . Shutemov" <kirill.shutemov@linux.intel.com>,
+ Thomas Garnier <thgarnie@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Alexei Starovoitov <ast@kernel.org>, Josef Bacik <jbacik@fb.com>,
+ Masami Hiramatsu <mhiramat@kernel.org>,
+ Nicholas Piggin <npiggin@gmail.com>, Al Viro <viro@zeniv.linux.org.uk>,
+ "David S . Miller" <davem@davemloft.net>,
+ Ding Tianhong <dingtianhong@huawei.com>,
+ David Woodhouse <dwmw@amazon.co.uk>, Josh Poimboeuf <jpoimboe@redhat.com>,
+ Steven Rostedt <rostedt@goodmis.org>,
+ Dominik Brodowski <linux@dominikbrodowski.net>,
+ Juergen Gross <jgross@suse.com>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dan Williams <dan.j.williams@intel.com>,
+ Dave Hansen <dave.hansen@linux.intel.com>,
+ Mathias Krause <minipli@googlemail.com>,
+ Vikas Shivappa <vikas.shivappa@linux.intel.com>,
+ Kyle Huey <me@kylehuey.com>, Dmitry Safonov <dsafonov@virtuozzo.com>,
+ Will Deacon <will.deacon@arm.com>, Arnd Bergmann <arnd@arndb.de>,
+ Florian Weimer <fweimer@redhat.com>,
+ Boris Lukashev <blukashev@sempervictus.com>, x86@kernel.org,
+ linux-kernel@vger.kernel.org, alex.popov@linux.com
+Date: Wed, 28 Mar 2018 22:57:12 +0300
+
+Add information about STACKLEAK feature to "Stack depth overflow" and
+"Memory poisoning" sections of self-protection.rst.
+
+Signed-off-by: Alexander Popov <alex.popov@linux.com>
+---
+ Documentation/security/self-protection.rst | 23 ++++++++++++++---------
+ 1 file changed, 14 insertions(+), 9 deletions(-)
+
+diff --git a/Documentation/security/self-protection.rst b/Documentation/security/self-protection.rst
+index 0f53826..b685f18 100644
+--- a/Documentation/security/self-protection.rst
++++ b/Documentation/security/self-protection.rst
+@@ -165,10 +165,15 @@ Stack depth overflow
+ A less well understood attack is using a bug that triggers the
+ kernel to consume stack memory with deep function calls or large stack
+ allocations. With this attack it is possible to write beyond the end of
+-the kernel's preallocated stack space and into sensitive structures. Two
+-important changes need to be made for better protections: moving the
+-sensitive thread_info structure elsewhere, and adding a faulting memory
+-hole at the bottom of the stack to catch these overflows.
++the kernel's preallocated stack space and into sensitive structures.
++The combination of the following measures gives better protection:
++
++* moving the sensitive thread_info structure off the stack
++  (``CONFIG_THREAD_INFO_IN_TASK``);
++* adding a faulting memory hole at the bottom of the stack to catch
++  these overflows (``CONFIG_VMAP_STACK``);
++* runtime checking that alloca() calls don't overstep the stack boundary
++  (``CONFIG_GCC_PLUGIN_STACKLEAK``).
+ 
+ Heap memory integrity
+ ---------------------
+@@ -302,11 +307,11 @@ sure structure holes are cleared.
+ Memory poisoning
+ ----------------
+ 
+-When releasing memory, it is best to poison the contents (clear stack on
+-syscall return, wipe heap memory on a free), to avoid reuse attacks that
+-rely on the old contents of memory. This frustrates many uninitialized
+-variable attacks, stack content exposures, heap content exposures, and
+-use-after-free attacks.
++When releasing memory, it is best to poison the contents, to avoid reuse
++attacks that rely on the old contents of memory. E.g., clear stack on a
++syscall return (``CONFIG_GCC_PLUGIN_STACKLEAK``), wipe heap memory on a
++free. This frustrates many uninitialized variable attacks, stack content
++exposures, heap content exposures, and use-after-free attacks.
+ 
+ Destination tracking
+ --------------------

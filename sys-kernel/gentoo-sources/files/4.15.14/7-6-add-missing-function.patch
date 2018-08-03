@@ -1,0 +1,36 @@
+--- ./mm/usercopy.c.orig	2018-04-09 22:19:21.863025647 -0700
++++ ./mm/usercopy.c	2018-04-09 22:25:08.776390913 -0700
+@@ -58,6 +58,33 @@
+ 	return GOOD_STACK;
+ }
+ 
++/*
++ * If this function is reached, then CONFIG_HARDENED_USERCOPY has found an
++ * unexpected state during a copy_from_user() or copy_to_user() call.
++ * There are several checks being performed on the buffer by the
++ * __check_object_size() function. Normal stack buffer usage should never
++ * trip the checks, and kernel text addressing will always trip the check.
++ * For cache objects, copies must be within the object size.
++ */
++void __noreturn usercopy_abort(const char *name, const char *detail,
++			       bool to_user, unsigned long offset,
++			       unsigned long len)
++{
++	pr_emerg("Kernel memory %s attempt detected %s %s%s%s%s (offset %lu, size %lu)!\n",
++		 to_user ? "exposure" : "overwrite",
++		 to_user ? "from" : "to",
++		 name ? : "unknown?!",
++		 detail ? " '" : "", detail ? : "", detail ? "'" : "",
++		 offset, len);
++
++	/*
++	 * For greater effect, it would be nice to do do_group_exit(),
++	 * but BUG() actually hooks all the lock-breaking and per-arch
++	 * Oops code, so that is used here instead.
++	 */
++	BUG();
++}
++
+ static void report_usercopy(const void *ptr, unsigned long len,
+ 			    bool to_user, const char *type)
+ {

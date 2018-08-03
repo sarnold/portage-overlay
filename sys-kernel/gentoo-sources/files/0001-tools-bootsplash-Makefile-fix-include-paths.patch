@@ -1,0 +1,25 @@
+From 7e97bf8b55d266297c3906cc0998bfd4195a0b89 Mon Sep 17 00:00:00 2001
+From: Steve Arnold <nerdboy@gentoo.org>
+Date: Sat, 28 Jul 2018 18:26:54 -0700
+Subject: [PATCH] tools/bootsplash/Makefile: fix include path(s) for building
+ bootsplash
+
+Signed-off-by: Steve Arnold <nerdboy@gentoo.org>
+---
+ tools/bootsplash/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/tools/bootsplash/Makefile b/tools/bootsplash/Makefile
+index 0ad8e8a84942..4f467a96bc23 100644
+--- a/tools/bootsplash/Makefile
++++ b/tools/bootsplash/Makefile
+@@ -1,5 +1,5 @@
+ CC := $(CROSS_COMPILE)gcc
+-CFLAGS := -I../../usr/include
++CFLAGS := -I../include -I../../include/uapi
+ 
+ PROGS := bootsplash-packer
+ 
+-- 
+2.16.1
+
