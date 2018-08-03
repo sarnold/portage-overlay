@@ -1,0 +1,63 @@
+From 37e980100c3a4c3906f39f5bbeba89087f5c12c1 Mon Sep 17 00:00:00 2001
+From: Alexander Popov <alex.popov@linux.com>
+Date: Wed, 11 Jul 2018 23:36:35 +0300
+Subject: [PATCH 1/6] gcc-plugins: Clean up the cgraph_create_edge* macros
+
+Drop useless redefinitions of cgraph_create_edge* macros. Drop the unused
+nest argument. Also support gcc-8, which doesn't have freq argument.
+
+Signed-off-by: Alexander Popov <alex.popov@linux.com>
+Message-Id: <1531341400-12077-2-git-send-email-alex.popov@linux.com>
+Signed-off-by: Steve Arnold <nerdboy@gentoo.org>
+---
+ scripts/gcc-plugins/gcc-common.h | 26 ++++++++++++++++----------
+ 1 file changed, 16 insertions(+), 10 deletions(-)
+
+diff --git a/scripts/gcc-plugins/gcc-common.h b/scripts/gcc-plugins/gcc-common.h
+index f46750053377..552d5efd7cb7 100644
+--- a/scripts/gcc-plugins/gcc-common.h
++++ b/scripts/gcc-plugins/gcc-common.h
+@@ -392,13 +392,6 @@ static inline struct cgraph_node *cgraph_alias_target(struct cgraph_node *n)
+ }
+ #endif
+ 
+-#if BUILDING_GCC_VERSION >= 4007 && BUILDING_GCC_VERSION <= 4009
+-#define cgraph_create_edge(caller, callee, call_stmt, count, freq, nest) \
+-	cgraph_create_edge((caller), (callee), (call_stmt), (count), (freq))
+-#define cgraph_create_edge_including_clones(caller, callee, old_call_stmt, call_stmt, count, freq, nest, reason) \
+-	cgraph_create_edge_including_clones((caller), (callee), (old_call_stmt), (call_stmt), (count), (freq), (reason))
+-#endif
+-
+ #if BUILDING_GCC_VERSION <= 4008
+ #define ENTRY_BLOCK_PTR_FOR_FN(FN)	ENTRY_BLOCK_PTR_FOR_FUNCTION(FN)
+ #define EXIT_BLOCK_PTR_FOR_FN(FN)	EXIT_BLOCK_PTR_FOR_FUNCTION(FN)
+@@ -723,10 +716,23 @@ static inline const char *get_decl_section_name(const_tree decl)
+ #define varpool_get_node(decl) varpool_node::get(decl)
+ #define dump_varpool_node(file, node) (node)->dump(file)
+ 
+-#define cgraph_create_edge(caller, callee, call_stmt, count, freq, nest) \
++#if BUILDING_GCC_VERSION >= 8000
++#define cgraph_create_edge(caller, callee, call_stmt, count, freq) \
++	(caller)->create_edge((callee), (call_stmt), (count))
++
++#define cgraph_create_edge_including_clones(caller, callee,	\
++		old_call_stmt, call_stmt, count, freq, reason)	\
++	(caller)->create_edge_including_clones((callee),	\
++		(old_call_stmt), (call_stmt), (count), (reason))
++#else
++#define cgraph_create_edge(caller, callee, call_stmt, count, freq) \
+ 	(caller)->create_edge((callee), (call_stmt), (count), (freq))
+-#define cgraph_create_edge_including_clones(caller, callee, old_call_stmt, call_stmt, count, freq, nest, reason) \
+-	(caller)->create_edge_including_clones((callee), (old_call_stmt), (call_stmt), (count), (freq), (reason))
++
++#define cgraph_create_edge_including_clones(caller, callee,	\
++		old_call_stmt, call_stmt, count, freq, reason)	\
++	(caller)->create_edge_including_clones((callee),	\
++		(old_call_stmt), (call_stmt), (count), (freq), (reason))
++#endif
+ 
+ typedef struct cgraph_node *cgraph_node_ptr;
+ typedef struct cgraph_edge *cgraph_edge_p;
+-- 
+2.16.1
+

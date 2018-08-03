@@ -1,0 +1,146 @@
+From patchwork Mon Apr 23 12:54:51 2018
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: "igor.stoppa@gmail.com" <igor.stoppa@gmail.com>
+X-Patchwork-Id: 10356957
+Return-Path: 
+ <kernel-hardening-return-13090-patchwork-kernel-hardening=patchwork.kernel.org@lists.openwall.com>
+Received: from mail.wl.linuxfoundation.org (pdx-wl-mail.web.codeaurora.org
+	[172.30.200.125])
+	by pdx-korg-patchwork.web.codeaurora.org (Postfix) with ESMTP id
+	58DF260388 for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:55:55 +0000 (UTC)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+	by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 480DF28AAF
+	for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:55:55 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+	id 3C4E328AB8; Mon, 23 Apr 2018 12:55:55 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+	pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-5.3 required=2.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID, DKIM_VALID_AU, FREEMAIL_FROM, MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED autolearn=ham version=3.3.1
+Received: from mother.openwall.net (mother.openwall.net [195.42.179.200])
+	by mail.wl.linuxfoundation.org (Postfix) with SMTP id 64DC228AAF
+	for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:55:54 +0000 (UTC)
+Received: (qmail 21553 invoked by uid 550); 23 Apr 2018 12:55:42 -0000
+Mailing-List: contact kernel-hardening-help@lists.openwall.com; run by ezmlm
+Precedence: bulk
+List-Post: <mailto:kernel-hardening@lists.openwall.com>
+List-Help: <mailto:kernel-hardening-help@lists.openwall.com>
+List-Unsubscribe: <mailto:kernel-hardening-unsubscribe@lists.openwall.com>
+List-Subscribe: <mailto:kernel-hardening-subscribe@lists.openwall.com>
+List-ID: <kernel-hardening.lists.openwall.com>
+Delivered-To: mailing list kernel-hardening@lists.openwall.com
+Received: (qmail 20360 invoked from network); 23 Apr 2018 12:55:40 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gmail.com; s=20161025;
+	h=from:to:cc:subject:date:message-id:in-reply-to:references;
+	bh=OYIHO1E2FYttMwneu+ZKZ5RJfEzIKDHgu84G5IWf0uw=;
+	b=bZQvmXOvr2/a36uCnOTZdnMSg+em+CnJG0MwKfmUvtURQa/08SONbk2wyR+iV+IwzO
+	EYgBOKFkDqUc1DcPzqNEzM7rzfsqxTqKM1AOAowZAqmHwuykjKuA19U5F+n9RPsYohm0
+	02ti02iWmCiClCsGueR89FCR4JF0dr7e8xPsN2Oo2IvCPHl0Zv4z9LRrClpOX8SaPFfA
+	/UaOZ6wujTMUR6BhF8jXYmsHYFTcGFkvin7nc77LJoZLkULRqj12GXhuaGq896dkWH9j
+	o9VlfQW3WA/EWIupFJHozFA3Klxo8Hvl8HLBnb3oObFkkJAI7ivicSIw5UmMqo8FgkYy
+	e+Vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20161025;
+	h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+	:references;
+	bh=OYIHO1E2FYttMwneu+ZKZ5RJfEzIKDHgu84G5IWf0uw=;
+	b=bNSDuUmxxKI3WdS21zmIyFTL8jiZDbuZZWl2RM2wfhHNGsbbvWB9zEcYj72wPHjjhB
+	5yeYYBXo4RrpkDSzY1dB+rqd0aaWkgVsndXo7hRux7BbXm2lzvYSLnYjH5wBKpEr520y
+	RBlT+TdMWhiojyiEVD6mAp3zaJC3TfP9ruLlnjHr6E9DxQhG+8ye7V0AcPLmcozUq7qC
+	IaJX2Iiu1Laq6BhdY/d33Bq8YcI3MPP+L2H2hbnHpaRa8+32hgExWzbKJ09FZmnI0phw
+	pwF1dc7SvROZGE2TxCNrXGf4QJoVWTkjyLmy6hjNlnqwy4ug8XTAKXsZSPlNz3AA2o1z
+	wemA==
+X-Gm-Message-State: ALQs6tABE9+bEBQTWxmBKYxI5asQ6XF54hrwyjEVODfHRJjAXknHIz4W
+	pCYBMGirr73iJ8AS9bKaTyU=
+X-Google-Smtp-Source: 
+ AB8JxZqKAaBUdlnJQwTwYJaXgVGgS5smMM3b+jXY0/87QPJNWSWKAgG6j7wVfgqV/sNyFYrWrWgQsA==
+X-Received: by 2002:a6b:a292:: with SMTP id
+	l140-v6mr21118695ioe.39.1524488129109;
+	Mon, 23 Apr 2018 05:55:29 -0700 (PDT)
+From: Igor Stoppa <igor.stoppa@gmail.com>
+X-Google-Original-From: Igor Stoppa <igor.stoppa@huawei.com>
+To: willy@infradead.org, keescook@chromium.org, paul@paul-moore.com,
+	sds@tycho.nsa.gov, mhocko@kernel.org, corbet@lwn.net
+Cc: labbott@redhat.com, linux-cc=david@fromorbit.com,
+	--cc=rppt@linux.vnet.ibm.com, --security-module@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-hardening@lists.openwall.com, igor.stoppa@gmail.com,
+	Igor Stoppa <igor.stoppa@huawei.com>
+Subject: [PATCH 2/9] vmalloc: rename llist field in vmap_area
+Date: Mon, 23 Apr 2018 16:54:51 +0400
+Message-Id: <20180423125458.5338-3-igor.stoppa@huawei.com>
+X-Mailer: git-send-email 2.14.1
+In-Reply-To: <20180423125458.5338-1-igor.stoppa@huawei.com>
+References: <20180423125458.5338-1-igor.stoppa@huawei.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
+
+The vmap_area structure has a field of type struct llist_node, named
+purge_list and is used when performing lazy purge of the area.
+
+Such field is left unused during the actual utilization of the
+structure.
+
+This patch renames the field to a more generic "area_list", to allow for
+utilization outside of the purging phase.
+
+Since the purging happens after the vmap_area is dismissed, its use is
+mutually exclusive with any use performed while the area is allocated.
+
+Signed-off-by: Igor Stoppa <igor.stoppa@huawei.com>
+---
+ include/linux/vmalloc.h | 2 +-
+ mm/vmalloc.c            | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+index 1e5d8c392f15..2d07dfef3cfd 100644
+--- a/include/linux/vmalloc.h
++++ b/include/linux/vmalloc.h
+@@ -47,7 +47,7 @@ struct vmap_area {
+ 	unsigned long flags;
+ 	struct rb_node rb_node;         /* address sorted rbtree */
+ 	struct list_head list;          /* address sorted list */
+-	struct llist_node purge_list;    /* "lazy purge" list */
++	struct llist_node area_list;    /* generic list of areas */
+ 	struct vm_struct *vm;
+ 	struct rcu_head rcu_head;
+ };
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 61a1ca22b0f6..1bb2233bb262 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -682,7 +682,7 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end)
+ 	lockdep_assert_held(&vmap_purge_lock);
+ 
+ 	valist = llist_del_all(&vmap_purge_list);
+-	llist_for_each_entry(va, valist, purge_list) {
++	llist_for_each_entry(va, valist, area_list) {
+ 		if (va->va_start < start)
+ 			start = va->va_start;
+ 		if (va->va_end > end)
+@@ -696,7 +696,7 @@ static bool __purge_vmap_area_lazy(unsigned long start, unsigned long end)
+ 	flush_tlb_kernel_range(start, end);
+ 
+ 	spin_lock(&vmap_area_lock);
+-	llist_for_each_entry_safe(va, n_va, valist, purge_list) {
++	llist_for_each_entry_safe(va, n_va, valist, area_list) {
+ 		int nr = (va->va_end - va->va_start) >> PAGE_SHIFT;
+ 
+ 		__free_vmap_area(va);
+@@ -743,7 +743,7 @@ static void free_vmap_area_noflush(struct vmap_area *va)
+ 				    &vmap_lazy_nr);
+ 
+ 	/* After this point, we may free va at any time */
+-	llist_add(&va->purge_list, &vmap_purge_list);
++	llist_add(&va->area_list, &vmap_purge_list);
+ 
+ 	if (unlikely(nr_lazy > lazy_max_pages()))
+ 		try_purge_vmap_area_lazy();

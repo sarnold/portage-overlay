@@ -6,9 +6,9 @@ EAPI="6"
 ETYPE="sources"
 UNIPATCH_STRICTORDER="1"
 K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="14"
+K_GENPATCHES_VER="12"
 
-inherit kernel-2
+inherit eutils kernel-2
 detect_version
 detect_arch
 
@@ -45,12 +45,14 @@ src_prepare() {
 	# We can't use unipatch or epatch here due to the git binary
 	# diffs that always cause dry-run errors (even with --force).
 
-	ebegin "Applying kernel bootsplash patches"
-		EPATCH_OPTS="-F3"
+	ebegin "Applying kernel bootsplash, protectable memory, and stackleak patches"
+		EPATCH_OPTS="-F3 -b"
 		epatch "${WORKDIR}"/${SPLASH_PATCH} || die "splash patch failed!"
 		epatch "${FILESDIR}"/${LOGO_PATCH} || die "logo patch failed!"
-		epatch "${FILESDIR}"/0001-tools-bootsplash-Makefile-fix-include-paths.patch
 		cp "${FILESDIR}"/*.gif "${S}"/tools/bootsplash/
+
+		epatch "${FILESDIR}"/${K_BRANCH_ID}/stack/*
+		epatch "${FILESDIR}"/${K_BRANCH_ID}/pmem/*
 	eend $? || return
 
 	default

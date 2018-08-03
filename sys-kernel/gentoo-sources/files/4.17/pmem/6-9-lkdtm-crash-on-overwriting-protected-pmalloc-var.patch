@@ -1,0 +1,163 @@
+From patchwork Mon Apr 23 12:54:55 2018
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: "igor.stoppa@gmail.com" <igor.stoppa@gmail.com>
+X-Patchwork-Id: 10356973
+Return-Path: 
+ <kernel-hardening-return-13094-patchwork-kernel-hardening=patchwork.kernel.org@lists.openwall.com>
+Received: from mail.wl.linuxfoundation.org (pdx-wl-mail.web.codeaurora.org
+	[172.30.200.125])
+	by pdx-korg-patchwork.web.codeaurora.org (Postfix) with ESMTP id
+	F4201601D3 for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:56:49 +0000 (UTC)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+	by mail.wl.linuxfoundation.org (Postfix) with ESMTP id DBE0E28ABE
+	for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:56:49 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+	id D0D8C28AC5; Mon, 23 Apr 2018 12:56:49 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+	pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-5.3 required=2.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID, DKIM_VALID_AU, FREEMAIL_FROM, MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED autolearn=ham version=3.3.1
+Received: from mother.openwall.net (mother.openwall.net [195.42.179.200])
+	by mail.wl.linuxfoundation.org (Postfix) with SMTP id DDC0228ABF
+	for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:56:48 +0000 (UTC)
+Received: (qmail 23977 invoked by uid 550); 23 Apr 2018 12:56:00 -0000
+Mailing-List: contact kernel-hardening-help@lists.openwall.com; run by ezmlm
+Precedence: bulk
+List-Post: <mailto:kernel-hardening@lists.openwall.com>
+List-Help: <mailto:kernel-hardening-help@lists.openwall.com>
+List-Unsubscribe: <mailto:kernel-hardening-unsubscribe@lists.openwall.com>
+List-Subscribe: <mailto:kernel-hardening-subscribe@lists.openwall.com>
+List-ID: <kernel-hardening.lists.openwall.com>
+Delivered-To: mailing list kernel-hardening@lists.openwall.com
+Received: (qmail 23899 invoked from network); 23 Apr 2018 12:55:58 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gmail.com; s=20161025;
+	h=from:to:cc:subject:date:message-id:in-reply-to:references;
+	bh=jwZ+2itaJiX1jytcWxO0WvnASxd1yHLN4hfAbTqc4CE=;
+	b=lhN+OcL1F2Dgh23zsQVHXiSS7iOC4CipkT3Y4GezELpb9LU3iH0mYtB1QKB/vUHyNh
+	Ww0eyj1bBJvX/ioc4UjXW9tEDeCeySy7XADVfcw8ohIulvB7zYo31Fv2q9JO0uim8kbm
+	+wvIXmn8e7JR0CDthmcHRpV5qDZ8dnaC29tnIbYKebnTpFGTgKclSqqkXWnfE+Qaxol9
+	B3Sw2z4YiZ1y4ATKbmkFe30h5jq6AzYzjfSiUR+L8WZuRjRUt+77papgUOTCG+xJNaeb
+	QpOx6XkWPiDvD8zH91U4qYA/RFm+Ls3iRC+8gtLWcdoLXSWYdOiW+wqViWaoil7kZnsQ
+	c9zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20161025;
+	h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+	:references;
+	bh=jwZ+2itaJiX1jytcWxO0WvnASxd1yHLN4hfAbTqc4CE=;
+	b=G4f49Ufm8PYXqTdHANMcWVbpSmvHGszty9hXlWnkKHMmUmZOXFQVzTEph2H7O6F8ol
+	9MHnasxGOldExVXm3Etv5W09w5zaHo19i043DMr+rffWN2Q4sHbPPWPAc1RLebZCgJzM
+	dUM6+qF9l8Kt26yQJPikgnYL88TAJXl6PlBbXerwX8kxOQeK3A0t21G4MIVd02yGeb+P
+	A+kNPULo1NyjrKYoC20LnyxyOWnapHhquGEswhxnFLdpRa0WojaCU6JqBkxn6SFA4L/A
+	ea7fnESW3B2H7kVozzcAzVHTasyoN0xJsefU4QIPwwMWU1K9DDzpWT6MVnHUyUchTsDC
+	BKuw==
+X-Gm-Message-State: ALQs6tCzWmd5JJIKzQeG+OGo9xuuwHtURUPXA87k0MDBF+2SF2RFzynT
+	NtpIh3jX5WkdBQySocn3DeIbfm/F
+X-Google-Smtp-Source: 
+ AIpwx4+2O5R/ceOPJjqO/bDQnXLhCSL+RLlRV25SgIy+zGqexCfE/SOiRTWjz46mXbWxUhlsC4ka2Q==
+X-Received: by 2002:a6b:c002:: with SMTP id
+	q2-v6mr20988824iof.53.1524488147155;
+	Mon, 23 Apr 2018 05:55:47 -0700 (PDT)
+From: Igor Stoppa <igor.stoppa@gmail.com>
+X-Google-Original-From: Igor Stoppa <igor.stoppa@huawei.com>
+To: willy@infradead.org, keescook@chromium.org, paul@paul-moore.com,
+	sds@tycho.nsa.gov, mhocko@kernel.org, corbet@lwn.net
+Cc: labbott@redhat.com, linux-cc=david@fromorbit.com,
+	--cc=rppt@linux.vnet.ibm.com, --security-module@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-hardening@lists.openwall.com, igor.stoppa@gmail.com,
+	Igor Stoppa <igor.stoppa@huawei.com>
+Subject: [PATCH 6/9] lkdtm: crash on overwriting protected pmalloc var
+Date: Mon, 23 Apr 2018 16:54:55 +0400
+Message-Id: <20180423125458.5338-7-igor.stoppa@huawei.com>
+X-Mailer: git-send-email 2.14.1
+In-Reply-To: <20180423125458.5338-1-igor.stoppa@huawei.com>
+References: <20180423125458.5338-1-igor.stoppa@huawei.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
+
+Verify that pmalloc read-only protection is in place: trying to
+overwrite a protected variable will crash the kernel.
+
+Signed-off-by: Igor Stoppa <igor.stoppa@huawei.com>
+---
+ drivers/misc/lkdtm/core.c  |  3 +++
+ drivers/misc/lkdtm/lkdtm.h |  1 +
+ drivers/misc/lkdtm/perms.c | 25 +++++++++++++++++++++++++
+ 3 files changed, 29 insertions(+)
+
+diff --git a/drivers/misc/lkdtm/core.c b/drivers/misc/lkdtm/core.c
+index 2154d1bfd18b..c9fd42bda6ee 100644
+--- a/drivers/misc/lkdtm/core.c
++++ b/drivers/misc/lkdtm/core.c
+@@ -155,6 +155,9 @@ static const struct crashtype crashtypes[] = {
+ 	CRASHTYPE(ACCESS_USERSPACE),
+ 	CRASHTYPE(WRITE_RO),
+ 	CRASHTYPE(WRITE_RO_AFTER_INIT),
++#ifdef CONFIG_PROTECTABLE_MEMORY
++	CRASHTYPE(WRITE_RO_PMALLOC),
++#endif
+ 	CRASHTYPE(WRITE_KERN),
+ 	CRASHTYPE(REFCOUNT_INC_OVERFLOW),
+ 	CRASHTYPE(REFCOUNT_ADD_OVERFLOW),
+diff --git a/drivers/misc/lkdtm/lkdtm.h b/drivers/misc/lkdtm/lkdtm.h
+index 9e513dcfd809..dcda3ae76ceb 100644
+--- a/drivers/misc/lkdtm/lkdtm.h
++++ b/drivers/misc/lkdtm/lkdtm.h
+@@ -38,6 +38,7 @@ void lkdtm_READ_BUDDY_AFTER_FREE(void);
+ void __init lkdtm_perms_init(void);
+ void lkdtm_WRITE_RO(void);
+ void lkdtm_WRITE_RO_AFTER_INIT(void);
++void lkdtm_WRITE_RO_PMALLOC(void);
+ void lkdtm_WRITE_KERN(void);
+ void lkdtm_EXEC_DATA(void);
+ void lkdtm_EXEC_STACK(void);
+diff --git a/drivers/misc/lkdtm/perms.c b/drivers/misc/lkdtm/perms.c
+index 53b85c9d16b8..3c81e59f9d9d 100644
+--- a/drivers/misc/lkdtm/perms.c
++++ b/drivers/misc/lkdtm/perms.c
+@@ -9,6 +9,7 @@
+ #include <linux/vmalloc.h>
+ #include <linux/mman.h>
+ #include <linux/uaccess.h>
++#include <linux/pmalloc.h>
+ #include <asm/cacheflush.h>
+ 
+ /* Whether or not to fill the target memory area with do_nothing(). */
+@@ -104,6 +105,30 @@ void lkdtm_WRITE_RO_AFTER_INIT(void)
+ 	*ptr ^= 0xabcd1234;
+ }
+ 
++#ifdef CONFIG_PROTECTABLE_MEMORY
++void lkdtm_WRITE_RO_PMALLOC(void)
++{
++	struct pmalloc_pool *pool;
++	int *i;
++
++	pool = pmalloc_create_pool();
++	if (WARN(!pool, "Failed preparing pool for pmalloc test."))
++		return;
++
++	i = pmalloc(pool, sizeof(int));
++	if (WARN(!i, "Failed allocating memory for pmalloc test.")) {
++		pmalloc_destroy_pool(pool);
++		return;
++	}
++
++	*i = INT_MAX;
++	pmalloc_protect_pool(pool);
++
++	pr_info("attempting bad pmalloc write at %p\n", i);
++	*i = 0;
++}
++#endif
++
+ void lkdtm_WRITE_KERN(void)
+ {
+ 	size_t size;

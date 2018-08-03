@@ -1,0 +1,133 @@
+From patchwork Mon Apr 23 12:54:50 2018
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: "igor.stoppa@gmail.com" <igor.stoppa@gmail.com>
+X-Patchwork-Id: 10356953
+Return-Path: 
+ <kernel-hardening-return-13089-patchwork-kernel-hardening=patchwork.kernel.org@lists.openwall.com>
+Received: from mail.wl.linuxfoundation.org (pdx-wl-mail.web.codeaurora.org
+	[172.30.200.125])
+	by pdx-korg-patchwork.web.codeaurora.org (Postfix) with ESMTP id
+	1BF2E60388 for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:55:49 +0000 (UTC)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+	by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 0D7ED28AAF
+	for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:55:49 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+	id 01F1828AB8; Mon, 23 Apr 2018 12:55:48 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+	pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-5.3 required=2.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID, DKIM_VALID_AU, FREEMAIL_FROM, MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED autolearn=ham version=3.3.1
+Received: from mother.openwall.net (mother.openwall.net [195.42.179.200])
+	by mail.wl.linuxfoundation.org (Postfix) with SMTP id 462A228AAF
+	for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:55:47 +0000 (UTC)
+Received: (qmail 20208 invoked by uid 550); 23 Apr 2018 12:55:37 -0000
+Mailing-List: contact kernel-hardening-help@lists.openwall.com; run by ezmlm
+Precedence: bulk
+List-Post: <mailto:kernel-hardening@lists.openwall.com>
+List-Help: <mailto:kernel-hardening-help@lists.openwall.com>
+List-Unsubscribe: <mailto:kernel-hardening-unsubscribe@lists.openwall.com>
+List-Subscribe: <mailto:kernel-hardening-subscribe@lists.openwall.com>
+List-ID: <kernel-hardening.lists.openwall.com>
+Delivered-To: mailing list kernel-hardening@lists.openwall.com
+Received: (qmail 20090 invoked from network); 23 Apr 2018 12:55:36 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gmail.com; s=20161025;
+	h=from:to:cc:subject:date:message-id:in-reply-to:references;
+	bh=EibkUN8IJIqpJJK5IsXHteb/ZHMrTxt39Z45b4pq1jo=;
+	b=KJhnLgxcdc71VEgRlCyL1DzLax2CrXcGSX06TycgRNdYwO+tDzDeZyareQw39wvj33
+	JwLqk1V3f+GaSWd/Ar0/zjrAQGm/5sh8efVHpcSghAkgRcTieWceMMnxYyxBmgeFbvTZ
+	+DtOe6WXFWFwPIGhIBKv172UV8x6osk18AEhzf0qbGfgEE5qb+O/9SwkZT7YeIuluyXR
+	WN0lTj/6rO+rP9Lmg/USEJhZW0lqpUS8lZpdaYZrsYRdKTMFLuqzKZq8Sf+8pzDAJoMX
+	0ivPNN0/Dbof8vy0W+TNnUhR5K504PA7gx+Wf7kHZu7bVBI83Hn4b0IANmRWpltDSRaB
+	Slig==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20161025;
+	h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+	:references;
+	bh=EibkUN8IJIqpJJK5IsXHteb/ZHMrTxt39Z45b4pq1jo=;
+	b=diUCqDOB9qmBrMq7MfdLLwtLfcCR5M03+5a/tq8RbKN8fIKRwd2wJjqaLquMkLr9gf
+	ykoyqlzRnjWZ2rJCSinCmjjbNIh2nlj6YFvkt72/tfTrvRWbuRDWSpz5roabEhO20I1L
+	7o9QkZiBv47fg5MA4FpsJ9OAQxfdIyjDDAlx2KjGzoct97Hjj40xzpQbExKTaa2Z7oEU
+	PAZcvSoHYqS3cvcnqHY8EulgEWg606RQbkLuKhE7gCuRFpxnzEl74Fi+AW0O1oQvF6NC
+	bWCaGN1+LZqzL1G/g9VQ3JSA65iOVdwjbjORz0h0Wjz9xXKpqlusL2Z5Mkxi7jJyZJ1B
+	0c6w==
+X-Gm-Message-State: ALQs6tAJMA2WYrPcneNq3m+crr94Id1YRP4RAET2gMiQi+YINYP3nuQO
+	VtsSVaIv8iIwg9Z+khwHycI=
+X-Google-Smtp-Source: 
+ AIpwx4/aYPCsXfmyA8sQnRau5JQ26ERBnGMvFinGBtUmCSMPUwEkkFF2kekM8l+RgwOD/Je6lE6gTg==
+X-Received: by 2002:a6b:5109:: with SMTP id
+	f9-v6mr491505iob.192.1524488124179;
+	Mon, 23 Apr 2018 05:55:24 -0700 (PDT)
+From: Igor Stoppa <igor.stoppa@gmail.com>
+X-Google-Original-From: Igor Stoppa <igor.stoppa@huawei.com>
+To: willy@infradead.org, keescook@chromium.org, paul@paul-moore.com,
+	sds@tycho.nsa.gov, mhocko@kernel.org, corbet@lwn.net
+Cc: labbott@redhat.com, linux-cc=david@fromorbit.com,
+	--cc=rppt@linux.vnet.ibm.com, --security-module@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-hardening@lists.openwall.com, igor.stoppa@gmail.com,
+	Igor Stoppa <igor.stoppa@huawei.com>
+Subject: [PATCH 1/9] struct page: add field for vm_struct
+Date: Mon, 23 Apr 2018 16:54:50 +0400
+Message-Id: <20180423125458.5338-2-igor.stoppa@huawei.com>
+X-Mailer: git-send-email 2.14.1
+In-Reply-To: <20180423125458.5338-1-igor.stoppa@huawei.com>
+References: <20180423125458.5338-1-igor.stoppa@huawei.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
+
+When a page is used for virtual memory, it is often necessary to obtain
+a handler to the corresponding vm_struct, which refers to the virtually
+continuous area generated when invoking vmalloc.
+
+The struct page has a "mapping" field, which can be re-used, to store a
+pointer to the parent area.
+
+This will avoid more expensive searches, later on.
+
+Signed-off-by: Igor Stoppa <igor.stoppa@huawei.com>
+Reviewed-by: Jay Freyensee <why2jjj.linux@gmail.com>
+Reviewed-by: Matthew Wilcox <mawilcox@microsoft.com>
+---
+ include/linux/mm_types.h | 1 +
+ mm/vmalloc.c             | 2 ++
+ 2 files changed, 3 insertions(+)
+
+diff --git a/include/linux/mm_types.h b/include/linux/mm_types.h
+index 21612347d311..c74e2aa9a48b 100644
+--- a/include/linux/mm_types.h
++++ b/include/linux/mm_types.h
+@@ -86,6 +86,7 @@ struct page {
+ 		void *s_mem;			/* slab first object */
+ 		atomic_t compound_mapcount;	/* first tail page */
+ 		/* page_deferred_list().next	 -- second tail page */
++		struct vm_struct *area;
+ 	};
+ 
+ 	/* Second double word */
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index ebff729cc956..61a1ca22b0f6 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -1536,6 +1536,7 @@ static void __vunmap(const void *addr, int deallocate_pages)
+ 			struct page *page = area->pages[i];
+ 
+ 			BUG_ON(!page);
++			page->area = NULL;
+ 			__free_pages(page, 0);
+ 		}
+ 
+@@ -1705,6 +1706,7 @@ static void *__vmalloc_area_node(struct vm_struct *area, gfp_t gfp_mask,
+ 			area->nr_pages = i;
+ 			goto fail;
+ 		}
++		page->area = area;
+ 		area->pages[i] = page;
+ 		if (gfpflags_allow_blocking(gfp_mask|highmem_mask))
+ 			cond_resched();

@@ -1,0 +1,325 @@
+From patchwork Mon Apr 23 12:54:54 2018
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: "igor.stoppa@gmail.com" <igor.stoppa@gmail.com>
+X-Patchwork-Id: 10356969
+Return-Path: 
+ <kernel-hardening-return-13093-patchwork-kernel-hardening=patchwork.kernel.org@lists.openwall.com>
+Received: from mail.wl.linuxfoundation.org (pdx-wl-mail.web.codeaurora.org
+	[172.30.200.125])
+	by pdx-korg-patchwork.web.codeaurora.org (Postfix) with ESMTP id
+	8FA39601D3 for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:56:39 +0000 (UTC)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+	by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 8124228AB0
+	for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:56:39 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+	id 75E1728AB9; Mon, 23 Apr 2018 12:56:39 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+	pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-5.3 required=2.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID, DKIM_VALID_AU, FREEMAIL_FROM, MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED autolearn=ham version=3.3.1
+Received: from mother.openwall.net (mother.openwall.net [195.42.179.200])
+	by mail.wl.linuxfoundation.org (Postfix) with SMTP id 45F4128AB0
+	for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:56:38 +0000 (UTC)
+Received: (qmail 23926 invoked by uid 550); 23 Apr 2018 12:55:59 -0000
+Mailing-List: contact kernel-hardening-help@lists.openwall.com; run by ezmlm
+Precedence: bulk
+List-Post: <mailto:kernel-hardening@lists.openwall.com>
+List-Help: <mailto:kernel-hardening-help@lists.openwall.com>
+List-Unsubscribe: <mailto:kernel-hardening-unsubscribe@lists.openwall.com>
+List-Subscribe: <mailto:kernel-hardening-subscribe@lists.openwall.com>
+List-ID: <kernel-hardening.lists.openwall.com>
+Delivered-To: mailing list kernel-hardening@lists.openwall.com
+Received: (qmail 23870 invoked from network); 23 Apr 2018 12:55:56 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gmail.com; s=20161025;
+	h=from:to:cc:subject:date:message-id:in-reply-to:references;
+	bh=kkq4S5sRXaA1eYcvYNv5kYCthxlN3nK5h1Yl4Y0OMYU=;
+	b=vgp+ZxMeQjY09EfTTOugcdlPHMVGv+Q7xuEK3TLFN8efNjL7A8B4QxWZANuNfQzZSZ
+	Pc1NeNGD/cykuChn4R1z6YShy4049GOG0+SX277lA5rayp0uF7RSH9yXM+k4G5GG8U+0
+	/DjBms7d1AuGIAadPbCHYQkobTZqCfPzigs5ucK0yfhJEgfl1oDaG8k55TXbMjcJ1PDb
+	lMuvG16LSYUzxooNtSBBtQbQhIW4+ZEWT1Vc9T1E16c/4Hriw8H+bXk1gk3zWvq1OCVD
+	PIJn6k4PhKa5Se9HDGxljUBEWL3nKtFN7jAyG16hkTn/FL4M25mNaAib1I3j45P8EhyD
+	KesQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20161025;
+	h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+	:references;
+	bh=kkq4S5sRXaA1eYcvYNv5kYCthxlN3nK5h1Yl4Y0OMYU=;
+	b=cCbzjuRX1Va/LwkFx3JeVY9wQ1pQVz+wn6apW1nkDkDbdmcuvhg2Ji9Hzz9+OcDuvu
+	Z8DKI124iVyIio9s7eX0012++nSqJrsv8Yl3D85W3lbXsRf39bTRgkWMsrb8AH/iE0df
+	fIg5zI/BBDPvIRPFebq8SwFZkGc4Q2qOguBnafIz74bqp5W1sbmlx90m4v1YbmjbMNZ8
+	yxVjd1TWIWJ4vNH/M5iDV7xaLcOi1kusqNq+5zv4hkz4dCCrSVQjpRbc3plfVdIRKqHn
+	FNAlwZeLfbrAEqIczBEc1R82ifQbhi9oXwcJoB5owXG19Ou6xZ7tG2AOJyStEwTSIDlY
+	BzfQ==
+X-Gm-Message-State: ALQs6tD5XL+sYfdtjLkhTRHta41BaS+k3bUHZ3VxpULIPi+lePjFnTW5
+	cqIbotmD9Wur/gVPgGH6nrE=
+X-Google-Smtp-Source: 
+ AB8JxZpBtYyAXpn09Q4AArruQij0T6mRCix4IXf9mraPp+mhd6b3fR/BgBwJ89ElS+bW9hgtAFZs1g==
+X-Received: by 2002:a24:30c4:: with SMTP id
+	q187-v6mr1123812itq.19.1524488144486;
+	Mon, 23 Apr 2018 05:55:44 -0700 (PDT)
+From: Igor Stoppa <igor.stoppa@gmail.com>
+X-Google-Original-From: Igor Stoppa <igor.stoppa@huawei.com>
+To: willy@infradead.org, keescook@chromium.org, paul@paul-moore.com,
+	sds@tycho.nsa.gov, mhocko@kernel.org, corbet@lwn.net
+Cc: labbott@redhat.com, linux-cc=david@fromorbit.com,
+	--cc=rppt@linux.vnet.ibm.com, --security-module@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-hardening@lists.openwall.com, igor.stoppa@gmail.com,
+	Igor Stoppa <igor.stoppa@huawei.com>
+Subject: [PATCH 5/9] Pmalloc selftest
+Date: Mon, 23 Apr 2018 16:54:54 +0400
+Message-Id: <20180423125458.5338-6-igor.stoppa@huawei.com>
+X-Mailer: git-send-email 2.14.1
+In-Reply-To: <20180423125458.5338-1-igor.stoppa@huawei.com>
+References: <20180423125458.5338-1-igor.stoppa@huawei.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
+
+Add basic self-test functionality for pmalloc.
+
+The testing is introduced as early as possible, right after the main
+dependency, genalloc, has passed successfully, so that it can help
+diagnosing failures in pmalloc users.
+
+Signed-off-by: Igor Stoppa <igor.stoppa@huawei.com>
+---
+ include/linux/test_pmalloc.h |  24 ++++++++
+ init/main.c                  |   2 +
+ mm/Kconfig                   |  10 ++++
+ mm/Makefile                  |   1 +
+ mm/test_pmalloc.c            | 138 +++++++++++++++++++++++++++++++++++++++++++
+ 5 files changed, 175 insertions(+)
+ create mode 100644 include/linux/test_pmalloc.h
+ create mode 100644 mm/test_pmalloc.c
+
+diff --git a/include/linux/test_pmalloc.h b/include/linux/test_pmalloc.h
+new file mode 100644
+index 000000000000..c7e2e451c17c
+--- /dev/null
++++ b/include/linux/test_pmalloc.h
+@@ -0,0 +1,24 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * test_pmalloc.h
++ *
++ * (C) Copyright 2018 Huawei Technologies Co. Ltd.
++ * Author: Igor Stoppa <igor.stoppa@huawei.com>
++ */
++
++
++#ifndef __LINUX_TEST_PMALLOC_H
++#define __LINUX_TEST_PMALLOC_H
++
++
++#ifdef CONFIG_TEST_PROTECTABLE_MEMORY
++
++void test_pmalloc(void);
++
++#else
++
++static inline void test_pmalloc(void){};
++
++#endif
++
++#endif
+diff --git a/init/main.c b/init/main.c
+index b795aa341a3a..27f8479c4578 100644
+--- a/init/main.c
++++ b/init/main.c
+@@ -91,6 +91,7 @@
+ #include <linux/cache.h>
+ #include <linux/rodata_test.h>
+ #include <linux/jump_label.h>
++#include <linux/test_pmalloc.h>
+ 
+ #include <asm/io.h>
+ #include <asm/bugs.h>
+@@ -679,6 +680,7 @@ asmlinkage __visible void __init start_kernel(void)
+ 	 */
+ 	mem_encrypt_init();
+ 
++	test_pmalloc();
+ #ifdef CONFIG_BLK_DEV_INITRD
+ 	if (initrd_start && !initrd_below_start_ok &&
+ 	    page_to_pfn(virt_to_page((void *)initrd_start)) < min_low_pfn) {
+diff --git a/mm/Kconfig b/mm/Kconfig
+index d7ef40eaa4e8..f98b4c0aebce 100644
+--- a/mm/Kconfig
++++ b/mm/Kconfig
+@@ -758,3 +758,13 @@ config PROTECTABLE_MEMORY
+     depends on MMU
+     depends on ARCH_HAS_SET_MEMORY
+     default y
++
++config TEST_PROTECTABLE_MEMORY
++	bool "Run self test for pmalloc memory allocator"
++        depends on MMU
++	depends on ARCH_HAS_SET_MEMORY
++	select PROTECTABLE_MEMORY
++	default n
++	help
++	  Tries to verify that pmalloc works correctly and that the memory
++	  is effectively protected.
+diff --git a/mm/Makefile b/mm/Makefile
+index 6a6668f99799..802cba37013b 100644
+--- a/mm/Makefile
++++ b/mm/Makefile
+@@ -66,6 +66,7 @@ obj-$(CONFIG_SPARSEMEM_VMEMMAP) += sparse-vmemmap.o
+ obj-$(CONFIG_SLOB) += slob.o
+ obj-$(CONFIG_MMU_NOTIFIER) += mmu_notifier.o
+ obj-$(CONFIG_PROTECTABLE_MEMORY) += pmalloc.o
++obj-$(CONFIG_TEST_PROTECTABLE_MEMORY) += test_pmalloc.o
+ obj-$(CONFIG_KSM) += ksm.o
+ obj-$(CONFIG_PAGE_POISONING) += page_poison.o
+ obj-$(CONFIG_SLAB) += slab.o
+diff --git a/mm/test_pmalloc.c b/mm/test_pmalloc.c
+new file mode 100644
+index 000000000000..032e9741c5f1
+--- /dev/null
++++ b/mm/test_pmalloc.c
+@@ -0,0 +1,138 @@
++// SPDX-License-Identifier: GPL-2.0
++/*
++ * test_pmalloc.c
++ *
++ * (C) Copyright 2018 Huawei Technologies Co. Ltd.
++ * Author: Igor Stoppa <igor.stoppa@huawei.com>
++ */
++
++#include <linux/pmalloc.h>
++#include <linux/mm.h>
++#include <linux/test_pmalloc.h>
++#include <linux/bug.h>
++
++#include "pmalloc_helpers.h"
++
++#define SIZE_1 (PAGE_SIZE * 3)
++#define SIZE_2 1000
++
++/* wrapper for is_pmalloc_object() with messages */
++static inline bool validate_alloc(bool expected, void *addr,
++				  unsigned long size)
++{
++	bool test;
++
++	test = is_pmalloc_object(addr, size) > 0;
++	pr_notice("must be %s: %s",
++		  expected ? "ok" : "no", test ? "ok" : "no");
++	return test == expected;
++}
++
++
++#define is_alloc_ok(variable, size)	\
++	validate_alloc(true, variable, size)
++
++
++#define is_alloc_no(variable, size)	\
++	validate_alloc(false, variable, size)
++
++/* tests the basic life-cycle of a pool */
++static bool create_and_destroy_pool(void)
++{
++	static struct pmalloc_pool *pool;
++
++	pr_notice("Testing pool creation and destruction capability");
++
++	pool = pmalloc_create_pool();
++	if (WARN(!pool, "Cannot allocate memory for pmalloc selftest."))
++		return false;
++	pmalloc_destroy_pool(pool);
++	return true;
++}
++
++
++/*  verifies that it's possible to allocate from the pool */
++static bool test_alloc(void)
++{
++	static struct pmalloc_pool *pool;
++	static void *p;
++
++	pr_notice("Testing allocation capability");
++	pool = pmalloc_create_pool();
++	if (WARN(!pool, "Unable to allocate memory for pmalloc selftest."))
++		return false;
++	p = pmalloc(pool,  SIZE_1 - 1);
++	pmalloc_protect_pool(pool);
++	pmalloc_destroy_pool(pool);
++	if (WARN(!p, "Failed to allocate memory from the pool"))
++		return false;
++	return true;
++}
++
++
++/* tests the identification of pmalloc ranges */
++static bool test_is_pmalloc_object(void)
++{
++	struct pmalloc_pool *pool;
++	void *pmalloc_p;
++	void *vmalloc_p;
++	bool retval = false;
++
++	pr_notice("Test correctness of is_pmalloc_object()");
++
++	vmalloc_p = vmalloc(SIZE_1);
++	if (WARN(!vmalloc_p,
++		 "Unable to allocate memory for pmalloc selftest."))
++		return false;
++	pool = pmalloc_create_pool();
++	if (WARN(!pool, "Unable to allocate memory for pmalloc selftest."))
++		return false;
++	pmalloc_p = pmalloc(pool,  SIZE_1 - 1);
++	if (WARN(!pmalloc_p, "Failed to allocate memory from the pool"))
++		goto error;
++	if (WARN_ON(unlikely(!is_alloc_ok(pmalloc_p, 10))) ||
++	    WARN_ON(unlikely(!is_alloc_ok(pmalloc_p, SIZE_1))) ||
++	    WARN_ON(unlikely(!is_alloc_ok(pmalloc_p, PAGE_SIZE))) ||
++	    WARN_ON(unlikely(!is_alloc_no(pmalloc_p, SIZE_1 + 1))) ||
++	    WARN_ON(unlikely(!is_alloc_no(vmalloc_p, 10))))
++		goto error;
++	retval = true;
++error:
++	pmalloc_protect_pool(pool);
++	pmalloc_destroy_pool(pool);
++	vfree(vmalloc_p);
++	return retval;
++}
++
++/* Test out of virtually contiguous memory */
++static void test_oovm(void)
++{
++	struct pmalloc_pool *pool;
++	unsigned int i;
++
++	pr_notice("Exhaust vmalloc memory with doubling allocations.");
++	pool = pmalloc_create_pool();
++	if (WARN(!pool, "Failed to create pool"))
++		return;
++	for (i = 1; i; i *= 2)
++		if (unlikely(!pzalloc(pool, i - 1)))
++			break;
++	pr_notice("vmalloc oom at %d allocation", i - 1);
++	pmalloc_protect_pool(pool);
++	pmalloc_destroy_pool(pool);
++}
++
++/**
++ * test_pmalloc()  -main entry point for running the test cases
++ */
++void test_pmalloc(void)
++{
++
++	pr_notice("pmalloc-selftest");
++
++	if (unlikely(!(create_and_destroy_pool() &&
++		       test_alloc() &&
++		       test_is_pmalloc_object())))
++		return;
++	test_oovm();
++}

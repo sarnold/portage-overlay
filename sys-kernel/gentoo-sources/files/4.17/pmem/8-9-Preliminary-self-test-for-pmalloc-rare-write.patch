@@ -1,0 +1,184 @@
+From patchwork Mon Apr 23 12:54:57 2018
+Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 7bit
+X-Patchwork-Submitter: "igor.stoppa@gmail.com" <igor.stoppa@gmail.com>
+X-Patchwork-Id: 10356979
+Return-Path: 
+ <kernel-hardening-return-13096-patchwork-kernel-hardening=patchwork.kernel.org@lists.openwall.com>
+Received: from mail.wl.linuxfoundation.org (pdx-wl-mail.web.codeaurora.org
+	[172.30.200.125])
+	by pdx-korg-patchwork.web.codeaurora.org (Postfix) with ESMTP id
+	18EBF601D3 for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:57:14 +0000 (UTC)
+Received: from mail.wl.linuxfoundation.org (localhost [127.0.0.1])
+	by mail.wl.linuxfoundation.org (Postfix) with ESMTP id 08A6428AB0
+	for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:57:14 +0000 (UTC)
+Received: by mail.wl.linuxfoundation.org (Postfix, from userid 486)
+	id F107228ABE; Mon, 23 Apr 2018 12:57:13 +0000 (UTC)
+X-Spam-Checker-Version: SpamAssassin 3.3.1 (2010-03-16) on
+	pdx-wl-mail.web.codeaurora.org
+X-Spam-Level: 
+X-Spam-Status: No, score=-5.3 required=2.0 tests=BAYES_00,DKIM_SIGNED,
+	DKIM_VALID, DKIM_VALID_AU, FREEMAIL_FROM, MAILING_LIST_MULTI,
+	RCVD_IN_DNSWL_MED autolearn=ham version=3.3.1
+Received: from mother.openwall.net (mother.openwall.net [195.42.179.200])
+	by mail.wl.linuxfoundation.org (Postfix) with SMTP id ED8C228AC6
+	for <patchwork-kernel-hardening@patchwork.kernel.org>;
+	Mon, 23 Apr 2018 12:57:12 +0000 (UTC)
+Received: (qmail 24261 invoked by uid 550); 23 Apr 2018 12:56:07 -0000
+Mailing-List: contact kernel-hardening-help@lists.openwall.com; run by ezmlm
+Precedence: bulk
+List-Post: <mailto:kernel-hardening@lists.openwall.com>
+List-Help: <mailto:kernel-hardening-help@lists.openwall.com>
+List-Unsubscribe: <mailto:kernel-hardening-unsubscribe@lists.openwall.com>
+List-Subscribe: <mailto:kernel-hardening-subscribe@lists.openwall.com>
+List-ID: <kernel-hardening.lists.openwall.com>
+Delivered-To: mailing list kernel-hardening@lists.openwall.com
+Received: (qmail 24136 invoked from network); 23 Apr 2018 12:56:04 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=gmail.com; s=20161025;
+	h=from:to:cc:subject:date:message-id:in-reply-to:references;
+	bh=U09LcbMGiUra9N5GfBrZ9Z2qeNHUrpNbiO9P5fSzuZo=;
+	b=Xq0nRWIzsNFVfRgaixwK4d1eP8JPeOGZar3QT2Iz76LE9wA2SfQNH/T6SRrJeVGs2D
+	L7WLLC/wM6UlMKdCt+MmlzClr3quHmDnsIL2zERqQc6FVGkVwImJY5AJZPW3Xzu2aRcS
+	PIyS06ne8RCfkNJyXm1/VDCwmvNjiXTZo+dMtwX4ngKECAJZEInYy7tXpaGns8LrfLuN
+	Yq1Zs5rzBYN90zeQ8nUtdc9ZjyIc3yIKkrF6BGBbGt/GJCg1zweFKUDcnUzIR6p10AGe
+	hNK3piYoAlOGBLBDiGJcf6MjxYJdeV7HwIgD6M9ldoZxrPFHMatYRBFJPP66FW05hYio
+	hKyg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=1e100.net; s=20161025;
+	h=x-gm-message-state:from:to:cc:subject:date:message-id:in-reply-to
+	:references;
+	bh=U09LcbMGiUra9N5GfBrZ9Z2qeNHUrpNbiO9P5fSzuZo=;
+	b=ldVooaUdWm4BaFmsvrCtzURIVyeNPNQ9AEF2mXMNplTqfdK4VFHL18+N1ODIXWSdR5
+	tEqYDuVqNO5BrIKqVR4dTmiG/rZo2n3FFCOD8jcojoXyeE+tkZw7S0vxR6I3Oa80ABIk
+	LDWflZQ+19T1Aql6GnBa3Yv5Y3k48lZ4OelguIJgHQExAFhY0dyDYZO+ly2GHfGKJIIZ
+	N1swpQD9sTmv3G/PbXVkc5IKcKHw9pqvuY65zmoQ9DGtU1Z5YlIOWAormEz10TEBr5HQ
+	GUvPpORE8320PpG7oafbPoFC/V0d2Z4+rbMIb7p446tPeQLEtz3GHvwkJr3YScJz8k97
+	FTeQ==
+X-Gm-Message-State: ALQs6tCT4AXCcF+ooR7reR4pyY0eqj1d3iOTe6EgsPJUUQOk4tEdOCOz
+	8Jm+V2XVlzSQw5eNBs4IXqg=
+X-Google-Smtp-Source: 
+ AB8JxZpjg7PDkDI2ZW0SR+RASgkcPtvVpwZRUiri7WbP3zghif8OJQ+lWVd5SfHFymB09G1o1gijMg==
+X-Received: by 2002:a6b:c882:: with SMTP id
+	y124-v6mr22567384iof.64.1524488152791;
+	Mon, 23 Apr 2018 05:55:52 -0700 (PDT)
+From: Igor Stoppa <igor.stoppa@gmail.com>
+X-Google-Original-From: Igor Stoppa <igor.stoppa@huawei.com>
+To: willy@infradead.org, keescook@chromium.org, paul@paul-moore.com,
+	sds@tycho.nsa.gov, mhocko@kernel.org, corbet@lwn.net
+Cc: labbott@redhat.com, linux-cc=david@fromorbit.com,
+	--cc=rppt@linux.vnet.ibm.com, --security-module@vger.kernel.org,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	kernel-hardening@lists.openwall.com, igor.stoppa@gmail.com,
+	Igor Stoppa <igor.stoppa@huawei.com>
+Subject: [PATCH 8/9] Preliminary self test for pmalloc rare write
+Date: Mon, 23 Apr 2018 16:54:57 +0400
+Message-Id: <20180423125458.5338-9-igor.stoppa@huawei.com>
+X-Mailer: git-send-email 2.14.1
+In-Reply-To: <20180423125458.5338-1-igor.stoppa@huawei.com>
+References: <20180423125458.5338-1-igor.stoppa@huawei.com>
+X-Virus-Scanned: ClamAV using ClamSMTP
+
+Try to alter locked but modifiable pools.
+The test neds some cleanup and expansion.
+It is provided primarily as reference.
+
+Signed-off-by: Igor Stoppa <igor.stoppa@huawei.com>
+---
+ mm/test_pmalloc.c | 75 +++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 75 insertions(+)
+
+diff --git a/mm/test_pmalloc.c b/mm/test_pmalloc.c
+index c8835207a400..e8e945e4a4a3 100644
+--- a/mm/test_pmalloc.c
++++ b/mm/test_pmalloc.c
+@@ -122,6 +122,80 @@ static void test_oovm(void)
+ 	pmalloc_destroy_pool(pool);
+ }
+ 
++#define REGION_SIZE (PAGE_SIZE / 4)
++#define REGION_NUMBERS 12
++static inline void fill_region(char *addr, char c)
++{
++	size_t i;
++
++	for (i = 0; i < REGION_SIZE - 1; i++)
++		addr[i] = c;
++	addr[i] = '\0';
++}
++
++static inline void init_regions(char *array)
++{
++	size_t i;
++
++	for (i = 0; i < REGION_NUMBERS; i++)
++		fill_region(array + REGION_SIZE * i, i + 'A');
++}
++
++static inline void show_regions(char *array)
++{
++	size_t i;
++
++	for (i = 0; i < REGION_NUMBERS; i++)
++		pr_info("%s", array + REGION_SIZE * i);
++}
++
++static inline void init_big_injection(char *big_injection)
++{
++	size_t i;
++
++	for (i = 0; i < PAGE_SIZE * 3; i++)
++		big_injection[i] = 'X';
++}
++
++/* Verify rewritable feature. */
++static int test_rare_write(void)
++{
++	struct pmalloc_pool *pool;
++	char *array;
++	char injection[] = "123456789";
++	unsigned short size = sizeof(injection);
++	char *big_injection;
++
++
++	pr_notice("Test pmalloc_rare_write()");
++	pool = pmalloc_create_pool(PMALLOC_RW);
++	array = pzalloc(pool, REGION_SIZE * REGION_NUMBERS);
++	init_regions(array);
++	pmalloc_protect_pool(pool);
++	pr_info("------------------------------------------------------");
++	pmalloc_rare_write(pool, array, injection, size);
++	pmalloc_rare_write(pool, array + REGION_SIZE, injection, size);
++	pmalloc_rare_write(pool,
++			   array + 5 * REGION_SIZE / 2 - size / 2,
++			   injection, size);
++	pmalloc_rare_write(pool, array + 3 * REGION_SIZE - size / 2,
++			   injection, size);
++	show_regions(array);
++	pmalloc_destroy_pool(pool);
++	pr_info("------------------------------------------------------");
++	pool = pmalloc_create_pool(PMALLOC_RW);
++	array = pzalloc(pool, REGION_SIZE * REGION_NUMBERS);
++	init_regions(array);
++	pmalloc_protect_pool(pool);
++	big_injection = vmalloc(PAGE_SIZE * 3);
++	init_big_injection(big_injection);
++	pmalloc_rare_write(pool, array + REGION_SIZE / 2, big_injection,
++			   PAGE_SIZE * 2);
++	show_regions(array);
++	pr_info("------------------------------------------------------");
++	return 0;
++}
++
+ /**
+  * test_pmalloc()  -main entry point for running the test cases
+  */
+@@ -135,4 +209,5 @@ void test_pmalloc(void)
+ 		       test_is_pmalloc_object())))
+ 		return;
+ 	test_oovm();
++	test_rare_write();
+ }
