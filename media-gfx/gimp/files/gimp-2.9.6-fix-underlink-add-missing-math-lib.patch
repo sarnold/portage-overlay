@@ -1,0 +1,22 @@
+--- a/libgimpbase/Makefile.am	2017-08-29 21:30:16.411311063 -0700
++++ b/libgimpbase/Makefile.am	2017-08-29 21:36:03.955528638 -0700
+@@ -43,6 +43,9 @@
+ uninstall-ms-lib:
+ endif
+ 
++# stop underlinking with newer binutils/gold
++math_lib = -lm
++
+ libgimpbaseincludedir = $(includedir)/gimp-$(GIMP_API_VERSION)/libgimpbase
+ 
+ AM_CPPFLAGS = \
+@@ -169,7 +172,8 @@
+ libgimpbase_@GIMP_API_VERSION@_la_LIBADD = \
+ 	$(GIO_LIBS)	\
+ 	$(GEXIV2_LIBS)	\
+-	$(ole32_lib)
++	$(ole32_lib) \
++	$(math_lib)
+ 
+ install-data-local: install-ms-lib install-libtool-import-lib
+ 

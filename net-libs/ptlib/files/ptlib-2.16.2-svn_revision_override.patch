@@ -1,0 +1,11 @@
+--- a/src/ptlib/common/osutils.cxx	2017-07-25 19:08:22.891248347 -0700
++++ b/src/ptlib/common/osutils.cxx	2017-07-25 19:13:18.297132538 -0700
+@@ -44,7 +44,7 @@
+ #include <ptlib/svcproc.h>
+ #include <ptlib/pluginmgr.h>
+ #include "../../../version.h"
+-#include "../../../revision.h"
++# define SVN_REVISION 0
+ 
+ #ifdef _WIN32
+   #include <ptlib/msos/ptlib/debstrm.h>

@@ -1,0 +1,21 @@
+--- colm-0.13.0.4/src/bytecode.c.32bit	2016-06-30 01:20:03.000000000 +0900
++++ colm-0.13.0.4/src/bytecode.c	2017-02-19 15:06:52.167272480 +0900
+@@ -60,12 +60,12 @@ typedef struct colm_struct struct_t;
+ #if SIZEOF_LONG == 4
+ 
+ 	#define read_type( type, i ) do { \
+-		word_t w; \
+-		w = ((word_t) *instr++); \
+-		w |= ((word_t) *instr++) << 8; \
+-		w |= ((word_t) *instr++) << 16; \
+-		w |= ((word_t) *instr++) << 24; \
+-		i = (type) w; \
++		word_t _w; \
++		_w = ((word_t) *instr++); \
++		_w |= ((word_t) *instr++) << 8; \
++		_w |= ((word_t) *instr++) << 16; \
++		_w |= ((word_t) *instr++) << 24; \
++		i = (type) _w; \
+ 	} while(0)
+ 
+ 	#define read_type_p( Type, i, p ) do { \

@@ -1,0 +1,30 @@
+--- a/plugins/video/common/platform.h	2017-07-25 14:34:52.641104250 -0700
++++ b/plugins/video/common/platform.h	2017-07-25 14:35:31.048983136 -0700
+@@ -36,7 +36,9 @@
+ #ifndef __PLATFORM_H__
+ #define __PLATFORM_H__ 1
+ 
++#ifndef __STDC_CONSTANT_MACROS
+ #define __STDC_CONSTANT_MACROS 1
++#endif
+ 
+ #if defined (_MSC_VER)
+   #define _CRT_NONSTDC_NO_DEPRECATE 1
+--- a/plugins/video/H.264/Makefile.in	2017-07-25 18:12:35.627121325 -0700
++++ b/plugins/video/H.264/Makefile.in	2017-07-25 18:14:32.024067983 -0700
+@@ -28,13 +28,14 @@
+ 
+ SHAREDDIR := ./shared
+ COMMONDIR := ../common
++FFMPEGDIR := $(COMMONDIR)/ffmpeg
+ SRCDIR    := .
+ SRCS    += h264-x264.cxx \
+            $(SHAREDDIR)/h264frame.cxx \
+            $(SHAREDDIR)/x264wrap.cxx \
+            $(COMMONDIR)/dyna.cxx \
+ 
+-CFLAGS += @LIBAVCODEC_CFLAGS@ -I$(COMMONDIR) -DLIB_DIR='"$(libdir)"' -DVC_PLUGIN_DIR='"@VC_PLUGIN_DIR@"'
++CFLAGS += @LIBAVCODEC_CFLAGS@ -I$(COMMONDIR) -I$(FFMPEGDIR) -DLIB_DIR='"$(libdir)"' -DVC_PLUGIN_DIR='"@VC_PLUGIN_DIR@"'
+ LIBS   += @DL_LIBS@
+ 
+ IS_H264_LICENSED:=@IS_H264_LICENSED@

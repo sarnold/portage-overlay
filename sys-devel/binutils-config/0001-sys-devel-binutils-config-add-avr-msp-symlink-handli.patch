@@ -1,0 +1,52 @@
+From deb1060252071f78d77acc3ec7462183203b7942 Mon Sep 17 00:00:00 2001
+From: Steve Arnold <nerdboy@gentoo.org>
+Date: Wed, 22 Nov 2017 00:18:50 -0800
+Subject: [PATCH] sys-devel/binutils-config: add avr/msp symlink handling
+
+* fixes bug #147155 for all the happy arduino people
+
+Signed-off-by: Steve Arnold <nerdboy@gentoo.org>
+---
+ sys-devel/binutils-config/Manifest                                | 7 -------
+ .../{binutils-config-5-r3.ebuild => binutils-config-5-r4.ebuild}  | 0
+ sys-devel/binutils-config/files/binutils-config-5                 | 8 ++++++--
+ 2 files changed, 6 insertions(+), 9 deletions(-)
+ rename sys-devel/binutils-config/{binutils-config-5-r3.ebuild => binutils-config-5-r4.ebuild} (100%)
+
+diff --git a/sys-devel/binutils-config/binutils-config-5-r3.ebuild b/sys-devel/binutils-config/binutils-config-5-r4.ebuild
+similarity index 100%
+rename from sys-devel/binutils-config/binutils-config-5-r3.ebuild
+rename to sys-devel/binutils-config/binutils-config-5-r4.ebuild
+diff --git a/sys-devel/binutils-config/files/binutils-config-5 b/sys-devel/binutils-config/files/binutils-config-5
+index acb72b7..e6c5fac 100755
+--- a/sys-devel/binutils-config/files/binutils-config-5
++++ b/sys-devel/binutils-config/files/binutils-config-5
+@@ -1,5 +1,5 @@
+ #!/bin/bash
+-# Copyright 1999-2015 Gentoo Foundation
++# Copyright 1999-2017 Gentoo Foundation
+ # Distributed under the terms of the GNU General Public License v2
+ 
+ # Format of /etc/env.d/binutils/:
+@@ -145,13 +145,17 @@ switch_profile() {
+ 	cd "${ROOT}/${LIBPATH}" || exit 1
+ 	if [[ ${TARGET} == ${HOST} ]] ; then
+ 		dstlib=${EROOT}/usr/${HOST}/lib
++	elif [[ -d ${EROOT}/usr/${TARGET}/lib ]] ; then
++		# true for at least avr and msp targets
++		dstlib=${EROOT}/usr/${TARGET}/lib
+ 	else
+ 		dstlib=${EROOT}/usr/${HOST}/${TARGET}/lib
+ 	fi
+ 	# When upgrading, we need to clean up ldscripts and libs.
+ 	# Don't symlink back in the libs -- the binutils-lib package handles
+ 	# these now.
+-	# TODO: Stop requiring even the ldscripts symlink.
++	# TODO: Stop requiring even the ldscripts symlink, except
++	# we can't for bare-metal toolchains, so...  bug #147155
+ 	mkdir -p "${dstlib}"
+ 	rm -rf "${ROOT}/${BINPATH_LINKS}"/ldscripts
+ 	atomic_ln "${LIBPATH}/ldscripts" "${dstlib}" "ldscripts"
+-- 
+2.15.0
+

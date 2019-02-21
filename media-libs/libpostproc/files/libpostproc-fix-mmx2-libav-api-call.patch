@@ -1,0 +1,13 @@
+diff -r -u a/libpostproc/postprocess.c b/libpostproc/postprocess.c
+--- a/libpostproc/postprocess.c	2014-05-12 19:58:14.000000000 +0300
++++ b/libpostproc/postprocess.c	2017-06-08 01:28:55.308429741 +0300
+@@ -961,7 +961,7 @@
+ 
+         if (caps & AV_CPU_FLAG_MMX)
+             cpuCaps |= PP_CPU_CAPS_MMX;
+-        if (caps & AV_CPU_FLAG_MMX2)
++        if (caps & AV_CPU_FLAG_MMXEXT)
+             cpuCaps |= PP_CPU_CAPS_MMX2;
+         if (caps & AV_CPU_FLAG_3DNOW)
+             cpuCaps |= PP_CPU_CAPS_3DNOW;
+

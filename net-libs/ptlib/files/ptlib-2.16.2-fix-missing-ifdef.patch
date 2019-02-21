@@ -1,0 +1,10 @@
+--- a/src/ptlib/unix/shmvideo.cxx	2017-07-25 19:53:31.855801265 -0700
++++ b/src/ptlib/unix/shmvideo.cxx	2017-07-25 19:53:54.039827257 -0700
+@@ -25,6 +25,7 @@
+ #include <ptlib/vconvert.h>
+ #include <ptlib/unix/ptlib/shmvideo.h>
+ 
++#if P_SHM_VIDEO
+ 
+ class PColourConverter;
+ 

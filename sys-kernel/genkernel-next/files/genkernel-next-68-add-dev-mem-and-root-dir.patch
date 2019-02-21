@@ -1,0 +1,37 @@
+--- a/gen_initramfs.sh	2018-04-01 17:28:06.427292732 -0700
++++ b/gen_initramfs.sh	2018-04-01 17:44:44.433949745 -0700
+@@ -88,6 +88,7 @@
+     mkdir -p ${TEMP}/initramfs-base-temp/run
+     mkdir -p ${TEMP}/initramfs-base-temp/sbin
+     mkdir -p ${TEMP}/initramfs-base-temp/proc
++    mkdir -p ${TEMP}/initramfs-base-temp/root
+     mkdir -p ${TEMP}/initramfs-base-temp/temp
+     mkdir -p ${TEMP}/initramfs-base-temp/tmp
+     mkdir -p ${TEMP}/initramfs-base-temp/sys
+@@ -111,7 +112,12 @@
+     mknod -m 600 tty0 c 4 0 || gen_die "cannot mknod"
+     mknod -m 600 tty1 c 4 1 || gen_die "cannot mknod"
+     mknod -m 600 ttyS0 c 4 64 || gen_die "cannot mknod"
+-    chmod 1777 shm || gen_die "cannot mknod" # bug 476278
++    if [[ "${SPLASH}" = yes || "${PLYMOUTH}" = yes ]]
++    then
++       mknod -m 600 mem c 1 1 || gen_die "failed to mknod!"
++    fi
++
++    chmod 1777 shm || gen_die "cannot chmod" # bug 476278
+ 
+     date -u '+%Y%m%d-%H%M%S' > ${TEMP}/initramfs-base-temp/etc/build_date
+     echo "Genkernel $GK_V" > ${TEMP}/initramfs-base-temp/etc/build_id
+@@ -601,7 +601,11 @@
+         IFS=","
+         for i in ${FIRMWARE_FILES}
+         do
+-            cp -L "${i}" ${TEMP}/initramfs-firmware-temp/lib/firmware/
++            if [ -d "${i}" ]; then
++                cp -a "${i}" ${TEMP}/initramfs-firmware-temp/lib/firmware/
++            else
++                cp -L "${i}" ${TEMP}/initramfs-firmware-temp/lib/firmware/
++           fi
+         done
+         IFS=$OLD_IFS
+     else
