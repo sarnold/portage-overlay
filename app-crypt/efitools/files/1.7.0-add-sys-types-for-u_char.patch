@@ -1,0 +1,10 @@
+--- a/lib/asn1/oid.c	2018-01-30 23:32:14.056525191 -0800
++++ b/lib/asn1/oid.c	2018-01-30 23:32:48.927594804 -0800
+@@ -6,6 +6,7 @@
+  */
+ 
+ #include <stdlib.h>
++#include <sys/types.h>
+ 
+ #include "oid.h"
+ 

@@ -1,0 +1,27 @@
+--- a/src/Makefile.am	2019-01-02 18:59:15.192052884 -0800
++++ b/src/Makefile.am	2019-01-02 19:01:26.421191719 -0800
+@@ -51,3 +51,8 @@
+ SUBDIRS += XCCDF_POLICY
+ libopenscap_la_LIBADD += XCCDF_POLICY/libxccdf_policy.la
+ libopenscap_testing_la_LIBADD += XCCDF_POLICY/libxccdf_policy.la
++
++if USE_GOLD_LINKER
++libopenscap_la_LIBADD += -ldl
++libopenscap_testing_la_LIBADD += -ldl
++endif
+--- a/configure.ac	2019-01-02 18:59:41.642551044 -0800
++++ b/configure.ac	2019-01-02 18:59:51.629405817 -0800
+@@ -84,6 +84,13 @@
+ CFLAGS="$my_save_cflags"
+ AC_SUBST([AM_CFLAGS])
+ 
++# Enable use of gold linker when building the Swift overlay
++# to avoid a symbol relocation issue.
++# Ultimately the request to use gold should be passed in as an arg
++#
++AC_CHECK_PROG(use_gold_linker, ld.gold, true, false)
++AM_CONDITIONAL(USE_GOLD_LINKER, $use_gold_linker)
++
+ probe_family_req_deps_ok=yes
+ probe_family_req_deps_missing=
+ probe_family_opt_deps_ok=yes
