@@ -48,7 +48,7 @@ index 000000000000..8c8b0b25b90f
 +make bootsplash-packer
 +
 +
-+# Let's put Tux in the center of an orange background.
++# Let's put the logo in the center of a white background.
 +./bootsplash-packer \
 +	--bg_red 0xe1 \
 +	--bg_green 0xd9 \
