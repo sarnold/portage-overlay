@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer type="project">
+	<email>gnome@gentoo.org</email>
+	<name>Gentoo GNOME Desktop</name>
+</maintainer>
+<longdescription lang="en">
+	GNOME MultiWriter can be used to write an IMG or ISO file to multiple
+	USB devices at once. Supported drive sizes are between 1Gb and 32Gb.
+</longdescription>
+<upstream>
+	<remote-id type="github">GNOME/gnome-multi-writer</remote-id>
+</upstream>
+</pkgmetadata>
