@@ -6,13 +6,13 @@ EAPI="6"
 ETYPE="sources"
 UNIPATCH_STRICTORDER="1"
 K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="34"
+K_GENPATCHES_VER="130"
 
 SPLASH_PATCH="linux-4.14-bootsplash-patches-for-kernel-space-fbc.patch"
 SPL_PATCH_URI="mirror://gentoo/${SPLASH_PATCH}.gz"
 LOGO_PATCH="linux-4.14-bootsplash-add-gentoo-logo-build-script.patch"
 
-inherit kernel-2
+inherit eutils kernel-2
 detect_version
 detect_arch
 
