@@ -8,7 +8,7 @@ UNIPATCH_STRICTORDER="1"
 K_WANT_GENPATCHES="base extras experimental"
 K_GENPATCHES_VER="18"
 
-inherit eutils kernel-2
+inherit kernel-2 eutils
 detect_version
 detect_arch
 
@@ -35,14 +35,14 @@ script in the above directory (a sample tux bootsplash is provided).
 Then install the splash file as shown and add the cmdline parameter."
 
 src_unpack() {
-	# need to unpack manually and depend on git due to patch reqs below
+	# must unpack first manually and depend on git due to patch reqs below
 	unpack ${SPLASH_PATCH}.gz
 
 	kernel-2_src_unpack
 }
 
 src_prepare() {
-	# We can't use unipatch or epatch here due to the git binary
+	# We can't use unipatch or eapply here due to the git binary
 	# diffs that always cause dry-run errors (even with --force).
 
 	ebegin "Applying kernel bootsplash and makefile patches"
@@ -52,11 +52,13 @@ src_prepare() {
 		epatch "${FILESDIR}"/0001-tools-bootsplash-Makefile-fix-include-paths.patch
 		cp "${FILESDIR}"/*.gif "${S}"/tools/bootsplash/
 
-		epatch "${FILESDIR}"/${PN}-increase-max-arg-pages-to-64.patch
-		use arm64 && epatch "${FILESDIR}"/0001-Fix-build-error-in-arm64-VDSO-when-gold-linker-is-default.patch
+		eapply "${FILESDIR}"/${PN}-increase-max-arg-pages-to-64.patch
+		if use arm64; then
+			eapply "${FILESDIR}"/0001-Fix-build-error-in-arm64-VDSO-when-gold-linker-is-default.patch
+		fi
 	eend $? || return
 
-	default
+	eapply_user
 
 	# clean up workdir so we don't install patch cruft
 	rm -f "${WORKDIR}"/*bootsplash-patches-for-kernel-space-fbc*
