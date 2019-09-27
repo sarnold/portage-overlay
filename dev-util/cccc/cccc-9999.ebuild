@@ -25,12 +25,11 @@ DEPEND="${RDEPEND}
 	apidoc? ( app-doc/doxygen[dot] )
 	"
 
-#MAKEOPTS="-j1"
-
 src_prepare() {
 	is-flagq -flto* && filter-flags -flto* -fuse-linker-plugin
-	default
 	use mfc && eapply "${FILESDIR}"/${PN}-c_dialect.patch
+	default
+
 }
 
 src_compile() {
