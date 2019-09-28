@@ -65,11 +65,16 @@ src_compile() {
 	if use clang && ! tc-is-clang ; then
 		export CC=${CHOST}-clang
 		export CXX=${CHOST}-clang++
+		strip-unsupported-flags
+		replace-flags -ftree-vectorize -fvectorize
+		replace-flags -flto* -flto=thin
 	else
 		tc-export CXX CC
 	fi
 
+	# fix relocation errors with clang and gnu linker
 	use arm && append-cxxflags -fPIC
+
 	append-ldflags -Wl,-z,noexecstack
 	emake CXX="${CXX}" STRIP=: one
 }
