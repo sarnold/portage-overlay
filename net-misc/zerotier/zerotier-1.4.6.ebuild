@@ -18,7 +18,6 @@ S="${WORKDIR}/ZeroTierOne-${PV}"
 
 RDEPEND="
 	dev-libs/json-glib:=
-	net-libs/http-parser:=
 	net-libs/libnatpmp:=
 	net-libs/miniupnpc:=
 	clang? ( >=sys-devel/clang-6:= )"
@@ -34,7 +33,19 @@ DOCS=( README.md AUTHORS.md )
 LLVM_MAX_SLOT=8
 
 llvm_check_deps() {
-	has_version -d "sys-devel/clang:${LLVM_SLOT}"
+	if use clang ; then
+		if ! has_version --host-root "sys-devel/clang:${LLVM_SLOT}" ; then
+			ewarn "sys-devel/clang:${LLVM_SLOT} is missing! Cannot use LLVM slot ${LLVM_SLOT} ..."
+			return 1
+		fi
+
+		if ! has_version --host-root "=sys-devel/lld-${LLVM_SLOT}*" ; then
+			ewarn "=sys-devel/lld-${LLVM_SLOT}* is missing! Cannot use LLVM slot ${LLVM_SLOT} ..."
+			return 1
+		fi
+
+		einfo "Will use LLVM slot ${LLVM_SLOT}!"
+	fi
 }
 
 src_compile() {
