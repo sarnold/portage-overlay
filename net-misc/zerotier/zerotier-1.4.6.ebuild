@@ -3,6 +3,8 @@
 
 EAPI=6
 
+LLVM_MAX_SLOT=8
+
 inherit flag-o-matic llvm systemd toolchain-funcs
 
 HOMEPAGE="https://www.zerotier.com/"
@@ -12,7 +14,7 @@ SRC_URI="https://github.com/zerotier/ZeroTierOne/archive/${PV}.tar.gz -> ${P}.ta
 LICENSE="BSL-1.1"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
-IUSE="clang -systemd"
+IUSE="clang neon -systemd"
 
 S="${WORKDIR}/ZeroTierOne-${PV}"
 
@@ -23,7 +25,6 @@ RDEPEND="
 	net-libs/miniupnpc:="
 
 DEPEND="${RDEPEND}
-	|| ( >=sys-devel/gcc-6.0 >=sys-devel/clang-3.4 )
 	|| (
 		(
 			sys-devel/clang:8
@@ -55,6 +56,10 @@ DEPEND="${RDEPEND}
 	)
 "
 
+PATCHES=( "${FILESDIR}/${P}-respect-ldflags.patch"
+	"${FILESDIR}/${P}-add-armv7a-support.patch"
+	"${FILESDIR}/${P}-fixup-neon-support.patch" )
+
 DOCS=( README.md AUTHORS.md )
 
 pkg_setup() {
@@ -68,12 +73,14 @@ src_compile() {
 		strip-unsupported-flags
 		replace-flags -ftree-vectorize -fvectorize
 		replace-flags -flto* -flto=thin
+		append-ldflags -fuse-ld=lld
 	else
 		tc-export CXX CC
+		append-flags -fPIC
+		append-ldflags -fuse-ld=gold
 	fi
 
-	# fix relocation errors with clang and gnu linker
-	use arm && append-cxxflags -fPIC
+	use neon || export ZT_DISABLE_NEON=1
 
 	append-ldflags -Wl,-z,noexecstack
 	emake CXX="${CXX}" STRIP=: one
