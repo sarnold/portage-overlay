@@ -3,8 +3,6 @@
 
 EAPI=6
 
-LLVM_MAX_SLOT=8
-
 inherit flag-o-matic llvm systemd toolchain-funcs
 
 HOMEPAGE="https://www.zerotier.com/"
@@ -14,7 +12,7 @@ SRC_URI="https://github.com/zerotier/ZeroTierOne/archive/${PV}.tar.gz -> ${P}.ta
 LICENSE="BSL-1.1"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
-IUSE="clang neon -systemd"
+IUSE="clang neon"
 
 S="${WORKDIR}/ZeroTierOne-${PV}"
 
@@ -22,39 +20,10 @@ RDEPEND="
 	dev-libs/json-glib:=
 	net-libs/http-parser:=
 	net-libs/libnatpmp:=
-	net-libs/miniupnpc:="
+	net-libs/miniupnpc:=
+	clang? ( >=sys-devel/clang-6:= )"
 
-DEPEND="${RDEPEND}
-	|| (
-		(
-			sys-devel/clang:8
-			!clang? ( sys-devel/llvm:8 )
-			clang? (
-				=sys-devel/lld-8*
-				sys-devel/llvm:8[gold]
-				=sys-libs/compiler-rt-sanitizers-8*
-			)
-		)
-		(
-			sys-devel/clang:7
-			!clang? ( sys-devel/llvm:7 )
-			clang? (
-				=sys-devel/lld-7*
-				sys-devel/llvm:7[gold]
-				=sys-libs/compiler-rt-sanitizers-7*
-			)
-		)
-		(
-			sys-devel/clang:6
-			!clang? ( sys-devel/llvm:6 )
-			clang? (
-				=sys-devel/lld-6*
-				sys-devel/llvm:6[gold]
-				=sys-libs/compiler-rt-sanitizers-6*
-			)
-		)
-	)
-"
+DEPEND="${RDEPEND}"
 
 PATCHES=( "${FILESDIR}/${P}-respect-ldflags.patch"
 	"${FILESDIR}/${P}-add-armv7a-support.patch"
@@ -62,8 +31,10 @@ PATCHES=( "${FILESDIR}/${P}-respect-ldflags.patch"
 
 DOCS=( README.md AUTHORS.md )
 
-pkg_setup() {
-	llvm_pkg_setup
+LLVM_MAX_SLOT=8
+
+llvm_check_deps() {
+	has_version -d "sys-devel/clang:${LLVM_SLOT}"
 }
 
 src_compile() {
@@ -96,11 +67,8 @@ src_install() {
 	# remove pre-zipped man pages
 	rm -f "${ED}"/usr/share/man/{man1,man8}/*
 
-	if ! use systemd ; then
-		newinitd "${FILESDIR}/${PN}".init "${PN}"
-	else
-		systemd_dounit "${FILESDIR}/${PN}".service
-	fi
+	newinitd "${FILESDIR}/${PN}".init "${PN}"
+	systemd_dounit "${FILESDIR}/${PN}".service
 
 	doman doc/zerotier-{cli.1,idtool.1,one.8}
 }
