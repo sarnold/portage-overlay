@@ -1,40 +1,30 @@
-# Copyright 1999-2017 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=5
+EAPI=6
+PYTHON_COMPAT=( python3_{5,6,7} )
 
-inherit eutils git-r3
+inherit distutils-r1 eutils
 
-DESCRIPTION="Perl/Curses front-end for Taskwarrior (app-misc/task)"
-HOMEPAGE="http://tasktools.org/projects/vit.html"
+DESCRIPTION="Python/Curses front-end for Taskwarrior (app-misc/task)"
+HOMEPAGE="https://github.com/scottkosty/vit"
 
-EGIT_REPO_URI="https://git.tasktools.org/EX/vit.git"
 if [[ ${PV} = 9999* ]]; then
+	EGIT_REPO_URI="https://github.com/scottkosty/vit.git"
+	inherit git-r3
 	KEYWORDS=""
 else
-	EGIT_COMMIT=v${PV}
-	KEYWORDS="~amd64 ~arm ~x86"
+	SRC_URI="https://github.com/scottkosty/${PN}/archive/v${PV}.tar.gz -> ${P}.tar.gz"
+	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 fi
 
-LICENSE="GPL-3"
+LICENSE="MIT"
 SLOT="0"
 IUSE=""
 
-DEPEND="
-	app-misc/task
-	dev-lang/perl
-	dev-perl/Curses"
+DEPEND="dev-python/tasklib[${PYTHON_USEDEP}]
+	dev-python/pytz[${PYTHON_USEDEP}]
+	dev-python/tzlocal[${PYTHON_USEDEP}]
+	dev-python/urwid[${PYTHON_USEDEP}]"
+
 RDEPEND="${DEPEND}"
-
-src_prepare() {
-	epatch "${FILESDIR}"/${PN}-allow-nonsudo-install.patch \
-		"${FILESDIR}"/${PN}-fix-man-installs.patch
-}
-
-src_install() {
-	emake DESTDIR="${D}" SUDO="" install
-	dodoc AUTHORS README CHANGES
-	doman vit.1 vitrc.5
-
-	rm -rf "${ED}"/usr/man
-}
