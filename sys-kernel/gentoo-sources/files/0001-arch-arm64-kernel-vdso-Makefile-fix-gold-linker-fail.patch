@@ -1,0 +1,30 @@
+From 8a484d74edd518abf693faf67add6e969e965393 Mon Sep 17 00:00:00 2001
+From: Steve Arnold <nerdboy@gentoo.org>
+Date: Fri, 16 Aug 2019 15:11:37 -0700
+Subject: [PATCH] arch/arm64/kernel/vdso/Makefile: fix vdso build failure
+
+* occurs when binutils ld.gold is default
+
+Signed-off-by: Steve Arnold <nerdboy@gentoo.org>
+---
+ arch/arm64/kernel/vdso/Makefile | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/arch/arm64/kernel/vdso/Makefile b/arch/arm64/kernel/vdso/Makefile
+index fa230ff09aa1..69120ea0c7ef 100644
+--- a/arch/arm64/kernel/vdso/Makefile
++++ b/arch/arm64/kernel/vdso/Makefile
+@@ -6,6 +6,10 @@
+ # Heavily based on the vDSO Makefiles for other archs.
+ #
+ 
++ifndef CONFIG_CC_IS_CLANG
++  LD := ld.bfd
++endif
++
+ obj-vdso := gettimeofday.o note.o sigreturn.o
+ 
+ # Build rules
+-- 
+2.20.1
+

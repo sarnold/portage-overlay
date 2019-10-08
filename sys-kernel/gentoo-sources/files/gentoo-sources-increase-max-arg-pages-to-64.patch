@@ -1,0 +1,11 @@
+--- a/include/linux/binfmts.h	2018-09-01 14:33:06.982733516 -0700
++++ b/include/linux/binfmts.h	2018-09-01 14:33:19.727478244 -0700
+@@ -20,7 +20,7 @@
+ 	struct vm_area_struct *vma;
+ 	unsigned long vma_pages;
+ #else
+-# define MAX_ARG_PAGES	32
++# define MAX_ARG_PAGES	64
+ 	struct page *page[MAX_ARG_PAGES];
+ #endif
+ 	struct mm_struct *mm;
