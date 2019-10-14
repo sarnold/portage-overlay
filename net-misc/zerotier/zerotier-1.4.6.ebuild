@@ -30,7 +30,7 @@ PATCHES=( "${FILESDIR}/${P}-respect-ldflags.patch"
 
 DOCS=( README.md AUTHORS.md )
 
-LLVM_MAX_SLOT=8
+LLVM_MAX_SLOT=9
 
 llvm_check_deps() {
 	if use clang ; then
