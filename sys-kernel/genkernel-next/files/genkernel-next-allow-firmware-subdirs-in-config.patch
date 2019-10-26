@@ -1,0 +1,15 @@
+--- a/gen_initramfs.sh	2019-10-26 12:10:37.000000000 -0700
++++ b/gen_initramfs.sh	2019-10-26 12:13:22.000000000 -0700
+@@ -606,7 +606,11 @@
+         IFS=","
+         for i in ${FIRMWARE_FILES}
+         do
+-            cp -L "${i}" ${TEMP}/initramfs-firmware-temp/lib/firmware/
++            if [ -d "${i}" ]; then
++                cp -a "${i}" ${TEMP}/initramfs-firmware-temp/lib/firmware/
++            else
++                cp -L "${i}" ${TEMP}/initramfs-firmware-temp/lib/firmware/
++            fi
+         done
+         IFS=$OLD_IFS
+     else
