@@ -8285,3 +8285,17 @@ diff -Nur arch.orig/arm64/modules_load arch/arm64/modules_load
 +# Virtio support (KVM mainly)
 +MODULES_VIRTIO="virtio virtio_balloon virtio_console virtio_net virtio_blk virtio_scsi virtio_pci virtio_ring"
 +
+--- a/gen_arch.sh	2019-10-26 17:54:26.000000000 -0700
++++ b/gen_arch.sh	2019-10-26 17:57:34.000000000 -0700
+@@ -19,7 +19,10 @@
+                     ARCH="mips"
+                     ;;
+                 arm*)
+-                    ARCH=arm
++                    ARCH="arm"
++                    ;;
++                aarch64)
++                    ARCH="arm64"
+                     ;;
+                 *)
+                     ;;
