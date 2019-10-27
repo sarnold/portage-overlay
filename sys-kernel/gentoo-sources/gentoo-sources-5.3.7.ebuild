@@ -1,4 +1,4 @@
-# Copyright 1999-2018 Gentoo Foundation
+# Copyright 1999-2019 Gentoo Foundation
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI="6"
@@ -7,7 +7,7 @@ ETYPE="sources"
 #K_DEFCONFIG="gentoo-arm_defconfig"
 UNIPATCH_STRICTORDER="1"
 K_WANT_GENPATCHES="base extras experimental"
-K_GENPATCHES_VER="6"
+K_GENPATCHES_VER="9"
 
 inherit kernel-2 eutils
 detect_version

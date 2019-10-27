@@ -1,0 +1,13 @@
+--- a/arch/x86/entry/vdso/Makefile	2019-10-11 12:58:48.948889941 -0700
++++ b/arch/x86/entry/vdso/Makefile	2019-10-11 12:57:26.058993343 -0700
+@@ -3,6 +3,10 @@
+ # Building vDSO images for x86.
+ #
+ 
++ifndef CONFIG_CC_IS_CLANG
++  LD := ld.bfd
++endif
++
+ # Absolute relocation type $(ARCH_REL_TYPE_ABS) needs to be defined before
+ # the inclusion of generic Makefile.
+ ARCH_REL_TYPE_ABS := R_X86_64_JUMP_SLOT|R_X86_64_GLOB_DAT|R_X86_64_RELATIVE|
