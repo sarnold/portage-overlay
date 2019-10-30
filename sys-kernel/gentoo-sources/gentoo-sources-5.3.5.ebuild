@@ -15,7 +15,7 @@ detect_arch
 
 K_BRANCH_ID="${KV_MAJOR}.${KV_MINOR}"
 SPLASH_PATCH="linux-5.1-bootsplash-patches-for-kernel-space-fbc.patch"
-SPLASH_URI="mirror://gentoo/${SPLASH_PATCH}.gz"
+SPLASH_URI="https://dev.gentoo.org/~nerdboy/files/${SPLASH_PATCH}.gz"
 LOGO_PATCH="linux-4.14-bootsplash-add-gentoo-logo-build-script.patch"
 
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"

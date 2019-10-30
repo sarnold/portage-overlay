@@ -15,7 +15,7 @@ detect_arch
 
 K_BRANCH_ID="${KV_MAJOR}.${KV_MINOR}"
 SPLASH_PATCH="linux-5.1-bootsplash-patches-for-kernel-space-fbc.patch"
-SPLASH_URI="mirror://gentoo/${SPLASH_PATCH}.gz"
+SPLASH_URI="https://dev.gentoo.org/~nerdboy/files/${SPLASH_PATCH}.gz"
 LOGO_PATCH="linux-4.14-bootsplash-add-gentoo-logo-build-script.patch"
 
 KEYWORDS="~alpha ~amd64 ~arm ~arm64 ~hppa ~ia64 ~mips ~ppc ~ppc64 ~s390 ~sh ~sparc ~x86"
@@ -30,10 +30,10 @@ SRC_URI="
 
 IUSE="experimental"
 
-K_EXTRAELOG="This is mainline with ARM device/dts patches on the full
-gentoo-sources kernel (intended mainly for Allwinner boards like pine64
-although it should work on all supported ARM boards).  A copy of the latest
-config has been installed as ${K_DEFCONFIG}.
+K_EXTRAELOG="This is mainline kernel splash and device/dts patches on the
+full gentoo-sources kernel (intended for Allwinner boards like pine64
+although it should work pretty much anywhere, eg, X1 Carbon).  A copy of
+the latest config has been installed as ${K_DEFCONFIG}.
 If you are reading this, you know what to do..."
 
 RDEPEND=""
