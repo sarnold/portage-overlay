@@ -9,8 +9,7 @@ HOMEPAGE="https://www.zerotier.com/"
 DESCRIPTION="A software-based managed Ethernet switch for planet Earth"
 
 if [[ ${PV} = 9999* ]]; then
-	EGIT_REPO_URI="https://github.com/sarnold/ZeroTierOne.git"
-	EGIT_BRANCH="master"
+	EGIT_REPO_URI="https://github.com/zerotier/ZeroTierOne.git"
 	inherit git-r3
 	KEYWORDS=""
 else
@@ -27,14 +26,19 @@ RDEPEND="
 	dev-libs/json-glib:=
 	net-libs/libnatpmp:=
 	net-libs/miniupnpc:=
-	clang? ( >=sys-devel/clang-6:= )
-	doc? ( app-doc/doxygen[dot] )"
+	clang? ( >=sys-devel/clang-6:=
+		doc? ( app-doc/doxygen[dot,clang] )
+	)
+	!clang? (
+		doc? ( app-doc/doxygen[dot] )
+	)"
 
 DEPEND="${RDEPEND}"
 
 PATCHES=( "${FILESDIR}/${PN}-1.4.6-respect-ldflags.patch"
 	"${FILESDIR}/${PN}-1.4.6-add-armv7a-support.patch"
-	"${FILESDIR}/${PN}-1.4.6-fixup-neon-support.patch" )
+	"${FILESDIR}/${PN}-1.4.6-fixup-neon-support.patch"
+	"${FILESDIR}/${PN}-1.4.6-Add-make-src-docs-target.patch" )
 
 DOCS=( README.md AUTHORS.md )
 
