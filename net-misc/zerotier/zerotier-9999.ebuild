@@ -16,13 +16,12 @@ if [[ ${PV} = 9999* ]]; then
 else
 	SRC_URI="https://github.com/zerotier/ZeroTierOne/archive/${PV}.tar.gz -> ${P}.tar.gz"
 	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+	S="${WORKDIR}/ZeroTierOne-${PV}"
 fi
 
 LICENSE="BSL-1.1"
 SLOT="0"
 IUSE="clang doc neon"
-
-S="${WORKDIR}/ZeroTierOne-${PV}"
 
 RDEPEND="
 	dev-libs/json-glib:=
@@ -33,9 +32,9 @@ RDEPEND="
 
 DEPEND="${RDEPEND}"
 
-PATCHES=( "${FILESDIR}/${P}-respect-ldflags.patch"
-	"${FILESDIR}/${P}-add-armv7a-support.patch"
-	"${FILESDIR}/${P}-fixup-neon-support.patch" )
+PATCHES=( "${FILESDIR}/${PN}-1.4.6-respect-ldflags.patch"
+	"${FILESDIR}/${PN}-1.4.6-add-armv7a-support.patch"
+	"${FILESDIR}/${PN}-1.4.6-fixup-neon-support.patch" )
 
 DOCS=( README.md AUTHORS.md )
 
@@ -75,6 +74,8 @@ src_compile() {
 
 	append-ldflags -Wl,-z,noexecstack
 	emake CXX="${CXX}" STRIP=: one
+
+	use doc && make src-docs
 }
 
 src_test() {
@@ -91,4 +92,6 @@ src_install() {
 	systemd_dounit "${FILESDIR}/${PN}".service
 
 	doman doc/zerotier-{cli.1,idtool.1,one.8}
+
+	use doc && dohtml -r -A svg src-docs/html/*
 }
