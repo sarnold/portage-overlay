@@ -66,6 +66,8 @@ src_prepare() {
 	default
 	# Remove autostripping of binaries
 	sed -i -e '/Strip binaries/d' wscript
+	# master does not need this
+	#eapply "${FILESDIR}/${P}"-make-sure-logrotate-config-has-missingok.patch
 	if ! use libbsd ; then
 		eapply "${FILESDIR}/${PN}-no-bsd.patch"
 	fi

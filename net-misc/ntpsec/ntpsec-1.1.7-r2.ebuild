@@ -76,6 +76,11 @@ src_prepare() {
 src_configure() {
 	is-flagq -flto* && filter-flags -flto* -fuse-linker-plugin
 
+	if [[ -n $DEBUG_SECCOMP ]]; then
+		ewarn "Disabling seccomp KILL_ON_TRAP..."
+		append-cflags -UENABLE_KILL_ON_TRAP
+	fi
+
 	local string_127=""
 	local rclocks="";
 	local CLOCKSTRING=""
