@@ -10,6 +10,7 @@ DESCRIPTION="A software-based managed Ethernet switch for planet Earth"
 
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/zerotier/ZeroTierOne.git"
+	EGIT_COMMIT="088dab4f04d7ec662b83299a32d7183d5d48a5dc"
 	inherit git-r3
 	KEYWORDS=""
 else
@@ -20,7 +21,7 @@ fi
 
 LICENSE="BSL-1.1"
 SLOT="0"
-IUSE="clang doc neon"
+IUSE="clang doc neon -ztnc"
 
 RDEPEND="
 	dev-libs/json-glib:=
@@ -38,7 +39,8 @@ DEPEND="${RDEPEND}"
 PATCHES=( "${FILESDIR}/${PN}-1.4.6-respect-ldflags.patch"
 	"${FILESDIR}/${PN}-1.4.6-add-armv7a-support.patch"
 	"${FILESDIR}/${PN}-1.4.6-fixup-neon-support.patch"
-	"${FILESDIR}/${PN}-1.4.6-Add-make-src-docs-target.patch" )
+	"${FILESDIR}/${PN}-1.4.6-Add-make-src-docs-target.patch"
+	"${FILESDIR}/${PN}-1.4.6-add-mk-ctlr-node-target.patch" )
 
 DOCS=( README.md AUTHORS.md )
 
@@ -75,9 +77,14 @@ src_compile() {
 	fi
 
 	use neon || export ZT_DISABLE_NEON=1
-
+	use ztnc && export ZT_CONTROLLER=1
 	append-ldflags -Wl,-z,noexecstack
-	emake CXX="${CXX}" STRIP=: one
+
+	if use ztnc; then
+		emake CXX="${CXX}" STRIP=: controller-node
+	else
+		emake CXX="${CXX}" STRIP=: one
+	fi
 
 	use doc && make src-docs
 }
