@@ -21,7 +21,7 @@ fi
 
 LICENSE="BSL-1.1"
 SLOT="0"
-IUSE="clang doc neon -ztnc"
+IUSE="clang debug doc neon -ztnc"
 
 RDEPEND="
 	dev-libs/json-glib:=
@@ -76,6 +76,7 @@ src_compile() {
 		append-ldflags -fuse-ld=gold
 	fi
 
+	use debug && export ZT_DEBUG=1
 	use neon || export ZT_DISABLE_NEON=1
 	use ztnc && export ZT_CONTROLLER=1
 	append-ldflags -Wl,-z,noexecstack
