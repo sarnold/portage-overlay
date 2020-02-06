@@ -1,7 +1,9 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
+
+LLVM_MAX_SLOT=9
 
 inherit flag-o-matic llvm systemd toolchain-funcs
 
@@ -20,16 +22,15 @@ fi
 
 LICENSE="BSL-1.1"
 SLOT="0"
-IUSE="clang doc neon"
+IUSE="clang neon"
 
 S="${WORKDIR}/ZeroTierOne-${PV}"
 
 RDEPEND="
-	dev-libs/json-glib:=
-	net-libs/libnatpmp:=
+	>=dev-libs/json-glib-0.14
+	>=net-libs/libnatpmp-20130911
 	net-libs/miniupnpc:=
-	clang? ( >=sys-devel/clang-6:= )
-	doc? ( app-doc/doxygen[dot] )"
+	clang? ( >=sys-devel/clang-6:= )"
 
 DEPEND="${RDEPEND}"
 
@@ -38,8 +39,6 @@ PATCHES=( "${FILESDIR}/${P}-respect-ldflags.patch"
 	"${FILESDIR}/${P}-fixup-neon-support.patch" )
 
 DOCS=( README.md AUTHORS.md )
-
-LLVM_MAX_SLOT=9
 
 llvm_check_deps() {
 	if use clang ; then
@@ -57,19 +56,32 @@ llvm_check_deps() {
 	fi
 }
 
+pkg_pretend() {
+	( [[ ${MERGE_TYPE} != "binary" ]] && ! test-flag-CXX -std=c++11 ) && \
+		die "Your compiler doesn't support C++11. Use GCC 4.8, Clang 3.3 or newer."
+}
+
+pkg_setup() {
+	llvm_pkg_setup
+}
+
 src_compile() {
 	if use clang && ! tc-is-clang ; then
+		einfo "Enforcing the use of clang due to USE=clang ..."
 		export CC=${CHOST}-clang
 		export CXX=${CHOST}-clang++
 		strip-unsupported-flags
 		replace-flags -ftree-vectorize -fvectorize
 		replace-flags -flto* -flto=thin
-		append-ldflags -fuse-ld=lld
-	else
-		tc-export CXX CC
+		# append-ldflags -fuse-ld=lld
+	elif ! use clang && ! tc-is-gcc ; then
+		einfo "Enforcing the use of gcc due to USE=-clang ..."
+		export CC=${CHOST}-gcc
+		export CXX=${CHOST}-g++
 		append-flags -fPIC
-		append-ldflags -fuse-ld=gold
 	fi
+
+	tc-export CC CXX
 
 	use neon || export ZT_DISABLE_NEON=1
 
@@ -85,7 +97,7 @@ src_test() {
 src_install() {
 	default
 	# remove pre-zipped man pages
-	rm -f "${ED}"/usr/share/man/{man1,man8}/*
+	rm "${ED}"/usr/share/man/{man1,man8}/*
 
 	newinitd "${FILESDIR}/${PN}".init "${PN}"
 	systemd_dounit "${FILESDIR}/${PN}".service
