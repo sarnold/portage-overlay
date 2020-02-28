@@ -11,4 +11,7 @@
   <longdescription lang="en">
     An implementation for a double-array Trie library in C.
   </longdescription>
+  <use>
+    <flag name="graph">Create dot graphs in src documentation</flag>
+  </use>
 </pkgmetadata>

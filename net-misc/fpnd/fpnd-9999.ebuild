@@ -23,13 +23,16 @@ fi
 
 LICENSE="AGPL-3"
 SLOT="0"
-IUSE="systemd test"
+IUSE="adhoc systemd test test-infra -ztnc"
 
 RDEPEND="${PYTHON_DEPS}
+	sys-apps/iproute2
+	net-firewall/iptables
 	net-misc/zerotier"
 
 DEPEND="${PYTHON_DEPS}
 	dev-python/daemon[${PYTHON_USEDEP}]
+	ztnc? ( dev-python/datrie[${PYTHON_USEDEP}] )
 	dev-python/schedule[${PYTHON_USEDEP}]
 	dev-python/diskcache[${PYTHON_USEDEP}]
 	dev-libs/ztcli-async[${PYTHON_USEDEP}]
@@ -39,6 +42,11 @@ DEPEND="${PYTHON_DEPS}
 		>=dev-python/pytest-3.0.3[${PYTHON_USEDEP}]
 		>=dev-python/coverage-4.5.2[${PYTHON_USEDEP}] )
 "
+# additional test dependcies not required for USE=test
+#	dev-python/pytest-cov
+#	dev-python/pytest-pep8
+#	dev-python/pytest-flake8
+#	dev-python/tox
 
 RESTRICT="mirror"
 
@@ -51,6 +59,7 @@ python_prepare_all() {
 	local PATCHES=(
 		"${FILESDIR}"/${PN}-make-setup-py-and-ini-conform.patch
 	)
+	use test-infra && PATCHES+=( "${FILESDIR}"/fpnd-local-infra-nodes.patch )
 
 	distutils-r1_python_prepare_all
 }
@@ -63,20 +72,25 @@ python_install() {
 python_install_all() {
 	distutils-r1_python_install_all
 
-	rm "${EPREFIX}//usr/libexec/fpnd/fpnd.ini"
+	rm "${ED}/usr/libexec/fpnd/fpnd.ini"
+	use adhoc || sed -i -e "s|adhoc|peer|" "${S}"/etc/"${PN}".ini
+
 	insinto "/etc/${PN}"
 	doins "${S}"/etc/"${PN}".ini
 
 	newinitd "${S}"/etc/"${PN}".openrc "${PN}"
 	use systemd && systemd_dounit "${S}"/etc/"${PN}".service
 
+	cat >> "${T}"/"${PN}".conf <<- EOF
+	rc_cgroup_cleanup="yes"
+	EOF
+	newconfd "${T}"/"${PN}".conf "${PN}"
+
 	insinto "/etc/logrotate.d"
 	newins "${S}"/etc/"${PN}".logrotate "${PN}"
 }
 
 python_test() {
-	# Run all but integration tests (requires tox magic)
-	#PYTHONPATH="." py.test -v --ignore-glob="tests/integration/*.py"
 	distutils_install_for_testing
 	PYTHONPATH="${TEST_DIR}/lib:${PYTHONPATH}" py.test test -v \
 		|| die "tests failed"
