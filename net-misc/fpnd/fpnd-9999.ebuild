@@ -3,7 +3,7 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python{3_5,3_6,3_7} )
+PYTHON_COMPAT=( python{3_6,3_7} )
 PYTHON_REQ_USE="sqlite"
 
 inherit distutils-r1 systemd user
@@ -23,7 +23,7 @@ fi
 
 LICENSE="AGPL-3"
 SLOT="0"
-IUSE="adhoc systemd test test-infra -ztnc"
+IUSE="+adhoc systemd test test-infra -ztnc"
 
 RDEPEND="${PYTHON_DEPS}
 	sys-apps/iproute2
@@ -58,6 +58,7 @@ pkg_setup() {
 python_prepare_all() {
 	local PATCHES=(
 		"${FILESDIR}"/${PN}-make-setup-py-and-ini-conform.patch
+#		"${FILESDIR}"/${PN}-adhoc-mode-test.patch
 	)
 	use test-infra && PATCHES+=( "${FILESDIR}"/fpnd-local-infra-nodes.patch )
 
