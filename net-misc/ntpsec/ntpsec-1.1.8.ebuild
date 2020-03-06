@@ -1,9 +1,9 @@
-# Copyright 1999-2019 Gentoo Authors
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
 EAPI=6
 
-PYTHON_COMPAT=( python2_7 python3_{5,6} )
+PYTHON_COMPAT=( python3_{6,7} )
 PYTHON_REQ_USE='threads(+)'
 
 inherit flag-o-matic python-r1 waf-utils systemd
@@ -28,12 +28,12 @@ NTPSEC_REFCLOCK=(
 	shm pps hpgps zyfer arbiter nmea neoclock modem
 	local)
 
-IUSE_NTPSEC_REFCLOCK=${NTPSEC_REFCLOCK[@]/#/rclock-}
+IUSE_NTPSEC_REFCLOCK=${NTPSEC_REFCLOCK[@]/#/rclock_}
 
 LICENSE="HPND MIT BSD-2 BSD CC-BY-SA-4.0"
 SLOT="0"
 IUSE="${IUSE_NTPSEC_REFCLOCK} debug doc early gdb heat libbsd nist ntpviz samba seccomp smear tests" #ionice
-REQUIRED_USE="${PYTHON_REQUIRED_USE} nist? ( rclock-local )"
+REQUIRED_USE="${PYTHON_REQUIRED_USE} nist? ( rclock_local )"
 
 # net-misc/pps-tools oncore,pps
 CDEPEND="${PYTHON_DEPS}
@@ -56,8 +56,8 @@ DEPEND="${CDEPEND}
 	dev-libs/libxslt
 	app-text/docbook-xsl-stylesheets
 	sys-devel/bison
-	rclock-oncore? ( net-misc/pps-tools )
-	rclock-pps? ( net-misc/pps-tools )
+	rclock_oncore? ( net-misc/pps-tools )
+	rclock_pps? ( net-misc/pps-tools )
 "
 
 WAF_BINARY="${S}/waf"
@@ -66,9 +66,8 @@ src_prepare() {
 	default
 	# Remove autostripping of binaries
 	sed -i -e '/Strip binaries/d' wscript
-	eapply "${FILESDIR}/${P}"-make-sure-logrotate-config-has-missingok.patch
 	if ! use libbsd ; then
-		eapply "${FILESDIR}/${PN}-no-bsd.patch"
+		epatch "${FILESDIR}/${PN}-no-bsd.patch"
 	fi
 	python_copy_sources
 }
@@ -76,17 +75,12 @@ src_prepare() {
 src_configure() {
 	is-flagq -flto* && filter-flags -flto* -fuse-linker-plugin
 
-	if [[ -n $DEBUG_SECCOMP ]]; then
-		ewarn "Disabling seccomp KILL_ON_TRAP..."
-		append-cflags -UENABLE_KILL_ON_TRAP
-	fi
-
 	local string_127=""
 	local rclocks="";
 	local CLOCKSTRING=""
 
 	for refclock in ${NTPSEC_REFCLOCK[@]} ; do
-		if use rclock-${refclock} ; then
+		if use rclock_${refclock} ; then
 			string_127+="$refclock,"
 		fi
 	done
@@ -96,6 +90,7 @@ src_configure() {
 		--nopyc
 		--nopyo
 		--refclock="${CLOCKSTRING}"
+		--build-epoch="$(date +%s)"
 		$(use doc	&& echo "--enable-doc")
 		$(use early	&& echo "--enable-early-droproot")
 		$(use gdb	&& echo "--enable-debug-gdb")
