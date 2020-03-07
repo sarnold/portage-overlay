@@ -62,6 +62,8 @@ DEPEND="${CDEPEND}
 
 WAF_BINARY="${S}/waf"
 
+PATCHES=( "${FILESDIR}/${P}-externalize-sys_maxclock-fix-for-bug-708522.patch" )
+
 src_prepare() {
 	default
 	# Remove autostripping of binaries
