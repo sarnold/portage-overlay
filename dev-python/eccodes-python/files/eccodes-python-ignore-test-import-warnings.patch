@@ -1,0 +1,13 @@
+diff --git a/setup.cfg b/setup.cfg
+index ed5ace1..3a85a11 100644
+--- a/setup.cfg
++++ b/setup.cfg
+@@ -28,6 +28,8 @@ flakes-ignore =
+     eccodes/eccodes.py ALL
+     eccodes/high_level/* ALL
+     gribapi/errors.py ALL
++    */__init__.py ImportStarUsage
++    tests/test_eccodes.py ALL
+ 
+ [coverage:run]
+ branch = True
