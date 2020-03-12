@@ -3,7 +3,7 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python3_{6,7} )
+PYTHON_COMPAT=( python3_{6,7,8} )
 PYTHON_REQ_USE='threads(+)'
 
 inherit flag-o-matic python-r1 waf-utils systemd
@@ -62,7 +62,8 @@ DEPEND="${CDEPEND}
 
 WAF_BINARY="${S}/waf"
 
-PATCHES=( "${FILESDIR}/${P}-externalize-sys_maxclock-fix-for-bug-708522.patch" )
+PATCHES=( "${FILESDIR}/${P}-externalize-sys_maxclock-fix-for-bug-708522.patch"
+	"${FILESDIR}/${P}-fix-missing-scmp_sys-on-aarch64.patch" )
 
 src_prepare() {
 	default
