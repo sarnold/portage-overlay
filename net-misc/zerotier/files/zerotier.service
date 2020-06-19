@@ -1,11 +1,13 @@
 [Unit]
 Description=ZeroTier One
 After=network.target
+Wants=network-online.target
 
 [Service]
 ExecStart=/var/lib/zerotier-one/zerotier-one
 Restart=always
 KillMode=process
+TimeoutStopSec=5
 
 [Install]
 WantedBy=multi-user.target

@@ -6,15 +6,14 @@ EAPI=6
 PYTHON_COMPAT=( python{3_6,3_7} )
 PYTHON_REQ_USE="sqlite"
 
-inherit distutils-r1 linux-info systemd user
+inherit distutils-r1 systemd user
 
 DESCRIPTION="Python package for fpnd node scripts"
 HOMEPAGE="https://github.com/freepn/fpnd"
 
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/freepn/fpnd.git"
-	EGIT_BRANCH="systemd"
-#	EGIT_COMMIT="89571b4694a19a1180b658ea1684a3bc4f69beab"
+	EGIT_BRANCH="master"
 	inherit git-r3
 	KEYWORDS=""
 else
@@ -24,7 +23,7 @@ fi
 
 LICENSE="AGPL-3"
 SLOT="0"
-IUSE="+adhoc systemd test test-infra -ztnc"
+IUSE="+adhoc systemd test"
 
 RDEPEND="${PYTHON_DEPS}
 	sys-apps/iproute2
@@ -32,7 +31,6 @@ RDEPEND="${PYTHON_DEPS}
 	net-misc/zerotier"
 
 DEPEND="${PYTHON_DEPS}
-	dev-python/appdirs[${PYTHON_USEDEP}]
 	dev-python/daemon[${PYTHON_USEDEP}]
 	dev-python/datrie[${PYTHON_USEDEP}]
 	dev-python/schedule[${PYTHON_USEDEP}]
@@ -55,46 +53,19 @@ DOCS=( README.rst README_adhoc-mode.rst )
 pkg_setup() {
 	enewgroup ${PN}
 	enewuser ${PN} -1 -1 /usr/libexec/${PN} ${PN}
-
-	linux-info_pkg_setup
-	CONFIG_CHECK_MODULES="TUN IP_NF_NAT NET_SCHED BPFILTER IFB \
-	NET_SCH_INGRESS IP_MULTIPLE_TABLES NETFILTER_XT_TARGET_MARK \
-	IP_ADVANCED_ROUTER NF_CT_NETLINK NETFILTER_NETLINK_QUEUE NF_NAT \
-	NETFILTER_NETLINK_LOG NETFILTER_XT_NAT IP_NF_MANGLE NF_DEFRAG_IPV4 \
-	IP_NF_TARGET_MASQUERADE IP_NF_FILTER IP_NF_IPTABLES NF_CONNTRACK \
-	NETFILTER_XT_MARK NETFILTER_XTABLES NET_SCH_CODEL NET_SCH_FQ_CODEL"
-
-	if linux_config_exists; then
-		for module in ${CONFIG_CHECK_MODULES}; do
-			linux_chkconfig_present ${module} || ewarn "${module} needs to be enabled in kernel"
-		done
-	else
-		ewarn "No kernel config found; you will need to ensure your running"
-		ewarn "kernel has nat/netfilter modules and xt_mark enabled!"
-	fi
 }
 
 python_prepare_all() {
 	local PATCHES=(
 		"${FILESDIR}"/${PN}-make-setup-py-and-ini-conform.patch
-		"${FILESDIR}"/${PN}-test-user-perms.patch
 	)
-	if use systemd; then
-		sed -i -e "s|usr/lib|usr/libexec|" "${S}"/etc/"${PN}".ini
-	else
-		PATCHES+=( "${FILESDIR}"/${PN}-set-openrc-paths.patch )
-	fi
-
-	use test-infra && PATCHES+=( "${FILESDIR}"/fpnd-local-infra-nodes.patch )
 
 	distutils-r1_python_prepare_all
 }
 
 python_install() {
 	# this is deemed "safe" for a single script
-	distutils-r1_python_install --install-scripts="${EPREFIX}/usr/bin"
-
-	python_fix_shebang "${ED}"/usr/libexec/fpnd
+	distutils-r1_python_install --install-scripts="${EPREFIX}/usr/sbin"
 }
 
 python_install_all() {

@@ -3,15 +3,15 @@
 
 EAPI=6
 
-LLVM_MAX_SLOT=9
+LLVM_MAX_SLOT=10
 
-inherit flag-o-matic llvm systemd toolchain-funcs
+inherit flag-o-matic llvm systemd toolchain-funcs user
 
 HOMEPAGE="https://www.zerotier.com/"
 DESCRIPTION="A software-based managed Ethernet switch for planet Earth"
 
 if [[ ${PV} = 9999* ]]; then
-	EGIT_REPO_URI="https://github.com/sarnold/ZeroTierOne.git"
+	EGIT_REPO_URI="https://github.com/freepn/ZeroTierOne.git"
 	EGIT_BRANCH="master"
 	inherit git-r3
 	KEYWORDS=""
@@ -62,6 +62,9 @@ pkg_pretend() {
 }
 
 pkg_setup() {
+	enewgroup zerotier-one
+	enewuser zerotier-one -1 -1 /var/lib/zerotier-one zerotier-one
+
 	llvm_pkg_setup
 }
 
