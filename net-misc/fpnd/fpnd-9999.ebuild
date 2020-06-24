@@ -13,7 +13,7 @@ HOMEPAGE="https://github.com/freepn/fpnd"
 
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/freepn/fpnd.git"
-	EGIT_BRANCH="systemd"
+	EGIT_BRANCH="master"
 #	EGIT_COMMIT="89571b4694a19a1180b658ea1684a3bc4f69beab"
 	inherit git-r3
 	KEYWORDS=""
@@ -24,7 +24,7 @@ fi
 
 LICENSE="AGPL-3"
 SLOT="0"
-IUSE="+adhoc systemd test test-infra -ztnc"
+IUSE="-adhoc polkit systemd sudo test test-infra -ztnc"
 
 RDEPEND="${PYTHON_DEPS}
 	sys-apps/iproute2
@@ -116,6 +116,15 @@ python_install_all() {
 
 	insinto "/etc/logrotate.d"
 	newins "${S}"/etc/"${PN}".logrotate "${PN}"
+
+	if use sudo; then
+		insinto /etc/sudoers.d/
+		insopts -m 0440 -o root -g root
+		newins "${S}/cfg/fpnd.sudoers" fpnd
+	elif use polkit; then
+		insinto /etc/polkit-1/rules.d/
+		doins "${S}"/cfg/55-fpnd-systemd.rules
+	fi
 }
 
 python_test() {
