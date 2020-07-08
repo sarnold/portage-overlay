@@ -6,9 +6,9 @@ EAPI=6
 PYTHON_COMPAT=( python{3_6,3_7} )
 PYTHON_REQ_USE="sqlite"
 
-inherit distutils-r1 linux-info systemd user
+inherit distutils-r1 linux-info systemd
 
-DESCRIPTION="Python package for fpnd node scripts"
+DESCRIPTION="Python package for fpnd network daemon"
 HOMEPAGE="https://github.com/freepn/fpnd"
 
 if [[ ${PV} = 9999* ]]; then
@@ -24,12 +24,16 @@ fi
 
 LICENSE="AGPL-3"
 SLOT="0"
-IUSE="-adhoc polkit systemd sudo test test-infra -ztnc"
+IUSE="-adhoc polkit sched systemd sudo test test-infra"
 
 RDEPEND="${PYTHON_DEPS}
+	sched? ( sys-process/at )
 	sys-apps/iproute2
 	net-firewall/iptables
-	net-misc/zerotier"
+	net-misc/zerotier
+	acct-group/fpnd
+	acct-user/fpnd
+"
 
 DEPEND="${PYTHON_DEPS}
 	dev-python/appdirs[${PYTHON_USEDEP}]
@@ -41,10 +45,10 @@ DEPEND="${PYTHON_DEPS}
 	dev-libs/nanoservice[${PYTHON_USEDEP}]
 	dev-python/setuptools[${PYTHON_USEDEP}]
 	test? ( >=dev-python/mock-2.0.0[${PYTHON_USEDEP}]
-		>=dev-python/pytest-3.0.3[${PYTHON_USEDEP}]
-		>=dev-python/coverage-4.5.2[${PYTHON_USEDEP}] )
+		>=dev-python/pytest-3.0.3[${PYTHON_USEDEP}] )
 "
 # additional test dependcies not required for USE=test
+#       dev-python/coverage
 #	dev-python/pytest-cov
 #	dev-python/pytest-pep8
 #	dev-python/pytest-flake8
@@ -53,10 +57,8 @@ DEPEND="${PYTHON_DEPS}
 DOCS=( README.rst README_adhoc-mode.rst )
 
 pkg_setup() {
-	enewgroup ${PN}
-	enewuser ${PN} -1 -1 /usr/libexec/${PN} ${PN}
-
 	linux-info_pkg_setup
+
 	CONFIG_CHECK_MODULES="TUN IP_NF_NAT NET_SCHED BPFILTER IFB \
 	NET_SCH_INGRESS IP_MULTIPLE_TABLES NETFILTER_XT_TARGET_MARK \
 	IP_ADVANCED_ROUTER NF_CT_NETLINK NETFILTER_NETLINK_QUEUE NF_NAT \
@@ -77,7 +79,8 @@ pkg_setup() {
 python_prepare_all() {
 	local PATCHES=(
 		"${FILESDIR}"/${PN}-make-setup-py-and-ini-conform.patch
-		"${FILESDIR}"/${PN}-test-user-perms.patch
+		"${FILESDIR}"/${PN}-test-net-connect.patch
+#		"${FILESDIR}"/${PN}-add-state-msg-funcs.patch
 	)
 	if use systemd; then
 		sed -i -e "s|usr/lib|usr/libexec|" "${S}"/etc/"${PN}".ini
@@ -109,12 +112,8 @@ python_install_all() {
 	newinitd "${S}"/etc/"${PN}".openrc "${PN}"
 	use systemd && systemd_dounit "${S}"/etc/"${PN}".service
 
-	cat >> "${T}"/"${PN}".conf <<- EOF
-	rc_cgroup_cleanup="yes"
-	EOF
-	newconfd "${T}"/"${PN}".conf "${PN}"
-
-	insinto "/etc/logrotate.d"
+	newconfd "${S}"/etc/"${PN}".conf "${PN}"
+	insinto /etc/logrotate.d
 	newins "${S}"/etc/"${PN}".logrotate "${PN}"
 
 	if use sudo; then
@@ -124,6 +123,7 @@ python_install_all() {
 	elif use polkit; then
 		insinto /etc/polkit-1/rules.d/
 		doins "${S}"/cfg/55-fpnd-systemd.rules
+		doins "${S}"/cfg/55-fpnd-openrc.rules
 	fi
 }
 

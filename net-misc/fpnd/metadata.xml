@@ -14,6 +14,7 @@
 <use>
 	<flag name="adhoc">Set adhoc mode as default instead of peer mode</flag>
 	<flag name="polkit">Install polkit rules for systemd unit</flag>
+	<flag name="sched">Install at command for scheduled stop of needed svc</flag>
 	<flag name="sudo">Install sudoers drop-in for start|stop cmds</flag>
 </use>
 </pkgmetadata>
