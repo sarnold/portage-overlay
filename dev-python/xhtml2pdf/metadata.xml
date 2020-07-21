@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer type="person">
+	<email>nerdboy@gentoo.org</email>
+	<name>Steve Arnold</name>
+</maintainer>
+<longdescription lang="en">
+	Generate PDF documents from HTML content
+</longdescription>
+<upstream>
+	<remote-id type="pypi">xhtml2pdf</remote-id>
+	<remote-id type="github">xhtml2pdf/xhtml2pdf</remote-id>
+</upstream>
+</pkgmetadata>
