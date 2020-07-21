@@ -1,0 +1,15 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<!DOCTYPE pkgmetadata SYSTEM "http://www.gentoo.org/dtd/metadata.dtd">
+<pkgmetadata>
+<maintainer type="person">
+	<email>nerdboy@gentoo.org</email>
+	<name>Steve Arnold</name>
+</maintainer>
+<longdescription lang="en">
+	A pure-Python library for reading and converting SVG
+</longdescription>
+<upstream>
+	<remote-id type="pypi">svglib</remote-id>
+	<remote-id type="github">deeplook/svglib</remote-id>
+</upstream>
+</pkgmetadata>
