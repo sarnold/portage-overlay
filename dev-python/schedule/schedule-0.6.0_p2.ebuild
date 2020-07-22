@@ -20,6 +20,7 @@ if [[ ${PV} = 9999* ]]; then
 else
 	SRC_URI="https://github.com/freepn/${PN}/archive/${MY_PV}.tar.gz -> ${PN}-${MY_PV}.tar.gz"
 	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+	S="${WORKDIR}/${PN}-${MY_PV}"
 fi
 
 LICENSE="MIT"
