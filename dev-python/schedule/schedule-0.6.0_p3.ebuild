@@ -1,11 +1,11 @@
 # Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
 
-EAPI=6
+EAPI=7
 
 PYTHON_COMPAT=( python{3_6,3_7,3_8} )
 
-MY_PV="${PV//_}"
+MY_PV="${PV/_p/-}"
 
 inherit distutils-r1
 
@@ -13,7 +13,7 @@ DESCRIPTION="Python job scheduling for humans"
 HOMEPAGE="https://github.com/dbader/schedule"
 
 if [[ ${PV} = 9999* ]]; then
-	EGIT_REPO_URI="https://github.com/dbader/schedule"
+	EGIT_REPO_URI="https://github.com/freepn/schedule.git"
 	EGIT_BRANCH="master"
 	inherit git-r3
 	KEYWORDS=""
@@ -25,17 +25,13 @@ fi
 
 LICENSE="MIT"
 SLOT="0"
-IUSE="test"
 
-RDEPEND="${PYTHON_DEPS}"
-
-DEPEND="${PYTHON_DEPS}
+BDEPEND="${PYTHON_DEPS}
 	dev-python/setuptools[${PYTHON_USEDEP}]
 	test? ( >=dev-python/mock-2.0.0[${PYTHON_USEDEP}]
 		>=dev-python/pytest-3.0.3[${PYTHON_USEDEP}] )
 "
 
-python_test() {
-	python_export PYTHON_SITEDIR PYTHON_SCRIPTDIR
-	py.test test_schedule.py || die "Testing failed with ${EPYTHON}"
-}
+distutils_enable_sphinx docs
+distutils_enable_tests pytest
+
