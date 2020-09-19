@@ -1,0 +1,11 @@
+#! /bin/sh
+set -e
+
+# run the string-metrics.sh if possible
+if [ -x /usr/bin/string-metrics.sh ]; then
+	/usr/bin/string-metrics.sh > /dev/null 2>&1
+else
+	echo >&2 "Warning: \"/usr/bin/string-metrics.sh\" is not executable, unable to run string-metrics.sh."
+	exit 0
+fi
+

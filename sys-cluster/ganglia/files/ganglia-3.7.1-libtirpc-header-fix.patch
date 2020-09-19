@@ -1,0 +1,54 @@
+--- a/include/ganglia.h.orig	2018-05-16 19:27:09.898126951 -0700
++++ b/include/ganglia.h	2018-05-16 19:29:08.345121697 -0700
+@@ -1,8 +1,8 @@
+ #ifndef GANGLIA_H
+ #define GANGLIA_H 1
+ 
+-#include <rpc/types.h>
+-#include <rpc/xdr.h>
++#include <tirpc/rpc/types.h>
++#include <tirpc/rpc/xdr.h>
+ 
+ #include <gm_msg.h>
+ #ifndef GM_PROTOCOL_GUARD
+--- a/include/gm_metric.h.orig	2018-05-16 19:27:01.047853374 -0700
++++ b/include/gm_metric.h	2018-05-16 19:28:53.648000715 -0700
+@@ -5,8 +5,8 @@
+ #define _LARGEFILE64_SOURCE
+ #endif
+ 
+-#include <rpc/types.h>
+-#include <rpc/xdr.h>
++#include <tirpc/rpc/types.h>
++#include <tirpc/rpc/xdr.h>
+ 
+ #include <gm_mmn.h>
+ #ifndef GM_PROTOCOL_GUARD
+--- a/config.h.in.orig	2018-05-16 19:26:53.754294583 -0700
++++ b/config.h.in	2018-05-16 19:28:01.983070325 -0700
+@@ -159,7 +159,7 @@
+ /* Define to 1 if you have the <pthread.h> header file. */
+ #undef HAVE_PTHREAD_H
+ 
+-/* Define to 1 if you have the <rpc/types.h> header file. */
++/* Define to 1 if you have the <tirpc/rpc/types.h> header file. */
+ #undef HAVE_RPC_TYPES_H
+ 
+ /* Define to 1 if you have the <rrd.h> header file. */
+--- a/configure.ac.orig	2018-05-16 19:26:45.174029352 -0700
++++ b/configure.ac	2018-05-16 19:28:35.860784214 -0700
+@@ -606,11 +606,11 @@
+ #endif
+ ])
+ 
+-AC_CHECK_HEADERS(rpc/types.h)
+-AC_CHECK_HEADER([rpc/xdr.h], [],
++AC_CHECK_HEADERS(tirpc/rpc/types.h)
++AC_CHECK_HEADER([tirpc/rpc/xdr.h], [],
+    [AC_MSG_ERROR([your system is missing the Sun RPC (ONC/RPC) libraries])],
+ [#ifdef HAVE_RPC_TYPES_H
+-# include <rpc/types.h>
++# include <tirpc/rpc/types.h>
+ #endif
+ ])
+ 
