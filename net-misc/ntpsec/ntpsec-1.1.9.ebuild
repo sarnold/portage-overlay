@@ -11,13 +11,10 @@ inherit flag-o-matic python-r1 waf-utils systemd
 if [[ ${PV} == *9999* ]]; then
 	inherit git-r3
 	EGIT_REPO_URI="https://gitlab.com/NTPsec/ntpsec.git"
-	BDEPEND=""
-	KEYWORDS=""
 else
 	SRC_URI="ftp://ftp.ntpsec.org/pub/releases/${PN}-${PV}.tar.gz"
 	RESTRICT="mirror"
-	BDEPEND=""
-	KEYWORDS="~amd64 ~arm ~arm64 ~x86"
+	KEYWORDS="amd64 arm arm64 ~x86"
 fi
 
 DESCRIPTION="The NTP reference implementation, refactored"
@@ -37,7 +34,6 @@ REQUIRED_USE="${PYTHON_REQUIRED_USE} nist? ( rclock_local )"
 
 # net-misc/pps-tools oncore,pps
 CDEPEND="${PYTHON_DEPS}
-	${BDEPEND}
 	sys-libs/libcap
 	dev-python/psutil[${PYTHON_USEDEP}]
 	libbsd? ( dev-libs/libbsd:0= )
@@ -60,14 +56,9 @@ DEPEND="${CDEPEND}
 	rclock_pps? ( net-misc/pps-tools )
 "
 
-WAF_BINARY="${S}/waf"
+PATCHES=( "${FILESDIR}/${PN}-1.1.8-fix-missing-scmp_sys-on-aarch64.patch" )
 
-PATCHES=(
-	"${FILESDIR}/${P}-externalize-sys_maxclock-fix-for-bug-708522.patch"
-	"${FILESDIR}/${P}-fix-missing-scmp_sys-on-aarch64.patch"
-	"${FILESDIR}/${P}-fix-asciidoc-version-detect.patch"
-	"${FILESDIR}/${PN}-add-clock_adjtime.patch"
-)
+WAF_BINARY="${S}/waf"
 
 src_prepare() {
 	default
@@ -154,12 +145,7 @@ src_install() {
 	cp -Rv "${S}"/etc/ntp.d/ "${ED}"/etc/
 
 	# move doc files to /usr/share/doc/"${P}"
-	if use doc; then
-		mv -v "${ED}"/usr/share/doc/"${PN}" \
-			"${ED}"/usr/share/doc/"${PF}"/html
-	else
-		rm -rf "${ED}"/usr/share/doc/"${PN}"
-	fi
+	use doc && mv -v "${ED}"/usr/share/doc/"${PN}" "${ED}"/usr/share/doc/"${P}"/html
 }
 
 pkg_postinst() {
