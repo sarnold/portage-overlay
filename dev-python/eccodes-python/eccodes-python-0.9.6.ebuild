@@ -26,4 +26,4 @@ BDEPEND="${RDEPEND}"
 
 RESTRICT="!test? ( test )"
 
-# PATCHES=( "${FILESDIR}/${PN}-ignore-test-import-warnings.patch" )
+PATCHES=( "${FILESDIR}/${P}-build-cffi-by-default.patch" )
