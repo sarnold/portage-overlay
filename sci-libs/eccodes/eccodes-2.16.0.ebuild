@@ -18,9 +18,9 @@ LICENSE="Apache-2.0"
 SLOT="0"
 KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 
-IUSE="defs examples extra-test -fortran memfs netcdf jpeg2k png python szip test threads"
+IUSE="defs examples extra-test -fortran memfs netcdf jpeg2k openmp png python szip test threads"
 
-REQUIRED_USE="threads? ( !fortran ) test? ( defs !memfs ) extra-test? ( test ) !test? ( memfs? ( python ) )"
+REQUIRED_USE="fortran? ( openmp !threads ) threads? ( !fortran ) test? ( defs !memfs ) extra-test? ( test ) !test? ( memfs? ( python ) )"
 
 RDEPEND="
 	sys-libs/zlib
@@ -47,10 +47,13 @@ src_configure() {
 	local mycmakeargs=(
 		-DCMAKE_INSTALL_PREFIX="${EPREFIX}/usr"
 		-DINSTALL_LIB_DIR="$(get_libdir)"
+		-DCMAKE_SKIP_INSTALL_RPATH=TRUE
 		-DENABLE_ECCODES_THREADS=$(usex threads TRUE FALSE)
+		-DENABLE_ECCODES_OMP_THREADS=$(usex openmp TRUE FALSE)
 		-DENABLE_EXAMPLES=OFF  # no need to build examples
 		-DENABLE_INSTALL_ECCODES_DEFINITIONS=$(usex defs TRUE FALSE)
 		-DENABLE_FORTRAN=$(usex fortran TRUE FALSE)
+		-DCMAKE_Fortran_FLAGS="-fallow-argument-mismatch"
 		-DENABLE_PYTHON=OFF  # py2 support is deprecated
 		-DENABLE_NETCDF=$(usex netcdf TRUE FALSE)
 		-DENABLE_JPG=$(usex jpeg2k TRUE FALSE)
