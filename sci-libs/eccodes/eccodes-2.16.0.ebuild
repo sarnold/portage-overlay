@@ -12,7 +12,8 @@ MY_P="${P}-Source"
 DESCRIPTION="A set of encoding/decoding APIs and tools for WMO GRIB, BUFR, and GTS messages"
 HOMEPAGE="https://confluence.ecmwf.int/display/ECC"
 SRC_URI="https://confluence.ecmwf.int/download/attachments/45757960/${MY_P}.tar.gz
-	extra-test? ( http://download.ecmwf.org/test-data/eccodes/${PN}_test_data.tar.gz )"
+	extra-test? ( http://download.ecmwf.org/test-data/eccodes/${PN}_test_data.tar.gz
+	http://download.ecmwf.org/test-data/eccodes/data/mercator.grib2 )"
 
 LICENSE="Apache-2.0"
 SLOT="0"
@@ -77,7 +78,11 @@ src_install() {
 }
 
 src_test() {
-	use extra-test && cp -r "${WORKDIR}"/data/* "${BUILD_DIR}"/data/
+	if use extra-test; then
+		touch "${WORKDIR}"/data/.downloaded
+		cp -r "${WORKDIR}"/data/* "${BUILD_DIR}"/data/
+		cp "${DISTDIR}"/mercator.grib2 "${BUILD_DIR}"/data/
+	fi
 
 	cmake-utils_src_test
 }
