@@ -1,6 +1,5 @@
-# Copyright 1999-2016 Gentoo Foundation
+# Copyright 1999-2020 Gentoo Authors
 # Distributed under the terms of the GNU General Public License v2
-# $Header: $
 
 EAPI=5
 
@@ -8,9 +7,9 @@ inherit eutils toolchain-funcs flag-o-matic
 
 DESCRIPTION="Source metrics (line counts, complexity, etc) for Java and C++"
 HOMEPAGE="http://sarnold.github.io/cccc/"
+
 if [[ ${PV} = 9999* ]]; then
 	EGIT_REPO_URI="https://github.com/sarnold/cccc.git"
-	EGIT_BRANCH="master"
 	inherit git-r3
 else
 	SRC_URI="https://github.com/sarnold/${PN}/archive/${PV}.tar.gz -> ${P}.tar.gz"
@@ -18,15 +17,13 @@ fi
 
 LICENSE="GPL-2"
 SLOT="0"
-KEYWORDS="~amd64 ~arm ~ppc ~x86 ~amd64-linux ~x86-linux ~ppc-macos"
+KEYWORDS="~amd64 ~arm ~arm64 ~ppc ~x86 ~amd64-linux ~x86-linux ~ppc-macos"
 IUSE="apidoc debug doc mfc"
 
 RDEPEND=""
 DEPEND="${RDEPEND}
 	apidoc? ( app-doc/doxygen[dot] )
 	"
-
-MAKEOPTS="-j1"
 
 src_prepare() {
 	use mfc && epatch "${FILESDIR}"/${PN}-c_dialect.patch
@@ -35,16 +32,16 @@ src_prepare() {
 src_compile() {
 	if use debug ; then
 		export STRIP_MASK="*/bin/*"
-		DEBUG="true" emake CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
+		DEBUG="true" emake -j1 CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
 	else
-		emake CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
+		emake -j1 CCC=$(tc-getCXX) CC=$(tc-getCC) cccc
 	fi
 
-	use apidoc && emake CCC=$(tc-getCXX) metrics docs
+	use apidoc && emake -j1 CCC=$(tc-getCXX) metrics docs
 }
 
 src_test() {
-	emake CCC=$(tc-getCXX) test
+	emake -j1 CCC=$(tc-getCXX) test
 }
 
 src_install() {
