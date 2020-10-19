@@ -8,8 +8,7 @@ FILES="/etc/stunnel/*.conf"
 DAEMON="/usr/sbin/stunnel"
 
 depend() {
-	need net
-    before logger
+	before logger
 }
 
 get_pids() {
