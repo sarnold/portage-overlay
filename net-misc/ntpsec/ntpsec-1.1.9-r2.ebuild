@@ -3,7 +3,7 @@
 
 EAPI=6
 
-PYTHON_COMPAT=( python3_{5,6,7} )
+PYTHON_COMPAT=( python3_{6,7,8} )
 PYTHON_REQ_USE='threads(+)'
 
 inherit flag-o-matic python-r1 waf-utils systemd
@@ -124,6 +124,14 @@ src_install() {
 	}
 	python_foreach_impl run_in_build_dir python_install
 	python_foreach_impl python_optimize
+
+	for bin in "${D}/usr/bin/"*; do
+		if head -n1 "${bin}"|grep -q '^#.*python'; then
+			mv "${bin}" "${T}"/ || die "Failed moving ${bin} to ${T}"
+			bin=${bin##*/}
+			python_foreach_impl python_doscript "${T}"/"${bin}"
+		fi
+	done
 
 	# Install heat generating scripts
 	use heat && dosbin "${S}"/contrib/ntpheat{,usb}
