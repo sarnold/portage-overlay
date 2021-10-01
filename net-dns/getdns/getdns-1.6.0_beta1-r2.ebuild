@@ -5,7 +5,7 @@ EAPI=7
 
 _SRCURI_P="${P/%_beta1/-beta.1}"
 
-inherit cmake fcaps systemd
+inherit cmake fcaps systemd tmpfiles
 
 DESCRIPTION="Modern asynchronous DNS API"
 HOMEPAGE="https://getdnsapi.net/"
@@ -13,7 +13,7 @@ SRC_URI="https://getdnsapi.net/releases/${_SRCURI_P//./-}/${_SRCURI_P}.tar.gz"
 
 LICENSE="BSD"
 SLOT="0"
-KEYWORDS="~amd64 ~x86"
+KEYWORDS="~amd64 ~arm ~arm64 ~x86"
 IUSE="doc examples +getdns-query +getdns-server-mon gnutls +idn libev libevent libuv static-libs stubby +unbound"
 
 S="${WORKDIR}/${_SRCURI_P}"
@@ -86,17 +86,18 @@ src_install() {
 	cmake_src_install
 	rm -rf "${ED}"/var/run
 	if use stubby; then
-		newinitd "${FILESDIR}"/stubby.initd-r2 stubby
+		newinitd "${FILESDIR}"/stubby.initd-r3 stubby
 		newconfd "${FILESDIR}"/stubby.confd-r1 stubby
 		insinto /etc/logrotate.d
 		newins "${FILESDIR}"/stubby.logrotate stubby
 		systemd_dounit "${S}"/stubby/systemd/stubby.service
-		systemd_dotmpfilesd "${S}"/stubby/systemd/stubby.conf
+		dotmpfiles "${S}"/stubby/systemd/stubby.conf
 	fi
 }
 
 pkg_postinst() {
 	if use stubby; then
 		fcaps cap_net_bind_service=ei /usr/bin/stubby
+		tmpfiles_process stubby.conf
 	fi
 }

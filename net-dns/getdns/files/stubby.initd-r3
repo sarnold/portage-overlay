@@ -11,8 +11,9 @@ name="DNS Privacy Daemon"
 depend()
 {
 	provide dns
-	need localmount net
+	need localmount
 	after bootmisc
+	before dnsmasq
 	use logger
 }
 

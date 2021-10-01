@@ -1,5 +1,11 @@
 # /etc/conf.d/stubby: config file for /etc/init.d/stubby
 
+# set this to the method/interface stubby should care about; note you can
+# leave this alone if dnsmasq/other is running in front of stubby
+#rc_need="NetworkManager"
+#rc_need="dhcpcd"
+#rc_need="net.eth0"
+
 # Enter here Stubby YAML configuration file to use.
 STUBBY_CONFIG_FILE="/etc/stubby/stubby.yml"
 
